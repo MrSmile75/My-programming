@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smile Horizon: Your Epic Journey Begins</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00ffff;
+            --secondary-color: #ff00ff;
+            --background-dark: #0a0a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--background-dark), #1a1a2e);
+            color: white;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .universe-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            transform-style: preserve-3d;
+            transform: rotateX(10deg);
+        }
+
+        .holographic-border {
+            border: 2px solid transparent;
+            border-image: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border-image-slice: 1;
+            box-shadow: 
+                0 0 10px var(--primary-color),
+                0 0 20px var(--secondary-color),
+                inset 0 0 15px rgba(0,255,255,0.3);
+        }
+
+        #welcome-message {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0,255,255,0.5);
+            animation: pulse 2s infinite alternate;
+        }
+
+        #teaser-text {
+            max-width: 700px;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.8);
+        }
+
+        #countdown {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-shadow: 0 0 20px var(--primary-color);
+            margin-bottom: 40px;
+        }
+
+        .quantum-button {
+            position: relative;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--background-dark);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .quantum-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .quantum-button:hover::before {
+            left: 100%;
+        }
+
+        .quantum-button:hover {
+            transform: scale(1.1) rotate(3deg);
+            box-shadow: 0 0 30px var(--primary-color);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <div class="universe-container" id="starField"></div>
+    <div class="main-container">
+        <div id="welcome-message">Exciting Horizon Awaits</div>
+        <div id="teaser-text">
+            Prepare for a transformative journey beyond imagination. 
+            A convergence of possibilities is about to unfold, 
+            revealing secrets that will reshape your understanding of reality.
+        </div>
+        <div id="countdown">10</div>
+        <button id="go-button" class="quantum-button" style="display:none;">Let's go</button>
+    </div>
+
+    <script>
+        // Star Field Generation
+        function createStarField() {
+            const starField = document.getElementById('starField');
+            const starCount = 300;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                star.style.width = `${Math.random() * 3}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+
+                starField.appendChild(star);
+            }
+        }
+
+        // Advanced Personalized Welcome
+        function personalizeWelcome() {
+            const username = prompt("Enter your name, Explorer:") || "Traveler";
+            const welcomeMessage = document.getElementById('welcome-message');
+            welcomeMessage.textContent = `Welcome, ${username}`;
+        }
+
+        // Quantum Countdown Mechanism
+        function startQuantumCountdown() {
+            const countdownEl = document.getElementById('countdown');
+            const goButton = document.getElementById('go-button');
+            let count = 10;
+
+            const quantumEffects = [
+                () => countdownEl.style.color = 'cyan',
+                () => countdownEl.style.transform = 'rotate(5deg)',
+                () => countdownEl.style.textShadow = '0 0 30px cyan'
+            ];
+
+            const timer = setInterval(() => {
+                countdownEl.textContent = count;
+                
+                // Random quantum visual effects
+                if (count % 3 === 0) {
+                    quantumEffects[Math.floor(Math.random() * quantumEffects.length)]();
+                }
+
+                count--;
+
+                if (count < 0) {
+                    clearInterval(timer);
+                    countdownEl.style.display = 'none';
+                    goButton.style.display = 'block';
+                }
+            }, 1000);
+
+            goButton.addEventListener('click', () => {
+                // Advanced transition or redirect
+                document.body.style.transition = 'all 1s ease';
+                document.body.style.transform = 'scale(2) rotate(360deg)';
+                document.body.style.opacity = 0;
+                
+                setTimeout(() => {
+                    window.location.href = 'form.html';
+                }, 1000);
+            });
+        }
+
+        // Initialize on page load
+        window.onload = () => {
+            createStarField();
+            personalizeWelcome();
+            startQuantumCountdown();
+        };
+    </script>
+</body>
+</html>

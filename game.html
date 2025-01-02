@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exclusive Limited Time Offer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .banner {
+            max-width: 1200px;
+            margin: 20px auto;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            position: relative;
+            color: white;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.1);
+            transform: skew(-15deg);
+            z-index: 1;
+        }
+
+        .offer-details {
+            z-index: 2;
+            position: relative;
+        }
+
+        .offer-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .offer-subtitle {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .discount-badges {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            background-color: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 10px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .countdown-item {
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .countdown-item span {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .countdown-item p {
+            font-size: 10px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .cta-button {
+            background-color: #fff;
+            color: #6a11cb;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            z-index: 2;
+            position: relative;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 768px) {
+            .banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .countdown {
+                justify-content: center;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <div class="offer-details">
+            <h2 class="offer-title">Mega Savings Extravaganza! 🚀</h2>
+            <p class="offer-subtitle">Unlock unprecedented discounts on our premium plans</p>
+            
+            <div class="discount-badges">
+                <div class="badge">50% OFF Pro Plan</div>
+                <div class="badge">30% OFF Business Annual</div>
+            </div>
+        </div>
+
+        <div class="countdown" id="countdown">
+            <div class="countdown-item">
+                <span id="days">00</span>
+                <p>Days</p>
+            </div>
+            <div class="countdown-item">
+                <span id="hours">00</span>
+                <p>Hours</p>
+            </div>
+            <div class="countdown-item">
+                <span id="minutes">00</span>
+                <p>Minutes</p>
+            </div>
+            <div class="countdown-item">
+                <span id="seconds">00</span>
+                <p>Seconds</p>
+            </div>
+        </div>
+
+        <a href="#" class="cta-button">Claim Offer Now</a>
+    </div>
+
+    <script>
+        function startCountdown() {
+            const countdownDate = new Date();
+            countdownDate.setDate(countdownDate.getDate() + 5);
+            countdownDate.setHours(19, 0, 44, 0);
+
+            const countdownElement = {
+                days: document.getElementById('days'),
+                hours: document.getElementById('hours'),
+                minutes: document.getElementById('minutes'),
+                seconds: document.getElementById('seconds')
+            };
+
+            function updateCountdown() {
+                const now = new Date();
+                const timeLeft = countdownDate - now;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    return;
+                }
+
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                countdownElement.days.textContent = days.toString().padStart(2, '0');
+                countdownElement.hours.textContent = hours.toString().padStart(2, '0');
+                countdownElement.minutes.textContent = minutes.toString().padStart(2, '0');
+                countdownElement.seconds.textContent = seconds.toString().padStart(2, '0');
+            }
+
+            const countdownTimer = setInterval(updateCountdown, 1000);
+            updateCountdown();
+        }
+
+        startCountdown();
+    </script>
+</body>
+</html>

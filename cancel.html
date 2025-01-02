@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next-Gen Pricing Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #4f46e5;
+            --background-color: #f8fafc;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --card-background: #ffffff;
+            --border-radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            perspective: 1000px;
+        }
+
+        .pricing-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .pricing-header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-header p {
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .billing-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .toggle-wrapper {
+            background-color: #e5e7eb;
+            display: inline-flex;
+            border-radius: 50px;
+            padding: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .toggle-option {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 600;
+        }
+
+        .toggle-option.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        .pricing-card {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transform-style: preserve-3d;
+            transform: rotateX(10deg) rotateY(-10deg) scale(0.9);
+            opacity: 0.8;
+        }
+
+        .pricing-card:hover {
+            transform: rotateX(0) rotateY(0) scale(1);
+            box-shadow: 0 40px 60px -15px rgba(0,0,0,0.2);
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .pricing-card.recommended {
+            border: 2px solid var(--primary-color);
+            transform: rotateX(0) rotateY(0) scale(1.05);
+            opacity: 1;
+        }
+
+        .pricing-card.recommended::before {
+            content: 'Best Value';
+            position: absolute;
+            top: 30px;
+            right: -50px;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 2.5rem;
+            transform: rotate(45deg);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .plan-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .plan-price::after {
+            content: '/mo';
+            font-size: 1rem;
+            color: var(--text-secondary);
+            position: absolute;
+            top: 10px;
+        }
+
+        .plan-features {
+            flex-grow: 1;
+            margin-bottom: 2rem;
+        }
+
+        .plan-features ul {
+            list-style-type: none;
+        }
+
+        .plan-features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .plan-features li i {
+            color: var(--primary-color);
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .plan-cta {
+            display: block;
+            text-align: center;
+            padding: 1.25rem 1.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.4s ease;
+            margin-top: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plan-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .plan-cta:hover::before {
+            left: 100%;
+        }
+
+        .plan-cta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 1200px) {
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="pricing-container">
+        <div class="pricing-header">
+            <h1>Pricing Plans</h1>
+            <p>Unlock powerful features to you needs. Enjoyable, scalable, and designed for every user.</p>
+        </div>
+
+        <div class="billing-toggle">
+            <div class="toggle-wrapper">
+                <div class="toggle-option active" data-billing="monthly">
+                    Monthly
+                </div>
+                <div class="toggle-option" data-billing="yearly">
+                    Yearly
+                </div>
+            </div>
+        </div>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="plan-header">
+                    <h2 class="plan-name">Starter</h2>
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="plan-price" data-monthly="$9.99" data-yearly="$99.99">$9.99</div>
+                <div class="plan-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i>1 User Account</li>
+                        <li><i class="fas fa-check-circle"></i>5GB Cloud Storage</li>
+                        <li><i class="fas fa-check-circle"></i>Basic Support</li>
+                        <li><i class="fas fa-check-circle"></i>Email Integrations</li>
+                    </ul>
+                </div>
+                <a href="#" class="plan-cta">Get Started</a>
+            </div>
+
+            <div class="pricing-card recommended">
+                <div class="plan-header">
+                    <h2 class="plan-name">Pro</h2>
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="plan-price" data-monthly="$19.99" data-yearly="$199.99">$19.99</div>
+                <div class="plan-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i>5 User Accounts</li>
+                        <li> <i class="fas fa-check-circle"></i>50GB Cloud Storage</li>
+                        <li><i class="fas fa-check-circle"></i>Priority Support</li>
+                        <li> <i class="fas fa-check-circle"></i>Advanced Analytics</li>
+                        <li> <i class="fas fa-check-circle"></i>Custom Branding</li>
+                    </ul>
+                </div>
+                <a href="#" class="plan-cta">Choose Pro</a>
+            </div>
+
+            <div class="pricing-card">
+                <div class="plan-header">
+                    <h2 class="plan-name">Legend</h2>
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="plan-price" data-monthly="$49.99" data-yearly="$499.99">$49.99</div>
+                <div class="plan-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i>Unlimited Users</li>
+                        <li> <i class="fas fa-check-circle"></i>Unlimited Storage</li>
+                        <li> <i class="fas fa-check-circle"></i>24/7 Premium Support</li>
+                        <li><i class="fas fa-check-circle"></i>Advanced Integrations</li>
+                        <li><i class="fas fa-check-circle"></i>Dedicated Account Manager</li>
+                        <li><i class="fas fa-check-circle"></i>Custom Enterprise Solutions</li>
+                    </ul>
+                </div>
+                <a href="#" class="plan-cta">Contact Sales</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleOptions = document.querySelectorAll('.toggle-option');
+            const pricingCards = document.querySelectorAll('.pricing-card .plan-price');
+
+            toggleOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    toggleOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const billingType = this.getAttribute('data-billing');
+
+                    pricingCards.forEach(priceElement => {
+                        const monthlyPrice = priceElement.getAttribute('data-monthly');
+                        const yearlyPrice = priceElement.getAttribute('data-yearly');
+                        
+                        priceElement.textContent = billingType === 'monthly' 
+                            ? monthlyPrice 
+                            : yearlyPrice;
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

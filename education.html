@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Infinite Learning Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --quantum-primary: #00f5d4;
+            --quantum-secondary: #8c1eff;
+            --quantum-background: #0a0a1a;
+            --quantum-text: #e0e0ff;
+            --quantum-glow: rgba(0, 245, 212, 0.4);
+            --primary-color: #00ffff;
+            --secondary-color: #8a2be2;
+            --background-dark: #0a0a2a;
+            --text-color: #e0e0ff;
+            --card-background: rgba(15,15,40,0.8);
+            --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            --secondary-gradient: linear-gradient(to right, #8e2de2, #4a00e0);
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--primary-color);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .text-muted{
+          color: var(--primary-color);
+        }
+
+        .main-container {
+            background: transparent;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: transparent;
+        }
+
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        #globalSearch {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 15px 60px 15px 20px;
+            border-radius: 50px;
+            font-size: 18px;
+            width: 100%;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .advanced-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .book-card {
+            background: transparent;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+
+        .book-card:hover {
+            transform: scale(1.05) rotateY(10deg);
+            box-shadow: transparent;
+        }
+
+        .book-image {
+            height: 350px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .book-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.9);
+        }
+
+        .book-details {
+            padding: 20px;
+            background: transparent;
+            color: var(--primary-color);
+        }
+
+        .book-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: transparent;
+        }
+
+        .btn-custom {
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+        }
+
+        .filter-section {
+            background: transparent;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .modal-content {
+            background: var(--dark-bg);
+            color: white;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #aaa;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container main-container mt-5">
+        <div class="row">
+            <div class="col-12 text-center mb-4">
+                <h1>
+                    <i class="fas fa-book-reader text-primary"></i> 
+                    Smile Learning Hub
+                </h1>
+                <p class="text-muted">Discover, Read, Grow</p>
+            </div>
+
+            <div class="col-12">
+                <div class="search-wrapper">
+                    <input 
+                        type="text" 
+                        id="globalSearch" 
+                        class="form-control" 
+                        placeholder="Search books, topics, authors..."
+                        oninput="debounceSearch()"
+                    >
+                    <i class="fas fa-search search-icon" onclick="searchBooks()"></i>
+                </div>
+
+                <div class="filter-section">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <select id="categoryFilter" class="form-select bg-dark text-white">
+                                <option value="">All Categories</option>
+                                <option value="science">Science</option>
+                                <option value="technology">Technology</option>
+                                <option value="history">History</option>
+                                <option value="literature">Literature</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select id="languageFilter" class="form-select bg-dark text-white">
+                                <option value="">All Languages</option>
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select id="sortFilter" class="form-select bg-dark text-white">
+                                <option value="relevance">Sort by Relevance</option>
+                                <option value="newest">Newest First</option>
+                                <option value="rating">Highest Rated</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="loadingOverlay" class="loading-overlay d-none">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div id="bookResults" class="book-grid"></div>
+    </div>
+
+    <!-- Book Details Modal -->
+    <div class="modal fade" id="bookDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Book Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="bookModalContent">
+                    <!-- Dynamic content will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        &copy; 2024 Smile. All rights reserved.
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let searchTimeout;
+        const bookDetailsModal = new bootstrap.Modal(document.getElementById('bookDetailsModal'));
+
+        function debounceSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(searchBooks, 200);
+        }
+
+        async function searchBooks() {
+            const searchTerm = document.getElementById('globalSearch').value;
+            const category = document.getElementById('categoryFilter').value;
+            const language = document.getElementById('languageFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+            const bookResults = document.getElementById('bookResults');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+
+            if (searchTerm.length < 1) {
+                bookResults.innerHTML = '';
+                return;
+            }
+
+            loadingOverlay.classList.remove('d-none');
+            bookResults.innerHTML = '';
+
+            try {
+                const response = await fetch(
+                    `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(searchTerm)}` +
+                    `${category ? `+subject:${category}` : ''}` +
+                    `${language ? `&langRestrict=${language}` : ''}` +
+                    `&orderBy=${sort === 'newest' ? 'newest' : 'relevance'}` +
+                    `&maxResults=24`
+                );
+                
+                const data = await response.json();
+                
+                loadingOverlay.classList.add('d-none');
+
+                if (data.items) {
+                    bookResults.innerHTML = data.items.map(book => {
+                        const bookInfo = book.volumeInfo;
+                        return `
+                            <div class="book-card" onclick="showBookDetails('${book.id}')">
+                                <div class="book-image">
+                                    <img src="${bookInfo.imageLinks?.thumbnail || 'placeholder.jpg'}" alt="${bookInfo.title}">
+                                </div>
+                                <div class="book-details">
+                                    <h5>${bookInfo.title.slice(0, 30)}${bookInfo.title.length > 30 ? '...' : ''}</h5>
+                                    <p class="text-muted">
+                                        ${bookInfo.authors ? bookInfo.authors.slice(0, 2).join(', ') : 'Unknown Author'}
+                                    </p>
+                                </div>
+                                <div class="book-actions">
+                                    <button class="btn btn-custom btn-sm">
+                                        <i class="fas fa-eye"></i> Preview
+                                    </button>
+                                    <button class="btn btn-custom btn-sm">
+                                        <i class="fas fa-bookmark"></i> Save
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    bookResults.innerHTML = '<p class="text-center text-white">No books found.</p>';
+                }
+            } catch (error) {
+                loadingOverlay.classList.add('d-none');
+                bookResults.innerHTML = '<p class="text-danger text-center">Error fetching books. Please try again.</p>';
+                console.error('Book search error:', error);
+            }
+        }
+
+        async function showBookDetails(bookId) {
+            try {
+                const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${bookId}`);
+                const bookData = await response.json();
+                const bookInfo = bookData.volumeInfo;
+
+                const modalContent = document.getElementById('bookModalContent');
+                modalContent.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="${bookInfo.imageLinks?.large || bookInfo.imageLinks?.thumbnail}" class="img-fluid" alt="${bookInfo.title}">
+                        </div>
+                        <div class="col-md-8">
+                            <h2>${bookInfo.title}</h2>
+                            <p><strong>Authors:</strong> ${bookInfo.authors ? bookInfo.authors.join(', ') : 'Unknown'}</p>
+                            <p><strong>Published:</strong> ${bookInfo.publishedDate}</p>
+                            <p>>Pages:</strong> ${bookInfo.pageCount}</p>
+                            <p>Description:</strong> ${bookInfo.description || 'No description available'}</p>
+                            <div class="mt-3">
+                                <a href="${bookInfo.previewLink}" target="_blank" class="btn btn-custom">Read Preview</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                bookDetailsModal.show();
+            } catch (error) {
+                console.error('Error fetching book details:', error);
+            }
+        }
+    </script>
+</body>
+</html>

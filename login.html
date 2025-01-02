@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Login & Sign-Up Form</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    
+      color: #333;
+    }
+
+    
+
+    .container {
+      width: 450px;
+      background: transparent;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      position: relative;
+      text-align: center;
+      overflow: hidden;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header {
+      margin-bottom: 30px;
+      color: #333;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .header span {
+      color: #00c6ff;
+    }
+
+    .header button {
+      background: none;
+      border: none;
+      font-size: 18px;
+      font-weight: 600;
+      padding: 10px 20px;
+      color: #555;
+      cursor: pointer;
+      transition: color 0.3s, border-bottom 0.3s;
+    }
+
+    .header button.active {
+      color: #00c6ff;
+      border-bottom: 2px solid #00c6ff;
+    }
+
+    form {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    form.active {
+      display: flex;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group input {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+      border-color: #00c6ff;
+    }
+
+    .password-strength {
+      height: 8px;
+      background: grey;
+      border-radius: 5px;
+      transition: width 0.4s, background 0.4s;
+    }
+
+    .password-strength.weak {
+      width: 40%;
+      background: red;
+    }
+
+    .password-strength.medium {
+      width: 70%;
+      background: orange;
+    }
+
+    .password-strength.strong {
+      width: 100%;
+      background: green;
+    }
+
+    .dark-mode-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #00c6ff;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .dark-mode-toggle:hover {
+      background: #0072ff;
+    }
+
+    .social-login {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .social-login button {
+      padding: 12px;
+      background: #f0f0f0;
+      border-radius: 30px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100px;
+      transition: all 0.3s;
+    }
+
+    .social-login button:hover {
+      background: #00c6ff ;
+    }
+
+    .submit-btn {
+      padding: 15px;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #00c6ff;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 500px) {
+      .container {
+        width: 90%;
+      }
+
+      .header button {
+        font-size: 16px;
+        padding: 8px 16px;
+      }
+    }
+
+    a{
+        color: #00c6ff;
+    }
+
+  </style>
+</head>
+<body background="c:\Users\User\OneDrive\Pictures\img.jpg">
+ 
+
+  <!-- Form Container -->
+  <div class="container">
+    <div class="header">
+      <div>Welcome to <span>Our Platform</span></div>
+      <div>Let's Get Started</div>
+      <button id="loginTab" class="active" onclick="switchForm('login')">Login</button>
+      <button id="signupTab" onclick="switchForm('signup')">Sign Up</button>
+    </div>
+
+    <!-- Login Form -->
+    <form id="loginForm" class="active">
+      <div class="form-group">
+        <input type="email" id="loginEmail" placeholder="Email" required>
+      </div>
+      <div class="form-group">
+        <input type="password" id="loginPassword" placeholder="Password" required>
+      </div>
+      <div class="social-login">
+        
+      </div>
+      <button type="button" class="submit-btn" onclick="loginSubmit()">Login</button>
+    </form>
+
+    <!-- Sign-Up Form -->
+    <form id="signupForm">
+      <div class="form-group">
+        <input type="email" id="signupEmail" placeholder="Email" required>
+      </div>
+      <div class="form-group">
+        <input type="password" id="signupPassword" placeholder="Create Password" oninput="checkPasswordStrength()" required>
+        <div class="password-strength"></div>
+      </div>
+      <div class="form-group">
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+      </div>
+      <button type="button" class="submit-btn" onclick="signUpSubmit()">Sign Up</button>
+    </form>
+
+    <p>Click here to proceed <a href="home.html">Click here</a></p>
+  </div>
+
+
+
+
+  <script>
+    // Switch between Login and Sign Up forms
+    function switchForm(formType) {
+      const loginTab = document.getElementById('loginTab');
+      const signupTab = document.getElementById('signupTab');
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+
+      if (formType === 'login') {
+        loginTab.classList.add('active');
+        signupTab.classList.remove('active');
+        loginForm.classList.add('active');
+        signupForm.classList.remove('active');
+      } else {
+        signupTab.classList.add('active');
+        loginTab.classList.remove('active');
+        signupForm.classList.add('active');
+        loginForm.classList.remove('active');
+      }
+    }
+
+    // Password strength check
+    function checkPasswordStrength() {
+      const password = document.getElementById('signupPassword').value;
+      const strengthBar = document.querySelector('.password-strength');
+
+      if (password.length < 8) {
+        strengthBar.className = 'password-strength weak';
+      } else if (password.length < 12) {
+        strengthBar.className = 'password-strength medium';
+      } else {
+        strengthBar.className = 'password-strength strong';
+      }
+    }
+
+    
+
+
+    // Login submit handler
+    function loginSubmit() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+
+      if (!email || !password) {
+        alert('Please fill in all fields.');
+      } else {
+        alert('Login Successful!');
+      }
+    }
+
+    // Sign-Up submit handler
+    function signUpSubmit() {
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (!email || !password || !confirmPassword) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+      } else {
+        alert('Sign Up Successful!');
+      }
+    }
+  </script>
+</body>
+</html>
