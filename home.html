@@ -175,8 +175,8 @@
         /* Interaction Buttons */
         .nav-buttons {
             display: flex;
-            align-items: center;
             gap: 15px;
+            
         }
 
         .btn-contact {
@@ -238,17 +238,6 @@
             background-color: var(--color-text-primary);
             margin: 4px 0;
             transition: 0.4s;
-        }
-
-        
-            /* Typography */
-            --font-primary: 'Inter', sans-serif;
-            
-            /* Transitions */
-            --transition-quantum: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-            
-            /* Shadows & Effects */
-            --shadow-quantum: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
 
         * {
@@ -1239,8 +1228,10 @@
         }
 
         #map {
-      height: 100vh;
-      width: 100%;
+      height: 80vh;
+      width: 110%;
+      position: content;
+      left: 0%;
     
     }
 
@@ -1363,9 +1354,82 @@
                 margin-top: 20px;
             }
         }
-        
 
         
+        
+        
+
+        .profile-container {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+        }
+
+        .profile-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+            border: 3px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .mb-3{
+            position: content;
+            color: white;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 70px;
+            right: 0;
+            width: 380px;
+            background: var(--color-accent);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1050;
+        }
+
+        .status-badge {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .status-online {
+            background-color: #28a745;
+        }
+
+        .status-offline {
+            background-color: #dc3545;
+        }
+
+        .browser-fingerprint {
+            word-break: break-all;
+            font-size: 0.8em;
+            color: black;
+        }
+
+        .card-footer {
+            color: linear-gradient(  var(--bg-secondary), var(--color-accent));
+            padding: 10px ;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            z-index: 1;
+            position: relative;
+
+        }
+
+
     </style>
 </head>
 <body>
@@ -1381,7 +1445,7 @@
             <div class="nav-links">
                 <a href="#home" class="nav-link active">Home</a>
                 <a href="service.html" class="link">Contact us</a>
-                <a href="main.html" class="link">Terms.</a>
+                <a href="main.html" class="link">Privacy & policy</a>
                 
             </div>
 
@@ -1404,8 +1468,73 @@
                 <div class="menu-bar"></div>
             </div>
         </div>
+
+        <div class="profile-container">
+            <img id="profileAvatar"  
+                 class="profile-avatar" 
+                 onclick="toggleProfileDropdown()">
+    
+            <div id="profileDropdown" class="profile-dropdown card">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <span id="statusBadge" class="status-badge"></span>
+                    <strong>User Profile</strong>
+                </div>
+    
+                <div class="card-body">
+                    <form id="profileForm">
+                        <div class="mb-3">
+                            <label class="form-label">Profile Picture</label>
+                            <input type="file" 
+                                   id="profilePicUpload" 
+                                   class="form-control" 
+                                   accept="image/*" 
+                                   onchange="handleProfilePicUpload(event)">
+                        </div>
+    
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" 
+                                   id="usernameInput" 
+                                   class="form-control" 
+                                   placeholder="Enter username" 
+                                   required>
+                        </div>
+    
+                        <div class="mb-3">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" 
+                                   id="emailInput" 
+                                   class="form-control" 
+                                   placeholder="Enter email" 
+                                   required>
+                        </div>
+    
+                        <div class="browser-info bg-light p-3 rounded mb-3">
+                            <h6 class="mb-2">Browser Details</h6>
+                            <p id="browserInfo" class="mb-1">Detecting...</p>
+                            <small id="browserFingerprint" class="browser-fingerprint text-muted">
+                                Generating unique identifier...
+                            </small>
+                        </div>
+                    </form>
+                </div>
+    
+                <div class="card-footer d-flex justify-content-between">
+                    <button class="btn btn-primary" onclick="saveUserProfile()">
+                        Save Profile
+                    </button>
+                    <br><br><br>
+                    <button class="btn btn-outline-danger" onclick="logout()">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+    
     </nav>
 
+   
       <!-- Quantum Assistant Trigger -->
       <div id="quantum-assistant-trigger" onclick="toggleQuantumChat()">
         <span class="quantum-icon">?</span>
@@ -2470,7 +2599,174 @@ function startCountdown() {
         startCountdown();
 
 
-        
+         // Unique Browser Fingerprint Generation
+         function generateBrowserFingerprint() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const txt = navigator.userAgent + 
+                        navigator.language + 
+                        screen.colorDepth + 
+                        navigator.hardwareConcurrency + 
+                        new Date().getTimezoneOffset();
+
+            ctx.textBaseline = "top";
+            ctx.font = "14px 'Arial'";
+            ctx.textBaseline = "alphabetic";
+            ctx.fillText(txt, 0, 20);
+            
+            return btoa(txt); // Base64 encoded unique identifier
+        }
+
+        // Comprehensive User Profile Management
+        class UserProfileManager {
+            constructor() {
+                this.profileKey = 'userWebProfile';
+            }
+
+            // Save User Profile to Local Storage
+            saveProfile(profileData) {
+                try {
+                    localStorage.setItem(this.profileKey, JSON.stringify(profileData));
+                    return true;
+                } catch (error) {
+                    console.error('Failed to save profile:', error);
+                    return false;
+                }
+            }
+
+            // Retrieve User Profile
+            getProfile() {
+                const profileData = localStorage.getItem(this.profileKey);
+                return profileData ? JSON.parse(profileData) : null;
+            }
+
+            // Update Specific Profile Field
+            updateProfileField(field, value) {
+                const profile = this.getProfile() || {};
+                profile[field] = value;
+                this.saveProfile(profile);
+            }
+        }
+
+        // Global Instances
+        const profileManager = new UserProfileManager();
+        const browserFingerprint = generateBrowserFingerprint();
+
+        // Profile Picture Upload Handler
+        function handleProfilePicUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const profilePic = e.target.result;
+                    document.getElementById('profileAvatar').src = profilePic;
+                    
+                    // Save profile picture to local storage
+                    profileManager.updateProfileField('profilePic', profilePic);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Save User Profile
+        function saveUserProfile() {
+            const username = document.getElementById('usernameInput').value;
+            const email = document.getElementById('emailInput').value;
+
+            if (!username || !email) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const profileData = {
+                username,
+                email,
+                browserFingerprint,
+                timestamp: new Date().toISOString()
+            };
+
+            // Save profile to local storage
+            if (profileManager.saveProfile(profileData)) {
+                alert('Profile saved successfully!');
+                toggleProfileDropdown();
+            } else {
+                alert('Failed to save profile. Please try again.');
+            }
+        }
+
+        // Browser Detection
+        function detectBrowserInfo() {
+            const ua = navigator.userAgent;
+            const browserInfo = {
+                name: 'Unknown Browser',
+                version: 'Unknown',
+                platform: navigator.platform
+            };
+
+            if (ua.includes('Chrome')) browserInfo.name = 'Google Chrome';
+            else if (ua.includes('Firefox')) browserInfo.name = 'Mozilla Firefox';
+            else if (ua.includes('Safari')) browserInfo.name = 'Apple Safari';
+            else if (ua.includes('Edge')) browserInfo.name = 'Microsoft Edge';
+
+            const versionMatch = ua.match(/(?:Chrome|Firefox|Safari|Edge|Opera|Version)\/(\d+)/);
+            if (versionMatch) browserInfo.version = versionMatch[1];
+
+            return browserInfo;
+        }
+
+        // Online Status Management
+        function updateOnlineStatus() {
+            const statusBadge = document.getElementById('statusBadge');
+            statusBadge.classList.toggle('status-online', navigator.onLine);
+            statusBadge.classList.toggle('status-offline', !navigator.onLine);
+        }
+
+        // Initialize Profile on Page Load
+        function initializeProfile() {
+            // Detect Browser Info
+            const browserInfo = detectBrowserInfo();
+            document.getElementById('browserInfo').textContent = 
+                `${browserInfo.name} v${browserInfo.version} on ${browserInfo.platform}`;
+            
+            // Set Browser Fingerprint
+            document.getElementById('browserFingerprint').textContent = 
+                `Unique ID: ${browserFingerprint}`;
+
+            // Load Saved Profile
+            const savedProfile = profileManager.getProfile();
+            if (savedProfile) {
+                document.getElementById('usernameInput').value = savedProfile.username || '';
+                document.getElementById('emailInput').value = savedProfile.email || '';
+                
+                // Restore Profile Picture if exists
+                if (savedProfile.profilePic) {
+                    document.getElementById('profileAvatar').src = savedProfile.profilePic;
+                }
+            }
+
+            // Set Up Status Listeners
+            updateOnlineStatus();
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+        }
+
+        // Dropdown Toggle
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Logout Function
+        function logout() {
+            localStorage.removeItem('userWebProfile');
+            alert('Logged out successfully');
+            // Additional logout logic
+        }
+
+        // Initialize on Page Load
+        window.onload = initializeProfile;
+
+
     </script>
 </body>
 </html>

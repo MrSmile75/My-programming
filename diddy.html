@@ -2,146 +2,149 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Copyright & Contact Us</title>
+    <title>User Profile Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
         }
-
-        header {
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-            padding: 1rem 0;
+        .profile-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 400px;
+            padding: 20px;
         }
-
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 1rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        h1, h2 {
-            text-align: center;
-            color: #4CAF50;
-        }
-
-        p {
-            line-height: 1.6;
-        }
-
-        form {
-            margin-top: 2rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
             cursor: pointer;
-            border-radius: 4px;
-            font-size: 1rem;
         }
-
-        button:hover {
-            background-color: #45a049;
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
         }
-
-        .footer {
-            text-align: center;
-            margin-top: 2rem;
-            font-size: 0.9rem;
-            color: #555;
+        .online {
+            background-color: green;
         }
-
-        .footer a {
-            color: #4CAF50;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
+        .offline {
+            background-color: red;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Copyright & Infringement Policy</h1>
-    </header>
-
-    <div class="container">
-        <section id="copyright">
-            <h2>Copyright Information</h2>
-            <p>All content on this website, including text, graphics, logos, and images, is the property of this website's owner and is protected by international copyright laws. Unauthorized use, reproduction, or distribution of any content is strictly prohibited.</p>
-        </section>
-
-        <section id="infringement">
-            <h2>Infringement Policy</h2>
-            <p>If you believe that your copyrighted material has been used without your permission, please contact us immediately. We will investigate and take appropriate action.</p>
-        </section>
-
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <form id="contactForm">
-                <label for="name">Your Name:</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name" required>
-
-                <label for="email">Your Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
-
-                <label for="message">Your Message:</label>
-                <textarea id="message" name="message" rows="5" placeholder="Write your message here" required></textarea>
-
-                <button type="submit">Send Message</button>
-            </form>
-        </section>
-    </div>
-
-    <div class="footer">
-        <p>&copy; <span id="year"></span> Your Website Name. All rights reserved. <a href="#">Privacy Policy</a>.</p>
+    <div class="profile-container">
+        <div id="statusIndicator" class="status-indicator"></div>
+        <span id="connectionStatus">Loading...</span>
+        
+        <input type="file" 
+               id="profilePicUpload" 
+               accept="image/*" 
+               style="display:none;">
+        
+        <img id="profilePic" 
+             src="default-profile.png" 
+             class="profile-pic" 
+             onclick="document.getElementById('profilePicUpload').click()">
+        
+        <form id="userProfileForm">
+            <h2>User Profile</h2>
+            
+            <label>Username:</label>
+            <input type="text" 
+                   id="username" 
+                   placeholder="Enter Username" 
+                   required>
+            
+            <label>Email Address:</label>
+            <input type="email" 
+                   id="email" 
+                   placeholder="Enter Email" 
+                   required>
+            
+            <div class="plan-info">
+                <h3>Current Plan: Free</h3>
+                <p>Limited Usage | Standard Queries</p>
+                <button type="button" onclick="upgradePlan()">
+                    Unlock Premium
+                </button>
+            </div>
+        </form>
     </div>
 
     <script>
-        // Set current year in the footer
-        document.getElementById('year').textContent = new Date().getFullYear();
+        // Automatic Browser Detection
+        function getBrowserInfo() {
+            const agent = window.navigator.userAgent;
+            const browsers = [
+                {name: 'Chrome', regex: /Chrome/},
+                {name: 'Firefox', regex: /Firefox/},
+                {name: 'Safari', regex: /Safari/},
+                {name: 'Edge', regex: /Edg/},
+                {name: 'Internet Explorer', regex: /MSIE/}
+            ];
 
-        // Form submission handling
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent form from reloading the page
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
+            return browsers.find(b => b.regex.test(agent))?.name || 'Unknown';
+        }
 
-            if (name && email && message) {
-                alert(`Thank you, ${name}! Your message has been received. We will contact you shortly.`);
-                document.getElementById('contactForm').reset();
+        // Online/Offline Status
+        function updateConnectionStatus() {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('connectionStatus');
+            
+            if (navigator.onLine) {
+                statusIndicator.classList.remove('offline');
+                statusIndicator.classList.add('online');
+                statusText.textContent = 'Online';
             } else {
-                alert('Please fill in all fields before submitting.');
+                statusIndicator.classList.remove('online');
+                statusIndicator.classList.add('offline');
+                statusText.textContent = 'Offline';
+            }
+        }
+
+        // Profile Picture Upload
+        document.getElementById('profilePicUpload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profilePic').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         });
+
+        // Google Email Retrieval (Placeholder - requires actual Google OAuth)
+        function retrieveGoogleEmail() {
+            // Implement Google OAuth flow
+            console.log('Google Email Retrieval Placeholder');
+        }
+
+        // Upgrade Plan Function
+        function upgradePlan() {
+            alert('Upgrade to Premium Plan to unlock advanced features!');
+        }
+
+        // Initialize Functions
+        window.onload = function() {
+            console.log('Browser: ' + getBrowserInfo());
+            updateConnectionStatus();
+            
+            // Event listeners for online/offline
+            window.addEventListener('online', updateConnectionStatus);
+            window.addEventListener('offline', updateConnectionStatus);
+        };
     </script>
 </body>
 </html>

@@ -167,15 +167,15 @@
 
         /* Particle Trail Effect */
         .particle-trail {
-            position: fixed;
+            position: flex;
             pointer-events: none;
             z-index: 9998;
         }
 
         .particle {
-            position: fixed;
-            width: 5px;
-            height: 5px;
+            position: absolute;
+            width: 105px;
+            height: 105px;
             background: var(--primary-color);
             border-radius: 50%;
             opacity: 0.7;
@@ -190,203 +190,6 @@
             padding-top: 20px;
         }
 
-        :root {
-            --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            --secondary-gradient: linear-gradient(135deg, #ff6b6b 0%, #ff9a6b 100%);
-            --background-dark: #0f1020;
-            --text-light: #f4f4f4;
-            --accent-color: #4ecdc4;
-        }
-
-    
-
-        .offer-banner {
-            position: relative;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: var(--primary-gradient);
-            padding: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 -10px 50px rgba(0,0,0,0.3);
-            z-index: 1000;
-            transform: translateY(0);
-            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            overflow: hidden;
-        }
-
-        .offer-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: pulse 5s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(0.9);
-                opacity: 0.7;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .offer-content {
-            display: flex;
-            align-items: center;
-            position: relative;
-            z-index: 10;
-        }
-
-        .discount-section {
-            display: flex;
-            align-items: center;
-            margin-right: 40px;
-        }
-
-        .discount-badge {
-            background: var(--secondary-gradient);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            margin-right: 20px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transform: perspective(500px) rotateX(10deg);
-            transition: all 0.3s ease;
-        }
-
-        .discount-badge:hover {
-            transform: scale(1.05) perspective(500px) rotateX(0);
-        }
-
-        .badge-icon {
-            margin-right: 10px;
-            font-size: 22px;
-        }
-
-        .countdown-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .countdown-item {
-            text-align: center;
-            margin: 0 10px;
-            perspective: 300px;
-        }
-
-        .countdown-number {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            font-size: 28px;
-            font-weight: 700;
-            padding: 15px 25px;
-            border-radius: 15px;
-            min-width: 90px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transform: rotateX(-20deg);
-            transition: all 0.5s ease;
-        }
-
-        .countdown-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            margin-top: 8px;
-            opacity: 0.7;
-        }
-
-        .action-buttons {
-            display: flex;
-            align-items: center;
-        }
-
-        .btn {
-            padding: 14px 25px;
-            margin: 0 15px;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-remind {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-        }
-
-        .btn-premium {
-            background: white;
-            color: var(--primary-gradient);
-            box-shadow: 0 10px 30px rgba(37,117,252,0.3);
-        }
-
-        .btn-close {
-            background: none;
-            color: rgba(255,255,255,0.5);
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .btn-close:hover {
-            color: white;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: all 0.6s ease;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        @media (max-width: 768px) {
-            .offer-banner {
-                flex-direction: column;
-                text-align: center;
-                padding: 20px 10px;
-            }
-
-            .offer-content, .action-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .discount-section, .countdown-container, .action-buttons {
-                margin: 10px 0;
-            }
-        }
     </style>
 </head>
 <body>
@@ -416,7 +219,7 @@
                 </p>
             </div>
 
-                 <div class="category-card" data-link="game.html">
+                 <div class="category-card" data-link="movie.html">
                 <div class="category-icon">🎬</div>
                 <h2 class="category-title"> Cinema</h2>
                 <p class="category-description">
@@ -440,53 +243,6 @@
                 </p>
             </div>
         </div>
-
-        <div id="offerBanner" class="offer-banner">
-            <div class="offer-content">
-                <div class="discount-section">
-                    <div class="discount-badge">
-                        <i class="fas fa-fire badge-icon"></i>
-                        50% OFF Pro Plan
-                    </div>
-                    <div class="discount-badge">
-                        <i class="fas fa-briefcase badge-icon"></i>
-                        30% OFF Business Plan
-                    </div>
-                </div>
-    
-                <div class="countdown-container" id="countdown">
-                    <div class="countdown-item">
-                        <div class="countdown-number" id="days">00</div>
-                        <div class="countdown-label">Days</div>
-                    </div>
-                    <div class="countdown-item">
-                        <div class="countdown-number" id="hours">00</div>
-                        <div class="countdown-label">Hours</div>
-                    </div>
-                    <div class="countdown-item">
-                        <div class="countdown-number" id="minutes">00</div>
-                        <div class="countdown-label">Minutes</div>
-                    </div>
-                    <div class="countdown-item">
-                        <div class="countdown-number" id="seconds">00</div>
-                        <div class="countdown-label">Seconds</div>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="action-buttons">
-                <button class="btn btn-remind" onclick="offerBanner.remindLater()">
-                    <i class="fas fa-clock"></i> &nbsp;Remind Later
-                </button>
-                <a href="#" class="btn btn-premium" onclick="offerBanner.tryPremium()">
-                    <i class="fas fa-rocket"></i> &nbsp;Try Premium
-                </a>
-                <button class="btn btn-close" onclick="offerBanner.closeBanner()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-
         
     <div class="footer-bottom">
         &copy; 2024 Smile. All rights reserved.
@@ -564,7 +320,7 @@
                             ctx.beginPath();
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.strokeStyle = `rgba(0,255,255,${1 - distance / 100})`;
+                            ctx.strokeStyle = `rgba(0,255,255,${1 - distance / 200})`;
                             ctx.lineWidth = 0.5;
                             ctx.stroke();
                         }
@@ -613,94 +369,6 @@
             });
         });
 
-        class OfferBanner {
-            constructor() {
-                this.banner = document.getElementById('offerBanner');
-                this.daysEl = document.getElementById('days');
-                this.hoursEl = document.getElementById('hours');
-                this.minutesEl = document.getElementById('minutes');
-                this.secondsEl = document.getElementById('seconds');
-
-                // Advanced configuration
-                this.config = {
-                    offerDuration: 5 * 24 * 60 * 60 * 1000, // 5 days
-                    cooldownPeriod: 24 * 60 * 60 * 1000, // 24 hours
-                    animationDuration: 600 // ms
-                };
-
-                this.initBanner();
-            }
-
-            initBanner() {
-                const lastDisplayed = localStorage.getItem('offerBannerLastDisplayed');
-                const currentTime = Date.now();
-
-                // Check if banner should be shown
-                if (lastDisplayed && 
-                    (currentTime - lastDisplayed < this.config.cooldownPeriod)) {
-                    this.banner.style.display = 'none';
-                    return;
-                }
-
-                localStorage.setItem('offerBannerLastDisplayed', currentTime);
-                this.startCountdown();
-            }
-
-            startCountdown() {
-                const endTime = new Date();
-                endTime.setTime(endTime.getTime() + this.config.offerDuration);
-
-                const updateCountdown = () => {
-                    const now = new Date();
-                    const difference = endTime - now;
-
-                    if (difference < 0) {
-                        this.closeBanner();
-                        return;
-                    }
-
-                    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-                    this.updateDisplay(days, hours, minutes, seconds);
-                    requestAnimationFrame(updateCountdown);
-                };
-
-                updateCountdown();
-            }
-
-            updateDisplay(days, hours, minutes, seconds) {
-                this.daysEl.textContent = this.pad(days);
-                this.hoursEl.textContent = this.pad(hours);
-                this.minutesEl.textContent = this.pad(minutes);
-                this.secondsEl.textContent = this.pad(seconds);
-            }
-
-            pad(number) {
-                return number.toString().padStart(2, '0');
-            }
-
-            remindLater() {
-                localStorage.setItem('offerReminderSet', Date.now());
-                this.closeBanner();
-            }
-
-            tryPremium() {
-                window.location.href = '/premium-signup';
-            }
-
-            closeBanner() {
-                this.banner.style.transform = 'translateY(100%)';
-                setTimeout(() => {
-                    this.banner.style.display = 'none';
-                }, this.config.animationDuration);
-            }
-        }
-
-        // Initialize banner
-        const offerBanner = new OfferBanner();
     </script>
 </body>
 </html>
