@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Next-Gen Pricing Solutions</title>
+    <title>SmileX Pricing Solutions</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -14,23 +14,33 @@
             --text-secondary: #6b7280;
             --card-background: #ffffff;
             --border-radius: 16px;
+            --quantum-primary:gold;
+            --quantum-background: black;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            scrollbar-width: thick;
+            scrollbar-color: var(--quantum-primary) var(--quantum-background);
         }
 
+        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--background-color);
+            background-color: black;
             color: var(--text-primary);
             line-height: 1.6;
             perspective: 1000px;
         }
 
+        h1{
+            color: gold;
+        }
+
         .pricing-container {
+            
             max-width: 1400px;
             margin: 0 auto;
             padding: 4rem 2rem;
@@ -45,7 +55,7 @@
         .pricing-header h1 {
             font-size: 3.5rem;
             font-weight: 800;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            background: gold;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
@@ -54,7 +64,7 @@
         .pricing-header p {
             max-width: 800px;
             margin: 0 auto;
-            color: var(--text-secondary);
+            color: white;
             font-size: 1.1rem;
         }
 
@@ -65,11 +75,11 @@
         }
 
         .toggle-wrapper {
-            background-color: #e5e7eb;
+            background-color: transparent;
             display: inline-flex;
             border-radius: 50px;
             padding: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px gold;
         }
 
         .toggle-option {
@@ -82,8 +92,8 @@
         }
 
         .toggle-option.active {
-            background-color: var(--primary-color);
-            color: white;
+            background-color: transparent;
+            color: gold;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
@@ -94,10 +104,10 @@
         }
 
         .pricing-card {
-            background: var(--card-background);
+            background: black;
             border-radius: var(--border-radius);
             padding: 2.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
+            box-shadow: 0 0 15px gold;
             transition: all 0.5s ease;
             position: relative;
             overflow: hidden;
@@ -116,7 +126,7 @@
         }
 
         .pricing-card.recommended {
-            border: 2px solid var(--primary-color);
+            border: 2px solid gold;
             transform: rotateX(0) rotateY(0) scale(1.05);
             opacity: 1;
         }
@@ -126,8 +136,8 @@
             position: absolute;
             top: 30px;
             right: -50px;
-            background: var(--primary-color);
-            color: white;
+            background: gold;
+            color: black;
             padding: 0.5rem 2.5rem;
             transform: rotate(45deg);
             font-size: 0.9rem;
@@ -144,13 +154,13 @@
         .plan-name {
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--text-primary);
+            color: white;
         }
 
         .plan-price {
             font-size: 3rem;
             font-weight: 800;
-            color: var(--primary-color);
+            color: gold;
             margin-bottom: 1.5rem;
             position: relative;
         }
@@ -158,7 +168,7 @@
         .plan-price::after {
             content: '/mo';
             font-size: 1rem;
-            color: var(--text-secondary);
+            color: gold;
             position: absolute;
             top: 10px;
         }
@@ -180,7 +190,7 @@
         }
 
         .plan-features li i {
-            color: var(--primary-color);
+            color: gold;
             margin-right: 1rem;
             font-size: 1.2rem;
         }
@@ -189,9 +199,10 @@
             display: block;
             text-align: center;
             padding: 1.25rem 1.5rem;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            background: black;
             color: white;
             text-decoration: none;
+            border: 3px solid gold;
             border-radius: 50px;
             font-weight: 700;
             transition: all 0.4s ease;
@@ -235,6 +246,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <h3>
     <div class="pricing-container">
         <div class="pricing-header">
             <h1>Pricing Plans</h1>
@@ -258,16 +270,18 @@
                     <h2 class="plan-name">Starter</h2>
                     <i class="fas fa-rocket"></i>
                 </div>
-                <div class="plan-price" data-monthly="$9.99" data-yearly="$99.99">$9.99</div>
+                <div class="plan-price" data-monthly="$19.99" data-yearly="$199.99">$19.99</div>
                 <div class="plan-features">
                     <ul>
+                        <li><i class="fas fa-check-circle"></i>Regular badge</li>
                         <li><i class="fas fa-check-circle"></i>No Ads</li>
-                        <li><i class="fas fa-check-circle"></i>1 User Account</li>
-                        <li><i class="fas fa-check-circle"></i>Basic Support</li>
-                        <li><i class="fas fa-check-circle"></i>Email Integrations</li>
+                        <li><i class="fas fa-check-circle"></i>Rare premium boasters</li>
+                        <li><i class="fas fa-check-circle"></i>6hr customer support</li>
+                        <li><i class="fas fa-check-circle"></i>Have email account active on one device </li>
+                        <li><i class="fas fa-check-circle"></i>Well-designed premium package</li>
                     </ul>
                 </div>
-                <a href="#" class="plan-cta">Get Started</a>
+                <a href="#" class="plan-cta">Buy Now</a>
             </div>
 
             <div class="pricing-card recommended">
@@ -275,17 +289,20 @@
                     <h2 class="plan-name">Pro</h2>
                     <i class="fas fa-trophy"></i>
                 </div>
-                <div class="plan-price" data-monthly="$19.99" data-yearly="$199.99">$19.99</div>
+                <div class="plan-price" data-monthly="$46.99" data-yearly="$496.99">$46.99</div>
                 <div class="plan-features">
                     <ul>
+                        <li><i class="fas fa-check-circle"></i>Epic badge</li>
                         <li><i class="fas fa-check-circle"></i>No Ads</li>
-                        <li><i class="fas fa-check-circle"></i>5 User Accounts</li>
-                        <li><i class="fas fa-check-circle"></i>Priority Support</li>
-                        <li> <i class="fas fa-check-circle"></i>Unlimited Storage</li>
-                        <li> <i class="fas fa-check-circle"></i>Use less data</li>
+                        <li><i class="fas fa-check-circle"></i>Epic premium boasters</li>
+                        <li><i class="fas fa-check-circle"></i>Auto-clear storage </li>
+                        <li><i class="fas fa-check-circle"></i>18hrs customer support </li>
+                        <li><i class="fas fa-check-circle"></i>Have email account active on five device</li>
+                        <li> <i class="fas fa-check-circle"></i>Customize premium package</li>
+                        <li> <i class="fas fa-check-circle"></i>Disable donation pop-ups</li>
                     </ul>
                 </div>
-                <a href="#" class="plan-cta">Choose Pro</a>
+                <a href="#" class="plan-cta">Buy Now</a>
             </div>
 
             <div class="pricing-card">
@@ -293,22 +310,26 @@
                     <h2 class="plan-name">Legend</h2>
                     <i class="fas fa-crown"></i>
                 </div>
-                <div class="plan-price" data-monthly="$49.99" data-yearly="$499.99">$49.99</div>
+                <div class="plan-price" data-monthly="$99.99" data-yearly="$999.99">$99.99</div>
                 <div class="plan-features">
                     <ul>
-                        <li><i class="fas fa-check-circle"></i>No Ads</li>
-                        <li><i class="fas fa-check-circle"></i>Unlimited Users</li>
-                        <li> <i class="fas fa-check-circle"></i>Unlimited Storage</li>
+                        <li><i class="fas fa-check-circle"></i>Diamond badge</li>
+                        <li><i class="fas fa-check-circle"></i>No ads</li>
+                        <li> <i class="fas fa-check-circle"></i>ULtimate premium boasters</li>
                         <li> <i class="fas fa-check-circle"></i>24/7 Premium Support</li>
-                        <li><i class="fas fa-check-circle"></i>DIamond Premium badge</li>
-                        <li><i class="fas fa-check-circle"></i>Use less data</li>
-                        <li><i class="fas fa-check-circle"></i>Custom Enterprise Solutions</li>
+                        <li><i class="fas fa-check-circle"></i>Have one email account active on unlimited device</li>
+                        <li><i class="fas fa-check-circle"></i>Awesome premium package</li>
+                        <li><i class="fas fa-check-circle"></i>Disable pop ups</li>
+                        <li><i class="fas fa-check-circle"></i>+ more features </li>
                     </ul>
                 </div>
-                <a href="#" class="plan-cta">Contact Sales</a>
+                <a href="#" class="plan-cta">Buy Now</a>
             </div>
         </div>
-    </div>
+        <br><br>
+        
+
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {

@@ -299,7 +299,8 @@
         <div class="logo">SmileX Hub</div>
         
         <div class="search-container">
-            <input type="text" id="search-input" placeholder="Search movies...">
+            <input type="text" id="search-input" i class="fas fa-search" placeholder="Search movies..." ></i>
+           
             
         </div>
     </nav>
@@ -313,7 +314,7 @@
     <div id="movie-grid"></div>
 
     <div class="movie-slider-container">
-        <h1 style="text-align: center; color: #e50914;">Release Date</h1>
+        <h1 style="text-align: center; color: #e50914;">+</h1>
         <div id="loadingIndicator" class="loading">Loading movies...</div>
         <div id="movieContainer" class="movie-container"></div>
         <div class="slider-controls">
@@ -338,7 +339,7 @@
                const API_KEY = '48ea0449a84effd8baed92d45fa6175f';
         const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
         
-        let currentPage = 1;
+        let currentPage = 8;
 
         // Fetch upcoming movies from TMDb API
         async function fetchMovies(action = 'initial') {

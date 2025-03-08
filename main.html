@@ -2,297 +2,282 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Infinite News Stream</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Cosmic News Preloader</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #2ecc71;
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #0f3460;
+            --text-color: #e94560;
         }
 
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-            scrollbar-width: thin;
-            scrollbar-color: var(--secondary-color) #f1f1f1;
         }
 
         body {
-            background-color: #f4f6f9;
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
+            height: 100%;
+            overflow: hidden;
+            background: black;
+            font-family: 'Arial', sans-serif;
         }
 
-        .news-container {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .navigation {
+        #preloader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background-color: var(--primary-color);
-            color: white;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .category-nav {
+            height: 100%;
+            background: transparent;
             display: flex;
             justify-content: center;
-            padding: 10px 0;
-            background-color: rgba(255,255,255,0.1);
-        }
-
-        .category-btn {
-            margin: 0 10px;
-            padding: 8px 15px;
-            border: none;
-            background-color: transparent;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 20px;
-        }
-
-        .category-btn.active {
-            background-color: var(--secondary-color);
-        }
-
-        .search-container {
-            display: flex;
-            justify-content: center;
-            padding: 15px 0;
-            background-color: rgba(0,0,0,0.1);
-        }
-
-        #searchInput {
-            width: 50%;
-            padding: 10px;
-            border-radius: 50px 0 0 50px;
-            border: none;
-        }
-
-        #searchButton {
-            padding: 10px 20px;
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            border-radius: 0 50px 50px 0;
-        }
-
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 120px;
-            padding: 20px;
-        }
-
-        .news-card {
-            background-color: white;
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            position: relative;
-        }
-
-        .news-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-
-        .news-card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .news-card:hover img {
-            transform: scale(1.05);
-        }
-
-        .news-content {
-            padding: 15px;
-        }
-
-        .loading-spinner {
-            text-align: center;
-            padding: 20px;
-            display: none;
-        }
-
-        .dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-
-        .dark-mode .news-card {
-            background-color: #1e1e1e;
-            color: #e0e0e0;
-        }
-
-        .mode-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--secondary-color);
-            color: white;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1000;
+            z-index: 9999;
+            perspective: 1000px;
+        }
+
+        #galaxy-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 1s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+
+        #spaceship {
+            position: absolute;
+            width: 150px;
+            height: 75px;
+            background: transparent;
+            clip-path: polygon(0% 25%, 100% 0%, 100% 100%, 0% 75%);
+            transform-origin: center;
+            transition: all 1s ease;
+            z-index: 100;
+        }
+
+        #spaceship-trail {
+            position: absolute;
+            width: 200px;
+            height: 20px;
+            background: transparent;
+            transform-origin: right center;
+            opacity: 0.7;
+        }
+
+        #loading-text {
+            position: absolute;
+            bottom: 20%;
+            color: white;
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            text-shadow: 0 0 10px white;
+        }
+
+        #progress-bar {
+            position: absolute;
+            bottom: 15%;
+            width: 50%;
+            height: 10px;
+            background-color:transparent;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        #progress-fill {
+            width: 0;
+            height: 100%;
+            background: transparent;
+            transition: width 2s ease;
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        #planet1 {
+            top: 10%;
+            left: 20%;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, gold,yellow);
+            animation: orbit1 15s linear infinite;
+            box-shadow: 0 0 15px gold;
+        }
+
+        #planet2 {
+            top: 70%;
+            right: 15%;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, yellow,gold);
+            animation: orbit2 20s linear infinite;
+            box-shadow: 0 0 45px gold;
+        }
+
+        @keyframes orbit1 {
+            0% { transform: rotate(0deg) translateX(200px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
+        }
+
+        @keyframes orbit2 {
+            0% { transform: rotate(180deg) translateX(250px) rotate(-180deg); }
+            100% { transform: rotate(540deg) translateX(250px) rotate(-540deg); }
+        }
+
+        .black-hole {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, transparent 0%, transparent 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 100px rgba(0,0,0,0.8);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.7;
+            animation: pulse 3s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -50%) scale(1.1); }
         }
     </style>
 </head>
 <body>
-    <div class="navigation">
-        <div class="category-nav">
-            <button class="category-btn active" data-category="general">General</button>
-            <button class="category-btn" data-category="technology">Technology</button>
-            <button class="category-btn" data-category="sports">Sports</button>
-            <button class="category-btn" data-category="entertainment">Entertainment</button>
+    <div id="preloader">
+        <div id="galaxy-container"></div>
+        
+        <div class="black-hole"></div>
+        
+        <div id="planet1" class="planet"></div>
+        <div id="planet2" class="planet"></div>
+        
+        <div id="spaceship-trail"></div>
+        <div id="spaceship"></div>
+        
+        <div id="loading-text">Loading  News</div>
+        
+        <div id="progress-bar">
+            <div id="progress-fill"></div>
         </div>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search news...">
-            <button id="searchButton">Search</button>
-        </div>
-    </div>
-
-    <div class="news-container">
-        <div id="newsGrid" class="news-grid"></div>
-        <div id="loadingSpinner" class="loading-spinner">
-            <i class="fas fa-spinner fa-spin fa-3x"></i>
-        </div>
-    </div>
-
-    <div class="mode-toggle" id="darkModeToggle">
-        <i class="fas fa-moon"></i>
     </div>
 
     <script>
-        class NewsApp {
-            constructor() {
-                this.API_KEY = '52372a6444384248a0106827fc5b2fad';
-                this.BASE_URL = 'https://newsapi.org/v2/top-headlines';
-                this.page = 1;
-                this.currentCategory = 'general';
-                this.isLoading = false;
+    class CosmicPreloader {
+        constructor() {
+            this.galaxyContainer = document.getElementById('galaxy-container');
+            this.spaceship = document.getElementById('spaceship');
+            this.spacshipTrail = document.getElementById('spaceship-trail');
+            this.progressFill = document.getElementById('progress-fill');
+            this.loadingText = document.getElementById('loading-text');
+            
+            this.init();
+        }
 
-                this.initEventListeners();
-                this.fetchNews();
-                this.setupInfiniteScroll();
-            }
+        init() {
+            this.createStars(500);
+            this.animateSpaceship();
+            this.updateProgress();
+        }
 
-            initEventListeners() {
-                // Category Buttons
-                document.querySelectorAll('.category-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-                        e.target.classList.add('active');
-                        this.currentCategory = e.target.dataset.category;
-                        this.resetNews();
-                    });
-                });
-
-                // Search Button
-                document.getElementById('searchButton').addEventListener('click', () => {
-                    const query = document.getElementById('searchInput').value;
-                    this.searchNews(query);
-                });
-
-                // Dark Mode Toggle
-                document.getElementById('darkModeToggle').addEventListener('click', () => {
-                    document.body.classList.toggle('dark-mode');
-                });
-            }
-
-            async fetchNews(query = null) {
-                if (this.isLoading) return;
-
-                this.isLoading = true;
-                document.getElementById('loadingSpinner').style.display = 'block';
-
-                try {
-                    let url;
-                    if (query) {
-                        url = `${this.BASE_URL}?q=${query}&apiKey=${this.API_KEY}&page=${this.page}`;
-                    } else {
-                        url = `${this.BASE_URL}?category=${this.currentCategory}&apiKey=${this.API_KEY}&page=${this.page}`;
-                    }
-
-                    const response = await fetch(url);
-                    const data = await response.json();
-
-                    this.displayNews(data.articles);
-                    this.page++;
-                } catch (error) {
-                    console.error('News Fetch Error:', error);
-                } finally {
-                    this.isLoading = false;
-                    document.getElementById('loadingSpinner').style.display = 'none';
-                }
-            }
-
-            displayNews(articles) {
-                const newsGrid = document.getElementById('newsGrid');
+        createStars(count) {
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
                 
-                articles.forEach(article => {
-                    if (!article.urlToImage) return;
-
-                    const newsCard = document.createElement('div');
-                    newsCard.classList.add('news-card');
-                    newsCard.innerHTML = `
-                        <img src="${article.urlToImage}" alt="${article.title}">
-                        <div class="news-content">
-                            <h5>${article.title}</h5>
-                            <p>${article.description || 'No description'}</p>
-                            <a href="${article.url}" target="_blank" class="btn btn-sm btn-primary">Read More</a>
-                        </div>
-                    `;
-                    newsGrid.appendChild(newsCard);
-                });
-            }
-
-            resetNews() {
-                document.getElementById('newsGrid').innerHTML = '';
-                this.page = 1;
-                this.fetchNews();
-            }
-
-            searchNews(query) {
-                if (!query) return;
-                this.resetNews();
-                this.fetchNews(query);
-            }
-
-            setupInfiniteScroll() {
-                window.addEventListener('scroll', () => {
-                    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-                        this.fetchNews();
-                    }
-                });
+                star.style.width = `${Math.random() * 3}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                
+                this.galaxyContainer.appendChild(star);
             }
         }
 
-        // Initialize the News App
-        document.addEventListener('DOMContentLoaded', () => {
-            new NewsApp();
-        });
+        animateSpaceship() {
+            const path = [
+                { x: '10%', y: '80%', rotation: -45 },
+                { x: '50%', y: '30%', rotation: 0 },
+                { x: '90%', y: '70%', rotation: 45 }
+            ];
+
+            let currentIndex = 0;
+
+            const moveSpaceship = () => {
+                const current = path[currentIndex];
+                
+                this.spaceship.style.transform = `
+                    translate(${current.x}, ${current.y}) 
+                    rotate(${current.rotation}deg)
+                `;
+
+                this.spacshipTrail.style.transform = `
+                    translate(${current.x}, ${current.y}) 
+                    rotate(${current.rotation}deg)
+                `;
+
+                currentIndex = (currentIndex + 1) % path.length;
+                setTimeout(moveSpaceship, 2000);
+            };
+
+            moveSpaceship();
+        }
+
+        updateProgress() {
+            let progress = 0;
+            const messages = [
+                'Warping through result...',
+                'Collecting  data...',
+                'Decoding  signals...',
+                'Preparing news transmission...'
+            ];
+
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 25;
+                this.progressFill.style.width = `${progress}%`;
+                
+                // Update loading text
+                this.loadingText.textContent = messages[
+                    Math.floor(progress / 25)
+                ] || 'News ready for launch!';
+
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    this.completeLoading();
+                }
+            }, 1000);
+        }
+
+        completeLoading() {
+            setTimeout(() => {
+                document.getElementById('preloader').style.opacity = 0;
+                document.getElementById('preloader').style.visibility = 'hidden';
+            }, 1500);
+        }
+    }
+
+    // Initialize Cosmic Preloader
+    document.addEventListener('DOMContentLoaded', () => {
+        new CosmicPreloader();
+    });
     </script>
 </body>
 </html>
-
-
