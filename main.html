@@ -1,1369 +1,298 @@
-<!DOCTYPE html><html></html>
-<head><title>smileforme</title></head>
-<body>
-    <link rel="stylesheet" href="main.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Infinite News Stream</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #2ecc71;
+        }
 
-        <script src="main.js"></script>
-<style>
-        .translate-container {
+        * {
+            box-sizing: border-box;
+            scrollbar-width: thin;
+            scrollbar-color: var(--secondary-color) #f1f1f1;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .news-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .navigation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .category-btn {
+            margin: 0 10px;
+            padding: 8px 15px;
+            border: none;
+            background-color: transparent;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 20px;
+        }
+
+        .category-btn.active {
+            background-color: var(--secondary-color);
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        #searchInput {
+            width: 50%;
+            padding: 10px;
+            border-radius: 50px 0 0 50px;
+            border: none;
+        }
+
+        #searchButton {
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 0 50px 50px 0;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 120px;
+            padding: 20px;
+        }
+
+        .news-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .news-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .news-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .news-content {
+            padding: 15px;
+        }
+
+        .loading-spinner {
             text-align: center;
-            margin-bottom: 20px;
+            padding: 20px;
+            display: none;
+        }
+
+        .dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        .dark-mode .news-card {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+        }
+
+        .mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to Our Website!</h1>
-    <p>This is a sample webpage with text that can be translated into many languages using Google Translate.</p>
-    
-    <div class="translate-container">
-        <!-- Google Translate Widget -->
-        <div id="google_translate_element"></div>
+    <div class="navigation">
+        <div class="category-nav">
+            <button class="category-btn active" data-category="general">General</button>
+            <button class="category-btn" data-category="technology">Technology</button>
+            <button class="category-btn" data-category="sports">Sports</button>
+            <button class="category-btn" data-category="entertainment">Entertainment</button>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search news...">
+            <button id="searchButton">Search</button>
+        </div>
     </div>
 
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en', // Default language of your website
-                autoDisplay: false
-            }, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <hr class="glowing-line">
- <h2><sub>Just</sub>  Smile  <sup>TM</sup></h2>
- <hr class="glowing-line">
- <br>
- <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    #chat-container {
-      max-width: 900px;
-      margin: auto;
-      padding: 40px;
-      border: 1px solid #ccc;
-      border-radius: 60px;
-      background-color: black;
-    }
-    #output {
-      border: 1px solid #ddd;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-      background-color: gray;
-      height: 150px;
-      overflow-y: auto;
-    }
-    input[type="text"] {
-      width: calc(100% - 22px);
-      padding: 10px;
-      margin-top: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      padding: 10px 20px;
-      margin-top: 10px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
+    <div class="news-container">
+        <div id="newsGrid" class="news-grid"></div>
+        <div id="loadingSpinner" class="loading-spinner">
+            <i class="fas fa-spinner fa-spin fa-3x"></i>
+        </div>
+    </div>
 
-<br><br>
- <div class="centered-links-container">
-    <a href="home.html" class="special-link">Home</a> 
-    <a href="service.html" class="special-link">contact us</a> 
-    <a href="#" class="special-link">About Us</a>
-     </div>
- 
-     <style>
-        body {
-          font-family: Arial, sans-serif;
-          background-color: #f4f4f9;
-          color: black;
-          text-align: center;
-          padding: 50px;
-        }
-    
-        h1 {
-          color: #4CAF50;
-        }
-    
-        .search-box {
-          margin: 20px auto;
-          padding: 10px;
-          font-size: 18px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          width: 80%;
-          max-width: 600px;
-        }
-    
-        .definition {
-          margin-top: 20px;
-          padding: 20px;
-          background-color: #fff;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          width: 80%;
-          max-width: 600px;
-          text-align: left;
-        }
-    
-        .definition h2 {
-          color: #4CAF50;
-        }
-    
-        .definition p {
-          font-size: 16px;
-        }
-    
-        button {
-          padding: 10px 20px;
-          font-size: 18px;
-          background-color: #4CAF50;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-    
-        button:hover {
-          background-color: #45a049;
-        }
-      </style>
-    </head>
-    <body>
-    
-      <h1>AI-Powered Definition Search</h1>
-      <p>Enter a word to get its definition:</p>
-    
-      <input type="text" id="searchInput" class="search-box" placeholder="Search for a word..." />
-      <button onclick="getDefinition()">Search</button>
-    
-      <div id="definitionContainer" class="definition" style="display:none;">
-        <h2>Definition:</h2>
-        <p id="definitionText"></p>
-      </div>
-    
-      <script>
-        function getDefinition() {
-          const searchTerm = document.getElementById("searchInput").value.trim();
-          if (searchTerm === "") {
-            alert("Please enter a word.");
-            return;
-          }
-    
-          const apiUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${searchTerm}`;
-    
-          fetch(apiUrl)
-            .then(response => {
-              if (!response.ok) {
-                throw new Error("Word not found.");
-              }
-              return response.json();
-            })
-            .then(data => {
-              const definition = data[0].meanings[0].definitions[0].definition;
-              document.getElementById("definitionText").textContent = definition;
-              document.getElementById("definitionContainer").style.display = "block";
-            })
-            .catch(error => {
-              alert(error.message);
-              document.getElementById("definitionContainer").style.display = "none";
-            });
-        }
-      </script>
-    
-
-    
-    <div id="response"></div>
-</div>
- </form>
-<script src="app.js"></script>
- <br><br><br>
- <button onclick="readAllText()">Read Page Content</button>
-<div id="content">
- <br><br><br><br><br>
- <style>
-    #clock {
-        font-size: 2em;
-        font-weight: bold;
-    }
-</style>
-
-<div id="clock"></div>
-
-<script>
-    function updateClock() {
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
-    }
-
-    // Update clock every second
-    setInterval(updateClock, 1000);
-    updateClock(); // Initial call to set time immediately
-</script>
-
-<div id="clock"></div>
-<br><br>
-    <button id="speakTimeBtn">Ask AI: What's the time?</button>
+    <div class="mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon"></i>
+    </div>
 
     <script>
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        class NewsApp {
+            constructor() {
+                this.API_KEY = '52372a6444384248a0106827fc5b2fad';
+                this.BASE_URL = 'https://newsapi.org/v2/top-headlines';
+                this.page = 1;
+                this.currentCategory = 'general';
+                this.isLoading = false;
+
+                this.initEventListeners();
+                this.fetchNews();
+                this.setupInfiniteScroll();
+            }
+
+            initEventListeners() {
+                // Category Buttons
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        this.currentCategory = e.target.dataset.category;
+                        this.resetNews();
+                    });
+                });
+
+                // Search Button
+                document.getElementById('searchButton').addEventListener('click', () => {
+                    const query = document.getElementById('searchInput').value;
+                    this.searchNews(query);
+                });
+
+                // Dark Mode Toggle
+                document.getElementById('darkModeToggle').addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                });
+            }
+
+            async fetchNews(query = null) {
+                if (this.isLoading) return;
+
+                this.isLoading = true;
+                document.getElementById('loadingSpinner').style.display = 'block';
+
+                try {
+                    let url;
+                    if (query) {
+                        url = `${this.BASE_URL}?q=${query}&apiKey=${this.API_KEY}&page=${this.page}`;
+                    } else {
+                        url = `${this.BASE_URL}?category=${this.currentCategory}&apiKey=${this.API_KEY}&page=${this.page}`;
+                    }
+
+                    const response = await fetch(url);
+                    const data = await response.json();
+
+                    this.displayNews(data.articles);
+                    this.page++;
+                } catch (error) {
+                    console.error('News Fetch Error:', error);
+                } finally {
+                    this.isLoading = false;
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                }
+            }
+
+            displayNews(articles) {
+                const newsGrid = document.getElementById('newsGrid');
+                
+                articles.forEach(article => {
+                    if (!article.urlToImage) return;
+
+                    const newsCard = document.createElement('div');
+                    newsCard.classList.add('news-card');
+                    newsCard.innerHTML = `
+                        <img src="${article.urlToImage}" alt="${article.title}">
+                        <div class="news-content">
+                            <h5>${article.title}</h5>
+                            <p>${article.description || 'No description'}</p>
+                            <a href="${article.url}" target="_blank" class="btn btn-sm btn-primary">Read More</a>
+                        </div>
+                    `;
+                    newsGrid.appendChild(newsCard);
+                });
+            }
+
+            resetNews() {
+                document.getElementById('newsGrid').innerHTML = '';
+                this.page = 1;
+                this.fetchNews();
+            }
+
+            searchNews(query) {
+                if (!query) return;
+                this.resetNews();
+                this.fetchNews(query);
+            }
+
+            setupInfiniteScroll() {
+                window.addEventListener('scroll', () => {
+                    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+                        this.fetchNews();
+                    }
+                });
+            }
         }
 
-        // Update clock every second
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // Function to make the AI voice speak the time
-        function speakTime() {
-            const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-            const timeString = `The current time is ${hours} ${minutes} and ${seconds} seconds.`;
-
-            const utterance = new SpeechSynthesisUtterance(timeString);
-            speechSynthesis.speak(utterance);
-        }
-
-        document.getElementById('speakTimeBtn').addEventListener('click', speakTime);
+        // Initialize the News App
+        document.addEventListener('DOMContentLoaded', () => {
+            new NewsApp();
+        });
     </script>
-     
-     <style>
-      /* Basic Reset */
-      body {
-        font-family: 'Arial', sans-serif;
-        top: auto;
-        left: 45;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
+</body>
+</html>
 
-      body {
-    font-family: Arial, sans-serif;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-
-
-    
-  }
-  
-  .form-container {
-    width: 500px;
-    
-  }
-  
-  .form-box {
-    background-color: #333;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: black;
-    margin: 10px 0;
-    text-align: center;
-  }
-  
-  h2 {
-    color: ;
-    margin-bottom: 20px;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  label {
-    color: #bbb;
-    margin-bottom: 5px;
-    text-align: left;
-  }
-  
-  input {
-    padding: 10px;
-    margin-bottom: 15px;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-  }
-  
-  input[type="email"], input[type="password"] {
-    width: 100%;
-  }
-  
-  
-  
-  p {
-    color: black;
-    margin-top: 10px;
-  }
-  
-
-  
-      /* Banner container styling */
-      .welcome-banner {
-        background-color: black; /* Dark background for contrast */
-        padding: 20px;
-        text-align: justify;
-        border-radius: 10px;    /* Optional: Rounded corners */
-      }
-  
-      /* Welcome text with gradient animation */
-      .welcome-text {
-        font-size: 4em;
-        font-weight: bold;
-        background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-        background-size: 400%;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: moveGradient 5s linear infinite;
-      }
-  
-      /* Keyframes for moving gradient */
-      @keyframes moveGradient {
-        0% { background-position: 0%; }
-        100% { background-position: 100%; }
-      }
-  
-  html. body{
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
-    transform: scale(1.5);
-  }
-  
-      /* Basic page styling */
-      body {
-        font-family: Arial, sans-serif;
-        color: black
-      
-      }
-  
-      /* Style for normal <hr> lines */
-      hr {
-        width: 80%; /* Set the width of the line */
-        height: 5px; /* Set the thickness of the line */
-        border: none; /* Remove the default border */
-      
-      }
-  
-      /* Style for the glowing rainbow <hr> */
-      .glowing-line {
-        width: 100%; /* Set the width of the line */
-        height: 5px; /* Set the thickness of the line */
-        border: none; /* Remove the default border */
-        background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet); /* Rainbow gradient */
-        border-radius: 5px;
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); /* Glowing effect */
-        animation: glowing 0.5s infinite alternate, rainbow 5s linear infinite; /* Apply glowing and rainbow animations */
-      }
-  
-      /* Rainbow color transition effect */
-      @keyframes rainbow {
-        0% {
-          background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-        }
-        14% {
-          background: linear-gradient(90deg, orange, yellow, green, blue, indigo, violet, red);
-        }
-        28% {
-          background: linear-gradient(90deg, yellow, green, blue, indigo, violet, red, orange);
-        }
-        42% {
-          background: linear-gradient(90deg, green, blue, indigo, violet, red, orange, yellow);
-        }
-        57% {
-          background: linear-gradient(90deg, blue, indigo, violet, red, orange, yellow, green);
-        }
-        71% {
-          background: linear-gradient(90deg, indigo, violet, red, orange, yellow, green, blue);
-        }
-        85% {
-          background: linear-gradient(90deg, violet, red, orange, yellow, green, blue, indigo);
-        }
-        100% {
-          background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-        }
-      }
-  
-  /* Center the heading */
-  h2 {
-    text-align: center;  /* This will center the text horizontally */
-  }
-  
-  h1{
-    text-align: center;
-    
-  }
-  /* Normal link style */
-  a {
-    color: blue; /* Initial link color */
-    text-decoration: none; /* Optional: removes underline */
-    transition: color 0.3s ease; /* Smooth transition for color change */
-  }
-  
-  /* Hover effect - when mouse hovers over the link */
-  a:hover {
-    color: purple; /* Color on hover */
-  }
-  
-  /* Active effect - when link is clicked or tapped */
-  a:active {
-    color: red; /* Color when link is actively pressed */
-  }
-  
-  a {
-    display: inline-block;
-    margin-right: 15px; /* Adds space between the links */
-    color: blue;
-    text-decoration: none;
-  }
-  
-  a:last-child {
-    margin-right: 0; /* Optional: remove margin on the last link */
-  }
-  
-  .navbar {
-    display: flex;
-    gap: 15px; /* Adds 15px space between each link */
-  }
-  
-  a {
-    text-decoration: none;
-    color: blue;
-  }
-  
-  a {
-    padding: 5px 10px; /* Adds padding inside each link */
-    color: blue;
-    text-decoration: none;
-  }
-  
- 
-  .search-container {
-    position: relative;
-    display: flex;
-    width: 400px;
-    align-items: center;
-  }
-  
-  
-  #searchInput {
-    padding: 10px;
-    font-size: 16px;
-    width: 200px;
-  }
-  
-  
-  
-  .button {
-    position: absolute;
-    right: 5px; /* Position the button to the right inside the container */
-    top: 50%;
-    transform: translateY(-50%); /* Vertically center the button */
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .search-icon {
-    width: 20px; /* Icon size */
-    height: 20px;
-  }
-  
-      .scrolling-text {
-        display: inline-block;
-        white-space: nowrap;
-        overflow: hidden;
-        box-sizing: border-box;
-        animation: scroll 10s linear infinite;
-      }
-      @keyframes scroll {
-        0% { transform: translateX(100%); }
-        100% { transform: translateX(-100%); }
-      }
-    
-      a{
-        color: blue;
-      }
-  
-    
-      /* Keyframes for the rainbow glow */
-      @keyframes rainbowGlow {
-        0% { color: red; }
-        14% { color: orange; }
-        28% { color: yellow; }
-        42% { color: green; }
-        57% { color: blue; }
-        71% { color: indigo; }
-        85% { color: violet; }
-        100% { color: red; }
-      }
-  
-      /* Heading styling */
-      h1, h2, h3, h4, h5, h6 {
-        animation: rainbowGlow 3s infinite; /* Adjust time as desired */
-        font-weight: bold;
-      }
-    
-  
-     
-  
-    /* Container for the card */
-    .card-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      
-    }
-  
-    /* Card styling */
-    .card {
-      margin: 0 auto;
-      padding: 2em;
-      width: 800px;
-      height: 500px;
-      background: transparent;
-      text-align: center;
-      border-radius: 10px; 
-      position: relative;
-  
-    }
-  
- 
-  /* Sparkle text styles */
-  .sparkle-text {
-    font-size: 24px;
-    margin: 20px;
-    cursor: pointer;
-    position: relative;
-    display: inline-block;
-  }
-
-  //*here*//
-  .navbar {
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background-color: gold ;
-    color: white;
-  }
-  
-  .logo {
-    font-size: 1.3em;
-    font-weight: bold;
-  }
-  
-  
-  
-  .nav-icons {
-    display: flex;
-    gap: 15px;
-  }
-  
-  
-  
-  
-  .title {
-    font-weight: bold;
-    font-size: 1em;
-  }
-  
-  .metadata {
-    color: black;
-    font-size: 0.9em;
-  }
-  
-  
-  /* Mobile screen */
-  @media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-    }
-    .search-bar {
-        width: 100%;
-    }
-    .sidebar {
-        width: 100px;
-        height: auto;
-        position: relative;
-    }
-
-  
-  .face{
-    position: relative;
-    width: 300px;
-    left: 35%;
-    height: 300px;
-    border-radius: 50%;
-    background: transparent;
-    justify-content: center;
-    align-items: center;
-  
-  }
-  
-  .face::before{
-    content: '';
-    position: absolute;
-    top: 65%;
-    left: 25%;
-    width: 150px;
-    height: 70px;
-    background: black;
-    border-bottom-left-radius: 70px;
-    border-bottom-right-radius: 70px;
-    transition: 0.5s;
-  
-  
-  }
-  
-  .face:hover::before{
-    top: 65%;
-    left: 25%;
-    width: 150px;
-    height: 20px;
-    background: black;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px
-  
-  }
-  
-  .eyes{
-    position: relative;
-    top: 60px;
-    left: 40px;
-    display: flex;
-  
-  }
-  
-  .eyes .eye{
-    position: relative;
-    width: 80px;
-    height: 80px;
-    display: block;
-    background: white;
-    margin: 0 15px;
-    border-radius: 50%;
-  
-  }
-  
-  .eyes .eye::before{
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 25px;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    background: black;
-    border-radius: 50%;
-  
-  }
-  
-  .dictionary {
-    text-align: center;
-    max-width: 400px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  #search-word {
-    padding: 8px;
-    width: 80%;
-    margin: 10px 0;
-  }
-  
-  button {
-    padding: 8px 16px;
-  }
-  
-  #definition {
-    margin-top: 20px;
-    font-size: 18px;
-    color: grey;
-  }
-  
-  .calculator-container {
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  #inputField {
-    width: 100%;
-    padding: 10px;
-    font-size: 18px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .button {
-    width: 100%;
-    padding: 10px;
-    font-size: 18px;
-  
-    color: white;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  #result {
-    font-size: 18px;
-    margin-top: 10px;
-    color: grey;
-  }
-  
-  
-  .search-container {
-    background: white;
-    padding: 10px;
-    left: 30%;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    max-width: 500px;
-  }
-  
-  #searchInput {
-    width: 80%;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  
-  
-  #response {
-    margin-top: 20px;
-    font-size: 18px;
-    color: grey;
-  }
-  
-
-  
-  
-          #clock {
-              font-size: 2em;
-              display: contents;
-              font-weight: bold;
-          }
-          #speakTimeBtn {
-              margin-top: 20px;
-              padding: 10px;
-              font-size: 1em;
-          }
-     
-          
-        
-        .lang-button {
-          margin: 5px;
-          padding: 10px;
-          cursor: pointer;
-        }    
-
-        
-        /* Glowing rainbow text effect */
-  .rainbow-glow-text {
-    font-family: Arial, sans-serif;
-    font-size: 3rem;
-    font-weight: bold;
-    color: transparent; /* Text color is transparent to reveal gradient */
-    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-    background-size: 400%; /* Stretch gradient for animation */
-    background-clip: text;
-    -webkit-background-clip: text; /* For Safari support */
-    animation: rainbowGlow 5s linear infinite;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5);
-  }
-  
-  /* Animation to make gradient move */
-  @keyframes rainbowGlow {
-    0% {
-      background-position: 0%;
-    }
-    100% {
-      background-position: 100%;
-    }
-  }
-  
-hr {
-    border: none;
-    height: 4px;
-    background: linear-gradient(90deg, red, orange, yellow, green, blue, purple);
-    background-size: 400%;
-    animation: gradient-animation 5s linear infinite;
-  }
-  
-  @keyframes gradient-animation {
-    0% {
-      background-position: 0% 50%;
-    }
-    100% {
-      background-position: 100% 50%;
-    }
-  }
-
-
-
-.dictionary {
-    text-align: center;
-    max-width: 400px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-#search-word {
-    padding: 8px;
-    width: 80%;
-    margin: 10px 0;
-}
-
-button {
-    padding: 8px 16px;
-}
-
-#definition {
-    margin-top: 20px;
-    font-size: 18px;
-}
-
-.calculator-container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-#inputField {
-    width: 100%;
-    padding: 10px;
-    font-size: 18px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    width: 80%;
-    padding: 10px;
-    font-size: 18px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-#result {
-    font-size: 18px;
-    margin-top: 10px;
-}
-
-
-  /* Override text color for underlined words */
-  u {
-    color: black; /* Or any color you'd like for underlined text */
-  }
-
-  /* Set the default link color */
-a {
-    color: blue;
-    text-decoration: none; /* Removes underline by default */
-  }
-  
-  /* Add underline and change color on hover */
-  a:hover {
-    color: darkblue; /* Change to any color you like */
-    text-decoration: underline;
-  }
-
- 
-
-  /* Container holding the links */
-.centered-links-container {
-    text-align: center; /* Centers inline links inside */
-  }
-
-  /* Center links with Flexbox */
-.centered-links-container {
-    display: flex;
-    justify-content: center; /* Centers horizontally */
-    align-items: center; /* Centers vertically if needed */
-  }
-
-  /* Center links in navbar */
-.navbar {
-    display: flex;
-    justify-content: center;
-  }
-  
-  
-  
-      /* Joke Teller Card */
-      .joke-container {
-        background: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        width: 90%;
-        max-width: 400px;
-        padding: 20px;
-        text-align: center;
-      }
-  
-      .joke-container h1 {
-        font-size: 1.5rem;
-        color: #6200ea;
-        margin-bottom: 20px;
-      }
-  
-      .joke-display {
-        background: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 15px;
-        margin: 20px 0;
-        font-size: 1rem;
-        min-height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #333;
-        opacity: 0;
-        animation: fadeIn 0.5s ease-in forwards;
-      }
-  
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-  
-      .joke-button {
-        background: #6200ea;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        padding: 10px 20px;
-        cursor: pointer;
-        font-size: 1rem;
-        margin: 5px;
-        transition: background 0.3s;
-      }
-  
-      .joke-button:hover {
-        background: #3700b3;
-      }
-  
-      .joke-button:disabled {
-        background: #aaa;
-        cursor: not-allowed;
-      }
-  
-      select {
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ddd;
-        margin-top: 10px;
-        font-size: 1rem;
-      }
-    </style>
-
-
-     
- <br><br><br>
- <div class="centered-links-container">
- <a href="https://www.youtube.com" target="_blank">Go to our YouTube Channel</a>
-    <a href="https://www.youtube.com" target="_blank">Watch our Playlist</a>
-
-    </div>
-
-    
- <br><br>
- <div class="card-container">
-  <div class="card">
-    <h2>WELCOME TO OUR PAGE</h2>
-    <p>We welcome you to our wonderful page where you get good experience.</p>
-    <p>Here are some activities and courses that happen on this page;</p>
-    <p>On this page we have;</p>
-    <li>AI assistant </li>
-    <li></li>
-    <li>Interactive Web</li>
-    <li></li>
-  </div>
-</div>
-    <div id="joke-display" class="joke-display">Click below to fetch a joke!</div>
-    <button id="joke-button" class="joke-button">Tell Me a Joke</button>
-    <button id="share-joke-button" class="joke-button">Share This Joke</button>
-  </div>
-
-  <script>
-    const jokeButton = document.getElementById('joke-button');
-    const jokeDisplay = document.getElementById('joke-display');
-    const shareJokeButton = document.getElementById('share-joke-button');
-    const jokeCategory = document.getElementById('joke-category');
-
-    jokeButton.addEventListener('click', () => {
-      // Disable the button and show loading state
-      jokeButton.disabled = true;
-      jokeDisplay.textContent = 'Fetching a joke...';
-
-      // Fetch a joke based on the selected category
-      const category = jokeCategory.value;
-      let jokeAPI = 'https://official-joke-api.appspot.com/random_joke';
-      if (category === 'programming') {
-        jokeAPI = 'https://v2.jokeapi.dev/joke/Programming?type=twopart';
-      } else if (category === 'knock-knock') {
-        jokeAPI = 'https://offical-joke-api.appspot.com/knock-knock';
-      }
-
-      fetch(jokeAPI)
-        .then(response => response.json())
-        .then(data => {
-          // Handle API formats for different joke APIs
-          let jokeText = '';
-          if (data.setup && data.punchline) {
-            jokeText = `${data.setup} - ${data.punchline}`;
-          } else if (data.joke) {
-            jokeText = data.joke; // For single-line jokes
-          } else {
-            jokeText = 'No jokes found in this category!';
-          }
-
-          // Display the joke
-          jokeDisplay.textContent = jokeText;
-        })
-        .catch(error => {
-          // Handle errors
-          jokeDisplay.textContent = 'Oops! Failed to fetch a joke. Please try again.';
-        })
-        .finally(() => {
-          // Re-enable the button
-          jokeButton.disabled = false;
-        });
-    });
-
-    // Share the joke by copying it to the clipboard
-    shareJokeButton.addEventListener('click', () => {
-      const jokeText = jokeDisplay.textContent;
-      if (jokeText && jokeText !== 'Fetching a joke...') {
-        navigator.clipboard.writeText(jokeText).then(() => {
-          alert('Joke copied to clipboard!');
-        });
-      } else {
-        alert('No joke to share yet. Fetch one first!');
-      }
-    });
-  </script>
-
-<br><br>
-<button onclick="startSinging()">Talk!</button>
-<button onclick="stopSinging()">Stop</button>
-<br><br>
- <u><p> Terms and conditions applied</u></p>
- <br><br>
- 
-    
-    <style>
-      
-      section {
-          margin: 20px 0;
-          padding: 20px;
-          background: #ffffff;
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      }
-      
-      #3d-scene {
-          width: 70%;
-          height: 100px;
-      }
-      #particles-js {
-          height: 400px;
-          background: #000;
-      }
-  </style>
-</head>
-<body>
-  <h1>Available on the Other Site</h1>
-<br>
-<p style="color: #000;"> Get more on <a href=""></a></p>
- <!-- 3D Rendering -->
- <section>
-  <h2>3D Object</h2>
-  <div id="threejs-container"></div>
-</section>
-
-  </section>
-<br>
-<p style="color: #000;"> Get more on <a href=""></a></p>
-  <!-- AI Joke Teller Section -->
-  <section id="ai-joke-section">
-      <h2></h2>
-      <p id="joke">Click below to hear a joke!</p>
-      <button id="get-joke-btn">Get a Joke</button>
-  </section>
-<br>
-
-<p style="color: #000;"> Get more on <a href=""></a></p>
-  <!-- Interactive Particles -->
-  <section id="particles-section">
-      <h2>Interactive Particles</h2>
-      <div id="particles-js"></div>
-  </section>
-
-  <!-- Include Scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
-  <script>
-        // 3D Object Rendering (Three.js)
-        const container = document.getElementById('threejs-container');
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, container.offsetWidth / 300, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(container.offsetWidth, 300);
-        container.appendChild(renderer.domElement);
-
-        const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-
-        camera.position.z = 5;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-            renderer.render(scene, camera);
-        }
-        animate();
-
-      // AI Joke Teller with JokeAPI
-      async function fetchJoke() {
-          const jokeDisplay = document.getElementById('joke');
-          jokeDisplay.innerText = 'Fetching a joke...';
-
-          try {
-              const response = await fetch('https://v2.jokeapi.dev/joke/Programming?type=twopart');
-              const data = await response.json();
-              jokeDisplay.innerText = data.type === 'twopart' ? `${data.setup} - ${data.delivery}` : data.joke;
-          } catch (error) {
-              jokeDisplay.innerText = 'Failed to fetch a joke!';
-          }
-      }
-      document.getElementById('get-joke-btn').addEventListener('click', fetchJoke);
-
-    
-
-      // Interactive Particles (Particles.js)
-      particlesJS("particles-js", {
-          particles: {
-              number: { value: 100, density: { enable: true, value_area: 800 } },
-              color: { value: "#ffffff" },
-              shape: { type: "circle" },
-              opacity: { value: 0.5 },
-              size: { value: 3 },
-              line_linked: { enable: true, color: "#ffffff" },
-              move: { enable: true, speed: 6 },
-          },
-          interactivity: {
-              detect_on: "canvas",
-              events: {
-                  onhover: { enable: true, mode: "repulse" },
-                  onclick: { enable: true, mode: "push" },
-              },
-          },
-      });
-  </script>
- <p>Smile  brings you the best moment and experience which is brought up by the CEO and other parthership for you</p>
-<hr>
-
-<br><br>
-<p>Smile  is used world wide both local and international for <b><u>commerical</u></b> and <b><u>entertainment</u></b> purposes, designed by Smile Inc to make life easy.We are always available to assist people and we make sure to keep your smile always. Contact us if you encounter any problem, and we promise to make Smile the best for you</p>
-<br>
-<p>Follow us on our social media platforms to get information and stay updated. For more enquires <b><u>contact us</u></b> on  <a href="www.smileforme.com" target = "_blank">Smileforme.com</a></p> <p>Or folow us on <u>Youtube</u>, <u>X</u>, <u>Discord</u>, <u>IG</u> and <u>Tiktok</u></p>
-<img src="c:\Users\User\Downloads\download.png" alt="png" width="50px" height="100px"> Youtube at <a href="https://www.youtube.com" target="_blank">Smile Inc</a>
-<img src="c:\Users\User\Downloads\download (1).png" alt="png" width="50px" height="100px"> X at <a href="https://www.x.com" target="_blank">Smile Inc</a>
-<img src="c:\Users\User\Downloads\download (2).jpg" alt="jpg" width="50px" height="100px"> Instagram at <a href="https://www.instagram.com" target="_blank">Smile Inc</a>
-<img src="c:\Users\User\Downloads\download (2).png" alt="png" width="50px" height="100px"> Tiktok at <a href="https://www.tiktok.com/" target="_blank">Smile  Inc</a>
-<img src="c:\Users\User\Downloads\download (3).png" alt="png" width="50px" height="100px"> Discord at <a href="https://www.discord.com" target="_blank">Smile Inc</a>
-<br>
-<p>If you have a problem , contact us to solve your problem by answering your questions. We qualify those whose desire is to join our team and those who want to register. Below are where forms and records are submitted . If you have a problem, fill the forms below </p>
-<br> 
-<u><p style="color: green;"> Fill the forms below and note that all forms are recorded by our team</u></p>
-<br><br>
-<hr class="glowing-line">
-<h2>Personal Information</h2>
-<hr class="glowing-line">
-<h2>App</h2>
-<hr class="glowing-line">
-<p>NAME OF APP :</p>
-<input type="text" name="text">
-<p style="color: green;">Do not enter any content which is not relating to this !!</p>
-<br>
-<p>Describe your problems here </p>
-<textarea rows="15" cols="40" placeholder="Describe here..."></textarea>
-<input type="submit" value="submit">
-<br>
-<p style="color: red;">Caution:</p>
-<b>If you do not receive any feedback, do not panic because all forms that are submitted are sent to our team to find solutions to your problems </b>
-<br>
-<hr>
-Registration forms are available to those who want to join or register. To join or register ,fill the forms below .Forms will be recorded by Smile  Inc .Fill forms carefully and re-check. For safety, read our <a href="home.html">About US</a> <p>Before making any attempt.</p> 
-<p style="color: red;">Note:</p>
-This includes your full personal information
-<br>
-<hr class="glowing-line">
-<h2>Personal Information</h2>
-<hr class="glowing-line">
-<p>First Name:</p> <input type="text" name="text">
-<p>Last Name :</p> <input type="text" name="text">
-<p>Date of registration :</p> <input type="datetime-local" value="date">
-<p>Email: </p> <input type="email" name="email" required >
-<br><br>
-<legend>Description about yourself</legend>
-<textarea rows="10" cols="25" placeholder="Describe here..."></textarea>
-<br>
-<p style="color: green;">This includes your personal information !!!</p>
-<br>
-<P><B>ENTER YOUR CONTACT BELOW !!!</B></P>
-<hr class="glowing-line">
-<h2>Tel-Number</h2>
-<hr class="glowing-line">
-Mobile; <i class='bx bx-phone'></i>
-<input type="number" value="number" required >
-<input type="submit" value="send">
-<br>
-<hr>
-NB:<p style="color: red">All forms will be submitted to Smile App Inc</p>
-<U>Avoid spamming because <q>it will cause problems</q></U>
-<p style="color: green;">Re-check detailed information before submittion</p>
-<hr class="glowing-line">
-<h2>About Smile </h2>
-<hr class="glowing-line">
-Check out full updates at <a href="www.smileforme.com">Smileforme.com</a>
-<br>
-<hr class="glowing-line">
-<h2>Download link</h2>
-<hr class="glowing-line">
-Below shows versions and links. Select carefully according to your device !!!
-<br><br>
-<tr>
-    <th rowspan="2">Version</th>
-    <th rowspan="2">Links</th>
-</tr>
-<td><img src="c:\Users\User\Downloads\download (3).jpg" alt="jpg" width="50px" height="100px"></td>
-<td><a href="https://play.google.com/store/apps/details?id=YOUR_APP_ID" target="_blank">Loading..</a></td>
-<tr>
-    <td><img src="c:\Users\User\Downloads\download (4).jpg" alt="jpg" width="50px" height="100px"></td>
-    <td><a href="https://apps.apple.com/us/app/YOUR_APP_NAME/idYOUR_APP_ID" target="_blank">Loading...</a></td>
-</tr>
-<tr>
-<td><img src="c:\Users\User\Downloads\download (4).png" alt="png" width="150px" height="100px"></td>
-<td><a href="https://play.google.com/store/apps/details?id=YOUR_APP_ID" target="_blank">Loading...</a></td>
-</tr>
-<tr>
-<td><img src="c:\Users\User\Downloads\download (5).png" alt="png" width="50px" height="100px"></td>
-<td><a href="https://apps.apple.com/us/app/YOUR_APP_NAME/idYOUR_APP_ID" target="_blank">Loading..</a></td>
-</tr>
-<br>
-If you have any problem with the following above, contact us on <a href="www.smileforme.com">smileforme.com</a> to help solve problems bothering you.
-<br>
-<hr class="glowing-line">
-<h2>WHAT'S NEW </h2>
-<hr class="glowing-line">
-<p>Smile Inc gives free support codes to anyone to unlock secret prizes and more , depending on the achievement an opponents aims,by this, the opponent gives a clear details and records before claiming the prize. <u>Avoid spamming and sending of wrong details</u> </p>
-<p style="color: green;">Fill the forms below (if neccesary)</p>
-<hr class="glowing-line">
-<h2>Details</h2>
-<hr class="glowing-line">
-<p>Email:</p> <input type="email" name="email" required>
-<input type="submit" value="send">
-<p style="color: red;">Enter email then submit to receive code</p>
-<br><br>
-<label>Code</label>
-<input type="number" value="number"  required>
-<p>All codes are sent according to email. If you didn't receive any code, re-check your email and verify before any actions or try again later</p>
-<br>
-<P><B>ENTER THE APPLICATION BELOW!!!! </B></P>
-<hr class="glowing-line">
-<h2>APP</h2>
-<hr class="glowing-line">
-<P><B>NAME OF APP ;</B></P>
-<input type="text" name="text">
-<p>NB:</p>
-<p style="color: red;">Do not enter any content which is not relating to this !!!</p>
-<p><b>BELOW IS WHERE YOU GIVE DESCRIPTION</b></p>
-<br>
-<hr class="glowing-line">
-<h2>Description</h2>
-<hr class="glowing-line">
-<U>Give detailed information , including records .Do not give wrong details and avoid spamming</U>
-<br><br>
-<textarea rows="15" cols="25" placeholder="Type Here..."></textarea>
-<input type="submit" value="send">
-<br>
-<p style="color: green;">All forms are submitted to Smile  Inc</p>
-<br>
-<hr class="glowing-line">
-<h2>WHAT'S UP</h2>
-<hr class="glowing-line">
-<p>Below is where you get notified to our latest news or updates</p>
-<br>
-<video src="" alt="" width="25px" height="20px"></video>
-<controls></controls>
-<p>Also you can get more information on our social media platforms </p>
-<img src="c:\Users\User\Downloads\download.png" alt="png" width="50px" height="100px">
-<img src="c:\Users\User\Downloads\download (1).png" alt="png" width="50px" height="100px">
-<img src="c:\Users\User\Downloads\download (2).jpg" alt="jpg" width="50px" height="100px">
-<img src="c:\Users\User\Downloads\download (3).png" alt="png" width="50px" height="100px">
-<br>
-<p>If you have any problem or question, contact us immediately or if you have any problem click ; <a href="otherpage2.html">I have a question</a></p>
-<br>
-<hr class="glowing-line">
-<h2>About Us</h2>
-<hr class="glowing-line">
-<p>Smile comparies of the <u>CEO</u>, <u>Co-executives</u>, and <u>other various workers</u> who have brought up an idea of designing Smile  for everyone , both the young and old . This  has been designed and brought up to make a big difference in every life , that is to make life more easier and better.Also ,  has been programmed to assist people and many more. We are always available and ready to attend and assist others in times of need, and help you to keep a smile. Also, awards are given to those who <u>participate in certain activities and are declared winners</u> and <u>premium subscribers</u>. We ensure <u>fairness</u> and <u>equality</u> and also we encourage people who are willing to join our team . But before, each person give a full detail about him or herself including <u>certificates</u> and <u>testimonals</u> before he or she gets qualified . We ban any acts of crime either by law or society . Such acts include ; <u>Theft</u>, <u>violence</u>, <u>murder</u>, <u>and other activities forbidden</u> . NB;<u>WE AWARD GOOD DEEDS</u> . But remember that ; <u>Terms and conditions apply</u>. We are hoping to gain enough support as to enhance our business and help others by make life easier. The more we gain support, the more we are supported , the more we help others. We are invite anyone to our page online  and our social media platforms.</p>
-</body> 
-</div>
-
-<a href="categories.html">Go to Other Page</a>
 

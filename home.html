@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Smile: Multiverse Interface</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmileX: Multiverse Interface</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -902,120 +903,7 @@
             z-index: -1;
         }
 
-          /* Cookie Banner Styling */
-    .cookie-banner {
-      position: sticky ;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      padding: 30px;
-      width: 100%;
-      max-width: 600px;
-      z-index: 1000;
-      border-radius: 0 0 15px 15px;
-      display: none;
-      animation: slideDown 0.5s ease-out;
-    }
 
-
-    /* Overlay */
-    .overlay {
-      position: relative;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: -1;
-    }
-
-    .cookie-banner.show {
-      display: block;
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .cookie-banner .emoji {
-      font-size: 50px;
-      margin-bottom: 15px;
-      animation: emoji-bounce 1.5s infinite;
-    }
-
-    .cookie-banner p {
-      font-size: 18px;
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
-
-    .cookie-banner button {
-      padding: 12px 25px;
-      margin: 5px;
-      border: none;
-      border-radius: 50px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
-      text-transform: uppercase;
-    }
-
-    .cookie-banner .accept {
-      background: linear-gradient(45deg, #4caf50, #81c784);
-      color: white;
-    }
-
-    .cookie-banner .accept:hover {
-      background: linear-gradient(45deg, #45a049, #66bb6a);
-      box-shadow: 0 6px 15px rgba(72, 239, 72, 0.7);
-    }
-
-    .cookie-banner .decline {
-      background: linear-gradient(45deg, #f44336, #e57373);
-      color: white;
-    }
-
-    .cookie-banner .decline:hover {
-      background: linear-gradient(45deg, #e53935, #ef5350);
-      box-shadow: 0 6px 15px rgba(244, 67, 54, 0.7);
-    }
-
-    .cookie-banner .dont-show-again {
-      background: linear-gradient(45deg, #607d8b, #78909c);
-      color: white;
-    }
-
-    .cookie-banner .dont-show-again:hover {
-      background: linear-gradient(45deg, #546e7a, #90a4ae);
-      box-shadow: 0 6px 15px rgba(96, 125, 139, 0.7);
-    }
-
-    /* Emoji Bounce Animation */
-    @keyframes emoji-bounce {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-    /* Responsive Design */
-    @media (max-width: 600px) {
-      .cookie-banner {
-        width: 90%;
-        padding: 20px;
-      }
-
-      .cookie-banner p {
-        font-size: 16px;
-      }
-
-      .cookie-banner button {
-        font-size: 14px;
-        padding: 10px 20px;
-      }
-    }
 
     
         /* Quantum Assistant Trigger */
@@ -1235,200 +1123,9 @@
     
     }
 
+
+        
     
-    .banner {
-            position: relative;
-            max-width: 1300px;
-            margin: 20px auto;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-            
-            color: white;
-            padding: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 100;
-        }
-
-        .banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255,255,255,0.1);
-            transform: skew(-15deg);
-            z-index: 1;
-        }
-
-        .offer-details {
-            z-index: 2;
-            position: relative;
-        }
-
-        .offer-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .offer-subtitle {
-            font-size: 16px;
-            opacity: 0.8;
-            margin-bottom: 15px;
-        }
-
-        .discount-badges {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .badge {
-            background-color: rgba(255,255,255,0.2);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .countdown {
-            display: flex;
-            gap: 10px;
-            z-index: 2;
-            position: relative;
-        }
-
-        .countdown-item {
-            background-color: rgba(255,255,255,0.2);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            min-width: 80px;
-        }
-
-        .countdown-item span {
-            display: block;
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .countdown-item p {
-            font-size: 10px;
-            text-transform: uppercase;
-            opacity: 0.7;
-        }
-
-        .cta-button {
-            background-color: #fff;
-            color: #6a11cb;
-            padding: 10px 25px;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            z-index: 2;
-            position: relative;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 25px rgba(0,0,0,0.15);
-        }
-
-        @media (max-width: 768px) {
-            .banner {
-                flex-direction: column;
-                text-align: center;
-                padding: 20px;
-            }
-
-            .countdown {
-                justify-content: center;
-                margin-top: 20px;
-            }
-        }
-
-        
-        
-        
-
-        .profile-container {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            z-index: 1000;
-        }
-
-        .profile-avatar {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            object-fit: cover;
-            cursor: pointer;
-            border: 3px solid var(--primary-color);
-            transition: all 0.3s ease;
-        }
-
-        .mb-3{
-            position: content;
-            color: white;
-        }
-
-        .profile-dropdown {
-            position: absolute;
-            top: 70px;
-            right: 0;
-            width: 380px;
-            background: var(--color-accent);
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            display: none;
-            z-index: 1050;
-        }
-
-        .status-badge {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 10px;
-            vertical-align: middle;
-        }
-
-        .status-online {
-            background-color: #28a745;
-        }
-
-        .status-offline {
-            background-color: #dc3545;
-        }
-
-        .browser-fingerprint {
-            word-break: break-all;
-            font-size: 0.8em;
-            color: black;
-        }
-
-        .card-footer {
-            color: linear-gradient(  var(--bg-secondary), var(--color-accent));
-            padding: 10px ;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            z-index: 1;
-            position: relative;
-
-        }
-
 
     </style>
 </head>
@@ -1437,8 +1134,9 @@
         <div class="nav-container">
             <!-- Logo -->
             <a href="#" class="logo">
-                <div class="logo-icon">SA</div>
-                Smile
+                SMILE
+                <div class="logo-icon">X</div>
+                
             </a>
 
             <!-- Navigation Links -->
@@ -1469,68 +1167,7 @@
             </div>
         </div>
 
-        <div class="profile-container">
-            <img id="profileAvatar"  
-                 class="profile-avatar" 
-                 onclick="toggleProfileDropdown()">
-    
-            <div id="profileDropdown" class="profile-dropdown card">
-                <div class="card-header bg-primary text-white d-flex align-items-center">
-                    <span id="statusBadge" class="status-badge"></span>
-                    <strong>User Profile</strong>
-                </div>
-    
-                <div class="card-body">
-                    <form id="profileForm">
-                        <div class="mb-3">
-                            <label class="form-label">Profile Picture</label>
-                            <input type="file" 
-                                   id="profilePicUpload" 
-                                   class="form-control" 
-                                   accept="image/*" 
-                                   onchange="handleProfilePicUpload(event)">
-                        </div>
-    
-                        <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            <input type="text" 
-                                   id="usernameInput" 
-                                   class="form-control" 
-                                   placeholder="Enter username" 
-                                   required>
-                        </div>
-    
-                        <div class="mb-3">
-                            <label class="form-label">Email Address</label>
-                            <input type="email" 
-                                   id="emailInput" 
-                                   class="form-control" 
-                                   placeholder="Enter email" 
-                                   required>
-                        </div>
-    
-                        <div class="browser-info bg-light p-3 rounded mb-3">
-                            <h6 class="mb-2">Browser Details</h6>
-                            <p id="browserInfo" class="mb-1">Detecting...</p>
-                            <small id="browserFingerprint" class="browser-fingerprint text-muted">
-                                Generating unique identifier...
-                            </small>
-                        </div>
-                    </form>
-                </div>
-    
-                <div class="card-footer d-flex justify-content-between">
-                    <button class="btn btn-primary" onclick="saveUserProfile()">
-                        Save Profile
-                    </button>
-                    <br><br><br>
-                    <button class="btn btn-outline-danger" onclick="logout()">
-                        Logout
-                    </button>
-                </div>
-            </div>
-        </div>
-    
+        
     
     </nav>
 
@@ -1571,16 +1208,6 @@
     </div>
 
 
-     <!-- Cookie Consent Banner -->
-   <div class="cookie-banner" id="cookieBanner">
-    <div class="emoji">🍪</div>
-    <p>
-      This website uses cookies to ensure you get the best experience on our website. By continuing, you accept our cookie policy.
-    </p>
-    <button class="accept" id="acceptCookies">Accept</button>
-    <button class="decline" id="declineCookies">Decline</button>
-    <button class="dont-show-again" id="dontShowAgain">Don't Show Again</button>
-  </div>
   
     <canvas id="quantum-canvas"></canvas>
     
@@ -1616,39 +1243,7 @@
         </div>
         <br><br>
 
-        <div class="banner">
-            <div class="offer-details">
-                <h2 class="offer-title">Mega Savings Extravaganza! 🚀</h2>
-                <p class="offer-subtitle">Unlock unprecedented discounts on our premium plans</p>
-                
-                <div class="discount-badges">
-                    <div class="badge">50% OFF Pro Plan</div>
-                    <div class="badge">30% OFF Business Annual</div>
-                </div>
-            </div>
-        
-            <div class="countdown" id="countdown">
-                <div class="countdown-item">
-                    <span id="days">00</span>
-                    <p>Days</p>
-                </div>
-                <div class="countdown-item">
-                    <span id="hours">00</span>
-                    <p>Hours</p>
-                </div>
-                <div class="countdown-item">
-                    <span id="minutes">00</span>
-                    <p>Minutes</p>
-                </div>
-                <div class="countdown-item">
-                    <span id="seconds">00</span>
-                    <p>Seconds</p>
-                </div>
-            </div>
-        
-            <a href="cancel.html" class="cta-button">Claim Offer Now</a>
-        </div>
-        
+     
 
         
   <div id="reviewSlider" class="review-slider-container">
@@ -1677,7 +1272,7 @@
         <section class="feature-grid">
             <div class="feature-card" data-modal="quantumModal1">
                 <h3 class="text-2xl font-bold mb-4">Exploration</h3>
-                <p>Explore by having lots of fun and gaming activities</p>
+                <p>Explore by having lots of fun and gaming activities and more</p>
             </div>
             <div class="feature-card" data-modal="quantumModal2">
                 <h3 class="text-2xl font-bold mb-4"> Learning</h3>
@@ -1699,7 +1294,7 @@
     <div id="quantumModal1" class="modal">
         <div class="modal-content">
             <h2 class="text-3xl font-bold mb-4"> Exploration</h2>
-            <p class="mb-4">Proceed to explore fun site ahead of you </p>
+            <p class="mb-4">Proceed to explore more site ahead of you </p>
             <button class="close-modal quantum-button">Close</button>
         </div>
     </div>
@@ -1770,6 +1365,8 @@
                 <li><a href="movie.html">Cinema</a></li>
                 <li><a href="e-commerce.html">Marketplace</a></li>
                 <li><a href="chat.html">Chat</a></li>
+                <li><a href="news.html">News Feed</a></li>
+                <li><a href="ai.html">AI Generator</a></li>
             </ul>
         </div>
 
@@ -1793,7 +1390,7 @@
     </div>
 
     <div class="footer-bottom">
-        &copy; 2024 Smile. All rights reserved.
+        &copy; 2024 SmileX. All rights reserved.
     </div>
 </footer>
 
@@ -1836,48 +1433,6 @@
             });
         });
 
-
-    // Cookie Logic
-    document.addEventListener("DOMContentLoaded", () => {
-      const banner = document.getElementById("cookieBanner");
-      const acceptBtn = document.getElementById("acceptCookies");
-      const declineBtn = document.getElementById("declineCookies");
-      const dontShowAgainBtn = document.getElementById("dontShowAgain");
-
-      // Function to set a cookie
-      function setCookie(name, value, days) {
-        const expires = new Date(Date.now() + days * 864e5).toUTCString();
-        document.cookie = `${name}=${value}; expires=${expires}; path=/`;
-      }
-
-      // Function to get a cookie
-      function getCookie(name) {
-        return document.cookie.split('; ').find(row => row.startsWith(name))?.split('=')[1];
-      }
-
-      // Show banner if no cookie set
-      if (!getCookie("cookiesAccepted") && !getCookie("cookiesDeclined") && !getCookie("dontShowAgain")) {
-        banner.classList.add("show");
-      }
-
-      // Button event handlers
-      acceptBtn.addEventListener("click", () => {
-        setCookie("cookiesAccepted", "true", 1);
-        banner.classList.remove("show");
-        // Add functionality to enable cookies here
-      });
-
-      declineBtn.addEventListener("click", () => {
-        setCookie("cookiesDeclined", "true", 1);
-        banner.classList.remove("show");
-        // Add functionality to disable cookies here
-      });
-
-      dontShowAgainBtn.addEventListener("click", () => {
-        setCookie("dontShowAgain", "true", 1);
-        banner.classList.remove("show");
-      });
-    }); 
 
     class QuantumCarousel {
             constructor(options) {
@@ -2258,7 +1813,7 @@
             },
             {
                 name: "David Rodriguez",
-                role: "Tech Innovation Lead",
+                role: "Tech Educator",
                 image: "https://randomuser.me/api/portraits/men/85.jpg",
                 stars: 5,
                 comment: "Cutting-edge design meets unparalleled functionality. This website sets a new benchmark in digital excellence."
@@ -2285,22 +1840,22 @@
                 comment: "I recommend anyone to try this website and know more about it",
             },
             {
-                name: "Jupiter mars",
-                role: "CEO",
+                name: "Mr.Smile",
+                role: "Web and App Developer",
                 image: "https://randomuser.me/api/portraits/men/33.jpg",
                 stars: 5,
                 comment: "I recommend everyone to explore through my website ",
             },
             {
                 name: "Philip Wales",
-                role: "Executive Producer",
+                role: "Secretary",
                 image: "https://randomuser.me/api/portraits/men/23.jpg",
                 stars: 5,
                 comment: "Try it, and thank me later",
             },
             {
                 name: "Helena Boison",
-                role: "Executive Producer",
+                role: "Sales Producer",
                 image: "https://randomuser.me/api/portraits/women/33.jpg",
                 stars: 5,
                 comment: "Good luck on exploring through this page",
@@ -2560,211 +2115,6 @@ if (navigator.geolocation) {
   alert("Geolocation is not supported by this browser.");
 }
 
-function startCountdown() {
-            const countdownDate = new Date();
-            countdownDate.setDate(countdownDate.getDate() + 5);
-            countdownDate.setHours(19, 0, 44, 0);
-
-            const countdownElement = {
-                days: document.getElementById('days'),
-                hours: document.getElementById('hours'),
-                minutes: document.getElementById('minutes'),
-                seconds: document.getElementById('seconds')
-            };
-
-            function updateCountdown() {
-                const now = new Date();
-                const timeLeft = countdownDate - now;
-
-                if (timeLeft <= 0) {
-                    clearInterval(countdownTimer);
-                    return;
-                }
-
-                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-                countdownElement.days.textContent = days.toString().padStart(2, '0');
-                countdownElement.hours.textContent = hours.toString().padStart(2, '0');
-                countdownElement.minutes.textContent = minutes.toString().padStart(2, '0');
-                countdownElement.seconds.textContent = seconds.toString().padStart(2, '0');
-            }
-
-            const countdownTimer = setInterval(updateCountdown, 1000);
-            updateCountdown();
-        }
-
-        startCountdown();
-
-
-         // Unique Browser Fingerprint Generation
-         function generateBrowserFingerprint() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const txt = navigator.userAgent + 
-                        navigator.language + 
-                        screen.colorDepth + 
-                        navigator.hardwareConcurrency + 
-                        new Date().getTimezoneOffset();
-
-            ctx.textBaseline = "top";
-            ctx.font = "14px 'Arial'";
-            ctx.textBaseline = "alphabetic";
-            ctx.fillText(txt, 0, 20);
-            
-            return btoa(txt); // Base64 encoded unique identifier
-        }
-
-        // Comprehensive User Profile Management
-        class UserProfileManager {
-            constructor() {
-                this.profileKey = 'userWebProfile';
-            }
-
-            // Save User Profile to Local Storage
-            saveProfile(profileData) {
-                try {
-                    localStorage.setItem(this.profileKey, JSON.stringify(profileData));
-                    return true;
-                } catch (error) {
-                    console.error('Failed to save profile:', error);
-                    return false;
-                }
-            }
-
-            // Retrieve User Profile
-            getProfile() {
-                const profileData = localStorage.getItem(this.profileKey);
-                return profileData ? JSON.parse(profileData) : null;
-            }
-
-            // Update Specific Profile Field
-            updateProfileField(field, value) {
-                const profile = this.getProfile() || {};
-                profile[field] = value;
-                this.saveProfile(profile);
-            }
-        }
-
-        // Global Instances
-        const profileManager = new UserProfileManager();
-        const browserFingerprint = generateBrowserFingerprint();
-
-        // Profile Picture Upload Handler
-        function handleProfilePicUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const profilePic = e.target.result;
-                    document.getElementById('profileAvatar').src = profilePic;
-                    
-                    // Save profile picture to local storage
-                    profileManager.updateProfileField('profilePic', profilePic);
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        // Save User Profile
-        function saveUserProfile() {
-            const username = document.getElementById('usernameInput').value;
-            const email = document.getElementById('emailInput').value;
-
-            if (!username || !email) {
-                alert('Please fill in all required fields');
-                return;
-            }
-
-            const profileData = {
-                username,
-                email,
-                browserFingerprint,
-                timestamp: new Date().toISOString()
-            };
-
-            // Save profile to local storage
-            if (profileManager.saveProfile(profileData)) {
-                alert('Profile saved successfully!');
-                toggleProfileDropdown();
-            } else {
-                alert('Failed to save profile. Please try again.');
-            }
-        }
-
-        // Browser Detection
-        function detectBrowserInfo() {
-            const ua = navigator.userAgent;
-            const browserInfo = {
-                name: 'Unknown Browser',
-                version: 'Unknown',
-                platform: navigator.platform
-            };
-
-            if (ua.includes('Chrome')) browserInfo.name = 'Google Chrome';
-            else if (ua.includes('Firefox')) browserInfo.name = 'Mozilla Firefox';
-            else if (ua.includes('Safari')) browserInfo.name = 'Apple Safari';
-            else if (ua.includes('Edge')) browserInfo.name = 'Microsoft Edge';
-
-            const versionMatch = ua.match(/(?:Chrome|Firefox|Safari|Edge|Opera|Version)\/(\d+)/);
-            if (versionMatch) browserInfo.version = versionMatch[1];
-
-            return browserInfo;
-        }
-
-        // Online Status Management
-        function updateOnlineStatus() {
-            const statusBadge = document.getElementById('statusBadge');
-            statusBadge.classList.toggle('status-online', navigator.onLine);
-            statusBadge.classList.toggle('status-offline', !navigator.onLine);
-        }
-
-        // Initialize Profile on Page Load
-        function initializeProfile() {
-            // Detect Browser Info
-            const browserInfo = detectBrowserInfo();
-            document.getElementById('browserInfo').textContent = 
-                `${browserInfo.name} v${browserInfo.version} on ${browserInfo.platform}`;
-            
-            // Set Browser Fingerprint
-            document.getElementById('browserFingerprint').textContent = 
-                `Unique ID: ${browserFingerprint}`;
-
-            // Load Saved Profile
-            const savedProfile = profileManager.getProfile();
-            if (savedProfile) {
-                document.getElementById('usernameInput').value = savedProfile.username || '';
-                document.getElementById('emailInput').value = savedProfile.email || '';
-                
-                // Restore Profile Picture if exists
-                if (savedProfile.profilePic) {
-                    document.getElementById('profileAvatar').src = savedProfile.profilePic;
-                }
-            }
-
-            // Set Up Status Listeners
-            updateOnlineStatus();
-            window.addEventListener('online', updateOnlineStatus);
-            window.addEventListener('offline', updateOnlineStatus);
-        }
-
-        // Dropdown Toggle
-        function toggleProfileDropdown() {
-            const dropdown = document.getElementById('profileDropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // Logout Function
-        function logout() {
-            localStorage.removeItem('userWebProfile');
-            alert('Logged out successfully');
-            // Additional logout logic
-        }
-
-        // Initialize on Page Load
-        window.onload = initializeProfile;
 
 
     </script>

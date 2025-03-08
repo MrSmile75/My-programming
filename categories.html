@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smile Realm Explorer</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -9,6 +10,17 @@
             --primary-color: #00ffff;
             --secondary-color: #8a2be2;
             --background-dark: #0a0a2a;
+            --quantum-primary: #00f5d4;
+            --quantum-secondary: #8c1eff;
+            --quantum-background: #0a0a1a;
+            --quantum-text: #e0e0ff;
+            --quantum-glow: rgba(0, 245, 212, 0.4);
+            --bg-primary: #0f1020;
+            --bg-secondary: #1a1a2e;
+            --color-accent: #4a6cf7;
+            --color-text-primary: #e6e6e6;
+            --color-text-secondary: #a0a0a0;
+            --transition-speed: 0.3s;
             --text-color: #e0e0ff;
             --card-background: rgba(15,15,40,0.8);
         }
@@ -17,7 +29,10 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            scrollbar-width: thin;
+            scrollbar-color: var(--quantum-primary) var(--quantum-background);
         }
+        
 
         body, html {
             font-family: 'Poppins', sans-serif;
@@ -167,15 +182,15 @@
 
         /* Particle Trail Effect */
         .particle-trail {
-            position: flex;
+            position: absolute;
             pointer-events: none;
             z-index: 9998;
         }
 
         .particle {
-            position: absolute;
-            width: 105px;
-            height: 105px;
+            position: flex;
+            width: 705px;
+            height: 705px;
             background: var(--primary-color);
             border-radius: 50%;
             opacity: 0.7;
@@ -183,7 +198,7 @@
 
         .footer-bottom {
             text-align: center;
-            margin-top: 40px;
+            margin-top: auto;
             font-size: 14px;
             color: #aaa;
             border-top: 1px solid #333;
@@ -198,7 +213,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>Smile Explorer Realms</h1>
+            <h1>SmileX Explorer Realms</h1>
             <p>Select an option to be redirected to next realm</p>
         </div>
 
@@ -242,10 +257,30 @@
                     Connect across dimensional communication platforms
                 </p>
             </div>
+
+            
+            <div class="category-card" data-link="news.html">
+                <div class="category-icon">📰</div>
+                <h2 class="category-title">News</h2>
+                <p class="category-description">
+                    Get updated by latest news
+                </p>
+            </div>
+
+            
+            <div class="category-card" data-link="ai.html">
+                <div class="category-icon">⚙️</div>
+                <h2 class="category-title">AI-Generator</h2>
+                <p class="category-description">
+                    Imagine anything into reality
+                </p>
+            </div>
+        </div>
+    
         </div>
         
     <div class="footer-bottom">
-        &copy; 2024 Smile. All rights reserved.
+        &copy; 2024 SmileX. All rights reserved.
     </div>
     </div>
 
@@ -264,78 +299,7 @@
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
 
-            // Quantum Background Particles
-            class QuantumParticle {
-                constructor() {
-                    this.reset();
-                }
-
-                reset() {
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.radius = Math.random() * 2 + 1;
-                    this.dx = (Math.random() - 0.5) * 2;
-                    this.dy = (Math.random() - 0.5) * 2;
-                    this.color = `rgba(0,255,255,${Math.random() * 0.5})`;
-                }
-
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = this.color;
-                    ctx.fill();
-                }
-
-                update() {
-                    this.x += this.dx;
-                    this.y += this.dy;
-
-                    // Wrap around screen
-                    if (this.x < 0) this.x = canvas.width;
-                    if (this.x > canvas.width) this.x = 0;
-                    if (this.y < 0) this.y = canvas.height;
-                    if (this.y > canvas.height) this.y = 0;
-                }
-            }
-
-            // Create quantum particles
-            const particleCount = 200;
-            const particles = [];
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new QuantumParticle());
-            }
-
-            // Animate background
-            function animateBackground() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Create quantum connections
-                for (let i = 0; i < particles.length; i++) {
-                    for (let j = i + 1; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < 100) {
-                            ctx.beginPath();
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.strokeStyle = `rgba(0,255,255,${1 - distance / 200})`;
-                            ctx.lineWidth = 0.5;
-                            ctx.stroke();
-                        }
-                    }
-                }
-
-                // Update and draw particles
-                particles.forEach(particle => {
-                    particle.update();
-                    particle.draw();
-                });
-
-                requestAnimationFrame(animateBackground);
-            }
-            animateBackground();
+          
 
             // Cursor and Interaction Management
             document.addEventListener('mousemove', (e) => {

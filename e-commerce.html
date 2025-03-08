@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced E-Trading Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #e74c3c;
+        }
+
+        body {
+            background-color: black;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #e74c3c;
+            --background-color: #f4f4f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background: black;
+        }
+
+        
+
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: black;
+            z-index: 9999;
+            perspective: 1000px;
+            overflow: hidden;
+        }
+
+        .preloader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .loader {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            transform-style: flat;
+            animation: forwards 5s linear infinite;
+        }
+
+        .loader-segment {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 10px solid transparent;
+            border-radius: 50%;
+            opacity: 0.5;
+            transition: all 0.5s ease;
+        }
+
+        .loader-segment:nth-child(1) {
+            border-top-color: transparent;
+            transform: rotate(110deg);
+        }
+
+        .loader-segment:nth-child(2) {
+            border-right-color: transparent;
+            transform: rotate(130deg);
+        }
+
+        .loader-segment:nth-child(3) {
+            border-bottom-color: transparent;
+            transform: rotate(180deg);
+        }
+
+        .loader-segment:nth-child(4) {
+            border-left-color: transparent;
+            transform: rotate(270deg);
+        }
+
+        @keyframes rotate {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-size: 24px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 2s;
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 10px;
+            background: transparent;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(45deg,yellow,gold);
+            border-radius: 5px;
+            animation: loadProgress 3s ease forwards;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: particleAnimation 5s infinite;
+        }
+
+        @keyframes loadProgress {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes particleAnimation {
+            0% { 
+                transform: translateX(0) translateY(0) scale(1);
+                opacity: 0.7;
+            }
+            100% { 
+                transform: translateX(200px) translateY(-200px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: gold;
+            font-weight: bold;
+            letter-spacing: 2px;
+            opacity: 0;
+            animation: slideIn 1s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from { 
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .tech-details {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            color: white;
+            font-size: 14px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 2.5s;
+        }
+
+/* Advanced Card Design */
+.advanced-card {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.advanced-card:hover {
+    transform: scale(1.05) translateY(-10px);
+    box-shadow: 0 15px 30px white;
+}
+
+/* Responsive Navigation */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    background: var(--dark-color);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.main-content {
+    margin-left: 250px;
+    transition: all 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 0;
+        overflow: hidden;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+   
+    <div id="preloader">
+        <div class="preloader-container">
+            <div class="logo">E-TRADING HUB</div>
+            
+            <div class="loader">
+                <div class="loader-segment"></div>
+                <div class="loader-segment"></div>
+                <div class="loader-segment"></div>
+                <div class="loader-segment"></div>
+            </div>
+
+            <div class="loading-text">Loading Experience</div>
+            
+            <div class="progress-bar">
+                <div class="progress-bar-fill"></div>
+            </div>
+
+            <div class="tech-details">
+                SmileX | Version 2.0
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+class AdvancedPreloader {
+            constructor() {
+                this.preloader = document.getElementById('preloader');
+                this.initParticles();
+                this.setupLoadingSequence();
+            }
+
+            initParticles() {
+                for (let i = 0; i < 50; i++) {
+                    this.createParticle();
+                }
+            }
+
+            createParticle() {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                particle.style.left = `${Math.random() * window.innerWidth}px`;
+                particle.style.top = `${Math.random() * window.innerHeight}px`;
+                particle.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                particle.style.animationDelay = `${Math.random() * 2}s`;
+
+                this.preloader.appendChild(particle);
+            }
+
+            setupLoadingSequence() {
+                const loadingStages = [
+                    { stage: 'Initializing Core Systems', duration: 1500 },
+                    { stage: 'Loading Resources', duration: 1500 },
+                    { stage: 'Preparing Interface', duration: 1500 },
+                    { stage: 'Finalizing', duration: 1500 }
+                ];
+
+                this.sequentialLoading(loadingStages);
+            }
+
+            sequentialLoading(stages) {
+                const loadingText = document.querySelector('.loading-text');
+                
+                stages.reduce((promise, stage) => {
+                    return promise.then(() => {
+                        return new Promise(resolve => {
+                            loadingText.textContent = stage.stage;
+                            setTimeout(resolve, stage.duration);
+                        });
+                    });
+                }, Promise.resolve()).then(() => {
+                    this.completeLoading();
+                });
+            }
+
+            completeLoading() {
+                this.preloader.style.opacity = 0;
+                setTimeout(() => {
+                    this.preloader.style.display = 'none';
+                    this.triggerMainAppLoad();
+                }, 5000);
+            }
+
+            triggerMainAppLoad() {
+                // Trigger main application initialization
+                document.dispatchEvent(new Event('app-ready'));
+            }
+        }
+
+        // Initialize Preloader
+        document.addEventListener('DOMContentLoaded', () => {
+            new AdvancedPreloader();
+        });
+
+        // Main App Initialization
+        document.addEventListener('app-ready', () => {
+            // Your main application initialization code here
+            console.log('Application is now ready to use');
+        });
+        
+      
+
+
+        class AdvancedETradingPlatform {
+            constructor() {
+                this.products = [];
+                this.cart = [];
+                this.notifications = [];
+                this.currentUser = null;
+
+                this.initializeEventListeners();
+                this.loadPersistedData();
+            }
+
+            initializeEventListeners() {
+                // Preloader
+                window.addEventListener('load', () => {
+                    setTimeout(() => {
+                        document.getElementById('preloader').style.display = 'none';
+                    }, 5500);
+                });
+
+                // Mode Selection
+                document.getElementById('seller-mode').addEventListener('click', () => this.enterSellerMode());
+                document.getElementById('buyer-mode').addEventListener('click', () => this.enterBuyerMode());
+
+                // Seller Actions
+                document.getElementById('add-product-btn').addEventListener('click', () => this.showProductAddModal());
+                document.getElementById('seller-notifications').addEventListener('click', () => this.showNotifications());
+
+                // Buyer Actions
+                document.getElementById('product-search').addEventListener('input', (e) => this.searchProducts(e.target.value));
+                document.getElementById('cart-btn').addEventListener('click', () => this.showCartModal());
+            }
+
+            loadPersistedData() {
+                const savedProducts = localStorage.getItem('platform-products');
+                if (savedProducts) {
+                    this.products = JSON.parse(savedProducts);
+                }
+            }
+
+            saveProductsToLocalStorage() {
+                localStorage.setItem('platform-products', JSON.stringify(this.products));
+            }
+
+            enterSellerMode() {
+                document.getElementById('landing-page').classList.add('d-none');
+                document.getElementById('seller-dashboard').classList.remove('d-none');
+                this.renderSellerProducts();
+            }
+
+            enterBuyerMode() {
+                document.getElementById('landing-page').classList.add('d-none');
+                document.getElementById('buyer-dashboard').classList.remove('d-none');
+                this.renderProductListings();
+            }
+
+           
+            
+            renderSellerProducts() {
+                const productsGrid = document.getElementById('seller-products-grid');
+                productsGrid.innerHTML = this.products.map(product => `
+                    <div class="col-md-4">
+                        <div class="card advanced-card">
+                            <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text">${product.description}</p>
+                                <p class="card-text fw-bold">$${product.price}</p>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-warning edit-product" data-id="${product.id}">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </button>
+                                    <button class="btn btn-danger delete-product" data-id="${product.id}">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderProductListings() {
+                const productListings = document.getElementById('product-listings');
+                productListings.innerHTML = this.products.map(product => `
+                    <div class="col-md-4">
+                        <div class="card advanced-card">
+                            <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text">${product.description}</p>
+                                <p class="card-text fw-bold">$${product.price}</p>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-primary add-to-cart" data-id="${product.id}">
+                                        <i class="bi bi-cart-plus"></i> Add to Cart
+                                    </button>
+                                    <button class="btn btn-success order-product" data-id="${product.id}">
+                                        <i class="bi bi-bag-check"></i> Order
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            searchProducts(query) {
+                const filteredProducts = this.products.filter(product => 
+                    product.name.toLowerCase().includes(query.toLowerCase()) ||
+                    product.description.toLowerCase().includes(query.toLowerCase())
+                );
+
+                const productListings = document.getElementById('product-listings');
+                productListings.innerHTML = filteredProducts.map(product => `
+                    <!-- Product Card HTML (same as renderProductListings) -->
+                `).join('');
+            }
+
+            showNotifications() {
+                if (this.notifications.length === 0) {
+                    Swal.fire('Notifications', 'No new notifications', 'info');
+                    return;
+                }
+
+                const notificationHTML = this.notifications.map(notification => 
+                    `<div class="alert alert-info">${notification.message}</div>`
+                ).join('');
+
+                Swal.fire({
+                    title: 'Notifications',
+                    html: notificationHTML,
+                    icon: 'info'
+                });
+
+                // Clear notifications badge
+                document.getElementById('notification-badge').textContent = '0';
+            }
+
+            // Additional methods for cart, ordering, etc. would be implemented here
+        }
+
+        // Initialize Platform
+        const platform = new AdvancedETradingPlatform();
+
+        
+    </script>
+</body>
+</html>

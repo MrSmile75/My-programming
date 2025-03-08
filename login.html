@@ -1,312 +1,433 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactive Login & Sign-Up Form</title>
-  <style>
-    /* Global Styles */
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      height: 100vh;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: background-color 0.5s ease, color 0.5s ease;
-    
-      color: #333;
-    }
+    <meta charset="UTF-8">
+    <title>Intelligent User Experience Cookie Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #10b981;
+            --background-color: #f4f6f9;
+            --text-color: #1f2937;
+            --border-radius: 16px;
+            --box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
 
-    
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .container {
-      width: 450px;
-      background: transparent;
-      border-radius: 20px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-      padding: 40px;
-      position: relative;
-      text-align: center;
-      overflow: hidden;
-      animation: fadeIn 1s ease-in-out;
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        #cookie-consent-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
 
-    .header {
-      margin-bottom: 30px;
-      color: #333;
-      font-size: 28px;
-      font-weight: bold;
-    }
+        .cookie-modal {
+            background: white;
+            width: 800px;
+            max-width: 95%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transform: scale(0.7);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-    .header span {
-      color: #00c6ff;
-    }
+        .cookie-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 25px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-    .header button {
-      background: none;
-      border: none;
-      font-size: 18px;
-      font-weight: 600;
-      padding: 10px 20px;
-      color: #555;
-      cursor: pointer;
-      transition: color 0.3s, border-bottom 0.3s;
-    }
+        .cookie-content {
+            padding: 35px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
 
-    .header button.active {
-      color: #00c6ff;
-      border-bottom: 2px solid #00c6ff;
-    }
+        .cookie-section {
+            background-color: #f9fafb;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
 
-    form {
-      display: none;
-      flex-direction: column;
-      gap: 20px;
-    }
+        .cookie-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
 
-    form.active {
-      display: flex;
-    }
+        .cookie-details {
+            flex-grow: 1;
+        }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+        .cookie-toggle {
+            display: flex;
+            align-items: center;
+        }
 
-    .form-group input {
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 16px;
-      outline: none;
-      transition: all 0.3s;
-    }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
 
-    .form-group input:focus {
-      border-color: #00c6ff;
-    }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
-    .password-strength {
-      height: 8px;
-      background: grey;
-      border-radius: 5px;
-      transition: width 0.4s, background 0.4s;
-    }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
 
-    .password-strength.weak {
-      width: 40%;
-      background: red;
-    }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
 
-    .password-strength.medium {
-      width: 70%;
-      background: orange;
-    }
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
 
-    .password-strength.strong {
-      width: 100%;
-      background: green;
-    }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
 
-    .dark-mode-toggle {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: #00c6ff;
-      color: white;
-      border: none;
-      padding: 12px 18px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
+        .cookie-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
 
-    .dark-mode-toggle:hover {
-      background: #0072ff;
-    }
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .social-login {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-    }
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
 
-    .social-login button {
-      padding: 12px;
-      background: #f0f0f0;
-      border-radius: 30px;
-      border: none;
-      font-size: 14px;
-      cursor: pointer;
-      width: 100px;
-      transition: all 0.3s;
-    }
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: var(--text-color);
+        }
 
-    .social-login button:hover {
-      background: #00c6ff ;
-    }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
 
-    .submit-btn {
-      padding: 15px;
-      background: transparent;
-      border: none;
-      color: white;
-      font-size: 16px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
+        .info-section {
+            grid-column: 1 / -1;
+            text-align: center;
+            background-color: #f3f4f6;
+            padding: 20px;
+            border-radius: 12px;
+        }
 
-    .submit-btn:hover {
-      background: #00c6ff;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 500px) {
-      .container {
-        width: 90%;
-      }
-
-      .header button {
-        font-size: 16px;
-        padding: 8px 16px;
-      }
-    }
-
-    a{
-        color: #00c6ff;
-    }
-
-  </style>
+        @media (max-width: 768px) {
+            .cookie-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
-<body background="c:\Users\User\OneDrive\Pictures\img.jpg">
- 
+<body>
+    <div id="cookie-consent-overlay">
+        <div class="cookie-modal">
+            <div class="cookie-header">
+                <h2>🍪 Cookie Preferences</h2>
+                <i class="fas fa-shield-alt" style="font-size: 24px;"></i>
+            </div>
+            <div class="cookie-content">
+                <div class="cookie-section">
+                    <div class="cookie-details">
+                        <h3>Essential Cookies</h3>
+                        <p>Necessary for core website functionality</p>
+                    </div>
+                    <div class="cookie-toggle">
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked disabled>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
 
-  <!-- Form Container -->
-  <div class="container">
-    <div class="header">
-      <div>Welcome to <span>Our Platform</span></div>
-      <div>Let's Get Started</div>
-      <button id="loginTab" class="active" onclick="switchForm('login')">Login</button>
-      <button id="signupTab" onclick="switchForm('signup')">Sign Up</button>
+                <div class="cookie-section">
+                    <div class="cookie-details">
+                        <h3>Performance Tracking</h3>
+                        <p>Help improve website performance</p>
+                    </div>
+                    <div class="cookie-toggle">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="performance-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cookie-section">
+                    <div class="cookie-details">
+                        <h3>Personalization</h3>
+                        <p>Customize content and recommendations</p>
+                    </div>
+                    <div class="cookie-toggle">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="personalization-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cookie-section">
+                    <div class="cookie-details">
+                        <h3>Marketing</h3>
+                        <p>Targeted advertising and promotions</p>
+                    </div>
+                    <div class="cookie-toggle">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="marketing-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cookie-actions">
+                    <button id="reject-btn" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Reject All
+                    </button>
+                    <button id="accept-btn" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Accept All
+                    </button>
+                </div>
+
+                <div class="info-section">
+                    <p>We use cookies to enhance your browsing experience, analyze site traffic, and provide personalized content.</p>
+                    <a href="#" style="color: var(--primary-color); text-decoration: none;">Learn More About Our Privacy Policy</a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Login Form -->
-    <form id="loginForm" class="active">
-      <div class="form-group">
-        <input type="email" id="loginEmail" placeholder="Email" required>
-      </div>
-      <div class="form-group">
-        <input type="password" id="loginPassword" placeholder="Password" required>
-      </div>
-      <div class="social-login">
-        
-      </div>
-      <button type="button" class="submit-btn" onclick="loginSubmit()">Login</button>
-    </form>
+    <script>
+        class IntelligentCookieManager {
+            constructor() {
+                this.initializeElements();
+                this.setupEventListeners();
+                this.checkInitialConsent();
+            }
 
-    <!-- Sign-Up Form -->
-    <form id="signupForm">
-      <div class="form-group">
-        <input type="email" id="signupEmail" placeholder="Email" required>
-      </div>
-      <div class="form-group">
-        <input type="password" id="signupPassword" placeholder="Create Password" oninput="checkPasswordStrength()" required>
-        <div class="password-strength"></div>
-      </div>
-      <div class="form-group">
-        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
-      </div>
-      <button type="button" class="submit-btn" onclick="signUpSubmit()">Sign Up</button>
-    </form>
+            initializeElements() {
+                this.overlay = document.getElementById('cookie-consent-overlay');
+                this.performanceToggle = document.getElementById('performance-toggle');
+                this.personalizationToggle = document.getElementById('personalization-toggle');
+                this.marketingToggle = document.getElementById('marketing-toggle');
+                this.rejectBtn = document.getElementById('reject-btn');
+                this.acceptBtn = document.getElementById('accept-btn');
+            }
 
-    <p>Click here to proceed <a href="home.html">Click here</a></p>
-  </div>
+            setupEventListeners() {
+                this.rejectBtn.addEventListener('click', () => this.handleConsent(false));
+                this.acceptBtn.addEventListener('click', () => this.handleConsent(true));
+            }
 
+            checkInitialConsent() {
+                const existingConsent = this.getCookie('user_consent');
+                if (!existingConsent) {
+                    this.showCookieModal();
+                }
+            }
 
+            showCookieModal() {
+                this.overlay.style.opacity = '1';
+                this.overlay.style.pointerEvents = 'all';
+                const modal = this.overlay.querySelector('.cookie-modal');
+                modal.style.transform = 'scale(1)';
+            }
 
+            hideCookieModal() {
+                this.overlay.style.opacity = '0';
+                this.overlay.style.pointerEvents = 'none';
+                const modal = this.overlay.querySelector('.cookie-modal');
+                modal.style.transform = 'scale(0.7)';
+            }
 
-  <script>
-    // Switch between Login and Sign Up forms
-    function switchForm(formType) {
-      const loginTab = document.getElementById('loginTab');
-      const signupTab = document.getElementById('signupTab');
-      const loginForm = document.getElementById('loginForm');
-      const signupForm = document.getElementById('signupForm');
+            handleConsent(acceptAll) {
+                const preferences = {
+                    performance: acceptAll || this.performanceToggle.checked,
+                    personalization: acceptAll || this.personalizationToggle.checked,
+                    marketing: acceptAll || this.marketingToggle.checked
+                };
 
-      if (formType === 'login') {
-        loginTab.classList.add('active');
-        signupTab.classList.remove('active');
-        loginForm.classList.add('active');
-        signupForm.classList.remove('active');
-      } else {
-        signupTab.classList.add('active');
-        loginTab.classList.remove('active');
-        signupForm.classList.add('active');
-        loginForm.classList.remove('active');
-      }
-    }
+                this.setCookie('user_consent', JSON.stringify(preferences), 365);
+                this.initializeTracking(preferences);
+                this.hideCookieModal();
+            }
 
-    // Password strength check
-    function checkPasswordStrength() {
-      const password = document.getElementById('signupPassword').value;
-      const strengthBar = document.querySelector('.password-strength');
+            initializeTracking(preferences) {
+                if (preferences.performance) {
+                    this.trackPerformance();
+                }
 
-      if (password.length < 8) {
-        strengthBar.className = 'password-strength weak';
-      } else if (password.length < 12) {
-        strengthBar.className = 'password-strength medium';
-      } else {
-        strengthBar.className = 'password-strength strong';
-      }
-    }
+                if (preferences.personalization) {
+                    this.personalizeExperience();
+                }
 
-    
+                if (preferences.marketing) {
+                    this.initializeMarketing();
+                }
+            }
 
+            trackPerformance() {
+                const performanceData = {
+                    timestamp: new Date().toISOString(),
+                    url: window.location.href,
+                    referrer: document.referrer,
+                    userAgent: navigator.userAgent,
+                    screenResolution: `${screen.width}x${screen.height}`,
+                    connectionType: navigator.connection?.effectiveType
+                };
 
-    // Login submit handler
-    function loginSubmit() {
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
+                this.sendPerformanceData(performanceData);
+            }
 
-      if (!email || !password) {
-        alert('Please fill in all fields.');
-      } else {
-        alert('Login Successful!');
-      }
-    }
+            sendPerformanceData(data) {
+                console.log('Performance Tracking:', data);
+                // Implement actual performance tracking endpoint
+                // fetch('/performance-tracking', { 
+                //     method: 'POST', 
+                //     body: JSON.stringify(data) 
+                // });
+            }
 
-    // Sign-Up submit handler
-    function signUpSubmit() {
-      const email = document.getElementById('signupEmail').value;
-      const password = document.getElementById('signupPassword').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
+            personalizeExperience() {
+                const personalizedData = {
+                    preferences: this.generateUserPreferences(),
+                    recommendations: this.generateRecommendations()
+                };
 
-      if (!email || !password || !confirmPassword) {
-        alert('Please fill in all fields.');
-        return;
-      }
+                this.applyPersonalization(personalizedData);
+            }
 
-      if (password !== confirmPassword) {
-        alert('Passwords do not match!');
-      } else {
-        alert('Sign Up Successful!');
-      }
-    }
-  </script>
+            generateUserPreferences() {
+                return {
+                    theme: 'dark',
+                    contentInterests: ['technology', 'design'],
+                    languagePreference: navigator.language
+                };
+            }
+
+            generateRecommendations() {
+                return [
+                    { type: 'content', title: 'Advanced Web Development', category: 'tech' },
+                    { type: 'product', name: 'Design Tools Bundle', category: 'design' }
+                ];
+            }
+
+            applyPersonalization(data) {
+                console.log('Personalization Applied:', data);
+                // Implement personalization logic
+            }
+
+            initializeMarketing() {
+                const marketingData = {
+                    campaignId: this.generateCampaignId(),
+                    userSegment: this.determineUserSegment()
+                };
+
+                this.triggerMarketingCampaigns(marketingData);
+            }
+
+            generateCampaignId() {
+                return `CAMP-${Math.random().toString(36).substr(2, 9)}`;
+            }
+
+            determineUserSegment() {
+                // Advanced user segmentation logic
+                return ['tech-enthusiast', 'early-adopter'];
+            }
+
+            triggerMarketingCampaigns(data) {
+                console.log('Marketing Campaigns:', data);
+                // Implement marketing campaign logic
+            }
+
+            setCookie(name, value, days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                document.cookie = `${name}=${encodeURIComponent(value)};expires=${date.toUTCString()};path=/;SameSite=Strict`;
+            }
+
+            getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                return parts.length === 2 ? parts.pop().split(';').shift() : null;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new IntelligentCookieManager();
+        });
+    </script>
 </body>
 </html>

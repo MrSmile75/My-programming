@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Exclusive Limited Time Offer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Game Preloader</title>
     <style>
+        :root {
+            --bg-primary: #0a0a1a;
+            --accent-color: #4a90e2;
+            --text-color: #ffffff;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,200 +18,226 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f4f4;
-        }
-
-        .banner {
-            max-width: 1200px;
-            margin: 20px auto;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-            position: relative;
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg-primary);
             color: white;
-            padding: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            overflow: hidden;
         }
 
-        .banner::before {
-            content: '';
-            position: absolute;
+        .preloader-container {
+            position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255,255,255,0.1);
-            transform: skew(-15deg);
-            z-index: 1;
-        }
-
-        .offer-details {
-            z-index: 2;
-            position: relative;
-        }
-
-        .offer-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .offer-subtitle {
-            font-size: 16px;
-            opacity: 0.8;
-            margin-bottom: 15px;
-        }
-
-        .discount-badges {
+            width: 100%;
+            height: 100%;
             display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, rgba(10,10,26,1) 0%, rgba(15,15,40,1) 100%);
         }
 
-        .badge {
-            background-color: rgba(255,255,255,0.2);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .countdown {
-            display: flex;
-            gap: 10px;
-            z-index: 2;
-            position: relative;
-        }
-
-        .countdown-item {
-            background-color: rgba(255,255,255,0.2);
-            border-radius: 10px;
-            padding: 15px;
+        .preloader {
             text-align: center;
-            min-width: 80px;
+            width: 500px;
+            perspective: 1000px;
         }
 
-        .countdown-item span {
-            display: block;
-            font-size: 24px;
-            font-weight: 700;
+        .loading-logo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            background: transparent;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: pulse 2s infinite alternate;
+            transform-style: preserve-3d;
         }
 
-        .countdown-item p {
-            font-size: 10px;
+        .loading-logo svg {
+            width: 80px;
+            height: 80px;
+            transform: rotateY(0deg);
+            transition: transform 0.5s;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: transparent;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 20px;
+            box-shadow: 0 10px 15px transparent ;
+        }
+
+        .progress-bar {
+            width: 0;
+            height: 15px;
+            background: linear-gradient(to right, #4a90e2, #6f42c1);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .loading-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .loading-stage {
             text-transform: uppercase;
-            opacity: 0.7;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-top: 15px;
+            opacity: 0.8;
         }
 
-        .cta-button {
-            background-color: #fff;
-            color: #6a11cb;
-            padding: 12px 25px;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            z-index: 2;
-            position: relative;
+        .tips {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            animation: tipsFade 3s infinite;
         }
 
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
         }
 
-        @media (max-width: 768px) {
-            .banner {
-                flex-direction: column;
-                text-align: center;
-                padding: 20px;
-            }
+        @keyframes tipsFade {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
 
-            .countdown {
-                justify-content: center;
-                margin-top: 20px;
-            }
+        .particle {
+            position: absolute;
+            background: rgba(74,144,226,0.5);
+            border-radius: 50%;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <div class="banner">
-        <div class="offer-details">
-            <h2 class="offer-title">Mega Savings Extravaganza! 🚀</h2>
-            <p class="offer-subtitle">Unlock unprecedented discounts on our premium plans</p>
+    <div class="preloader-container">
+        <div class="preloader">
+            <div class="loading-logo">
+                <svg viewBox="0 0 24 24" fill="white">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+            </div>
             
-            <div class="discount-badges">
-                <div class="badge">50% OFF Pro Plan</div>
-                <div class="badge">30% OFF Business Annual</div>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
             </div>
+            
+            <div class="loading-details">
+                <span class="percentage">0%</span>
+                <span class="time-remaining">Estimating...</span>
+            </div>
+            
+            <div class="loading-stage">Initializing Game Environment</div>
         </div>
 
-        <div class="countdown" id="countdown">
-            <div class="countdown-item">
-                <span id="days">00</span>
-                <p>Days</p>
-            </div>
-            <div class="countdown-item">
-                <span id="hours">00</span>
-                <p>Hours</p>
-            </div>
-            <div class="countdown-item">
-                <span id="minutes">00</span>
-                <p>Minutes</p>
-            </div>
-            <div class="countdown-item">
-                <span id="seconds">00</span>
-                <p>Seconds</p>
-            </div>
-        </div>
-
-        <a href="#" class="cta-button">Claim Offer Now</a>
+        <div class="tips">Pro Tip: Prepare for an epic adventure!</div>
     </div>
 
     <script>
-        function startCountdown() {
-            const countdownDate = new Date();
-            countdownDate.setDate(countdownDate.getDate() + 5);
-            countdownDate.setHours(19, 0, 44, 0);
+        class AdvancedPreloader {
+            constructor() {
+                this.progressBar = document.querySelector('.progress-bar');
+                this.percentageEl = document.querySelector('.percentage');
+                this.stageEl = document.querySelector('.loading-stage');
+                this.timeRemainingEl = document.querySelector('.time-remaining');
+                this.logo = document.querySelector('.loading-logo svg');
 
-            const countdownElement = {
-                days: document.getElementById('days'),
-                hours: document.getElementById('hours'),
-                minutes: document.getElementById('minutes'),
-                seconds: document.getElementById('seconds')
-            };
+                this.loadingStages = [
+                    { stage: 'Initializing Game World', duration: 2000 },
+                    { stage: 'Loading Game Assets', duration: 3000 },
+                    { stage: 'Configuring Multiplayer', duration: 2500 },
+                    { stage: 'Optimizing Graphics', duration: 2000 },
+                    { stage: 'Final Preparations', duration: 1500 }
+                ];
 
-            function updateCountdown() {
-                const now = new Date();
-                const timeLeft = countdownDate - now;
-
-                if (timeLeft <= 0) {
-                    clearInterval(countdownTimer);
-                    return;
-                }
-
-                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-                countdownElement.days.textContent = days.toString().padStart(2, '0');
-                countdownElement.hours.textContent = hours.toString().padStart(2, '0');
-                countdownElement.minutes.textContent = minutes.toString().padStart(2, '0');
-                countdownElement.seconds.textContent = seconds.toString().padStart(2, '0');
+                this.init();
             }
 
-            const countdownTimer = setInterval(updateCountdown, 1000);
-            updateCountdown();
+            init() {
+                this.createParticles();
+                this.startLoading();
+            }
+
+            createParticles() {
+                const container = document.querySelector('.preloader-container');
+                for (let i = 0; i < 50; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    particle.style.width = `${Math.random() * 5}px`;
+                    particle.style.height = particle.style.width;
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    particle.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    container.appendChild(particle);
+                }
+            }
+
+            startLoading() {
+                let totalDuration = this.loadingStages.reduce((a, b) => a + b.duration, 0);
+                let currentProgress = 0;
+                let startTime = Date.now();
+
+                this.loadingStages.forEach((stage, index) => {
+                    setTimeout(() => {
+                        this.updateProgress(
+                            (index + 1) / this.loadingStages.length * 100, 
+                            stage.stage,
+                            totalDuration
+                        );
+                    }, this.loadingStages.slice(0, index + 1).reduce((a, b) => a + b.duration, 0));
+                });
+
+                setTimeout(() => this.completeLoading(), totalDuration);
+            }
+
+            updateProgress(percentage, stage, totalDuration) {
+                this.progressBar.style.width = `${percentage}%`;
+                this.percentageEl.textContent = `${Math.round(percentage)}%`;
+                this.stageEl.textContent = stage;
+
+                // Estimate remaining time
+                let elapsedTime = Date.now() - this.startTime;
+                let remainingTime = Math.round((totalDuration - elapsedTime) / 1000);
+                this.timeRemainingEl.textContent = `${remainingTime}s remaining`;
+
+                // Logo rotation effect
+                this.logo.style.transform = `rotateY(${percentage * 3.6}deg)`;
+            }
+
+            completeLoading() {
+                this.stageEl.textContent = 'Game Ready!';
+                this.percentageEl.textContent = '100%';
+                this.timeRemainingEl.textContent = 'Loading Complete';
+
+                // Transition to game
+                setTimeout(() => {
+                    // Add your game start logic here
+                    console.log('Game Loaded');
+                }, 1000);
+            }
         }
 
-        startCountdown();
+        
+
+        // Initialize preloader when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new AdvancedPreloader();
+        });
     </script>
 </body>
 </html>
