@@ -2,156 +2,344 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Command Prompt Interface</title>
+    <title>Quantum Nexus Authentication</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Courier New', monospace;
-            background-color: #0C0C0C;
-            color: #00FF00;
+        :root {
+            --quantum-primary: #6a11cb;
+            --quantum-secondary: #2575fc;
+            --quantum-background: #0f0c29;
+            --quantum-text: #ffffff;
+            --quantum-accent: #00fffc;
+            --quantum-gradient: linear-gradient(135deg, #6a11cb, #2575fc);
+        }
+
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            background: black;
+            perspective: 2000px;
+            overflow: hidden;
+            color: #00fffc;
         }
 
-        #terminal {
+        .quantum-container {
+            position: relative;
             width: 800px;
-            height: 500px;
-            background-color: #000;
-            border: 2px solid #00FF00;
-            overflow-y: scroll;
-            padding: 10px;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+            height: 600px;
+            display: flex;
+            overflow: hidden;
+            border-radius: 1rem 1rem;
+            box-shadow: 0 0 10px #00fffc;
+            background: transparent;
+            border: 1px solid transparent;
+            backdrop-filter: blur(20px);
         }
 
-        #command-input {
+        .quantum-visual {
+            flex: 1;
+            background: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        .quantum-visual::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-color: transparent;
+            background: radial-gradient(
+                circle at center, 
+                transparent, 
+                transparent 70%
+            );
+            animation: rotate 20s linear infinite;
+            
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .quantum-visual-content {
+            text-align: center;
+            z-index: 10;
+        }
+
+        .quantum-logo {
+            width: 100px;
+            height: 100px;
+            background: transparent;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+        }
+
+        .quantum-auth {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            background: transparent;
+        }
+
+        .auth-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: 2px solid transparent;
+            color: var(--quantum-text);
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            background: black;
+            color: #00fffc;
+        }
+
+        .quantum-form {
+            display: flex;
+            width: 200%;
+            transition: transform 0.5s ease;
+        }
+
+        .form-section {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .quantum-input {
             width: 100%;
-            background-color: #000;
-            color: #00FF00;
-            border: none;
-            outline: none;
-            font-family: 'Courier New', monospace;
+            padding: 15px 20px 15px 50px;
+            background: transparent;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            color: grey;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        .output {
-            margin-bottom: 5px;
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
         }
 
-        .success {
-            color: #00FF00;
+        ::placeholder{
+            color: #00fffc;
         }
 
-        .error {
-            color: #FF0000;
+        .quantum-btn {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            color: rgb(255, 255, 255);
+            border: 1px solid transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantum-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #00fffc;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .social-btn {
+            background: transparent;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            transform: scale(1.1);
+            color: #00fffc;
+        }
+
+        .password-strength {
+            height: 5px;
+            background: linear-gradient(move to left, #00fffc, transparent );
+            margin-top: 5px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .strength-indicator {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
 <body>
-    <div id="terminal">
-        <div id="output"></div>
-        <input type="text" id="command-input" placeholder="Enter command..." autocomplete="off">
+
+    <div class="quantum-container">
+        <div class="quantum-visual">
+            <div class="quantum-visual-content">
+                <div class="quantum-logo">
+                    <i class="ri-arrow" style="font-size: 48px;"></i>
+                </div>
+                <h1>FORM</h1>
+               
+            </div>
+        </div>
+        
+        <div class="quantum-auth">
+            <div class="auth-toggle">
+                <button class="toggle-btn active" id="loginToggle">Login</button>
+                <button class="toggle-btn" id="signupToggle">Signup</button>
+            </div>
+
+            <div class="quantum-form-container">
+                <div class="quantum-form" id="authForm">
+                    <!-- Login Section -->
+                    <div class="form-section login-section">
+                        <div class="input-wrapper">
+                            <i class="ri-user-line input-icon"></i>
+                            <input type="text" class="quantum-input" placeholder="Username" required>
+                        </div>
+                        <div class="input-wrapper">
+                            <i class="ri-lock-line input-icon"></i>
+                            <input type="password" class="quantum-input" placeholder="Password" required>
+                        </div>
+                        <button class="quantum-btn">Login</button>
+                        
+                        <div class="social-login">
+                            <div class="social-btn"><i class="ri-google-line"></i></div>
+                            <div class="social-btn"><i class="ri-facebook-line"></i></div>
+                            <div class="social-btn"><i class="ri-github-line"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- Signup Section -->
+                    <div class="form-section signup-section">
+                        <div class="input-wrapper">
+                            <i class="ri-user-add-line input-icon"></i>
+                            <input type="text" class="quantum-input" placeholder="Full Name" required>
+                        </div>
+                        <div class="input-wrapper">
+                            <i class="ri-mail-line input-icon"></i>
+                            <input type="email" class="quantum-input" placeholder="Email" required>
+                        </div>
+                        <div class="input-wrapper">
+                            <i class="ri-lock-line input-icon"></i>
+                            <input type="password" class="quantum-input" placeholder="Password" required>
+                            <div class="password-strength">
+                                <div class="strength-indicator" id="passwordStrength"></div>
+                            </div>
+                        </div>
+                        <div class="input-wrapper">
+                            <i class="ri-lock-line input-icon"></i>
+                            <input type="password" class="quantum-input" placeholder="Confirm Password" required>
+                        </div>
+                        <button class="quantum-btn">Signup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        const output = document.getElementById('output');
-        const commandInput = document.getElementById('command-input');
-        const terminal = document.getElementById('terminal');
-
-        // Command handlers
-        const commandHandlers = {
-            'help': () => {
-                return `
-Available Commands:
-- help: Show this help menu
-- system: Display system information
-- clear: Clear terminal screen
-- date: Show current date and time
-- battery: Check device battery status
-- network: Display network information
-- calc: Open calculator
-- weather: Get current weather
-                `;
-            },
-            'system': () => {
-                return `
-System Information:
-- OS: Web-Based Terminal
-- Version: 1.0
-- Browser: ${navigator.userAgent}
-- Platform: ${navigator.platform}
-                `;
-            },
-            'date': () => {
-                return new Date().toString();
-            },
-            'battery': async () => {
-                try {
-                    const battery = await navigator.getBattery();
-                    return `
-Battery Status:
-- Level: ${(battery.level * 100).toFixed(2)}%
-- Charging: ${battery.charging}
-- Charging Time: ${battery.chargingTime} seconds
-                    `;
-                } catch (error) {
-                    return "Battery information unavailable.";
-                }
-            },
-            'network': () => {
-                return `
-Network Information:
-- Online: ${navigator.onLine}
-- Connection Type: ${navigator.connection?.effectiveType || 'Unknown'}
-                `;
-            },
-            'calc': () => {
-                const result = window.prompt("Enter calculation:");
-                try {
-                    return `Result: ${eval(result)}`;
-                } catch (error) {
-                    return "Invalid calculation!";
-                }
-            },
-            'weather': async () => {
-                try {
-                    const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q=London&appid=YOUR_API_KEY');
-                    const data = await response.json();
-                    return `
-Weather in ${data.name}:
-- Temperature: ${(data.main.temp - 273.15).toFixed(2)}°C
-- Condition: ${data.weather[0].description}
-                    `;
-                } catch (error) {
-                    return "Weather data unavailable.";
-                }
-            },
-            'clear': () => {
-                output.innerHTML = '';
-                return '';
+        class QuantumAuthentication {
+            constructor() {
+                this.initEventListeners();
+                this.initPasswordStrength();
             }
-        };
 
-        commandInput.addEventListener('keypress', async (e) => {
-            if (e.key === 'Enter') {
-                const command = commandInput.value.trim().toLowerCase();
-                const handler = commandHandlers[command];
+            initEventListeners() {
+                const loginToggle = document.getElementById('loginToggle');
+                const signupToggle = document.getElementById('signupToggle');
+                const authForm = document.getElementById('authForm');
 
-                output.innerHTML += `<div class="output">$ ${command}</div>`;
+                loginToggle.addEventListener('click', () => {
+                    authForm.style.transform = 'translateX(0)';
+                    loginToggle.classList.add('active');
+                    signupToggle.classList.remove('active');
+                });
 
-                if (handler) {
-                    const result = await handler();
-                    output.innerHTML += `<div class="output success">${result}</div>`;
-                } else {
-                    output.innerHTML += `<div class="output error">Command not found. Type 'help' for available commands.</div>`;
-                }
-
-                commandInput.value = '';
-                terminal.scrollTop = terminal.scrollHeight;
+                signupToggle.addEventListener('click', () => {
+                    authForm.style.transform = 'translateX(-50%)';
+                    signupToggle.classList.add('active');
+                    loginToggle.classList.remove('active');
+                });
             }
-        });
+
+            initPasswordStrength() {
+                const passwordInput = document.querySelector('.signup-section input[type="password"]');
+                const strengthIndicator = document.getElementById('passwordStrength');
+
+                passwordInput.addEventListener('input', () => {
+                    const strength = this.calculatePasswordStrength(passwordInput.value);
+                    strengthIndicator.style.width = `${strength}%`;
+                });
+            }
+
+            calculatePasswordStrength(password) {
+                let strength = 0;
+                if (password.length > 7) strength += 25;
+                if (password.match(/[a-z]+/)) strength += 25;
+                if (password.match(/[A-Z]+/)) strength += 25;
+                if (password.match(/[0-9]+/)) strength += 25;
+                return Math.min(strength, 100);
+            }
+        }
+
+        // Initialize Quantum Authentication
+        new QuantumAuthentication();
     </script>
 </body>
 </html>

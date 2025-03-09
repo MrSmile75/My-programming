@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="weight=device-width, initial-scale=1.0">
+    <title>User CMD Operator</title>
+    <style>
+
+        :root{
+            --quantum-primary:#0f0;
+            --quantum-background:black;
+            
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #0f0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scrollbar-width: thick;
+            scrollbar-color: var(--quantum-primary) var(--quantum-background);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #111;
+            border: 5px solid green;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .cmd-header {
+            background-color: transparent;
+            padding: 10px;
+            text-align: center;
+        }
+        .btn {
+            background-color: transparent;
+            color:  #0f0;
+            border: 2px solid green;
+            border-radius: 1rem 1rem;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        a{
+            color: #0f0;
+        }
+
+        :hover p{
+            background: black;
+            color: #0f0;
+            padding: 2rem 2rem;
+            border: 2px solid #0f0;
+            border-radius: 2rem 2rem;
+            transition-duration: 1s;
+        }
+
+        :hover h1{
+            background: black;
+            color: #0f0;
+            padding: 2rem 2rem;
+            border: 2px solid transparent;
+            text-decoration: underline;
+            border-radius: 2rem 2rem;
+            transition-duration: 1s;
+        }
+
+        :hover hr{
+            background: transparent;
+            color: transparent;
+            padding: 1px 1px;
+            border: 1px solid transparent;
+            border-radius: 1px 1px;
+            transition-duration: 1s;
+        }
+
+        hr{
+            color: #0f0;
+            weight:10rem 10rem;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cmd-header">
+            <h1>Settings Details</h1>
+        </div>
+        <h2>
+
+        <hr color=" #0f0">
+
+        <div id="locationInfo">
+            <h3>Location Details:</h3>
+            <p id="country">Country: Loading...</p>
+            <p id="city">City: Loading...</p>
+        </div>
+
+        <div id="timeInfo">
+            <h3>Time & Date:</h3>
+            <p id="currentTime">Time: Loading...</p>
+            <p id="currentDate">Date: Loading...</p>
+        </div>
+
+        <div id="durationInfo">
+            <h3>Web Session Duration:</h3>
+            <p id="sessionDuration">00:00:00</p>
+        </div>
+
+        <div id="messageDisplay">
+            <h3>System Scan:</h3>
+            <p id="dynamicMessage">Initializing web interface...</p>
+        </div>
+
+        <div>
+            <button class="btn" onclick="restartWeb()">Refresh</button>
+            <button class="btn" onclick="exitWeb()">Exit</button>
+
+             <a href="main.html" target="_blank">CLICK HERE</a>
+        </div>
+    </div>
+
+    <script>
+        // Location Detection
+        function detectLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('country').innerText = `Country: ${data.address.country}`;
+                            document.getElementById('city').innerText = `City: ${data.address.city || data.address.town || 'Unknown'}`;
+                        });
+                });
+            }
+        }
+
+        // Time and Date Display
+        function updateTimeAndDate() {
+            const now = new Date();
+            document.getElementById('currentTime').innerText = `Time: ${now.toLocaleTimeString()}`;
+            document.getElementById('currentDate').innerText = `Date: ${now.toLocaleDateString()}`;
+        }
+
+        // Session Duration Tracking
+        let startTime;
+        function startSessionTimer() {
+            startTime = new Date();
+            setInterval(() => {
+                const currentTime = new Date();
+                const duration = new Date(currentTime - startTime);
+                const hours = duration.getUTCHours().toString().padStart(2, '0');
+                const minutes = duration.getUTCMinutes().toString().padStart(2, '0');
+                const seconds = duration.getUTCSeconds().toString().padStart(2, '0');
+                
+                document.getElementById('sessionDuration').innerText = `${hours}:${minutes}:${seconds}`;
+            }, 1000);
+        }
+
+        // Dynamic Message
+        function showDynamicMessage() {
+            const messages = [
+                "System is running smoothly",
+                "All systems operational",
+                "Detecting problems in web",
+                "No problem, safe ",
+                "Working in background",
+                "Fetching,extracting results",
+                "Null *0/2>!8~2*",
+                "Connecting to server",
+                
+            ];
+            setInterval(() => {
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                document.getElementById('dynamicMessage').innerText = randomMessage;
+            }, 4000);
+        }
+
+        // Web Restart Function
+        function restartWeb() {
+            alert("Refreshing web interface...");
+            location.reload();
+        }
+
+        // Web Exit Function
+        function exitWeb() {
+            if(confirm("Are you sure you want to exit?")) {
+                window.close();
+            }
+
+            setTimeout(() => {
+                window.location.href = "home.html"; // Redirect after 1 seconds
+            }, 1000);
+        
+
+
+
+        }
+
+        // Initialize on page load
+        window.onload = () => {
+            detectLocation();
+            updateTimeAndDate();
+            startSessionTimer();
+            showDynamicMessage();
+            setInterval(updateTimeAndDate, 1000);
+        };
+    </script>
+</body>
+</html>

@@ -2,282 +2,362 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cosmic News Preloader</title>
+    <meta name="viewport" content="weight=device-width, initial-scale=1.0">
+    <title>X</title>
     <style>
         :root {
-            --primary-color: #1a1a2e;
-            --secondary-color: #16213e;
-            --accent-color: #0f3460;
-            --text-color: #e94560;
+            --primary-color: #0f0;
+            --secondary-color: #000;
+            --accent-color: #00ff00;
+            --quantum-primary:#0f0;
+            --quantum-background:black;
+            
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            scrollbar-width: thick;
+            scrollbar-color: var(--quantum-primary) var(--quantum-background);
         }
 
         body {
-            height: 100%;
-            overflow: hidden;
-            background: black;
-            font-family: 'Arial', sans-serif;
-        }
-
-        #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
+            font-family: 'Roboto Mono', 'Courier New', monospace;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            line-height: 1.6;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
-            perspective: 1000px;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        #galaxy-container {
-            position: absolute;
+        input{
+            background: black;
+            color: #0f0;
+            padding: 1rem 1rem;
+            border: 1px solid #0f0;
+            border-radius: 0.1rem 1rem;
+
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            background-color: rgba(0,0,0,0.8);
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0,255,0,0.3);
+        }
+
+        .section {
+            background-color: transparent;
+            border: 1px solid transparent;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .control-panel {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .btn {
+            background-color: black;
+            color: #0f0;
+            border: 2px solid #0f0;
+            border-radius: 1rem 1rem;
+            padding: 1rem 1rem;
+            margin: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px #0f0;
+            outline: none;
+        }
+
+        #consoleLog {
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #111;
+            padding: 10px;
+            border: 1px solid #0a0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            background-color: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
         }
 
-        .star {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle 1s infinite alternate;
+        .modal-content {
+            background-color: #111;
+            border: 2px solid var(--primary-color);
+            padding: 30px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
         }
 
-        @keyframes twinkle {
-            0% { opacity: 0.2; }
-            100% { opacity: 1; }
+        :hover h1{
+            background: black;
+            color: #0f0;
+            padding: 2rem 2rem;
+            border: 2px solid transparent;
+            text-decoration: underline;
+            border-radius: 2rem 2rem;
+            transition-duration: 1s;
         }
 
-        #spaceship {
-            position: absolute;
-            width: 150px;
-            height: 75px;
-            background: transparent;
-            clip-path: polygon(0% 25%, 100% 0%, 100% 100%, 0% 75%);
-            transform-origin: center;
-            transition: all 1s ease;
-            z-index: 100;
-        }
-
-        #spaceship-trail {
-            position: absolute;
-            width: 200px;
-            height: 20px;
-            background: transparent;
-            transform-origin: right center;
-            opacity: 0.7;
-        }
-
-        #loading-text {
-            position: absolute;
-            bottom: 20%;
-            color: white;
-            font-size: 2rem;
-            text-transform: uppercase;
-            letter-spacing: 10px;
-            text-shadow: 0 0 10px white;
-        }
-
-        #progress-bar {
-            position: absolute;
-            bottom: 15%;
-            width: 50%;
-            height: 10px;
-            background-color:transparent;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        #progress-fill {
-            width: 0;
-            height: 100%;
-            background: transparent;
-            transition: width 2s ease;
-        }
-
-        .planet {
-            position: absolute;
-            border-radius: 50%;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        #planet1 {
-            top: 10%;
-            left: 20%;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, gold,yellow);
-            animation: orbit1 15s linear infinite;
-            box-shadow: 0 0 15px gold;
-        }
-
-        #planet2 {
-            top: 70%;
-            right: 15%;
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, yellow,gold);
-            animation: orbit2 20s linear infinite;
-            box-shadow: 0 0 45px gold;
-        }
-
-        @keyframes orbit1 {
-            0% { transform: rotate(0deg) translateX(200px) rotate(0deg); }
-            100% { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
-        }
-
-        @keyframes orbit2 {
-            0% { transform: rotate(180deg) translateX(250px) rotate(-180deg); }
-            100% { transform: rotate(540deg) translateX(250px) rotate(-540deg); }
-        }
-
-        .black-hole {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, transparent 0%, transparent 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 100px rgba(0,0,0,0.8);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.7;
-            animation: pulse 3s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(1); }
-            100% { transform: translate(-50%, -50%) scale(1.1); }
-        }
     </style>
 </head>
 <body>
-    <div id="preloader">
-        <div id="galaxy-container"></div>
+    <div class="container">
+        <div class="section">
+            <h1>MANAGER OPERATOR SYSTEM</h1>
+        </div>
+        <h2>
+        <p style="color: red;">NB:   MEANT FOR ONLY OPERATORS</p>
         
-        <div class="black-hole"></div>
-        
-        <div id="planet1" class="planet"></div>
-        <div id="planet2" class="planet"></div>
-        
-        <div id="spaceship-trail"></div>
-        <div id="spaceship"></div>
-        
-        <div id="loading-text">Loading  News</div>
-        
-        <div id="progress-bar">
-            <div id="progress-fill"></div>
+
+        <div class="section">
+            <h3>System Status</h3>
+            <div id="systemStatus">Initializing...</div>
+        </div>
+
+        <div class="section">
+            <h3>Web Navigation Control</h3>
+            <div class="control-panel">
+                <button class="btn" onclick="openSiteModal('restart')">Enter Page in Web</button>
+                <button class="btn" onclick="exitWeb()">Exit</button>
+                <button class="btn" onclick="openSiteModal('manage')">Manage Sites in Web</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Console Log</h3>
+            <div id="consoleLog"></div>
+        </div>
+    </div>
+
+    <!-- Site Management Modal -->
+    <div id="siteModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Site Management</h3>
+            <div id="siteList"></div>
+            <br>
+            <input type="text" id="newSiteInput" placeholder="Enter site URL">
+            <div>
+                <br>
+                <button class="btn" onclick="manageSite()">Confirm</button>
+                <button class="btn" onclick="closeSiteModal()">Cancel</button>
+            </div>
         </div>
     </div>
 
     <script>
-    class CosmicPreloader {
-        constructor() {
-            this.galaxyContainer = document.getElementById('galaxy-container');
-            this.spaceship = document.getElementById('spaceship');
-            this.spacshipTrail = document.getElementById('spaceship-trail');
-            this.progressFill = document.getElementById('progress-fill');
-            this.loadingText = document.getElementById('loading-text');
-            
-            this.init();
-        }
+        // Advanced Site Management System
+        class WebControlSystem {
+            constructor() {
+                this.sites = [];
+                this.loadSites();
+            }
 
-        init() {
-            this.createStars(500);
-            this.animateSpaceship();
-            this.updateProgress();
-        }
+            // Load saved sites from local storage
+            loadSites() {
+                const savedSites = localStorage.getItem('managedSites');
+                this.sites = savedSites ? JSON.parse(savedSites) : [
+                    'https://www.smilex.com',
+                    'https://www.smile.com'
+                ];
+            }
 
-        createStars(count) {
-            for (let i = 0; i < count; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                star.style.width = `${Math.random() * 3}px`;
-                star.style.height = star.style.width;
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.animationDelay = `${Math.random() * 2}s`;
-                
-                this.galaxyContainer.appendChild(star);
+            // Save sites to local storage
+            saveSites() {
+                localStorage.setItem('managedSites', JSON.stringify(this.sites));
+            }
+
+            // Add a new site
+            addSite(url) {
+                if (this.isValidURL(url) && !this.sites.includes(url)) {
+                    this.sites.push(url);
+                    this.saveSites();
+                    this.updateSiteList();
+                    this.log(`Site added: ${url}`);
+                    return true;
+                }
+                return false;
+            }
+
+            // Remove a site
+            removeSite(url) {
+                this.sites = this.sites.filter(site => site !== url);
+                this.saveSites();
+                this.updateSiteList();
+                this.log(`Site removed: ${url}`);
+            }
+
+            // Validate URL
+            isValidURL(url) {
+                try {
+                    new URL(url);
+                    return true;
+                } catch {
+                    return false;
+                }
+            }
+
+            // Restart or exit specific site
+            controlSite(action, site) {
+                try {
+                    switch(action) {
+                        case 'restart':
+                            window.open(site, '_blank');
+                            this.log(`Entered site: ${site}`);
+                            break;
+                        case 'exit':
+                            // Attempt to close specific site tabs
+                            this.log(`Attempting to close site: ${site}`);
+                            break;
+                    }
+                } catch (error) {
+                    this.log(`Error controlling site: ${error.message}`);
+                }
+            }
+
+            // Update site list in modal
+            updateSiteList() {
+                const siteListEl = document.getElementById('siteList');
+                siteListEl.innerHTML = this.sites.map(site => `
+                    <div>
+                        ${site}
+                        <button onclick="webControl.removeSite('${site}')">Remove</button>
+                    </div>
+                `).join('');
+            }
+
+            // Logging system
+            log(message) {
+                const consoleLog = document.getElementById('consoleLog');
+                const logEntry = document.createElement('div');
+                logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                consoleLog.appendChild(logEntry);
+                consoleLog.scrollTop = consoleLog.scrollHeight;
             }
         }
 
-        animateSpaceship() {
-            const path = [
-                { x: '10%', y: '80%', rotation: -45 },
-                { x: '50%', y: '30%', rotation: 0 },
-                { x: '90%', y: '70%', rotation: 45 }
-            ];
+        // Global web control instance
+        const webControl = new WebControlSystem();
 
-            let currentIndex = 0;
+        // Current action type
+        let currentAction = '';
 
-            const moveSpaceship = () => {
-                const current = path[currentIndex];
-                
-                this.spaceship.style.transform = `
-                    translate(${current.x}, ${current.y}) 
-                    rotate(${current.rotation}deg)
-                `;
+        // Open site management modal
+        function openSiteModal(action) {
+            currentAction = action;
+            const modal = document.getElementById('siteModal');
+            const modalTitle = document.getElementById('modalTitle');
 
-                this.spacshipTrail.style.transform = `
-                    translate(${current.x}, ${current.y}) 
-                    rotate(${current.rotation}deg)
-                `;
+            switch(action) {
+                case 'restart':
+                    modalTitle.textContent = 'Enter Site';
+                    break;
+                case 'exit':
+                    modalTitle.textContent = 'Exit Site';
+                    break;
+                case 'manage':
+                    modalTitle.textContent = 'Manage Sites';
+                    break;
+            }
 
-                currentIndex = (currentIndex + 1) % path.length;
-                setTimeout(moveSpaceship, 2000);
-            };
-
-            moveSpaceship();
+            webControl.updateSiteList();
+            modal.style.display = 'flex';
         }
 
-        updateProgress() {
-            let progress = 0;
-            const messages = [
-                'Warping through result...',
-                'Collecting  data...',
-                'Decoding  signals...',
-                'Preparing news transmission...'
-            ];
+        // Manage site based on current action
+        function manageSite() {
+            const newSiteInput = document.getElementById('newSiteInput');
+            const url = newSiteInput.value.trim();
 
-            const progressInterval = setInterval(() => {
-                progress += Math.random() * 25;
-                this.progressFill.style.width = `${progress}%`;
-                
-                // Update loading text
-                this.loadingText.textContent = messages[
-                    Math.floor(progress / 25)
-                ] || 'News ready for launch!';
+            switch(currentAction) {
+                case 'restart':
+                    if (url) {
+                        webControl.controlSite('restart', url);
+                    } else {
+                        webControl.sites.forEach(site => webControl.controlSite('restart', site));
+                    }
+                    break;
 
-                if (progress >= 100) {
-                    clearInterval(progressInterval);
-                    this.completeLoading();
-                }
-            }, 1000);
+
+                case 'exit':
+                    if (url) {
+                        webControl.controlSite('exit', url);
+                    } else {
+                        webControl.sites.forEach(site => webControl.controlSite('exit', site));
+
+                    }
+                    break;
+                case 'manage':
+                    if (url) {
+                        webControl.addSite(url);
+                    }
+                    break;
+            }
+
+            newSiteInput.value = '';
         }
 
-        completeLoading() {
-            setTimeout(() => {
-                document.getElementById('preloader').style.opacity = 0;
-                document.getElementById('preloader').style.visibility = 'hidden';
-            }, 1500);
+        // Close modal
+        function closeSiteModal() {
+            document.getElementById('siteModal').style.display = 'none';
         }
-    }
 
-    // Initialize Cosmic Preloader
-    document.addEventListener('DOMContentLoaded', () => {
-        new CosmicPreloader();
-    });
+        // System initialization
+        function initSystem() {
+            const statusEl = document.getElementById('systemStatus');
+            statusEl.textContent = 'System Operational | All Services Running';
+            
+            // Periodic system check
+            setInterval(() => {
+                statusEl.textContent = `System Status: Active | Sites Managed: ${webControl.sites.length}`;
+            }, 11000);
+        }
+
+        // Initialize on page load
+        window.onload = () => {
+            initSystem();
+        };
+
+
+        // Web Exit Function
+        function exitWeb() {
+            if(confirm("Are you sure you want to exit?")) {
+                window.close();
+
+        
+            }
+
+           
+
+
+
+        }
     </script>
 </body>
 </html>

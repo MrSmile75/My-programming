@@ -2,150 +2,352 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile Dashboard</title>
+    <title>Quantum Nexus Authentication</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .profile-container {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 400px;
-            padding: 20px;
-        }
-        .profile-pic {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            cursor: pointer;
-        }
-        .status-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 5px;
-        }
-        .online {
-            background-color: green;
-        }
-        .offline {
-            background-color: red;
-        }
+        /* (Previous advanced CSS styles) */
     </style>
 </head>
 <body>
-    <div class="profile-container">
-        <div id="statusIndicator" class="status-indicator"></div>
-        <span id="connectionStatus">Loading...</span>
-        
-        <input type="file" 
-               id="profilePicUpload" 
-               accept="image/*" 
-               style="display:none;">
-        
-        <img id="profilePic" 
-             src="default-profile.png" 
-             class="profile-pic" 
-             onclick="document.getElementById('profilePicUpload').click()">
-        
-        <form id="userProfileForm">
-            <h2>User Profile</h2>
-            
-            <label>Username:</label>
-            <input type="text" 
-                   id="username" 
-                   placeholder="Enter Username" 
-                   required>
-            
-            <label>Email Address:</label>
-            <input type="email" 
-                   id="email" 
-                   placeholder="Enter Email" 
-                   required>
-            
-            <div class="plan-info">
-                <h3>Current Plan: Free</h3>
-                <p>Limited Usage | Standard Queries</p>
-                <button type="button" onclick="upgradePlan()">
-                    Unlock Premium
-                </button>
-            </div>
-        </form>
-    </div>
-
+    <!-- (Previous HTML structure) -->
     <script>
-        // Automatic Browser Detection
-        function getBrowserInfo() {
-            const agent = window.navigator.userAgent;
-            const browsers = [
-                {name: 'Chrome', regex: /Chrome/},
-                {name: 'Firefox', regex: /Firefox/},
-                {name: 'Safari', regex: /Safari/},
-                {name: 'Edge', regex: /Edg/},
-                {name: 'Internet Explorer', regex: /MSIE/}
-            ];
+        class QuantumAuthentication {
+            constructor() {
+                this.initEventListeners();
+                this.initPasswordStrength();
+                this.initFormValidation();
+            }
 
-            return browsers.find(b => b.regex.test(agent))?.name || 'Unknown';
-        }
+            initEventListeners() {
+                // Toggle between login and signup
+                const loginToggle = document.getElementById('loginToggle');
+                const signupToggle = document.getElementById('signupToggle');
+                const authForm = document.getElementById('authForm');
 
-        // Online/Offline Status
-        function updateConnectionStatus() {
-            const statusIndicator = document.getElementById('statusIndicator');
-            const statusText = document.getElementById('connectionStatus');
-            
-            if (navigator.onLine) {
-                statusIndicator.classList.remove('offline');
-                statusIndicator.classList.add('online');
-                statusText.textContent = 'Online';
-            } else {
-                statusIndicator.classList.remove('online');
-                statusIndicator.classList.add('offline');
-                statusText.textContent = 'Offline';
+                loginToggle.addEventListener('click', () => {
+                    authForm.style.transform = 'translateX(0)';
+                    loginToggle.classList.add('active');
+                    signupToggle.classList.remove('active');
+                });
+
+                signupToggle.addEventListener('click', () => {
+                    authForm.style.transform = 'translateX(-50%)';
+                    signupToggle.classList.add('active');
+                    loginToggle.classList.remove('active');
+                });
+
+                // Form submission handlers
+                document.querySelector('.login-section .quantum-btn').addEventListener('click', this.handleLogin.bind(this));
+                document.querySelector('.signup-section .quantum-btn').addEventListener('click', this.handleSignup.bind(this));
+            }
+
+            initPasswordStrength() {
+                const passwordInput = document.querySelector('.signup-section input[type="password"]');
+                const strengthIndicator = document.getElementById('passwordStrength');
+
+                passwordInput.addEventListener('input', () => {
+                    const strength = this.calculatePasswordStrength(passwordInput.value);
+                    strengthIndicator.style.width = `${strength}%`;
+                });
+            }
+
+            calculatePasswordStrength(password) {
+                let strength = 0;
+                const criteria = [
+                    password.length > 7,
+                    /[a-z]/.test(password),
+                    /[A-Z]/.test(password),
+                    /[0-9]/.test(password),
+                    /[^A-Za-z0-9]/.test(password)
+                ];
+
+                criteria.forEach(criterion => {
+                    if (criterion) strength += 20;
+                });
+
+                return Math.min(strength, 100);
+            }
+
+            initFormValidation() {
+                const inputs = document.querySelectorAll('.quantum-input');
+                inputs.forEach(input => {
+                    input.addEventListener('blur', this.validateInput.bind(this));
+                });
+            }
+
+            validateInput(event) {
+                const input = event.target;
+                const value = input.value.trim();
+                const type = input.type;
+
+                let isValid = false;
+
+                switch(type) {
+                    case 'text':
+                        isValid = value.length >= 2;
+                        break;
+                    case 'email':
+                        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                        break;
+                    case 'password':
+                        isValid = value.length >= 8;
+                        break;
+                }
+
+                if (isValid) {
+                    input.classList.remove('invalid');
+                    input.classList.add('valid');
+                } else {
+                    input.classList.remove('valid');
+                    input.classList.add('invalid');
+                }
+            }
+
+            async handleLogin(event) {
+                event.preventDefault();
+                const username = document.querySelector('.login-section input[type="text"]').value;
+                const password = document.querySelector('.login-section input[type="password"]').value;
+
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        this.showNotification('Login Successful', 'success');
+                        // Redirect or update UI
+                    } else {
+                        this.showNotification(result.message, 'error');
+                    }
+                } catch (error) {
+                    this.showNotification('Network Error', 'error');
+                }
+            }
+
+            async handleSignup(event) {
+                event.preventDefault();
+                const name = document.querySelector('.signup-section input[type="text"]').value;
+                const email = document.querySelector('.signup-section input[type="email"]').value;
+                const password = document.querySelector('.signup-section input[type="password"]').value;
+
+                try {
+                    const response = await fetch('/api/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ name, email, password })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        this.showNotification('Signup Successful', 'success');
+                        // Redirect or update UI
+                    } else {
+                        this.showNotification(result.message, 'error');
+                    }
+                } catch (error) {
+                    this.showNotification('Network Error', 'error');
+                }
+            }
+
+            showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.classList.add('notification', type);
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
             }
         }
 
-        // Profile Picture Upload
-        document.getElementById('profilePicUpload').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('profilePic').src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            new QuantumAuthentication();
         });
 
-        // Google Email Retrieval (Placeholder - requires actual Google OAuth)
-        function retrieveGoogleEmail() {
-            // Implement Google OAuth flow
-            console.log('Google Email Retrieval Placeholder');
+        const express = require('express');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+const cors = require('cors');
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// MongoDB Connection
+mongoose.connect('mongodb://localhost:27017/quantum-auth', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+// User Schema
+const UserSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now }
+});
+
+const User = mongoose.model('User', UserSchema);
+
+// Signup Route
+app.post('/api/signup', async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+
+        // Validate input
+        if (!name || !email || !password) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Please provide all required fields' 
+            });
         }
 
-        // Upgrade Plan Function
-        function upgradePlan() {
-            alert('Upgrade to Premium Plan to unlock advanced features!');
+        // Check if user exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'User already exists' 
+            });
         }
 
-        // Initialize Functions
-        window.onload = function() {
-            console.log('Browser: ' + getBrowserInfo());
-            updateConnectionStatus();
-            
-            // Event listeners for online/offline
-            window.addEventListener('online', updateConnectionStatus);
-            window.addEventListener('offline', updateConnectionStatus);
-        };
+        // Hash password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // Create new user
+        const newUser = new User({
+            name,
+            email,
+            password: hashedPassword
+        });
+
+        await newUser.save();
+
+        // Generate JWT
+        const token = jwt.sign(
+            { id: newUser._id }, 
+            process.env.JWT_SECRET, 
+            { expiresIn: '1h' }
+        );
+
+        res.status(201).json({ 
+            success: true, 
+            token,
+            user: { 
+                id: newUser._id, 
+                name: newUser.name, 
+                email: newUser.email 
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: 'Server error' 
+        });
+    }
+});
+
+// Login Route
+app.post('/api/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // Find user
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Invalid credentials' 
+            });
+        }
+
+        // Check password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Invalid credentials' 
+            });
+        }
+
+        // Generate JWT
+        const token = jwt.sign(
+            { id: user._id }, 
+            process.env.JWT_SECRET, 
+            { expiresIn: '1h' }
+        );
+
+        res.json({ 
+            success: true, 
+            token,
+            user: { 
+                id: user._id, 
+                name: user.name, 
+                email: user.email 
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: 'Server error' 
+        });
+    }
+});
+
+// Middleware to protect routes
+const authMiddleware = (req, res, next) => {
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+
+    if (!token) {
+        return res.status(401).json({ 
+            success: false, 
+            message: 'No token, authorization denied' 
+        });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        next();
+    } catch (error) {
+        res.status(401).json({ 
+            success: false, 
+            message: 'Token is not valid' 
+        });
+    }
+};
+
+// Protected Route Example
+app.get('/api/profile', authMiddleware, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        res.json({ success: true, user });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: 'Server error' 
+        });
+    }
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
     </script>
 </body>
 </html>

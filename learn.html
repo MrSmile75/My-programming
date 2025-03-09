@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellar Horizon - Next-Generation Digital Experience</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --dark-navy: #0A192F;
+            --deep-space-blue: #112240;
+            --neon-cyan: #64FFDA;
+            --soft-white: #E6F1FF;
+            --gradient-primary: linear-gradient(135deg, #6A11CB 0%, #2575FC 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: black;
+            color: var(--soft-white);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Cosmic Background */
+        .cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 30%, transparent, transparent 50%),
+                radial-gradient(circle at 70% 70%, transparent, transparent 50%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Particle Animation */
+        .particle {
+            position: absolute;
+            background: linear-gradient(to right, rgba(100,255,218,0.5), rgba(37,117,252,0.5));
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle-float 5s infinite alternate;
+        }
+
+        @keyframes particle-float {
+            0% { transform: translateY(0) scale(0.8); }
+            100% { transform: translateY(-50px) scale(1.2); }
+        }
+
+        /* Advanced Navigation */
+        .sticky-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color:transparent;
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        /* Interactive Elements */
+        .interactive-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        .interactive-card:hover {
+            transform: scale(1.05) rotateX(10deg);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        /* Advanced Scroll Indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--neon-cyan), grey);
+            z-index: 1100;
+            transition: width 0.2s ease;
+        }
+
+        /* Responsive Grid */
+        .advanced-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background:transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle-circle {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: gold;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            background-color: #ffffff;
+            color: var(--dark-navy);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .mobile-column {
+                flex-direction: column;
+            }
+
+            .responsive-nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--dark-navy);
+            }
+
+            .mobile-menu-open .responsive-nav {
+                display: block;
+            }
+        }
+
+        /* Additional Advanced Styles */
+        .parallax-section {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .glass-morphism {
+            background: transparent;
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid transparent;
+        }
+
+        .neon-border {
+            border: 2px solid transparent;
+            border-image: linear-gradient(to right, var(--neon-cyan), #2575FC);
+            border-image-slice: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Cosmic Background -->
+    <div class="cosmic-background" id="cosmicBackground"></div>
+
+    <!-- Advanced Sticky Navigation -->
+    <header class="sticky-nav">
+        <nav class="container mx-auto flex justify-between items-center p-4">
+           
+                <h1 class="text-2xl font-bold">Smile X</h1>
+            </div>
+
+            <!-- Theme Toggle -->
+            <div class="theme-toggle" id="themeToggle">
+                <div class="theme-toggle-circle"></div>
+            </div>
+        </nav>
+    </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 pt-20">
+            <!-- Hero Section -->
+            <section id="home" class="min-h-screen flex items-center justify-center mobile-column parallax-section">
+                <div class="text-center glass-morphism p-10">
+                    <h1 class="text-5xl font-bold mb-6 animate__animated animate__fadeIn">
+                        Explore Infinite Possibilities
+                    </h1>
+                    <p class="text-xl mb-8 animate__animated animate__fadeInUp">
+                        Transforming Digital Experiences with Cutting-Edge Technologies
+                    </p>
+                    <div class="space-x-4">
+                        <button class="interactive-card bg-neon-cyan text-dark-navy px-6 py-3 rounded-lg neon-border">
+                            Get Started
+                        </button>
+                        <button class="interactive-card border-2 border-neon-cyan text-neon-cyan px-6 py-3 rounded-lg">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+            </section>
+    
+            <!-- Features Section -->
+            <section id="features" class="py-20">
+                <h2 class="text-4xl text-center mb-12">
+                    Our Innovative Features
+                </h2>
+                <div class="advanced-grid">
+                    <div class="interactive-card bg-deep-space-blue p-6 rounded-lg glass-morphism">
+                        <svg width="50" height="50" viewBox="0 0 100 100" class="mb-4">
+                            <circle cx="50" cy="50" r="40" fill="url(#techGradient1)"/>
+                            <path d="M30 40 L70 40 L70 60 L30 60 Z" fill="rgba(255,255,255,0.5)"/>
+                            <defs>
+                                <linearGradient id="techGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#64FFDA" />
+                                    <stop offset="100%" style="stop-color:#2575FC" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <h3 class="text-2xl mb-4 text-neon-cyan">Advanced Technology</h3>
+                        <p>Cutting-edge web technologies for immersive experiences</p>
+                    </div>
+                    <div class="interactive-card bg-deep-space-blue p-6 rounded-lg glass-morphism">
+                        <svg width="50" height="50" viewBox="0 0 100 100" class="mb-4">
+                            <circle cx="50" cy="50" r="40" fill="url(#techGradient2)"/>
+                            <path d="M35 35 L65 35 L65 65 L35 65 Z" fill="rgba(255,255,255,0.5)"/>
+                            <defs>
+                                <linearGradient id="techGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#64FFDA" />
+                                    <stop offset="100%" style="stop-color:#2575FC" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <h3 class="text-2xl mb-4 text-neon-cyan">Performance Optimized</h3>
+                        <p>Lightning-fast loading and smooth interactions</p>
+                    </div>
+                    <div class="interactive-card bg-deep-space-blue p-6 rounded-lg glass-morphism">
+                        <svg width="50" height="50" viewBox="0 0 100 100" class="mb-4">
+                            <circle cx="50" cy="50" r="40" fill="url(#techGradient3)"/>
+                            <path d="M25 40 Q50 60 75 40" stroke="rgba(255,255,255,0.5)" fill="none" stroke-width="5"/>
+                            <defs>
+                                <linearGradient id="techGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#64FFDA" />
+                                    <stop offset="100%" style="stop-color:#2575FC" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <h3 class="text-2xl mb-4 text-neon-cyan">Responsive Design</h3>
+                        <p>Seamless experience across all devices</p>
+                    </div>
+                </div>
+            </section>
+    
+            <!-- Technologies Section -->
+            <section id="technologies" class="py-20">
+                <h2 class="text-4xl text-center mb-12">
+                    Our Technology Stack
+                </h2>
+                <div class="advanced-grid">
+                    <div class="interactive-card bg-deep-space-blue p-6 rounded-lg glass-morphism flex flex-col items-center">
+                        <svg width="80" height="80" viewBox="0 0 100 100" class="mb-4">
+                            <path d="M50 10 L90 50 L50 90 L10 50 Z" fill="#F7DF1E"/>
+                        </svg>
+                        <h3 class="text-2xl mb-4 text-neon-cyan">JavaScript</h3>
+                        <p class="text-center">Advanced client-side scripting</p>
+                    </div>
+                    <div class="interactive-card bg-deep-space-blue p-6 rounded-lg glass-morphism flex flex-col items-center">
+                        <svg width="80" height="80" viewBox="0 0 100 100" class="mb-4">
+                            <circle cx="50" cy="50" r="40" fill="#61DAFB"/>
+                            <path d="M50 40 Q60 50 50 60" stroke="white" fill="none" stroke-width="3"/>
+                        </svg>
+                        <h3 class="text-2xl mb-4 text-neon-cyan">React</h3>
+                        <p class="text-center">Component-based UI framework</p>
+                    </div>
+                    <div class="interactive-card bg-deep-space-blue p-6 rounded-lg glass-morphism flex flex-col items-center">
+                        <svg width="80" height="80" viewBox="0 0 100 100" class="mb-4">
+                            <path d="M50 10 L90 50 L50 90 L10 50 Z" fill="#764ABC"/>
+                        </svg>
+                        <h3 class="text-2xl mb-4 text-neon-cyan">Redux</h3>
+                        <p class="text-center">State management solution</p>
+                    </div>
+                </div>
+            </section>
+    
+          
+    
+        <!-- Footer -->
+        <footer class="bg-deep-space-blue py-12">
+            <div class="container mx-auto text-center">
+                <h4 class="text-3xl mb-6">Connect With Us</h4>
+                <div class="flex justify-center space-x-6 mb-8">
+                    <a href="#" class="interactive-card">
+                        <svg width="40" height="40" viewBox="0 0 100 100">
+                            <path d="M50 10 L90 50 L50 90 L10 50 Z" fill="#333"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="interactive-card">
+                        <svg width="40" height="40" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="40" fill="#0077B5"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="interactive-card">
+                        <svg width="40" height="40" viewBox="0 0 100 100">
+                            <path d="M50 10 L90 50 L50 90 L10 50 Z" fill="#1DA1F2"/>
+                        </svg>
+                    </a>
+                </div>
+                <p>© 2025 Stellar Horizon. All rights reserved.</p>
+            </div>
+        </footer>
+        <script>
+            class AdvancedInteractiveExperience {
+                constructor() {
+                    this.initCosmicBackground();
+                    this.initScrollProgress();
+                    this.initThemeToggle();
+                    this.initInteractiveElements();
+                    this.initParticleAnimation();
+                    this.initFormValidation();
+                    this.initResponsiveNavigation();
+                    this.initIntersectionObservers();
+                }
+    
+                initCosmicBackground() {
+                    const background = document.getElementById('cosmicBackground');
+                    const particleCount = window.innerWidth < 768 ? 100 : 300;
+    
+                    for (let i = 0; i < particleCount; i++) {
+                        const particle = document.createElement('div');
+                        particle.classList.add('particle');
+                        
+                        particle.style.width = `${Math.random() * 5}px`;
+                        particle.style.height = particle.style.width;
+                        particle.style.top = `${Math.random() * 100}%`;
+                        particle.style.left = `${Math.random() * 100}%`;
+                        particle.style.opacity = Math.random();
+                        
+                        background.appendChild(particle);
+                    }
+                }
+    
+                initScrollProgress() {
+                    const scrollProgress = document.getElementById('scrollProgress');
+                    
+                    window.addEventListener('scroll', () => {
+                        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                        const scrolled = (winScroll / height) * 100;
+                        
+                        scrollProgress.style.width = `${scrolled}%`;
+                    });
+                }
+    
+                initThemeToggle() {
+                    const themeToggle = document.getElementById('themeToggle');
+                    const toggleCircle = themeToggle.querySelector('.theme-toggle-circle');
+                    let isDarkMode = true;
+    
+                    themeToggle.addEventListener('click', () => {
+                        isDarkMode = !isDarkMode;
+                        
+                        if (isDarkMode) {
+                            document.body.classList.remove('dark-mode');
+                            toggleCircle.style.transform = 'translateX(0)';
+                        } else {
+                            document.body.classList.add('dark-mode');
+                            toggleCircle.style.transform = 'translateX(30px)';
+                        }
+                    });
+                }
+    
+                initInteractiveElements() {
+                    const interactiveElements = document.querySelectorAll('.interactive-card');
+                    
+                    interactiveElements.forEach(element => {
+                        element.addEventListener('mouseenter', (e) => {
+                            e.target.style.transform = 'scale(1.05) rotateX(10deg)';
+                            e.target.style.boxShadow = '0 25px 50px rgba(0,0,0,0.2)';
+                        });
+    
+                        element.addEventListener('mouseleave', (e) => {
+                            e.target.style.transform = 'scale(1) rotateX(0)';
+                            e.target.style.boxShadow = 'none';
+                        });
+                    });
+                }
+    
+                initParticleAnimation() {
+                    const particles = document.querySelectorAll('.particle');
+                    
+                    particles.forEach(particle => {
+                        particle.style.animationDuration = `${3 + Math.random() * 5}s`;
+                        particle.style.animationDelay = `${Math.random() * 2}s`;
+                    });
+                }
+    
+                initFormValidation() {
+                    const form = document.querySelector('form');
+                    const inputs = form.querySelectorAll('input, textarea');
+    
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        let isValid = true;
+    
+                        inputs.forEach(input => {
+                            if (!input.value.trim()) {
+                                input.classList.add('border-red-500');
+                                isValid = false;
+                            } else {
+                                input.classList.remove('border-red-500');
+                            }
+                        });
+    
+                        if (isValid) {
+                            this.submitForm(Object.fromEntries(new FormData(form)));
+                        }
+                    });
+                }
+    
+                submitForm(formData) {
+                    // Simulated form submission
+                    console.log('Form Submitted:', formData);
+                    alert('Thank you for your message! We will get back to you soon.');
+                }
+    
+                initResponsiveNavigation() {
+                    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+                    const body = document.body;
+                    const responsiveNav = document.querySelector('.responsive-nav');
+    
+                    if (mobileMenuToggle) {
+                        mobileMenuToggle.addEventListener('click', () => {
+                            body.classList.toggle('mobile-menu-open');
+                        });
+                    }
+    
+                    // Close menu when clicking outside
+                    document.addEventListener('click', (event) => {
+                        if (mobileMenuToggle && 
+                            !mobileMenuToggle.contains(event.target) && 
+                            !responsiveNav.contains(event.target)) {
+                            body.classList.remove('mobile-menu-open');
+                        }
+                    });
+                }
+    
+                initIntersectionObservers() {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                            }
+                        });
+                    }, { threshold: 0.1 });
+    
+                    document.querySelectorAll('section').forEach(section => {
+                        observer.observe(section);
+                    });
+                }
+            }
+    
+            // Initialize advanced interactive experience
+            document.addEventListener('DOMContentLoaded', () => {
+                new AdvancedInteractiveExperience();
+            });
+        </script>
+    </body>
+    </html>    
