@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ultimate Advanced Marquee System</title>
+    <style>
+        :root {
+            --marquee-primary-color: #2c3e50;
+            --marquee-secondary-color: #3498db;
+            --marquee-background: #ecf0f1;
+            --marquee-text-color: #333;
+            --marquee-border-radius: 12px;
+            --marquee-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background:black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .ultimate-marquee-container {
+            width: 100%;
+            max-width: 1200px;
+            position: relative;
+            overflow: hidden;
+            background: var(--marquee-background);
+            border-radius: var(--marquee-border-radius);
+            box-shadow: var(--marquee-shadow);
+            border: 2px solid var(--marquee-primary-color);
+        }
+
+        .marquee-wrapper {
+            display: flex;
+            overflow: hidden;
+            user-select: none;
+            position: relative;
+        }
+
+        .marquee-track {
+            display: flex;
+            animation: marqueeAnimation linear infinite;
+            width: max-content;
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .marquee-item:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            transform: scale(1.05);
+        }
+
+        .marquee-item-icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .marquee-item-badge {
+            background-color: var(--marquee-secondary-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+
+        @keyframes marqueeAnimation {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .marquee-item {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>
+    <div id="ultimateMarquee" class="ultimate-marquee-container"></div>
+
+    <script>
+    class UltimateMarquee {
+        constructor(config = {}) {
+            // Advanced Configuration Options
+            this.defaultConfig = {
+                container: 'ultimateMarquee',
+                items: [],
+                speed: 50,
+                direction: 'left',
+                pauseOnHover: true,
+                responsive: true,
+                theme: 'default',
+                customClasses: {},
+                interactions: {
+                    click: null,
+                    hover: null
+                }
+            };
+
+            // Merge configurations
+            this.config = this.deepMerge(this.defaultConfig, config);
+            this.container = document.getElementById(this.config.container);
+            
+            // Initialize marquee
+            this.init();
+        }
+
+        // Deep merge utility method
+        deepMerge(target, source) {
+            const output = Object.assign({}, target);
+            if (this.isObject(target) && this.isObject(source)) {
+                Object.keys(source).forEach(key => {
+                    if (this.isObject(source[key])) {
+                        if (!(key in target))
+                            Object.assign(output, { [key]: source[key] });
+                        else
+                            output[key] = this.deepMerge(target[key], source[key]);
+                    } else {
+                        Object.assign(output, { [key]: source[key] });
+                    }
+                });
+            }
+            return output;
+        }
+
+        // Check if value is an object
+        isObject(item) {
+            return (item && typeof item === 'object' && !Array.isArray(item));
+        }
+
+        // Initialize marquee
+        init() {
+            this.createMarqueeStructure();
+            this.applyTheme();
+            this.setupInteractions();
+        }
+
+        // Create marquee DOM structure
+        createMarqueeStructure() {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'marquee-wrapper';
+
+            const track = document.createElement('div');
+            track.className = 'marquee-track';
+
+            // Duplicate items for continuous animation
+            const items = [...this.config.items, ...this.config.items];
+            
+            items.forEach(item => {
+                const marqueeItem = this.createMarqueeItem(item);
+                track.appendChild(marqueeItem);
+            });
+
+            wrapper.appendChild(track);
+            this.container.appendChild(wrapper);
+
+            // Set animation properties
+            this.setAnimationProperties(track);
+        }
+
+        // Create individual marquee item
+        createMarqueeItem(itemData) {
+            const item = document.createElement('div');
+            item.className = 'marquee-item';
+
+            // Support for complex item configurations
+            if (typeof itemData === 'object') {
+                // Icon support
+                if (itemData.icon) {
+                    const icon = document.createElement('span');
+                    icon.className = `marquee-item-icon ${itemData.icon}`;
+                    item.appendChild(icon);
+                }
+
+                // Text content
+                const text = document.createElement('span');
+                text.textContent = itemData.text || '';
+                item.appendChild(text);
+
+                // Badge support
+                if (itemData.badge) {
+                    const badge = document.createElement('span');
+                    badge.className = 'marquee-item-badge';
+                    badge.textContent = itemData.badge;
+                    item.appendChild(badge);
+                }
+
+                // Custom classes
+                if (itemData.classes) {
+                    item.classList.add(...itemData.classes);
+                }
+            } else {
+                item.textContent = itemData;
+            }
+
+            return item;
+        }
+
+        // Set animation properties
+        setAnimationProperties(track) {
+            track.style.animationDuration = `${this.config.speed}s`;
+            
+            if (this.config.direction === 'right') {
+                track.style.animationDirection = 'reverse';
+            }
+        }
+
+        // Apply theme
+        applyTheme() {
+            const themes = {
+                default: {
+                    primaryColor: '#2c3e50',
+                    secondaryColor: '#3498db',
+                    background: '#ecf0f1'
+                },
+                dark: {
+                    primaryColor: '#34495e',
+                    secondaryColor: '#2980b9',
+                    background: '#2c3e50'
+                }
+            };
+
+            const selectedTheme = themes[this.config.theme] || themes.default;
+            
+            this.container.style.setProperty('--marquee-primary-color', selectedTheme.primaryColor);
+            this.container.style.setProperty('--marquee-secondary-color', selectedTheme.secondaryColor);
+            this.container.style.setProperty('--marquee-background', selectedTheme.background);
+        }
+
+        // Setup interactions
+        setupInteractions() {
+            if (this.config.pauseOnHover) {
+                this.container.addEventListener('mouseenter', () => {
+                    const track = this.container.querySelector('.marquee-track');
+                    track.style.animationPlayState = 'paused';
+                });
+
+                this.container.addEventListener('mouseleave', () => {
+                    const track = this.container.querySelector('.marquee-track');
+                    track.style.animationPlayState = 'running';
+                });
+            }
+        }
+    }
+
+    // Example Usage
+    document.addEventListener('DOMContentLoaded', () => {
+        new UltimateMarquee({
+            items: [
+                { 
+                    text: 'Special Offer', 
+                    icon: 'fa-gift', 
+                    badge: 'New',
+                    classes: ['highlight']
+                },
+                'Free Shipping Worldwide',
+                { 
+                    text: 'Summer Sale', 
+                    badge: '50% OFF' 
+                },
+                'Join Our Community'
+            ],
+            speed: 30,
+            direction: 'left',
+            theme: 'default',
+            pauseOnHover: true
+        });
+    });
+    </script>
+</body>
+</html>

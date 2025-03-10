@@ -2,479 +2,1026 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stellar Horizon - Next-Generation Digital Experience</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <title>QUANTUM DIGITAL EXPERIENCE</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --dark-navy: #0A192F;
-            --deep-space-blue: #112240;
-            --neon-cyan: #64FFDA;
-            --soft-white: #E6F1FF;
-            --gradient-primary: linear-gradient(135deg, #6A11CB 0%, #2575FC 100%);
+            --primary-color: #00f3bf;
+            --secondary-color: #ff4da6;
+            --bg-dark: #0a0a0f;
+            --quantum-primary: #00f3bf;
+            --quantum-secondary: #ff4da6;
+            --quantum-dark: #2a2a3084;
+            --quantum-light: #1a1a2e;
+            --my-color:#833ab4;
+            --primary-gradient: linear-gradient(45deg, #4a6cf7, #7a92ff);
+            --secondary-gradient: linear-gradient(45deg, #4acdf7, #76e4ff);
+            --enterprise-gradient: linear-gradient(45deg, #ff6b6b, #ff9a9a);
+            --background-color: #f4f6fd;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+        
         }
 
         * {
+            * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--quantum-light) var(--my-color);
+        }
         }
 
         body {
-            background-color: black;
-            color: var(--soft-white);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            line-height: 1.6;
+            font-family: 'Space Grotesk', sans-serif;
+            background:black;
+            color: white;
             overflow-x: hidden;
         }
 
-        /* Cosmic Background */
-        .cosmic-background {
+        .quantum-header {
             position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            background: transparent;
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* QUANTUM LOGO */
+        .quantum-logo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            perspective: 1000px;
+            transition: all 0.3s ease;
+        }
+
+        .logo-icon {
+            font-size: 40px;
+            color: var(--quantum-primary);
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+        }
+
+        .logo-text {
+            margin-left: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--quantum-primary), var(--quantum-secondary));
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -1px;
+        }
+
+        /* NAVIGATION */
+        .quantum-nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-link {
+            position: relative;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(45deg, var(--quantum-primary), var(--quantum-secondary));
+            transition: all 0.4s ease;
+        }
+
+        .nav-link:hover::before {
+            left: 0;
+        }
+
+        .nav-link:hover {
+            color: var(--quantum-primary);
+            transform: scale(1.05);
+        }
+
+        /* INTERACTIVE BUTTONS */
+        .header-actions {
+         
+            border-radius: 1rem 1rem;
+            display: flex;
+            align-items: center;
+          
+        }
+
+        .quantum-button {
+            position: relative;
+            padding: 1rem 1rem;
+            background: transparent;
+            border: 2px solid  transparent;
+            border-radius: 1rem 1rem;
+            color: #e1306c;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .quantum-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+
+        .quantum-button:hover::before {
+            left: 0;
+        }
+
+        .quantum-button:hover {
+            color: white;
+        }
+
+        /* PARTICLE BACKGROUND */
+        .header-particles {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                radial-gradient(circle at 30% 30%, transparent, transparent 50%),
-                radial-gradient(circle at 70% 70%, transparent, transparent 50%);
-            z-index: -2;
             pointer-events: none;
+            overflow: hidden;
         }
 
-        /* Particle Animation */
         .particle {
             position: absolute;
-            background: linear-gradient(to right, rgba(100,255,218,0.5), rgba(37,117,252,0.5));
+            background: rgba(255,255,255,0.1);
             border-radius: 50%;
-            pointer-events: none;
-            animation: particle-float 5s infinite alternate;
+            opacity: 0.5;
         }
 
-        @keyframes particle-float {
-            0% { transform: translateY(0) scale(0.8); }
-            100% { transform: translateY(-50px) scale(1.2); }
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .quantum-header {
+                flex-direction: column;
+                height: auto;
+                padding: 15px 5%;
+            }
+
+            .quantum-nav {
+                margin-top: 15px;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
         }
 
-        /* Advanced Navigation */
-        .sticky-nav {
-            position: fixed;
+
+        .parallax-text-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        .text-layer {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s ease;
+        }
+
+        .text-content {
+            font-size: 15vw;
+            font-weight: 900;
+            text-transform: uppercase;
+            white-space: nowrap;
+            user-select: none;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Layer Specific Styles */
+        .layer-1 {
+            transform: translateZ(-300px) scale(2);
+            margin-left: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--quantum-dark), var(--quantum-light));
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -1px;
+            
+        }
+
+        .layer-2 {
+            transform: translateZ(-150px) scale(1.5);
+            margin-left: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--quantum-primary), var(--quantum-secondary));
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -1px;
+           
+        }
+
+      
+
+        /* SOCIAL MEDIA SECTION - ENHANCED */
+        .social-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            overflow: hidden;
+        }
+
+        .social-content {
+            text-align: center;
+            z-index: 10;
+        }
+
+        .social-title {
+            font-size: 4rem;
+            margin-bottom: 50px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .social-logo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            perspective: 1000px;
+        }
+
+        .social-logo {
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-logo::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            background-color:transparent;
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            transition: all 0.3s ease;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            transform: translateZ(-1px);
         }
 
-        /* Interactive Elements */
-        .interactive-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-style: preserve-3d;
+        .social-logo i {
+            font-size: 4rem;
+            color: white;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.3s ease;
         }
 
-        .interactive-card:hover {
-            transform: scale(1.05) rotateX(10deg);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        /* Platform Specific Colors */
+        .facebook { background: #3b5998; }
+        .twitter { background: #1da1f2; }
+        .instagram { 
+            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d); 
+        }
+        .linkedin { background: #0077b5; }
+
+        /* Hover Effects */
+        .social-logo:hover {
+            transform: 
+                scale(1.1) 
+                rotateX(15deg) 
+                rotateY(15deg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        /* Advanced Scroll Indicator */
-        .scroll-progress {
-            position: fixed;
+        .social-logo:hover i {
+            transform: scale(1.2) rotate(360deg);
+        }
+
+        /* Particle Background */
+        .particle-bg {
+            position: absolute;
             top: 0;
             left: 0;
-            width: 0;
-            height: 4px;
-            background: linear-gradient(to right, var(--neon-cyan), grey);
-            z-index: 1100;
-            transition: width 0.2s ease;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        /* Responsive Grid */
-        .advanced-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        /* Dark Mode Toggle */
-        .theme-toggle {
-            position: relative;
-            width: 60px;
-            height: 30px;
-            background:transparent;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .theme-toggle-circle {
+        .particle {
             position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 24px;
-            height: 24px;
-            background: gold;
+            background: rgba(255,255,255,0.2);
             border-radius: 50%;
-            transition: all 0.3s ease;
+            opacity: 0.5;
         }
 
-        .dark-mode {
-            background-color: #ffffff;
-            color: var(--dark-navy);
+
+
+        .subscription-container {
+            display: flex;
+            gap: 40px;
+            align-items: center;
         }
 
-        /* Responsive Breakpoints */
-        @media (max-width: 768px) {
-            .mobile-column {
-                flex-direction: column;
-            }
-
-            .responsive-nav {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background-color: var(--dark-navy);
-            }
-
-            .mobile-menu-open .responsive-nav {
-                display: block;
-            }
+        .plan {
+            position: sticky;
+            background: transparent;
+            border-radius: 25px;
+            width: 400px;
+            padding: 40px;
+            box-shadow: 0 0 15px purple;
+            transition: all 0.6s ease;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            border-top: 5px solid transparent;
         }
 
-        /* Additional Advanced Styles */
-        .parallax-section {
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
+        .plan:hover {
+            
+            box-shadow: 0 40px 80px rgba(74, 108, 247, 0.15);
         }
 
-        .glass-morphism {
+        .plan-header {
+            
+            display: sticky;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .plan-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary)
+;
+        }
+
+        .plan-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(74, 108, 247, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgb(251, 3, 251);
+            font-size: 35px;
+            transition: transform 0.3s ease;
+        }
+
+        .plan:hover .plan-icon {
+            transform: rotate(360deg);
+        }
+
+        .price-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .price {
+            font-size: 60px;
+            font-weight: 900;
+            background: white;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .billing-cycle {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .features li {
+
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: grey;
+            font-weight: 700;
+        }
+
+        :hover .features li{
+            background: transparent;
+            color: auto;
+            padding: 1rem 1rem;
+            border: 1px solid transparent;
+            border-radius: 1rem 1rem;
+            transform: scale(1.1);
+            transition-duration:1s ;
+            
+        }
+
+        .features li i {
+            margin-right: 15px;
+            color: #2ecc71;
+            font-size: 20px;
+        }
+
+        .btn-subscribe {
+            width: 100%;
+            padding: 18px;
+            border: 1px solid white;
+            border-radius: 1rem 1rem;
+            font-weight: 600;
+            font-size: 26px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .starter .btn-subscribe {
+            background: transparent;
+            color: #4a6cf7;
+        }
+
+        .professional .btn-subscribe {
+            background: transparent;
+            color:#76e4ff;
+        }
+
+        .enterprise .btn-subscribe {
+            background: transparent;
+            color: #ff6b6b;
+        }
+
+        .btn-subscribe::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: 2px solid white;
+            border-radius: 1rem 1rem;
+            transition: all 0.4s ease;
+        }
+
+        .btn-subscribe:hover::before {
+            left: 0;
+        }
+
+        .starter { border-top-color: #4a6cf7; }
+        .professional { border-top-color: #4acdf7; }
+        .enterprise { border-top-color: #ff6b6b; }
+
+        .plan-badge {
+            position: absolute;
+            top: 20px;
+            right: -50px;
+            background: #ffc107;
+            color: white;
+            padding: 5px 30px;
+            transform: rotate(45deg);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        
+        .pallelex-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
             background: transparent;
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            border: 1px solid transparent;
+            box-shadow: 0 0 15px #833ab4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            z-index: 1000;
+            border-top: 2px solid var(--primary-color);
         }
 
-        .neon-border {
-            border: 2px solid transparent;
-            border-image: linear-gradient(to right, var(--neon-cyan), #2575FC);
-            border-image-slice: 1;
+        .footer-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
         }
+
+        .social-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .social-link {
+            position: relative;
+            color: var(--primary-color);
+            font-size: 24px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--hover-color);
+            transform: translateY(-3px);
+        }
+
+        .social-link:hover::before {
+            width: 100%;
+        }
+
+        .contact-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .contact-email {
+            color: var(--text-color);
+            font-weight: 500;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-email i {
+            color: var(--primary-color);
+        }
+
+        .contact-email:hover {
+            color: #833ab4;
+        }
+
+        .copyright {
+            color: var(--text-color);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .copyright i {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .pallelex-footer {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: transparent;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+
     </style>
 </head>
 <body>
-    <!-- Scroll Progress Indicator -->
-    <div class="scroll-progress" id="scrollProgress"></div>
+    <header class="quantum-header" id="quantumHeader">
+        <!-- Particle Background -->
+        <div class="header-particles" id="particleContainer"></div>
 
-    <!-- Cosmic Background -->
-    <div class="cosmic-background" id="cosmicBackground"></div>
-
-    <!-- Advanced Sticky Navigation -->
-    <header class="sticky-nav">
-        <nav class="container mx-auto flex justify-between items-center p-4">
+        <!-- Logo Section -->
+        <div class="quantum-logo">
+           <h2>
+            <span class="logo-text"><sub>SMILE</sub>X</span>
+           </h2>
            
-                <h1 class="text-2xl font-bold">Smile X</h1>
-            </div>
+        </div>
 
-            <!-- Theme Toggle -->
-            <div class="theme-toggle" id="themeToggle">
-                <div class="theme-toggle-circle"></div>
-            </div>
+        <!-- Navigation -->
+        <nav class="quantum-nav">
+           
         </nav>
+
+        <!-- Action Buttons -->
+        <div class="header-actions">
+            <button class="quantum-button">HOVER ME</button>
+        </div>
     </header>
 
-        <!-- Main Content -->
-        <main class="container mx-auto px-4 pt-20">
-            <!-- Hero Section -->
-            <section id="home" class="min-h-screen flex items-center justify-center mobile-column parallax-section">
-                <div class="text-center glass-morphism p-10">
-                    <h1 class="text-5xl font-bold mb-6 animate__animated animate__fadeIn">
-                        Explore Infinite Possibilities
-                    </h1>
-                    <p class="text-xl mb-8 animate__animated animate__fadeInUp">
-                        Transforming Digital Experiences with Cutting-Edge Technologies
-                    </p>
-                    <div class="space-x-4">
-                        <button class="interactive-card bg-neon-cyan text-dark-navy px-6 py-3 rounded-lg neon-border">
-                            Get Started
-                        </button>
-                        <button class="interactive-card border-2 border-neon-cyan text-neon-cyan px-6 py-3 rounded-lg">
-                            Learn More
-                        </button>
-                    </div>
-                </div>
-            </section>
-    
-            <!-- Features Section -->
-            <section id="features" class="py-20">
-                <h2 class="text-4xl text-center mb-12">
-                    Our Innovative Features
-                </h2>
-                <div class="advanced-grid">
-                    <div class="interactive-card bg-deep-space-blue p-6 rounded-lg glass-morphism">
-                        <svg width="50" height="50" viewBox="0 0 100 100" class="mb-4">
-                            <circle cx="50" cy="50" r="40" fill="url(#techGradient1)"/>
-                            <path d="M30 40 L70 40 L70 60 L30 60 Z" fill="rgba(255,255,255,0.5)"/>
-                            <defs>
-                                <linearGradient id="techGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#64FFDA" />
-                                    <stop offset="100%" style="stop-color:#2575FC" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                        <h3 class="text-2xl mb-4 text-neon-cyan">Advanced Technology</h3>
-                        <p>Cutting-edge web technologies for immersive experiences</p>
-                    </div>
-                    <div class="interactive-card bg-deep-space-blue p-6 rounded-lg glass-morphism">
-                        <svg width="50" height="50" viewBox="0 0 100 100" class="mb-4">
-                            <circle cx="50" cy="50" r="40" fill="url(#techGradient2)"/>
-                            <path d="M35 35 L65 35 L65 65 L35 65 Z" fill="rgba(255,255,255,0.5)"/>
-                            <defs>
-                                <linearGradient id="techGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#64FFDA" />
-                                    <stop offset="100%" style="stop-color:#2575FC" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                        <h3 class="text-2xl mb-4 text-neon-cyan">Performance Optimized</h3>
-                        <p>Lightning-fast loading and smooth interactions</p>
-                    </div>
-                    <div class="interactive-card bg-deep-space-blue p-6 rounded-lg glass-morphism">
-                        <svg width="50" height="50" viewBox="0 0 100 100" class="mb-4">
-                            <circle cx="50" cy="50" r="40" fill="url(#techGradient3)"/>
-                            <path d="M25 40 Q50 60 75 40" stroke="rgba(255,255,255,0.5)" fill="none" stroke-width="5"/>
-                            <defs>
-                                <linearGradient id="techGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#64FFDA" />
-                                    <stop offset="100%" style="stop-color:#2575FC" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                        <h3 class="text-2xl mb-4 text-neon-cyan">Responsive Design</h3>
-                        <p>Seamless experience across all devices</p>
-                    </div>
-                </div>
-            </section>
-    
-            <!-- Technologies Section -->
-            <section id="technologies" class="py-20">
-                <h2 class="text-4xl text-center mb-12">
-                    Our Technology Stack
-                </h2>
-                <div class="advanced-grid">
-                    <div class="interactive-card bg-deep-space-blue p-6 rounded-lg glass-morphism flex flex-col items-center">
-                        <svg width="80" height="80" viewBox="0 0 100 100" class="mb-4">
-                            <path d="M50 10 L90 50 L50 90 L10 50 Z" fill="#F7DF1E"/>
-                        </svg>
-                        <h3 class="text-2xl mb-4 text-neon-cyan">JavaScript</h3>
-                        <p class="text-center">Advanced client-side scripting</p>
-                    </div>
-                    <div class="interactive-card bg-deep-space-blue p-6 rounded-lg glass-morphism flex flex-col items-center">
-                        <svg width="80" height="80" viewBox="0 0 100 100" class="mb-4">
-                            <circle cx="50" cy="50" r="40" fill="#61DAFB"/>
-                            <path d="M50 40 Q60 50 50 60" stroke="white" fill="none" stroke-width="3"/>
-                        </svg>
-                        <h3 class="text-2xl mb-4 text-neon-cyan">React</h3>
-                        <p class="text-center">Component-based UI framework</p>
-                    </div>
-                    <div class="interactive-card bg-deep-space-blue p-6 rounded-lg glass-morphism flex flex-col items-center">
-                        <svg width="80" height="80" viewBox="0 0 100 100" class="mb-4">
-                            <path d="M50 10 L90 50 L50 90 L10 50 Z" fill="#764ABC"/>
-                        </svg>
-                        <h3 class="text-2xl mb-4 text-neon-cyan">Redux</h3>
-                        <p class="text-center">State management solution</p>
-                    </div>
-                </div>
-            </section>
-    
-          
-    
-        <!-- Footer -->
-        <footer class="bg-deep-space-blue py-12">
-            <div class="container mx-auto text-center">
-                <h4 class="text-3xl mb-6">Connect With Us</h4>
-                <div class="flex justify-center space-x-6 mb-8">
-                    <a href="#" class="interactive-card">
-                        <svg width="40" height="40" viewBox="0 0 100 100">
-                            <path d="M50 10 L90 50 L50 90 L10 50 Z" fill="#333"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="interactive-card">
-                        <svg width="40" height="40" viewBox="0 0 100 100">
-                            <circle cx="50" cy="50" r="40" fill="#0077B5"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="interactive-card">
-                        <svg width="40" height="40" viewBox="0 0 100 100">
-                            <path d="M50 10 L90 50 L50 90 L10 50 Z" fill="#1DA1F2"/>
-                        </svg>
-                    </a>
-                </div>
-                <p>© 2025 Stellar Horizon. All rights reserved.</p>
+
+    <div class="parallax-text-container" id="parallaxContainer">
+        <div class="text-layer layer-1">
+            <div class="text-content">X</div>
+        </div>
+        <div class="text-layer layer-2">
+            <div class="text-content">SMILE</div>
+        </div>
+       
+    </div>
+
+    <div class="subscription-container">
+        <!-- Starter Plan -->
+        <div class="plan starter">
+            <div class="plan-badge">Best Value</div>
+            <div class="plan-header">
+                <h2 class="plan-title">Starter</h2>
+                <div class="plan-icon"><i class="fas fa-rocket"></i></div>
             </div>
-        </footer>
-        <script>
-            class AdvancedInteractiveExperience {
-                constructor() {
-                    this.initCosmicBackground();
-                    this.initScrollProgress();
-                    this.initThemeToggle();
-                    this.initInteractiveElements();
-                    this.initParticleAnimation();
-                    this.initFormValidation();
-                    this.initResponsiveNavigation();
-                    this.initIntersectionObservers();
-                }
-    
-                initCosmicBackground() {
-                    const background = document.getElementById('cosmicBackground');
-                    const particleCount = window.innerWidth < 768 ? 100 : 300;
-    
-                    for (let i = 0; i < particleCount; i++) {
-                        const particle = document.createElement('div');
-                        particle.classList.add('particle');
-                        
-                        particle.style.width = `${Math.random() * 5}px`;
-                        particle.style.height = particle.style.width;
-                        particle.style.top = `${Math.random() * 100}%`;
-                        particle.style.left = `${Math.random() * 100}%`;
-                        particle.style.opacity = Math.random();
-                        
-                        background.appendChild(particle);
-                    }
-                }
-    
-                initScrollProgress() {
-                    const scrollProgress = document.getElementById('scrollProgress');
-                    
-                    window.addEventListener('scroll', () => {
-                        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-                        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                        const scrolled = (winScroll / height) * 100;
-                        
-                        scrollProgress.style.width = `${scrolled}%`;
-                    });
-                }
-    
-                initThemeToggle() {
-                    const themeToggle = document.getElementById('themeToggle');
-                    const toggleCircle = themeToggle.querySelector('.theme-toggle-circle');
-                    let isDarkMode = true;
-    
-                    themeToggle.addEventListener('click', () => {
-                        isDarkMode = !isDarkMode;
-                        
-                        if (isDarkMode) {
-                            document.body.classList.remove('dark-mode');
-                            toggleCircle.style.transform = 'translateX(0)';
-                        } else {
-                            document.body.classList.add('dark-mode');
-                            toggleCircle.style.transform = 'translateX(30px)';
-                        }
-                    });
-                }
-    
-                initInteractiveElements() {
-                    const interactiveElements = document.querySelectorAll('.interactive-card');
-                    
-                    interactiveElements.forEach(element => {
-                        element.addEventListener('mouseenter', (e) => {
-                            e.target.style.transform = 'scale(1.05) rotateX(10deg)';
-                            e.target.style.boxShadow = '0 25px 50px rgba(0,0,0,0.2)';
-                        });
-    
-                        element.addEventListener('mouseleave', (e) => {
-                            e.target.style.transform = 'scale(1) rotateX(0)';
-                            e.target.style.boxShadow = 'none';
-                        });
-                    });
-                }
-    
-                initParticleAnimation() {
-                    const particles = document.querySelectorAll('.particle');
-                    
-                    particles.forEach(particle => {
-                        particle.style.animationDuration = `${3 + Math.random() * 5}s`;
-                        particle.style.animationDelay = `${Math.random() * 2}s`;
-                    });
-                }
-    
-                initFormValidation() {
-                    const form = document.querySelector('form');
-                    const inputs = form.querySelectorAll('input, textarea');
-    
-                    form.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        let isValid = true;
-    
-                        inputs.forEach(input => {
-                            if (!input.value.trim()) {
-                                input.classList.add('border-red-500');
-                                isValid = false;
-                            } else {
-                                input.classList.remove('border-red-500');
-                            }
-                        });
-    
-                        if (isValid) {
-                            this.submitForm(Object.fromEntries(new FormData(form)));
-                        }
-                    });
-                }
-    
-                submitForm(formData) {
-                    // Simulated form submission
-                    console.log('Form Submitted:', formData);
-                    alert('Thank you for your message! We will get back to you soon.');
-                }
-    
-                initResponsiveNavigation() {
-                    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-                    const body = document.body;
-                    const responsiveNav = document.querySelector('.responsive-nav');
-    
-                    if (mobileMenuToggle) {
-                        mobileMenuToggle.addEventListener('click', () => {
-                            body.classList.toggle('mobile-menu-open');
-                        });
-                    }
-    
-                    // Close menu when clicking outside
-                    document.addEventListener('click', (event) => {
-                        if (mobileMenuToggle && 
-                            !mobileMenuToggle.contains(event.target) && 
-                            !responsiveNav.contains(event.target)) {
-                            body.classList.remove('mobile-menu-open');
-                        }
-                    });
-                }
-    
-                initIntersectionObservers() {
-                    const observer = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('animate__animated', 'animate__fadeInUp');
-                            }
-                        });
-                    }, { threshold: 0.1 });
-    
-                    document.querySelectorAll('section').forEach(section => {
-                        observer.observe(section);
-                    });
-                }
+            <div class="price-container">
+                <div class="price">$19.99</div>
+                <div class="billing-cycle">Per Month</div>
+            </div>
+            <ul class="features">
+                <li><i class="fas fa-check-circle"></i>Regular badge</li>
+                <li><i class="fas fa-check-circle"></i>No Ads</li>
+                <li><i class="fas fa-check-circle"></i>Rare premium boasters</li>
+                <li><i class="fas fa-check-circle"></i>6hr customer support</li>
+                <li><i class="fas fa-check-circle"></i>Have email account active on one device </li>
+                <li><i class="fas fa-check-circle"></i>Well-designed premium package</li>
+        
+             
+            </ul>
+            <button class="btn-subscribe">Available Now</button>
+        </div>
+
+        <!-- Professional Plan -->
+        <div class="plan professional">
+            <div class="plan-badge">Most Popular</div>
+            <div class="plan-header">
+                <h2 class="plan-title">Professional</h2>
+                <div class="plan-icon"><i class="fas fa-chart-line"></i></div>
+            </div>
+            <div class="price-container">
+                <div class="price">$46.99</div>
+                <div class="billing-cycle">Per Month</div>
+            </div>
+            <ul class="features">
+                <li><i class="fas fa-check-circle"></i>Epic badge</li>
+                <li><i class="fas fa-check-circle"></i>No Ads</li>
+                <li><i class="fas fa-check-circle"></i>Epic premium boasters</li>
+                <li><i class="fas fa-check-circle"></i>Auto-clear storage </li>
+                <li><i class="fas fa-check-circle"></i>18hrs customer support </li>
+                <li><i class="fas fa-check-circle"></i>Have email account active on five device</li>
+                <li> <i class="fas fa-check-circle"></i>Customize premium package</li>
+                <li> <i class="fas fa-check-circle"></i>Disable pop-ups</li>
+            </ul>
+            </ul>
+            <button class="btn-subscribe">Available Now</button>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="plan enterprise">
+            <div class="plan-badge">Custom Solutions</div>
+            <div class="plan-header">
+                <h2 class="plan-title">Enterprise</h2>
+                <div class="plan-icon"><i class="fas fa-globe"></i></div>
+            </div>
+            <div class="price-container">
+        
+            </div>
+            <ul class="features">
+                <ul>
+                <div class="price">$99.99</div>
+                <div class="billing-cycle">Tailored Pricing</div>
+                <ul>
+                <li><i class="fas fa-check-circle"></i>Diamond badge</li>
+                <li><i class="fas fa-check-circle"></i>No ads</li>
+                <li> <i class="fas fa-check-circle"></i>ULtimate premium boasters</li>
+                <li> <i class="fas fa-check-circle"></i>24/7 Premium Support</li>
+                <li><i class="fas fa-check-circle"></i>Have email account active on unlimited device</li>
+                <li><i class="fas fa-check-circle"></i>Awesome premium package</li>
+                <li><i class="fas fa-check-circle"></i>Disable pop ups</li>
+                <li><i class="fas fa-check-circle"></i>+ more features </li>
+                </ul>
+            <button class="btn-subscribe">Available Now</button>
+        </div>
+    </div>
+
+
+
+    <!-- SOCIAL MEDIA SECTION - STANDALONE AND PROMINENT -->
+    <section class="social-section">
+        <!-- Particle Background -->
+        <div class="particle-bg" id="particleContainer"></div>
+        
+        <div class="social-content">
+            <h2 class="social-title">Connect With Us</h2>
+            
+            <div class="social-logo-grid">
+                <div class="social-logo facebook" onclick="openSocialLink('facebook')">
+                    <i class="fab fa-facebook-f"></i>
+                </div>
+                <div class="social-logo twitter" onclick="openSocialLink('twitter')">
+                    <i class="fab fa-twitter"></i>
+                </div>
+                <div class="social-logo instagram" onclick="openSocialLink('instagram')">
+                    <i class="fab fa-instagram"></i>
+                </div>
+                <div class="social-logo linkedin" onclick="openSocialLink('linkedin')">
+                    <i class="fab fa-linkedin-in"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="pallelex-footer">
+        <div class="footer-container">
+            <div class="social-links">
+                <a href="https://linkedin.com/company/pallelex" target="_blank" class="social-link tooltip">
+                    <i class="fab fa-linkedin"></i>
+                    <span class="tooltiptext">LinkedIn</span>
+                </a>
+                <a href="https://twitter.com/pallelex" target="_blank" class="social-link tooltip">
+                    <i class="fab fa-twitter"></i>
+                    <span class="tooltiptext">Twitter</span>
+                </a>
+                <a href="https://instagram.com/pallelex" target="_blank" class="social-link tooltip">
+                    <i class="fab fa-instagram"></i>
+                    <span class="tooltiptext">Instagram</span>
+                </a>
+            </div>
+
+            <div class="contact-section">
+                <a href="mailto:support@pallelex.com" class="contact-email">
+                    <i class="fas fa-envelope"></i>
+                    support@smilex.com
+                </a>
+            </div>
+
+            <div class="copyright">
+                <i class="fas fa-copyright"></i>
+                2025 SMILEX. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+           // Advanced Particle System
+           function createParticleSystem() {
+            const container = document.getElementById('particleContainer');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                // Random Positioning
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+
+                // Random Sizing
+                const size = Math.random() * 10;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+
+                // Animate Particles
+                particle.style.animation = `
+                    float ${5 + Math.random() * 5}s 
+                    infinite 
+                    alternate
+                `;
+
+                container.appendChild(particle);
             }
-    
-            // Initialize advanced interactive experience
-            document.addEventListener('DOMContentLoaded', () => {
-                new AdvancedInteractiveExperience();
+        }
+
+        // Interactive Logo Animation
+        const logoIcon = document.querySelector('.logo-icon');
+        
+        logoIcon.addEventListener('mousemove', (e) => {
+            const rect = logoIcon.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            const angleX = -(e.clientY - centerY) / 20;
+            const angleY = (e.clientX - centerX) / 20;
+
+            logoIcon.style.transform = `
+                perspective(1000px) 
+                rotateX(${angleX}deg) 
+                rotateY(${angleY}deg) 
+                scale(1.1)
+            `;
+        });
+
+        logoIcon.addEventListener('mouseleave', () => {
+            logoIcon.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+        });
+
+        // Parallax Header Movement
+        document.addEventListener('mousemove', (e) => {
+            const header = document.getElementById('quantumHeader');
+            const particles = header.querySelectorAll('.particle');
+
+            particles.forEach(particle => {
+                const speed = 0.1;
+                const x = (e.clientX * speed) / 100;
+                const y = (e.clientY * speed) / 100;
+                
+                particle.style.transform = `translate(${x}px, ${y}px)`;
             });
-        </script>
-    </body>
-    </html>    
+        });
+
+        // Initialize Particle System
+        createParticleSystem();
+
+
+        const container = document.getElementById('parallaxContainer');
+
+// Mouse Movement Parallax
+document.addEventListener('mousemove', (e) => {
+    const { clientX, clientY } = e;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    // Calculate movement
+    const moveX = (clientX - centerX) / 50;
+    const moveY = (clientY - centerY) / 50;
+
+    // Apply to each text layer
+    document.querySelectorAll('.text-layer').forEach((layer, index) => {
+        const multiplier = (index + 1) * 2;
+        layer.style.transform = `
+            translateZ(${-300 + (index * 150)}px) 
+            scale(${2 - (index * 0.3)}) 
+            translate(${-moveX * multiplier}px, ${-moveY * multiplier}px)
+        `;
+    });
+});
+
+// Responsive Resize
+window.addEventListener('resize', () => {
+    document.querySelectorAll('.text-content').forEach(text => {
+        text.style.fontSize = `${15 * (window.innerWidth / 1920)}vw`;
+    });
+});
+
+
+
+
+        // Social Media Link Function
+        function openSocialLink(platform) {
+            const socialLinks = {
+                facebook: 'https://facebook.com',
+                twitter: 'https://twitter.com',
+                instagram: 'https://instagram.com',
+                linkedin: 'https://linkedin.com'
+            };
+            window.open(socialLinks[platform], '_blank');
+        }
+
+        // Particle Generation
+        function createParticles() {
+            const container = document.getElementById('particleContainer');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                // Random positioning
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+
+                // Random sizing
+                const size = Math.random() * 10;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+
+                // Add animation
+                particle.style.animation = `float ${5 + Math.random() * 5}s infinite alternate`;
+
+                container.appendChild(particle);
+            }
+        }
+
+        // Create particles on page load
+        createParticles();
+
+        // Animated particle movement
+        document.addEventListener('mousemove', (e) => {
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                const speed = 0.1;
+                const x = (e.clientX * speed) / 100;
+                const y = (e.clientY * speed) / 100;
+                
+                particle.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+
+            // Optional: Add subtle animations or interactions
+            const socialLinks = document.querySelectorAll('.social-link');
+        socialLinks.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                link.style.transform = 'scale(1.1)';
+            });
+            link.addEventListener('mouseleave', () => {
+                link.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50px); }
+        }
+    </style>
+</body>
+</html>
+
