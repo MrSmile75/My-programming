@@ -2,346 +2,258 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Video Generation Wizard</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Global News Nexus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --text-color: #333;
+            --bg-color: #f4f6f7;
         }
-        .animate-fade-in {
-            animation: fadeIn 0.5s ease-out;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .step-container {
-            transition: all 0.5s ease;
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+        }
+
+        /* Parallax Sections */
+        .parallax-section {
+            position: relative;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        #hero-section {
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                              url('https://source.unsplash.com/1600x900/?news,media');
+        }
+
+        /* Advanced News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .news-card {
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .news-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .news-card img {
+            height: 250px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        /* Advanced Shorts Carousel */
+        #shorts-carousel {
+            background-color: var(--primary-color);
+            padding: 50px 0;
+        }
+
+        /* Responsive Search */
+        #search-section {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 50px 0;
+        }
+
+        /* Advanced Filters */
+        .filter-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-purple-600 to-blue-500 min-h-screen flex items-center justify-center">
-    <div class="container mx-auto px-4">
-        <div id="videoGenerationWizard" class="max-w-2xl mx-auto bg-white shadow-2xl rounded-2xl p-8 animate-fade-in">
-            <!-- Step 1: User Introduction -->
-            <div id="step1" class="step-container">
-                <h1 class="text-4xl font-bold mb-6 text-center text-purple-600">AI Video Generation Wizard</h1>
-                <div class="mb-4">
-                    <input 
-                        type="text" 
-                        id="userName" 
-                        placeholder="Enter your name" 
-                        class="w-full px-4 py-3 border-2 border-purple-200 rounded-lg focus:outline-none focus:border-purple-500"
-                    >
-                </div>
-                <button 
-                    onclick="videoWizard.moveToNextStep(1)" 
-                    class="w-full bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-300"
-                >
-                    Start Your Video Journey
-                </button>
-            </div>
-
-            <!-- Step 2: Video Concept -->
-            <div id="step2" class="step-container hidden">
-                <h2 class="text-2xl mb-6 text-center font-semibold text-gray-800">Video Concept</h2>
-                <textarea 
-                    id="videoConcept" 
-                    rows="4" 
-                    class="w-full px-4 py-3 border-2 border-purple-200 rounded-lg focus:outline-none focus:border-purple-500"
-                    placeholder="Describe your video idea in detail..."
-                ></textarea>
-                <div class="flex justify-between mt-4">
-                    <button 
-                        onclick="videoWizard.moveToPreviousStep(2)" 
-                        class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg"
-                    >
-                        Previous
-                    </button>
-                    <button 
-                        onclick="videoWizard.moveToNextStep(2)" 
-                        class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700"
-                    >
-                        Next
-                    </button>
-                </div>
-            </div>
-
-            <!-- Step 3: Video Style -->
-            <div id="step3" class="step-container hidden">
-                <h2 class="text-2xl mb-6 text-center font-semibold text-gray-800">Choose Video Style</h2>
-                <div class="grid grid-cols-2 gap-4">
-                    <div 
-                        onclick="videoWizard.selectStyle('professional')" 
-                        class="style-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
-                    >
-                        <h3 class="font-semibold">Professional</h3>
-                        <p class="text-sm text-gray-600">Corporate, clean, and polished</p>
-                    </div>
-                    <div 
-                        onclick="videoWizard.selectStyle('storytelling')" 
-                        class="style-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
-                    >
-                        <h3 class="font-semibold">Storytelling</h3>
-                        <p class="text-sm text-gray-600">Narrative-driven, emotional</p>
-                    </div>
-                    <div 
-                        onclick="videoWizard.selectStyle('educational')" 
-                        class="style-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
-                    >
-                        <h3 class="font-semibold">Educational</h3>
-                        <p class="text-sm text-gray-600">Informative, clear, structured</p>
-                    </div>
-                    <div 
-                        onclick="videoWizard.selectStyle('marketing')" 
-                        class="style-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
-                    >
-                        <h3 class="font-semibold">Marketing</h3>
-                        <p class="text-sm text-gray-600">Promotional, engaging</p>
-                    </div>
-                </div>
-                <div class="flex justify-between mt-6">
-                    <button 
-                        onclick="videoWizard.moveToPreviousStep(3)" 
-                        class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg"
-                    >
-                        Previous
-                    </button>
-                    <button 
-                        onclick="videoWizard.moveToNextStep(3)" 
-                        class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700"
-                    >
-                        Next
-                    </button>
-                </div>
-            </div>
-
-            <!-- Step 4: Tone and Emotion -->
-            <div id="step4" class="step-container hidden">
-                <h2 class="text-2xl mb-6 text-center font-semibold text-gray-800">Video Tone</h2>
-                <div class="grid grid-cols-3 gap-4">
-                    <div 
-                        onclick="videoWizard.selectTone('inspirational')" 
-                        class="tone-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
-                    >
-                        <h3 class="font-semibold">Inspirational</h3>
-                    </div>
-                    <div 
-                        onclick="videoWizard.selectTone('serious')" 
-                        class="tone-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
-                    >
-                        <h3 class="font-semibold">Serious</h3>
-                    </div>
-                    <div 
-                        onclick="videoWizard.selectTone('humorous')" 
-                        class="tone-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
-                    >
-                        <h3 class="font-semibold">Humorous</h3>
-                    </div>
-                </div>
-                <div class="flex justify-between mt-6">
-                    <button 
-                        onclick="videoWizard.moveToPreviousStep(4)" 
-                        class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg"
-                    >
-                        Previous
-                    </button>
-                    <button 
-                        onclick="videoWizard.moveToNextStep(4)" 
-                        class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700"
-                    >
-                        Next
-                    </button>
-                </div>
-            </div>
-
-            <!-- Step 5: Duration and Creativity -->
-            <div id="step5" class="step-container hidden">
-                <h2 class="text-2xl mb-6 text-center font-semibold text-gray-800">Video Parameters</h2>
-                <div class="mb-4">
-                    <label class="block mb-2">Video Duration (seconds)</label>
-                    <input 
-                        type="range" 
-                        id="videoDuration" 
-                        min="30" 
-                        max="300" 
-                        value="120" 
-                        class="w-full"
-                    >
-                    <div class="flex justify-between text-sm text-gray-600 mt-2">
-                        <span>30s</span>
-                        <span>Recommended: 120s</span>
-                        <span>300s</span>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <label class="block mb-2">AI Creativity Level</label>
-                    <input 
-                        type="range" 
-                        id="creativityLevel" 
-                        min="0" 
-                        max="10" 
-                        value="5" 
-                        class="w-full"
-                    >
-                    <div class="flex justify-between text-sm text-gray-600 mt-2">
-                        <span>Low</span>
-                        <span>Medium</span>
-                        <span>High</span>
-                    </div>
-                </div>
-                <div class="flex justify-between mt-6">
-                    <button 
-                        onclick="videoWizard.moveToPreviousStep(5)" 
-                        class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg"
-                    >
-                        Previous
-                    </button>
-                    <button 
-                        onclick="videoWizard.generateVideo()" 
-                        class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
-                    >
-                        Generate Video
-                    </button>
-                </div>
-            </div>
-
-            <!-- Result Section -->
-            <div id="resultSection" class="step-container hidden">
-                <div id="videoResult" class="text-center"></div>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Global News Nexus</a>
+            <div class="navbar-nav">
+                <select id="country-selector" class="form-select">
+                    <option value="us">United States</option>
+                    <option value="gb">United Kingdom</option>
+                    <option value="in">India</option>
+                    <!-- More countries -->
+                </select>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <script>
-        class VideoGenerationWizard {
-            constructor() {
-                this.currentStep = 1;
-                this.videoData = {
-                    userName: '',
-                    concept: '',
-                    style: '',
-                    tone: '',
-                    duration: 120,
-                    creativity: 5
-                };
-            }
+    <!-- Hero Parallax Section -->
+    <section id="hero-section" class="parallax-section text-center">
+        <div class="container">
+            <h1>Real-Time Global News</h1>
+            <p>Stay Informed, Stay Connected</p>
+        </div>
+    </section>
 
-            moveToNextStep(currentStep) {
-                // Validate current step
-                if (!this.validateStep(currentStep)) return;
-
-                // Hide current step
-                document.getElementById(`step${currentStep}`).classList.add('hidden');
-                
-                // Move to next step
-                this.currentStep = currentStep + 1;
-                document.getElementById(`step${this.currentStep}`).classList.remove('hidden');
-            }
-
-            moveToPreviousStep(currentStep) {
-                // Hide current step
-                document.getElementById(`step${currentStep}`).classList.add('hidden');
-                
-                // Move to previous step
-                this.currentStep = currentStep - 1;
-                document.getElementById(`step${this.currentStep}`).classList.remove('hidden');
-            }
-
-            validateStep(step) {
-                switch(step) {
-                    case 1:
-                        const userName = document.getElementById('userName').value.trim();
-                        if (!userName) {
-                            alert('Please enter your name');
-                            return false;
-                        }
-                        this.videoData.userName = userName;
-                        return true;
-                    
-                    case 2:
-                        const concept = document.getElementById('videoConcept').value.trim();
-                        if (!concept) {
-                            alert('Please describe your video concept');
-                            return false;
-                        }
-                        this.videoData.concept = concept;
-                        return true;
-                    
-                    case 3:
-                        if (!this.videoData.style) {
-                            alert('Please select a video style');
-                            return false;
-                        }
-                        return true;
-                    
-                    case 4:
-                        if (!this.videoData.tone) {
-                            alert('Please select a video tone');
-                            return false;
-                        }
-                        return true;
-                }
-                return true;
-            }
-
-            selectStyle(style) {
-                this.videoData.style = style;
-                document.querySelectorAll('.style-option').forEach(el => {
-                    el.classList.remove('border-purple-500', 'bg-purple-50');
-                });
-                event.currentTarget.classList.add('border-purple-500', 'bg-purple-50');
-            }
-
-            selectTone(tone) {
-                this.videoData.tone = tone;
-                document.querySelectorAll('.tone-option').forEach(el => {
-                    el.classList.remove('border-purple-500', 'bg-purple-50');
-                });
-                event.currentTarget.classList.add('border-purple-500', 'bg-purple-50');
-            }
-
-            generateVideo() {
-                // Capture final parameters
-                this.videoData.duration = document.getElementById('videoDuration').value;
-                this.videoData.creativity = document.getElementById('creativityLevel').value;
-
-                // Hide current step
-                document.getElementById('step5').classList.add('hidden');
-                
-                // Show result section
-                document.getElementById('resultSection').classList.remove('hidden');
-
-                // Simulate video generation
-                this.simulateVideoGeneration();
-            }
-
-            simulateVideoGeneration() {
-                const resultSection = document.getElementById('videoResult');
-                resultSection.innerHTML = `
-                    <div class="bg-green-50 p-6 rounded-lg">
-                        <h2 class="text-2xl font-bold text-green-600 mb-4">Video Generated Successfully!</h2>
-                        <div class="space-y-3 text-left">
-                            <p><strong>User:</strong> ${this.videoData.userName}</p>
-                            <p><strong>Concept:</strong> ${this.videoData.concept}</p>
-                            <p><strong>Style:</strong> ${this.videoData.style}</p>
-                            <p><strong>Tone:</strong> ${this.videoData.tone}</p>
-                            <p><strong>Duration:</strong> ${this.videoData.duration} seconds</p>
-                            <p><strong>Creativity Level:</strong> ${this.videoData.creativity}/10</p>
-                        </div>
-                        <div class="mt-6 flex space-x-4 justify-center">
-                            <button class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">
-                                View Video
-                            </button>
-                            <button class="bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-600">
-                                Share Video
-                            </button>
-                        </div>
+    <!-- Advanced Search Section -->
+    <section id="search-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="input-group">
+                        <input type="text" id="news-search" class="form-control" 
+                               placeholder="Search global news...">
+                        <button class="btn btn-light" onclick="advancedSearch()">Search</button>
                     </div>
-                `;
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Grid -->
+    <section id="news-container" class="container my-5">
+        <div class="row">
+            <div class="col-md-3 filter-section">
+                <h4>News Filters</h4>
+                <div class="mb-3">
+                    <label>Category</label>
+                    <select id="category-filter" class="form-select">
+                        <option value="">All Categories</option>
+                        <option value="technology">Technology</option>
+                        <option value="business">Business</option>
+                        <option value="entertainment">Entertainment</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Date Range</label>
+                    <input type="date" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div id="news-grid" class="news-grid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shorts Carousel -->
+    <section id="shorts-carousel" class="text-center">
+        <div class="container">
+            <h2 class="text-white mb-4">News Shorts</h2>
+            <div id="shorts-container" class="news-grid"></div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // Advanced News Fetching with Multiple APIs
+        const NEWS_APIS = {
+            newsapi: 'YOUR_NEWS_API_KEY',
+            guardian: 'YOUR_GUARDIAN_API_KEY',
+            nytimes: 'YOUR_NYTIMES_API_KEY'
+        };
+
+        // Advanced Fetch Function with Multi-Source Aggregation
+        async function fetchNews(country = 'us', category = '') {
+            try {
+                // Parallel API Calls
+                const [newsApiResponse, guardianResponse] = await Promise.all([
+                    axios.get(`https://newsapi.org/v2/top-headlines`, {
+                        params: {
+                            country: country,
+                            category: category,
+                            apiKey: NEWS_APIS.newsapi
+                        }
+                    }),
+                    axios.get(`https://content.guardianapis.com/search`, {
+                        params: {
+                            'q': category || country,
+                            'api-key': NEWS_APIS.guardian
+                        }
+                    })
+                ]);
+
+                // Combine and Normalize Results
+                const combinedNews = [
+                    ...newsApiResponse.data.articles,
+                    ...guardianResponse.data.response.results
+                ];
+
+                renderNews(combinedNews);
+            } catch (error) {
+                console.error('News Fetch Error:', error);
             }
         }
 
-        // Initialize the wizard
-        const videoWizard = new VideoGenerationWizard();
+        // Advanced Rendering with Enhanced Details
+        function renderNews(articles) {
+            const newsGrid = document.getElementById('news-grid');
+            newsGrid.innerHTML = '';
+
+            articles.slice(0, 12).forEach(article => {
+                const newsCard = document.createElement('div');
+                newsCard.classList.add('news-card', 'card');
+                newsCard.innerHTML = `
+                    <img src="${article.urlToImage || 'placeholder.jpg'}" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">${article.title}</h5>
+                        <p class="card-text">${article.description || 'No description'}</p>
+                        <div class="d-flex justify-content-between">
+                            <small>${new Date(article.publishedAt).toLocaleDateString()}</small>
+                            <button class="btn btn-sm btn-primary" onclick="openArticle('${article.url}')">Read More</button>
+                        </div>
+                    </div>
+                `;
+                newsGrid.appendChild(newsCard);
+            });
+        }
+
+        // Event Listeners
+        document.getElementById('country-selector').addEventListener('change', (e) => {
+            fetchNews(e.target.value);
+        });
+
+        document.getElementById('category-filter').addEventListener('change', (e) => {
+            fetchNews(
+                document.getElementById('country-selector').value, 
+                e.target.value
+            );
+        });
+
+        // Initial Load
+        fetchNews();
     </script>
 </body>
 </html>
+
