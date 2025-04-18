@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmileX Pricing Solutions</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #6366f1;
@@ -35,9 +36,25 @@
             perspective: 1000px;
         }
 
-        h1{
-            color: gold;
+      
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
         }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, var(--quantum-primary), var(--quantum-));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: gold;
+            text-shadow: 0 0 30px gold;
+            letter-spacing: 2px;
+        }
+
 
         .pricing-container {
             
@@ -46,20 +63,7 @@
             padding: 4rem 2rem;
         }
 
-        .pricing-header {
-            text-align: center;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .pricing-header h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            background: gold;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-        }
+        
 
         .pricing-header p {
             max-width: 800px;
@@ -248,9 +252,9 @@
 <body>
     <h3>
     <div class="pricing-container">
-        <div class="pricing-header">
-            <h1>Pricing Plans</h1>
-            <p>Unlock powerful features to you needs. Enjoyable, scalable, and designed for every user.</p>
+        <div class="header">
+            <h1>SMILEX GOLDEN SUBSCRIPTION DEAL OFFERS</h1>
+            <p>Unlock powerful features to you needs. Enjoyable, scalable, and designed for every user just by paying less to unlock all features.</p>
         </div>
 
         <div class="billing-toggle">
@@ -259,7 +263,7 @@
                     Monthly
                 </div>
                 <div class="toggle-option" data-billing="yearly">
-                    Yearly
+                    1-year(preview)
                 </div>
             </div>
         </div>
@@ -270,7 +274,7 @@
                     <h2 class="plan-name">Starter</h2>
                     <i class="fas fa-rocket"></i>
                 </div>
-                <div class="plan-price" data-monthly="$19.99" data-yearly="$199.99">$19.99</div>
+                <div class="plan-price" data-monthly="$19.99" data-yearly="$228.99">$19.99</div>
                 <div class="plan-features">
                     <ul>
                         <li><i class="fas fa-check-circle"></i>Regular badge</li>
@@ -281,7 +285,7 @@
                         <li><i class="fas fa-check-circle"></i>Well-designed premium package</li>
                     </ul>
                 </div>
-                <a href="#" class="plan-cta">Buy Now</a>
+                <a href="#" class="plan-cta">Buy $19.99</a>
             </div>
 
             <div class="pricing-card recommended">
@@ -289,7 +293,7 @@
                     <h2 class="plan-name">Pro</h2>
                     <i class="fas fa-trophy"></i>
                 </div>
-                <div class="plan-price" data-monthly="$46.99" data-yearly="$496.99">$46.99</div>
+                <div class="plan-price" data-monthly="$46.99" data-yearly="$552.99">$46.99</div>
                 <div class="plan-features">
                     <ul>
                         <li><i class="fas fa-check-circle"></i>Epic badge</li>
@@ -302,7 +306,7 @@
                         <li> <i class="fas fa-check-circle"></i>Disable pop-ups</li>
                     </ul>
                 </div>
-                <a href="#" class="plan-cta">Buy Now</a>
+                <a href="#" class="plan-cta">Buy $46.99</a>
             </div>
 
             <div class="pricing-card">
@@ -310,7 +314,7 @@
                     <h2 class="plan-name">Legend</h2>
                     <i class="fas fa-crown"></i>
                 </div>
-                <div class="plan-price" data-monthly="$99.99" data-yearly="$999.99">$99.99</div>
+                <div class="plan-price" data-monthly="$99.99" data-yearly="$999+">$99.99</div>
                 <div class="plan-features">
                     <ul>
                         <li><i class="fas fa-check-circle"></i>Diamond badge</li>
@@ -323,7 +327,7 @@
                         <li><i class="fas fa-check-circle"></i>+ more features </li>
                     </ul>
                 </div>
-                <a href="#" class="plan-cta">Buy Now</a>
+                <a href="#" class="plan-cta">Buy $99.99</a>
             </div>
         </div>
         <br><br>

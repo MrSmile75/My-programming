@@ -26,6 +26,19 @@
             perspective: 1000px;
         }
 
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            mix-blend-mode: difference;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            transition: width 0.2s, height 0.2s;
+        }
+
         .universe-container {
             position: fixed;
             top: 0;
@@ -139,13 +152,14 @@
     </style>
 </head>
 <body>
+    <div id="cursor"></div>
     <div class="universe-container" id="starField"></div>
     <div class="main-container">
         <div id="welcome-message">Exciting Horizon Awaits</div>
         <div id="teaser-text">
-            Prepare for a transformative journey beyond imagination. 
-            A convergence of possibilities is about to unfold, 
-            revealing secrets that will reshape your understanding of reality.
+            Welcome to SmileX Prepare for a  journey beyond imagination 
+            to experience the best moment ever experience awaiting  you 
+            .
         </div>
         <div id="countdown">10</div>
         <button id="go-button" class="quantum-button" style="display:none;">Let's go</button>
@@ -171,9 +185,12 @@
             }
         }
 
+       
+
+
         // Advanced Personalized Welcome
         function personalizeWelcome() {
-            const username = prompt("Enter your name, Explorer:") || "Traveler";
+            const username = prompt("Enter your name, Explorer:") || "Explorer";
             const welcomeMessage = document.getElementById('welcome-message');
             welcomeMessage.textContent = `Welcome, ${username}`;
         }

@@ -36,7 +36,7 @@
             height: 100%;
             overflow: hidden;
             font-family: 'Arial', sans-serif;
-            background: black;
+            background: white;
         }
 
         
@@ -266,7 +266,7 @@
             </div>
 
             <div class="tech-details">
-                SmileX | Version 2.0
+                SmileX | Version 1.0
             </div>
         </div>
     </div>
@@ -354,149 +354,6 @@ class AdvancedPreloader {
         
       
 
-
-        class AdvancedETradingPlatform {
-            constructor() {
-                this.products = [];
-                this.cart = [];
-                this.notifications = [];
-                this.currentUser = null;
-
-                this.initializeEventListeners();
-                this.loadPersistedData();
-            }
-
-            initializeEventListeners() {
-                // Preloader
-                window.addEventListener('load', () => {
-                    setTimeout(() => {
-                        document.getElementById('preloader').style.display = 'none';
-                    }, 5500);
-                });
-
-                // Mode Selection
-                document.getElementById('seller-mode').addEventListener('click', () => this.enterSellerMode());
-                document.getElementById('buyer-mode').addEventListener('click', () => this.enterBuyerMode());
-
-                // Seller Actions
-                document.getElementById('add-product-btn').addEventListener('click', () => this.showProductAddModal());
-                document.getElementById('seller-notifications').addEventListener('click', () => this.showNotifications());
-
-                // Buyer Actions
-                document.getElementById('product-search').addEventListener('input', (e) => this.searchProducts(e.target.value));
-                document.getElementById('cart-btn').addEventListener('click', () => this.showCartModal());
-            }
-
-            loadPersistedData() {
-                const savedProducts = localStorage.getItem('platform-products');
-                if (savedProducts) {
-                    this.products = JSON.parse(savedProducts);
-                }
-            }
-
-            saveProductsToLocalStorage() {
-                localStorage.setItem('platform-products', JSON.stringify(this.products));
-            }
-
-            enterSellerMode() {
-                document.getElementById('landing-page').classList.add('d-none');
-                document.getElementById('seller-dashboard').classList.remove('d-none');
-                this.renderSellerProducts();
-            }
-
-            enterBuyerMode() {
-                document.getElementById('landing-page').classList.add('d-none');
-                document.getElementById('buyer-dashboard').classList.remove('d-none');
-                this.renderProductListings();
-            }
-
-           
-            
-            renderSellerProducts() {
-                const productsGrid = document.getElementById('seller-products-grid');
-                productsGrid.innerHTML = this.products.map(product => `
-                    <div class="col-md-4">
-                        <div class="card advanced-card">
-                            <img src="${product.image}" class="card-img-top" alt="${product.name}">
-                            <div class="card-body">
-                                <h5 class="card-title">${product.name}</h5>
-                                <p class="card-text">${product.description}</p>
-                                <p class="card-text fw-bold">$${product.price}</p>
-                                <div class="d-flex justify-content-between">
-                                    <button class="btn btn-warning edit-product" data-id="${product.id}">
-                                        <i class="bi bi-pencil"></i> Edit
-                                    </button>
-                                    <button class="btn btn-danger delete-product" data-id="${product.id}">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            renderProductListings() {
-                const productListings = document.getElementById('product-listings');
-                productListings.innerHTML = this.products.map(product => `
-                    <div class="col-md-4">
-                        <div class="card advanced-card">
-                            <img src="${product.image}" class="card-img-top" alt="${product.name}">
-                            <div class="card-body">
-                                <h5 class="card-title">${product.name}</h5>
-                                <p class="card-text">${product.description}</p>
-                                <p class="card-text fw-bold">$${product.price}</p>
-                                <div class="d-flex justify-content-between">
-                                    <button class="btn btn-primary add-to-cart" data-id="${product.id}">
-                                        <i class="bi bi-cart-plus"></i> Add to Cart
-                                    </button>
-                                    <button class="btn btn-success order-product" data-id="${product.id}">
-                                        <i class="bi bi-bag-check"></i> Order
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            searchProducts(query) {
-                const filteredProducts = this.products.filter(product => 
-                    product.name.toLowerCase().includes(query.toLowerCase()) ||
-                    product.description.toLowerCase().includes(query.toLowerCase())
-                );
-
-                const productListings = document.getElementById('product-listings');
-                productListings.innerHTML = filteredProducts.map(product => `
-                    <!-- Product Card HTML (same as renderProductListings) -->
-                `).join('');
-            }
-
-            showNotifications() {
-                if (this.notifications.length === 0) {
-                    Swal.fire('Notifications', 'No new notifications', 'info');
-                    return;
-                }
-
-                const notificationHTML = this.notifications.map(notification => 
-                    `<div class="alert alert-info">${notification.message}</div>`
-                ).join('');
-
-                Swal.fire({
-                    title: 'Notifications',
-                    html: notificationHTML,
-                    icon: 'info'
-                });
-
-                // Clear notifications badge
-                document.getElementById('notification-badge').textContent = '0';
-            }
-
-            // Additional methods for cart, ordering, etc. would be implemented here
-        }
-
-        // Initialize Platform
-        const platform = new AdvancedETradingPlatform();
 
         
     </script>

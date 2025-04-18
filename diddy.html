@@ -2,352 +2,346 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Quantum Nexus Authentication</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Generation Wizard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        /* (Previous advanced CSS styles) */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        .step-container {
+            transition: all 0.5s ease;
+        }
     </style>
 </head>
-<body>
-    <!-- (Previous HTML structure) -->
+<body class="bg-gradient-to-br from-purple-600 to-blue-500 min-h-screen flex items-center justify-center">
+    <div class="container mx-auto px-4">
+        <div id="videoGenerationWizard" class="max-w-2xl mx-auto bg-white shadow-2xl rounded-2xl p-8 animate-fade-in">
+            <!-- Step 1: User Introduction -->
+            <div id="step1" class="step-container">
+                <h1 class="text-4xl font-bold mb-6 text-center text-purple-600">AI Video Generation Wizard</h1>
+                <div class="mb-4">
+                    <input 
+                        type="text" 
+                        id="userName" 
+                        placeholder="Enter your name" 
+                        class="w-full px-4 py-3 border-2 border-purple-200 rounded-lg focus:outline-none focus:border-purple-500"
+                    >
+                </div>
+                <button 
+                    onclick="videoWizard.moveToNextStep(1)" 
+                    class="w-full bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-300"
+                >
+                    Start Your Video Journey
+                </button>
+            </div>
+
+            <!-- Step 2: Video Concept -->
+            <div id="step2" class="step-container hidden">
+                <h2 class="text-2xl mb-6 text-center font-semibold text-gray-800">Video Concept</h2>
+                <textarea 
+                    id="videoConcept" 
+                    rows="4" 
+                    class="w-full px-4 py-3 border-2 border-purple-200 rounded-lg focus:outline-none focus:border-purple-500"
+                    placeholder="Describe your video idea in detail..."
+                ></textarea>
+                <div class="flex justify-between mt-4">
+                    <button 
+                        onclick="videoWizard.moveToPreviousStep(2)" 
+                        class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg"
+                    >
+                        Previous
+                    </button>
+                    <button 
+                        onclick="videoWizard.moveToNextStep(2)" 
+                        class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700"
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Video Style -->
+            <div id="step3" class="step-container hidden">
+                <h2 class="text-2xl mb-6 text-center font-semibold text-gray-800">Choose Video Style</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div 
+                        onclick="videoWizard.selectStyle('professional')" 
+                        class="style-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
+                    >
+                        <h3 class="font-semibold">Professional</h3>
+                        <p class="text-sm text-gray-600">Corporate, clean, and polished</p>
+                    </div>
+                    <div 
+                        onclick="videoWizard.selectStyle('storytelling')" 
+                        class="style-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
+                    >
+                        <h3 class="font-semibold">Storytelling</h3>
+                        <p class="text-sm text-gray-600">Narrative-driven, emotional</p>
+                    </div>
+                    <div 
+                        onclick="videoWizard.selectStyle('educational')" 
+                        class="style-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
+                    >
+                        <h3 class="font-semibold">Educational</h3>
+                        <p class="text-sm text-gray-600">Informative, clear, structured</p>
+                    </div>
+                    <div 
+                        onclick="videoWizard.selectStyle('marketing')" 
+                        class="style-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
+                    >
+                        <h3 class="font-semibold">Marketing</h3>
+                        <p class="text-sm text-gray-600">Promotional, engaging</p>
+                    </div>
+                </div>
+                <div class="flex justify-between mt-6">
+                    <button 
+                        onclick="videoWizard.moveToPreviousStep(3)" 
+                        class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg"
+                    >
+                        Previous
+                    </button>
+                    <button 
+                        onclick="videoWizard.moveToNextStep(3)" 
+                        class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700"
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Tone and Emotion -->
+            <div id="step4" class="step-container hidden">
+                <h2 class="text-2xl mb-6 text-center font-semibold text-gray-800">Video Tone</h2>
+                <div class="grid grid-cols-3 gap-4">
+                    <div 
+                        onclick="videoWizard.selectTone('inspirational')" 
+                        class="tone-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
+                    >
+                        <h3 class="font-semibold">Inspirational</h3>
+                    </div>
+                    <div 
+                        onclick="videoWizard.selectTone('serious')" 
+                        class="tone-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
+                    >
+                        <h3 class="font-semibold">Serious</h3>
+                    </div>
+                    <div 
+                        onclick="videoWizard.selectTone('humorous')" 
+                        class="tone-option p-4 border-2 rounded-lg cursor-pointer hover:bg-purple-50 transition"
+                    >
+                        <h3 class="font-semibold">Humorous</h3>
+                    </div>
+                </div>
+                <div class="flex justify-between mt-6">
+                    <button 
+                        onclick="videoWizard.moveToPreviousStep(4)" 
+                        class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg"
+                    >
+                        Previous
+                    </button>
+                    <button 
+                        onclick="videoWizard.moveToNextStep(4)" 
+                        class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700"
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 5: Duration and Creativity -->
+            <div id="step5" class="step-container hidden">
+                <h2 class="text-2xl mb-6 text-center font-semibold text-gray-800">Video Parameters</h2>
+                <div class="mb-4">
+                    <label class="block mb-2">Video Duration (seconds)</label>
+                    <input 
+                        type="range" 
+                        id="videoDuration" 
+                        min="30" 
+                        max="300" 
+                        value="120" 
+                        class="w-full"
+                    >
+                    <div class="flex justify-between text-sm text-gray-600 mt-2">
+                        <span>30s</span>
+                        <span>Recommended: 120s</span>
+                        <span>300s</span>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2">AI Creativity Level</label>
+                    <input 
+                        type="range" 
+                        id="creativityLevel" 
+                        min="0" 
+                        max="10" 
+                        value="5" 
+                        class="w-full"
+                    >
+                    <div class="flex justify-between text-sm text-gray-600 mt-2">
+                        <span>Low</span>
+                        <span>Medium</span>
+                        <span>High</span>
+                    </div>
+                </div>
+                <div class="flex justify-between mt-6">
+                    <button 
+                        onclick="videoWizard.moveToPreviousStep(5)" 
+                        class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg"
+                    >
+                        Previous
+                    </button>
+                    <button 
+                        onclick="videoWizard.generateVideo()" 
+                        class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
+                    >
+                        Generate Video
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Section -->
+            <div id="resultSection" class="step-container hidden">
+                <div id="videoResult" class="text-center"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        class QuantumAuthentication {
+        class VideoGenerationWizard {
             constructor() {
-                this.initEventListeners();
-                this.initPasswordStrength();
-                this.initFormValidation();
+                this.currentStep = 1;
+                this.videoData = {
+                    userName: '',
+                    concept: '',
+                    style: '',
+                    tone: '',
+                    duration: 120,
+                    creativity: 5
+                };
             }
 
-            initEventListeners() {
-                // Toggle between login and signup
-                const loginToggle = document.getElementById('loginToggle');
-                const signupToggle = document.getElementById('signupToggle');
-                const authForm = document.getElementById('authForm');
+            moveToNextStep(currentStep) {
+                // Validate current step
+                if (!this.validateStep(currentStep)) return;
 
-                loginToggle.addEventListener('click', () => {
-                    authForm.style.transform = 'translateX(0)';
-                    loginToggle.classList.add('active');
-                    signupToggle.classList.remove('active');
-                });
-
-                signupToggle.addEventListener('click', () => {
-                    authForm.style.transform = 'translateX(-50%)';
-                    signupToggle.classList.add('active');
-                    loginToggle.classList.remove('active');
-                });
-
-                // Form submission handlers
-                document.querySelector('.login-section .quantum-btn').addEventListener('click', this.handleLogin.bind(this));
-                document.querySelector('.signup-section .quantum-btn').addEventListener('click', this.handleSignup.bind(this));
+                // Hide current step
+                document.getElementById(`step${currentStep}`).classList.add('hidden');
+                
+                // Move to next step
+                this.currentStep = currentStep + 1;
+                document.getElementById(`step${this.currentStep}`).classList.remove('hidden');
             }
 
-            initPasswordStrength() {
-                const passwordInput = document.querySelector('.signup-section input[type="password"]');
-                const strengthIndicator = document.getElementById('passwordStrength');
-
-                passwordInput.addEventListener('input', () => {
-                    const strength = this.calculatePasswordStrength(passwordInput.value);
-                    strengthIndicator.style.width = `${strength}%`;
-                });
+            moveToPreviousStep(currentStep) {
+                // Hide current step
+                document.getElementById(`step${currentStep}`).classList.add('hidden');
+                
+                // Move to previous step
+                this.currentStep = currentStep - 1;
+                document.getElementById(`step${this.currentStep}`).classList.remove('hidden');
             }
 
-            calculatePasswordStrength(password) {
-                let strength = 0;
-                const criteria = [
-                    password.length > 7,
-                    /[a-z]/.test(password),
-                    /[A-Z]/.test(password),
-                    /[0-9]/.test(password),
-                    /[^A-Za-z0-9]/.test(password)
-                ];
-
-                criteria.forEach(criterion => {
-                    if (criterion) strength += 20;
-                });
-
-                return Math.min(strength, 100);
-            }
-
-            initFormValidation() {
-                const inputs = document.querySelectorAll('.quantum-input');
-                inputs.forEach(input => {
-                    input.addEventListener('blur', this.validateInput.bind(this));
-                });
-            }
-
-            validateInput(event) {
-                const input = event.target;
-                const value = input.value.trim();
-                const type = input.type;
-
-                let isValid = false;
-
-                switch(type) {
-                    case 'text':
-                        isValid = value.length >= 2;
-                        break;
-                    case 'email':
-                        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-                        break;
-                    case 'password':
-                        isValid = value.length >= 8;
-                        break;
+            validateStep(step) {
+                switch(step) {
+                    case 1:
+                        const userName = document.getElementById('userName').value.trim();
+                        if (!userName) {
+                            alert('Please enter your name');
+                            return false;
+                        }
+                        this.videoData.userName = userName;
+                        return true;
+                    
+                    case 2:
+                        const concept = document.getElementById('videoConcept').value.trim();
+                        if (!concept) {
+                            alert('Please describe your video concept');
+                            return false;
+                        }
+                        this.videoData.concept = concept;
+                        return true;
+                    
+                    case 3:
+                        if (!this.videoData.style) {
+                            alert('Please select a video style');
+                            return false;
+                        }
+                        return true;
+                    
+                    case 4:
+                        if (!this.videoData.tone) {
+                            alert('Please select a video tone');
+                            return false;
+                        }
+                        return true;
                 }
-
-                if (isValid) {
-                    input.classList.remove('invalid');
-                    input.classList.add('valid');
-                } else {
-                    input.classList.remove('valid');
-                    input.classList.add('invalid');
-                }
+                return true;
             }
 
-            async handleLogin(event) {
-                event.preventDefault();
-                const username = document.querySelector('.login-section input[type="text"]').value;
-                const password = document.querySelector('.login-section input[type="password"]').value;
-
-                try {
-                    const response = await fetch('/api/login', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ username, password })
-                    });
-
-                    const result = await response.json();
-
-                    if (result.success) {
-                        this.showNotification('Login Successful', 'success');
-                        // Redirect or update UI
-                    } else {
-                        this.showNotification(result.message, 'error');
-                    }
-                } catch (error) {
-                    this.showNotification('Network Error', 'error');
-                }
+            selectStyle(style) {
+                this.videoData.style = style;
+                document.querySelectorAll('.style-option').forEach(el => {
+                    el.classList.remove('border-purple-500', 'bg-purple-50');
+                });
+                event.currentTarget.classList.add('border-purple-500', 'bg-purple-50');
             }
 
-            async handleSignup(event) {
-                event.preventDefault();
-                const name = document.querySelector('.signup-section input[type="text"]').value;
-                const email = document.querySelector('.signup-section input[type="email"]').value;
-                const password = document.querySelector('.signup-section input[type="password"]').value;
-
-                try {
-                    const response = await fetch('/api/signup', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ name, email, password })
-                    });
-
-                    const result = await response.json();
-
-                    if (result.success) {
-                        this.showNotification('Signup Successful', 'success');
-                        // Redirect or update UI
-                    } else {
-                        this.showNotification(result.message, 'error');
-                    }
-                } catch (error) {
-                    this.showNotification('Network Error', 'error');
-                }
+            selectTone(tone) {
+                this.videoData.tone = tone;
+                document.querySelectorAll('.tone-option').forEach(el => {
+                    el.classList.remove('border-purple-500', 'bg-purple-50');
+                });
+                event.currentTarget.classList.add('border-purple-500', 'bg-purple-50');
             }
 
-            showNotification(message, type) {
-                const notification = document.createElement('div');
-                notification.classList.add('notification', type);
-                notification.textContent = message;
-                document.body.appendChild(notification);
+            generateVideo() {
+                // Capture final parameters
+                this.videoData.duration = document.getElementById('videoDuration').value;
+                this.videoData.creativity = document.getElementById('creativityLevel').value;
 
-                setTimeout(() => {
-                    notification.remove();
-                }, 3000);
+                // Hide current step
+                document.getElementById('step5').classList.add('hidden');
+                
+                // Show result section
+                document.getElementById('resultSection').classList.remove('hidden');
+
+                // Simulate video generation
+                this.simulateVideoGeneration();
+            }
+
+            simulateVideoGeneration() {
+                const resultSection = document.getElementById('videoResult');
+                resultSection.innerHTML = `
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h2 class="text-2xl font-bold text-green-600 mb-4">Video Generated Successfully!</h2>
+                        <div class="space-y-3 text-left">
+                            <p><strong>User:</strong> ${this.videoData.userName}</p>
+                            <p><strong>Concept:</strong> ${this.videoData.concept}</p>
+                            <p><strong>Style:</strong> ${this.videoData.style}</p>
+                            <p><strong>Tone:</strong> ${this.videoData.tone}</p>
+                            <p><strong>Duration:</strong> ${this.videoData.duration} seconds</p>
+                            <p><strong>Creativity Level:</strong> ${this.videoData.creativity}/10</p>
+                        </div>
+                        <div class="mt-6 flex space-x-4 justify-center">
+                            <button class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">
+                                View Video
+                            </button>
+                            <button class="bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-600">
+                                Share Video
+                            </button>
+                        </div>
+                    </div>
+                `;
             }
         }
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            new QuantumAuthentication();
-        });
-
-        const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
-const cors = require('cors');
-
-const app = express();
-
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/quantum-auth', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-
-// User Schema
-const UserSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now }
-});
-
-const User = mongoose.model('User', UserSchema);
-
-// Signup Route
-app.post('/api/signup', async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
-
-        // Validate input
-        if (!name || !email || !password) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Please provide all required fields' 
-            });
-        }
-
-        // Check if user exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'User already exists' 
-            });
-        }
-
-        // Hash password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
-        // Create new user
-        const newUser = new User({
-            name,
-            email,
-            password: hashedPassword
-        });
-
-        await newUser.save();
-
-        // Generate JWT
-        const token = jwt.sign(
-            { id: newUser._id }, 
-            process.env.JWT_SECRET, 
-            { expiresIn: '1h' }
-        );
-
-        res.status(201).json({ 
-            success: true, 
-            token,
-            user: { 
-                id: newUser._id, 
-                name: newUser.name, 
-                email: newUser.email 
-            }
-        });
-    } catch (error) {
-        res.status(500).json({ 
-            success: false, 
-            message: 'Server error' 
-        });
-    }
-});
-
-// Login Route
-app.post('/api/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        // Find user
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Invalid credentials' 
-            });
-        }
-
-        // Check password
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Invalid credentials' 
-            });
-        }
-
-        // Generate JWT
-        const token = jwt.sign(
-            { id: user._id }, 
-            process.env.JWT_SECRET, 
-            { expiresIn: '1h' }
-        );
-
-        res.json({ 
-            success: true, 
-            token,
-            user: { 
-                id: user._id, 
-                name: user.name, 
-                email: user.email 
-            }
-        });
-    } catch (error) {
-        res.status(500).json({ 
-            success: false, 
-            message: 'Server error' 
-        });
-    }
-});
-
-// Middleware to protect routes
-const authMiddleware = (req, res, next) => {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-
-    if (!token) {
-        return res.status(401).json({ 
-            success: false, 
-            message: 'No token, authorization denied' 
-        });
-    }
-
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
-        next();
-    } catch (error) {
-        res.status(401).json({ 
-            success: false, 
-            message: 'Token is not valid' 
-        });
-    }
-};
-
-// Protected Route Example
-app.get('/api/profile', authMiddleware, async (req, res) => {
-    try {
-        const user = await User.findById(req.user.id).select('-password');
-        res.json({ success: true, user });
-    } catch (error) {
-        res.status(500).json({ 
-            success: false, 
-            message: 'Server error' 
-        });
-    }
-});
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
+        // Initialize the wizard
+        const videoWizard = new VideoGenerationWizard();
     </script>
 </body>
 </html>

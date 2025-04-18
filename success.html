@@ -30,6 +30,8 @@
             perspective: 2000px;
             overflow: hidden;
             color: black;
+            font-size: 32px;
+            font-style: italic;
         }
 
         .quantum-container {
@@ -39,7 +41,7 @@
             display: flex;
             overflow: hidden;
             border-radius: 1rem 1rem;
-            box-shadow: 0 0 10px #00fffc;
+            box-shadow: 0 0 10px transparent;
             background: transparent;
             border: 1px solid transparent;
             backdrop-filter: blur(20px);
@@ -47,7 +49,7 @@
 
         .quantum-visual {
             flex: 1;
-            background: #2acac7;
+            background: url("");
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -226,6 +228,11 @@
             transition: width 0.3s ease;
         }
 
+        a{
+            color: #00fffc;
+            text-decoration: none;
+        }
+
 
         
         .bubble {
@@ -280,9 +287,9 @@
                         <button class="quantum-btn">Login</button>
                         
                         <div class="social-login">
-                            <div class="social-btn"><i class="ri-google-line"></i></div>
-                            <div class="social-btn"><i class="ri-facebook-line"></i></div>
-                            <div class="social-btn"><i class="ri-github-line"></i></div>
+                            <div class="social-btn"><a href="https://www.google.com " target="_blank"><i class="ri-google-line"></i></a></div>
+                            <div class="social-btn"><a href="https://www.facebook.com " target="_blank"><i class="ri-facebook-line"></i></a></div>
+                            <div class="social-btn"><a href="https://www.github.com " target="_blank"><i class="ri-github-line"></i></a></div>
                         </div>
                     </div>
 

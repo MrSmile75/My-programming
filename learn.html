@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>QUANTUM DIGITAL EXPERIENCE</title>
+    <meta name="viewport" content="weight=device-weight ,initial-scale=1.0">
+    <title>SMILEX(LEARN MORE)</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -29,7 +30,7 @@
             padding: 0;
             box-sizing: border-box;
             scrollbar-width: thin;
-            scrollbar-color: var(--quantum-light) var(--my-color);
+            scrollbar-color: var(--enterprise-gradient) var(--primary-gradient);
         }
         }
 
@@ -139,7 +140,7 @@
             background: transparent;
             border: 2px solid  transparent;
             border-radius: 1rem 1rem;
-            color: #e1306c;
+            color: transparent;
             overflow: hidden;
             cursor: pointer;
             transition: all 0.4s ease;
@@ -236,7 +237,7 @@
             margin-left: 15px;
             font-size: 28px;
             font-weight: bold;
-            background: linear-gradient(45deg, var(--quantum-dark), var(--quantum-light));
+            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
             -webkit-background-clip: text;
             color: transparent;
             letter-spacing: -1px;
@@ -248,7 +249,7 @@
             margin-left: 15px;
             font-size: 28px;
             font-weight: bold;
-            background: linear-gradient(45deg, var(--quantum-primary), var(--quantum-secondary));
+            background: linear-gradient(90deg, #833ab4,#405de6,#ff4da6);
             -webkit-background-clip: text;
             color: transparent;
             letter-spacing: -1px;
@@ -531,6 +532,72 @@
             font-size: 12px;
             font-weight: 600;
         }
+        
+
+        .ultimate-marquee-container {
+            width: 100%;
+            max-width: 1200px;
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+            border-radius: var(--marquee-border-radius);
+            box-shadow: var(--marquee-shadow);
+            border: 2px solid transparent;
+        }
+
+        .marquee-wrapper {
+            display: flex;
+            overflow: hidden;
+            user-select: none;
+            position: relative;
+        }
+
+        .marquee-track {
+            display: flex;
+            animation: marqueeAnimation linear infinite;
+            width: max-content;
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .marquee-item:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            transform: scale(1.05);
+        }
+
+        .marquee-item-icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .marquee-item-badge {
+            background-color: transparent;
+            color: white;
+            padding: 3px 8px;
+            border: 3px solid gold;
+            border-radius: 20px;
+            font-size: 2em;
+            margin-left: 10px;
+        }
+
+        @keyframes marqueeAnimation {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .marquee-item {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+        }
 
 
         
@@ -685,8 +752,10 @@
         <!-- Logo Section -->
         <div class="quantum-logo">
            <h2>
-            <span class="logo-text"><sub>SMILE</sub>X</span>
+            <span class="logo-text">SMILE<B>X</B></span>
            </h2>
+
+           
            
         </div>
 
@@ -697,7 +766,10 @@
 
         <!-- Action Buttons -->
         <div class="header-actions">
-            <button class="quantum-button">HOVER ME</button>
+            <button class="quantum-button">
+                KEEP YOUR SMILE ALWAYS
+
+            </button>
         </div>
     </header>
 
@@ -734,7 +806,7 @@
         
              
             </ul>
-            <button class="btn-subscribe">Available Now</button>
+            <button class="btn-subscribe">Available </button>
         </div>
 
         <!-- Professional Plan -->
@@ -759,7 +831,7 @@
                 <li> <i class="fas fa-check-circle"></i>Disable pop-ups</li>
             </ul>
             </ul>
-            <button class="btn-subscribe">Available Now</button>
+            <button class="btn-subscribe">Available </button>
         </div>
 
         <!-- Enterprise Plan -->
@@ -786,9 +858,11 @@
                 <li><i class="fas fa-check-circle"></i>Disable pop ups</li>
                 <li><i class="fas fa-check-circle"></i>+ more features </li>
                 </ul>
-            <button class="btn-subscribe">Available Now</button>
+            <button class="btn-subscribe">Available </button>
         </div>
     </div>
+
+    
 
 
 
@@ -835,7 +909,7 @@
             </div>
 
             <div class="contact-section">
-                <a href="mailto:support@pallelex.com" class="contact-email">
+                <a href="mailto:smilex.com" class="contact-email">
                     <i class="fas fa-envelope"></i>
                     support@smilex.com
                 </a>
@@ -843,7 +917,7 @@
 
             <div class="copyright">
                 <i class="fas fa-copyright"></i>
-                2025 SMILEX. All Rights Reserved.
+                2026 SMILEX. All Rights Reserved.
             </div>
         </div>
     </footer>
@@ -949,6 +1023,196 @@ window.addEventListener('resize', () => {
         text.style.fontSize = `${15 * (window.innerWidth / 1920)}vw`;
     });
 });
+
+
+
+class UltimateMarquee {
+        constructor(config = {}) {
+            // Advanced Configuration Options
+            this.defaultConfig = {
+                container: 'ultimateMarquee',
+                items: [],
+                speed: 50,
+                direction: 'left',
+                pauseOnHover: true,
+                responsive: true,
+                theme: 'default',
+                customClasses: {},
+                interactions: {
+                    click: null,
+                    hover: null
+                }
+            };
+
+            // Merge configurations
+            this.config = this.deepMerge(this.defaultConfig, config);
+            this.container = document.getElementById(this.config.container);
+            
+            // Initialize marquee
+            this.init();
+        }
+
+        // Deep merge utility method
+        deepMerge(target, source) {
+            const output = Object.assign({}, target);
+            if (this.isObject(target) && this.isObject(source)) {
+                Object.keys(source).forEach(key => {
+                    if (this.isObject(source[key])) {
+                        if (!(key in target))
+                            Object.assign(output, { [key]: source[key] });
+                        else
+                            output[key] = this.deepMerge(target[key], source[key]);
+                    } else {
+                        Object.assign(output, { [key]: source[key] });
+                    }
+                });
+            }
+            return output;
+        }
+
+        // Check if value is an object
+        isObject(item) {
+            return (item && typeof item === 'object' && !Array.isArray(item));
+        }
+
+        // Initialize marquee
+        init() {
+            this.createMarqueeStructure();
+            this.applyTheme();
+            this.setupInteractions();
+        }
+
+        // Create marquee DOM structure
+        createMarqueeStructure() {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'marquee-wrapper';
+
+            const track = document.createElement('div');
+            track.className = 'marquee-track';
+
+            // Duplicate items for continuous animation
+            const items = [...this.config.items, ...this.config.items];
+            
+            items.forEach(item => {
+                const marqueeItem = this.createMarqueeItem(item);
+                track.appendChild(marqueeItem);
+            });
+
+            wrapper.appendChild(track);
+            this.container.appendChild(wrapper);
+
+            // Set animation properties
+            this.setAnimationProperties(track);
+        }
+
+        // Create individual marquee item
+        createMarqueeItem(itemData) {
+            const item = document.createElement('div');
+            item.className = 'marquee-item';
+
+            // Support for complex item configurations
+            if (typeof itemData === 'object') {
+                // Icon support
+                if (itemData.icon) {
+                    const icon = document.createElement('span');
+                    icon.className = `marquee-item-icon ${itemData.icon}`;
+                    item.appendChild(icon);
+                }
+
+                // Text content
+                const text = document.createElement('span');
+                text.textContent = itemData.text || '';
+                item.appendChild(text);
+
+                // Badge support
+                if (itemData.badge) {
+                    const badge = document.createElement('span');
+                    badge.className = 'marquee-item-badge';
+                    badge.textContent = itemData.badge;
+                    item.appendChild(badge);
+                }
+
+                // Custom classes
+                if (itemData.classes) {
+                    item.classList.add(...itemData.classes);
+                }
+            } else {
+                item.textContent = itemData;
+            }
+
+            return item;
+        }
+
+        // Set animation properties
+        setAnimationProperties(track) {
+            track.style.animationDuration = `${this.config.speed}s`;
+            
+            if (this.config.direction === 'right') {
+                track.style.animationDirection = 'reverse';
+            }
+        }
+
+        // Apply theme
+        applyTheme() {
+            const themes = {
+                default: {
+                    primaryColor: '#2c3e50',
+                    secondaryColor: '#3498db',
+                    background: '#ecf0f1'
+                },
+                dark: {
+                    primaryColor: '#34495e',
+                    secondaryColor: '#2980b9',
+                    background: '#2c3e50'
+                }
+            };
+
+            const selectedTheme = themes[this.config.theme] || themes.default;
+            
+            this.container.style.setProperty('--marquee-primary-color', selectedTheme.primaryColor);
+            this.container.style.setProperty('--marquee-secondary-color', selectedTheme.secondaryColor);
+            this.container.style.setProperty('--marquee-background', selectedTheme.background);
+        }
+
+        // Setup interactions
+        setupInteractions() {
+            if (this.config.pauseOnHover) {
+                this.container.addEventListener('mouseenter', () => {
+                    const track = this.container.querySelector('.marquee-track');
+                    track.style.animationPlayState = 'paused';
+                });
+
+                this.container.addEventListener('mouseleave', () => {
+                    const track = this.container.querySelector('.marquee-track');
+                    track.style.animationPlayState = 'running';
+                });
+            }
+        }
+    }
+
+    // Example Usage
+    document.addEventListener('DOMContentLoaded', () => {
+        new UltimateMarquee({
+            items: [
+                { 
+                    text: 'Special Offer', 
+                    icon: 'fa-gift', 
+                    badge: 'New',
+                    classes: ['highlight']
+                },
+                'Free Shipping Worldwide',
+                { 
+                    text: 'Summer Sale', 
+                    badge: '50% OFF' 
+                },
+                'Join Our Community'
+            ],
+            speed: 30,
+            direction: 'left',
+            theme: 'default',
+            pauseOnHover: true
+        });
+    });
 
 
 

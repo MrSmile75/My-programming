@@ -66,6 +66,8 @@
             }
         }
 
+      
+
           /* Advanced Navigation Bar */
           .navigation {
             position: sticky;
@@ -502,8 +504,12 @@
             font-weight: bold;
             letter-spacing: 2px;
             box-shadow: 0 0 40px var(--quantum-glow);
+            
         }
 
+
+        
+       
         .quantum-button:hover {
             box-shadow: 1 4 80px var(--quantum-primary);
            
@@ -593,13 +599,7 @@
             --text-color: #1f2937;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        
+       
         
         .review-slider-container {
             position: content;
@@ -1133,7 +1133,7 @@
     <nav class="navigation">
         <div class="nav-container">
             <!-- Logo -->
-            <a href="#" class="logo">
+            <a href="aboutus.html" class="logo">
                 SMILE
                 <div class="logo-icon">X</div>
                 
@@ -1143,7 +1143,7 @@
             <div class="nav-links">
                 <a href="#home" class="nav-link active">Home</a>
                 <a href="service.html" class="link">Contact us</a>
-                <a href="main.html" class="link">Privacy & policy</a>
+                <a href="login.html" class="link">@</a>
                 
             </div>
 
@@ -1191,7 +1191,7 @@
 
         <div class="quantum-content">
             
-            <p>Unlock and Explore ultimate world .Choose your access path:</p>
+            <p>HELLO..</p><p>Choose your access path:</p>
 
             <div class="quantum-actions">
                 <button class="quantum-btn login-btn" onclick="handleLoginSignup()">
@@ -1264,10 +1264,10 @@
         <p id="reviewText" class="review-text"></p>
     </div>
 </div>
-<br><br><br><br><br>
 
+<br><br>
 <div id="map"></div>
-<br><br><br><br>
+
 
         <section class="feature-grid">
             <div class="feature-card" data-modal="quantumModal1">
@@ -1320,6 +1320,7 @@
           <h2 class="text-3xl font-bold mb-4">Socialization</h2>
           <p class="mb-4">Connect and learn more to Socialize</p>
           <button class="close-modal quantum-button">Close</button>
+          
       </div>
   </div>
 
@@ -1338,11 +1339,10 @@
 
     <div class="footer-container">
         <div class="footer-column">
-            <h3>About Us</h3>
+            <h3>OUR TEAM</h3>
             <ul>
-                <li><a href="#">Our Story</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Press</a></li>
+                
+                <li><a href="aboutus.html">About us</a></li>
                 <li><a href="service.html">Contact Us</a></li>
             </ul>
         </div>
@@ -1350,8 +1350,8 @@
         <div class="footer-column">
             <h3>Resources</h3>
             <ul>
-                <li><a href="#"></a></li>
-                <li><a href="#"></a></li>
+                <li><a href="login.html">LOGIN_SIGNUP FORM</a></li>
+                <li><a href="cancel.html">PREMIUM</a></li>
                 <li><a href="#"></a></li>
                 <li><a href="#"></a></li>
             </ul>
@@ -1360,20 +1360,20 @@
         <div class="footer-column">
             <h3>Explore</h3>
             <ul>
-                <li><a href="education.html">Knowledge Sphere</a></li>
-                <li><a href="game.html">Gaming Realms</a></li>
+                <li><a href="education1.html">Knowledge Sphere</a></li>
+                <li><a href="game1.html">Gaming Realms</a></li>
                 <li><a href="movie.html">Cinema</a></li>
                 <li><a href="e-commerce.html">Marketplace</a></li>
                 <li><a href="chat.html">Chat</a></li>
                 <li><a href="news.html">News Feed</a></li>
-                <li><a href="ai.html">AI Generator</a></li>
+                <li><a href="ai1.html">AI Generator</a></li>
             </ul>
         </div>
 
         <div class="footer-column">
             <h3>Legal</h3>
             <ul>
-                <li><a href="#"></a></li>
+                <li><a href="#"></a>LOADING...</li>
                 <li><a href="#"></a></li>
                 <li><a href="#"></a></li>
                 <li><a href="#"></a></li>
@@ -1390,7 +1390,7 @@
     </div>
 
     <div class="footer-bottom">
-        &copy; 2024 SmileX. All rights reserved.
+        &copy; 2026 SmileX. All rights reserved.
     </div>
 </footer>
 
@@ -1566,14 +1566,14 @@
                 backgroundImage: '',
                 title: 'Ultimate Exploration',
                 description: 'Dive into immersive digital experiences',
-                redirectUrl: 'game.html',
+                redirectUrl: 'game1.html',
                 ctaText: 'Begin Journey'
             },
             {
                 backgroundImage: '',
                 title: 'Online Course',
                 description: 'Designed for educational purposes which helps an individual to  learn and grow',
-                redirectUrl: 'education.html',
+                redirectUrl: 'education1.html',
                 ctaText: 'Explore Now'
             },
             {
@@ -1587,8 +1587,29 @@
                 backgroundImage: '',
                 title: 'Sales and Discounts',
                 description: 'Purchase a products with best deals and offers',
-                redirectUrl: 'ecommerce.html',
+                redirectUrl: 'e-commerce.html',
                 ctaText: 'Begin Purchase'
+            },
+            {
+                backgroundImage: '',
+                title: 'AI',
+                description: 'Bring your dreams to life just by generating anything',
+                redirectUrl: 'ai1.html',
+                ctaText: 'Generate Now'
+            },
+            {
+                backgroundImage: '',
+                title: 'News Feed',
+                description: 'Get updated to news across the globe',
+                redirectUrl: 'news.html',
+                ctaText: 'Get Updated'
+            },
+            {
+                backgroundImage: '',
+                title: 'Chat',
+                description: 'Meet friends both local and internationally',
+                redirectUrl: 'chat.html',
+                ctaText: 'Socialize'
             }
         ];
 
@@ -1842,7 +1863,7 @@
             {
                 name: "Mr.Smile",
                 role: "Web and App Developer",
-                image: "https://randomuser.me/api/portraits/men/33.jpg",
+                image: "",
                 stars: 5,
                 comment: "I recommend everyone to explore through my website ",
             },
@@ -1982,7 +2003,7 @@
         }
 
         function handleLoginSignup() {
-            window.location.href = 'success.html';
+            window.location.href = 'login.html';
         }
 
         function Unlockpremiumoffer() {
@@ -2010,9 +2031,9 @@
                 this.element = element;
                 this.texts = texts;
                 this.options = {
-                    duration: options.duration || 2000,
-                    typingSpeed: options.typingSpeed || 200,
-                    deletingSpeed: options.deletingSpeed || 50
+                    duration: options.duration || 3000,
+                    typingSpeed: options.typingSpeed || 300,
+                    deletingSpeed: options.deletingSpeed || 100
                 };
                 this.currentIndex = 0;
                 this.isDeleting = false;
@@ -2092,7 +2113,7 @@
 
 // Add tile layer (open street maps)
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright"></a>'
 }).addTo(map);
 
 // Try to get the user's location

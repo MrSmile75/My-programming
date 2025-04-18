@@ -2,432 +2,465 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Intelligent User Experience Cookie Manager</title>
+    <title>X FORMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #3b82f6;
-            --secondary-color: #10b981;
-            --background-color: #f4f6f9;
-            --text-color: #1f2937;
-            --border-radius: 16px;
-            --box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            --quantum-primary: #6a11cb;
+            --quantum-secondary: #2575fc;
+            --quantum-background: #0f0c29;
+            --quantum-text: #ffffff;
+            --quantum-accent: #00fffc;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: black;
+            perspective: 2000px;
+            overflow: hidden;
+            cursor: none;
         }
 
-        #cookie-consent-overlay {
-            position: fixed;
+        .container {
+            position: relative;
+            width: 600px;
+            min-height: 700px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 35px 80px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+            overflow: hidden;
+        }
+
+        .quantum-overlay {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: radial-gradient(
+                circle at center,
+                rgba(106, 17, 203, 0.2),
+                rgba(37, 117, 252, 0.1)
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .auth-wrapper {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mode-toggle {
             display: flex;
             justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            backdrop-filter: blur(10px);
-            transition: all 0.4s ease;
+            margin-bottom: 30px;
         }
 
-        .cookie-modal {
-            background: white;
-            width: 800px;
-            max-width: 95%;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
+        .mode-btn {
+            background: transparent;
+            border: 2px solid var(--quantum-accent);
+            color: var(--quantum-text);
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
             overflow: hidden;
-            transform: scale(0.7);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .cookie-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 25px;
-            text-align: center;
+        .mode-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg, 
+                transparent, 
+                rgba(255,255,255,0.2), 
+                transparent
+            );
+            transition: all 0.5s ease;
+        }
+
+        .mode-btn:hover::before {
+            left: 100%;
+        }
+
+        .mode-btn.active {
+            background: var(--quantum-accent);
+            color: var(--quantum-background);
+        }
+
+        .quantum-form {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            width: 200%;
+            transition: transform 0.5s ease;
         }
 
-        .cookie-content {
-            padding: 35px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .form-section {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
             gap: 25px;
+            padding: 0 20px;
         }
 
-        .cookie-section {
-            background-color: #f9fafb;
-            border-radius: 12px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .input-wrapper {
+            position: relative;
+        }
+
+        .quantum-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            color: var(--quantum-text);
+            font-size: 16px;
+            outline: none;
             transition: all 0.3s ease;
         }
 
-        .cookie-section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        .quantum-input:focus {
+            border-color: var(--quantum-accent);
+            box-shadow: 0 0 20px rgba(0, 255, 252, 0.3);
         }
 
-        .cookie-details {
-            flex-grow: 1;
-        }
-
-        .cookie-toggle {
-            display: flex;
-            align-items: center;
-        }
-
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
+        .input-icon {
             position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
         }
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
+        .quantum-input:focus + .input-icon {
+            color: var(--quantum-accent);
         }
 
-        input:checked + .slider {
-            background-color: var(--primary-color);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-
-        .cookie-actions {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: space-between;
-            margin-top: 25px;
-        }
-
-        .btn {
-            padding: 12px 25px;
+        .btn1 {
+            width: 50%;
+            align-self: center;
+            padding: 15px;
+            background: transparent;
+            color: var(--quantum-text);
             border: none;
-            border-radius: 8px;
+            border-radius: 15px;
             cursor: pointer;
+            font-size: 18px;
             font-weight: 600;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg, 
+                transparent, 
+                rgba(255,255,255,0.3), 
+                transparent
+            );
+            transition: all 0.5s ease;
+        }
+
+        .btn1 :hover {
+            background: #00fffc;
+            
+        }
+
+        .security-indicator {
+            width: 100%;
+            height: 5px;
+            background: transparent;
+            margin-top: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .security-level {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .alternative-login {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .social-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--quantum-text);
+            padding: 10px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            transition: all 0.3s ease;
         }
 
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
+        .social-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        .btn-secondary {
-            background-color: #e5e7eb;
-            color: var(--text-color);
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
         }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: particleAnimation 5s infinite alternate;
         }
 
-        .info-section {
-            grid-column: 1 / -1;
-            text-align: center;
-            background-color: #f3f4f6;
-            padding: 20px;
-            border-radius: 12px;
-        }
-
-        @media (max-width: 768px) {
-            .cookie-content {
-                grid-template-columns: 1fr;
+        @keyframes particleAnimation {
+            0% {
+                transform: translateY(0) scale(0.5);
+                opacity: 0.5;
             }
+            100% {
+                transform: translateY(-200vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        h1{
+            color:#00fffc;
+            text-align: center;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div id="cookie-consent-overlay">
-        <div class="cookie-modal">
-            <div class="cookie-header">
-                <h2>🍪 Cookie Preferences</h2>
-                <i class="fas fa-shield-alt" style="font-size: 24px;"></i>
+    <div class="container">
+        <div class="quantum-overlay"></div>
+        <h1>FORMS</h1>
+        <br>
+        
+        <div class="auth-wrapper">
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="loginModeBtn">Login</button>
+                <button class="mode-btn" id="signupModeBtn">Signup</button>
             </div>
-            <div class="cookie-content">
-                <div class="cookie-section">
-                    <div class="cookie-details">
-                        <h3>Essential Cookies</h3>
-                        <p>Necessary for core website functionality</p>
-                    </div>
-                    <div class="cookie-toggle">
-                        <label class="toggle-switch">
-                            <input type="checkbox" checked disabled>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                </div>
 
-                <div class="cookie-section">
-                    <div class="cookie-details">
-                        <h3>Performance Tracking</h3>
-                        <p>Help improve website performance</p>
-                    </div>
-                    <div class="cookie-toggle">
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="performance-toggle">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                </div>
+            <br>
 
-                <div class="cookie-section">
-                    <div class="cookie-details">
-                        <h3>Personalization</h3>
-                        <p>Customize content and recommendations</p>
-                    </div>
-                    <div class="cookie-toggle">
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="personalization-toggle">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                </div>
+            <div class="form-container">
+                <div class="quantum-form" id="quantumForm">
+                    <!-- Login Form -->
+                    <div class="form-section login-section">
+                        <div class="input-wrapper">
+                            <i class="ri-user-line input-icon"></i>
+                            <input type="text" class="quantum-input" placeholder="Username" id="loginUsername" required>
+                        </div>
 
-                <div class="cookie-section">
-                    <div class="cookie-details">
-                        <h3>Marketing</h3>
-                        <p>Targeted advertising and promotions</p>
-                    </div>
-                    <div class="cookie-toggle">
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="marketing-toggle">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                </div>
+                        <div class="input-wrapper">
+                            <i class="ri-lock-line input-icon"></i>
+                            <input type="password" class="quantum-input" placeholder="Password" id="loginPassword" required>
+                        </div>
 
-                <div class="cookie-actions">
-                    <button id="reject-btn" class="btn btn-secondary">
-                        <i class="fas fa-times"></i> Reject All
-                    </button>
-                    <button id="accept-btn" class="btn btn-primary">
-                        <i class="fas fa-check"></i> Accept All
-                    </button>
-                </div>
+                        <button class="btn1" id="loginBtn">
+                            Login
+                        </button>
 
-                <div class="info-section">
-                    <p>We use cookies to enhance your browsing experience, analyze site traffic, and provide personalized content.</p>
-                    <a href="#" style="color: var(--primary-color); text-decoration: none;">Learn More About Our Privacy Policy</a>
+                        <div class="alternative-login">
+                            <button class="social-btn">
+                                <i class="ri-google-line"></i>
+                            </button>
+                            <button class="social-btn">
+                                <i class="ri-facebook-line"></i>
+                            </button>
+                            <button class="social-btn">
+                                <i class="ri-github-line"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Signup Form -->
+                    <div class="form-section signup-section">
+                        <div class="input-wrapper">
+                            <i class="ri-user-add-line input-icon"></i>
+                            <input type="text" class="quantum-input" placeholder="Full Name" id="signupName" required>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <i class="ri-mail-line input-icon"></i>
+                            <input type="email" class="quantum-input" placeholder="Email" id="signupEmail" required>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <i class="ri-lock-line input-icon"></i>
+                            <input type="password" class="quantum-input" placeholder="Password" id="signupPassword" required>
+                            <div class="security-indicator">
+                                <div class="security-level" id="passwordSecurityLevel"></div>
+                            </div>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <i class="ri-lock-line input-icon"></i>
+                            <input type="password" class="quantum-input" placeholder="Confirm Password" id="signupConfirmPassword" required>
+                        </div>
+
+                        <button class="btn1" id="signupBtn">
+                            Signup
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="particles" id="particleContainer"></div>
     </div>
 
     <script>
-        class IntelligentCookieManager {
+        // Advanced Authentication Logic
+        class QuantumAuth {
             constructor() {
-                this.initializeElements();
-                this.setupEventListeners();
-                this.checkInitialConsent();
+                this.initEventListeners();
+                this.initParticles();
+                this.initPasswordSecurity();
             }
 
-            initializeElements() {
-                this.overlay = document.getElementById('cookie-consent-overlay');
-                this.performanceToggle = document.getElementById('performance-toggle');
-                this.personalizationToggle = document.getElementById('personalization-toggle');
-                this.marketingToggle = document.getElementById('marketing-toggle');
-                this.rejectBtn = document.getElementById('reject-btn');
-                this.acceptBtn = document.getElementById('accept-btn');
+            initEventListeners() {
+                const loginModeBtn = document.getElementById('loginModeBtn');
+                const signupModeBtn = document.getElementById('signupModeBtn');
+                const quantumForm = document.getElementById('quantumForm');
+
+                loginModeBtn.addEventListener('click', () => {
+                    quantumForm.style.transform = 'translateX(0)';
+                    loginModeBtn.classList.add('active');
+                    signupModeBtn.classList.remove('active');
+                });
+
+                signupModeBtn.addEventListener('click', () => {
+                    quantumForm.style.transform = 'translateX(-50%)';
+                    signupModeBtn.classList.add('active');
+                    loginModeBtn.classList.remove('active');
+                });
+
+                // Login and Signup Button Handlers
+                document.getElementById('loginBtn').addEventListener('click', this.handleLogin);
+                document.getElementById('signupBtn').addEventListener('click', this.handleSignup);
             }
 
-            setupEventListeners() {
-                this.rejectBtn.addEventListener('click', () => this.handleConsent(false));
-                this.acceptBtn.addEventListener('click', () => this.handleConsent(true));
-            }
+            initParticles() {
+                const particleContainer = document.getElementById('particleContainer');
+                for (let i = 0; i < 150; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    const size = Math.random() * 6;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    
+                    particle.style.animationDuration = `${Math.random() * 5 + 3}s`;
+                    particle.style.animationDelay = `${Math.random() * 2}s`;
 
-            checkInitialConsent() {
-                const existingConsent = this.getCookie('user_consent');
-                if (!existingConsent) {
-                    this.showCookieModal();
+                    particleContainer.appendChild(particle);
                 }
             }
 
-            showCookieModal() {
-                this.overlay.style.opacity = '1';
-                this.overlay.style.pointerEvents = 'all';
-                const modal = this.overlay.querySelector('.cookie-modal');
-                modal.style.transform = 'scale(1)';
+            initPasswordSecurity() {
+                const passwordInput = document.getElementById('signupPassword');
+                const securityLevel = document.getElementById('passwordSecurityLevel');
+
+                passwordInput.addEventListener('input', () => {
+                    const password = passwordInput.value;
+                    const strength = this.calculatePasswordStrength(password);
+                    
+                    securityLevel.style.width = `${strength}%`;
+                    securityLevel.style.background = this.getPasswordStrengthColor(strength);
+                });
             }
 
-            hideCookieModal() {
-                this.overlay.style.opacity = '0';
-                this.overlay.style.pointerEvents = 'none';
-                const modal = this.overlay.querySelector('.cookie-modal');
-                modal.style.transform = 'scale(0.7)';
+            calculatePasswordStrength(password) {
+                let strength = 0;
+                if (password.length > 7) strength += 25;
+                if (password.match(/[a-z]+/)) strength += 25;
+                if (password.match(/[A-Z]+/)) strength += 25;
+                if (password.match(/[0-9]+/)) strength += 25;
+                return strength;
             }
 
-            handleConsent(acceptAll) {
-                const preferences = {
-                    performance: acceptAll || this.performanceToggle.checked,
-                    personalization: acceptAll || this.personalizationToggle.checked,
-                    marketing: acceptAll || this.marketingToggle.checked
-                };
-
-                this.setCookie('user_consent', JSON.stringify(preferences), 365);
-                this.initializeTracking(preferences);
-                this.hideCookieModal();
+            getPasswordStrengthColor(strength) {
+                if (strength < 50) return 'linear-gradient(to right, red, orange)';
+                if (strength < 75) return 'linear-gradient(to right, orange, yellow)';
+                return 'linear-gradient(to right, yellow, green)';
             }
 
-            initializeTracking(preferences) {
-                if (preferences.performance) {
-                    this.trackPerformance();
+            handleLogin() {
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                // Placeholder for login logic
+                console.log('Login Attempt:', { username, password });
+                alert('Login functionality to be implemented');
+            }
+
+            handleSignup() {
+                const name = document.getElementById('signupName').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                const confirmPassword = document.getElementById('signupConfirmPassword').value;
+
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    return;
                 }
 
-                if (preferences.personalization) {
-                    this.personalizeExperience();
-                }
-
-                if (preferences.marketing) {
-                    this.initializeMarketing();
-                }
-            }
-
-            trackPerformance() {
-                const performanceData = {
-                    timestamp: new Date().toISOString(),
-                    url: window.location.href,
-                    referrer: document.referrer,
-                    userAgent: navigator.userAgent,
-                    screenResolution: `${screen.width}x${screen.height}`,
-                    connectionType: navigator.connection?.effectiveType
-                };
-
-                this.sendPerformanceData(performanceData);
-            }
-
-            sendPerformanceData(data) {
-                console.log('Performance Tracking:', data);
-                // Implement actual performance tracking endpoint
-                // fetch('/performance-tracking', { 
-                //     method: 'POST', 
-                //     body: JSON.stringify(data) 
-                // });
-            }
-
-            personalizeExperience() {
-                const personalizedData = {
-                    preferences: this.generateUserPreferences(),
-                    recommendations: this.generateRecommendations()
-                };
-
-                this.applyPersonalization(personalizedData);
-            }
-
-            generateUserPreferences() {
-                return {
-                    theme: 'dark',
-                    contentInterests: ['technology', 'design'],
-                    languagePreference: navigator.language
-                };
-            }
-
-            generateRecommendations() {
-                return [
-                    { type: 'content', title: 'Advanced Web Development', category: 'tech' },
-                    { type: 'product', name: 'Design Tools Bundle', category: 'design' }
-                ];
-            }
-
-            applyPersonalization(data) {
-                console.log('Personalization Applied:', data);
-                // Implement personalization logic
-            }
-
-            initializeMarketing() {
-                const marketingData = {
-                    campaignId: this.generateCampaignId(),
-                    userSegment: this.determineUserSegment()
-                };
-
-                this.triggerMarketingCampaigns(marketingData);
-            }
-
-            generateCampaignId() {
-                return `CAMP-${Math.random().toString(36).substr(2, 9)}`;
-            }
-
-            determineUserSegment() {
-                // Advanced user segmentation logic
-                return ['tech-enthusiast', 'early-adopter'];
-            }
-
-            triggerMarketingCampaigns(data) {
-                console.log('Marketing Campaigns:', data);
-                // Implement marketing campaign logic
-            }
-
-            setCookie(name, value, days) {
-                const date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                document.cookie = `${name}=${encodeURIComponent(value)};expires=${date.toUTCString()};path=/;SameSite=Strict`;
-            }
-
-            getCookie(name) {
-                const value = `; ${document.cookie}`;
-                const parts = value.split(`; ${name}=`);
-                return parts.length === 2 ? parts.pop().split(';').shift() : null;
+                // Placeholder for signup logic
+                console.log('Signup Attempt:', { name, email, password });
+                alert('Signup functionality to be implemented');
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            new IntelligentCookieManager();
-        });
+        // Initialize Quantum Authentication
+        new QuantumAuth();
     </script>
 </body>
 </html>
