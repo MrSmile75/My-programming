@@ -2,465 +2,129 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>X FORMS</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        :root {
-            --quantum-primary: #6a11cb;
-            --quantum-secondary: #2575fc;
-            --quantum-background: #0f0c29;
-            --quantum-text: #ffffff;
-            --quantum-accent: #00fffc;
-        }
+    <title>Authentication Forms</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+    <script src="login.js"></script>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: black;
-            perspective: 2000px;
-            overflow: hidden;
-            cursor: none;
-        }
-
-        .container {
-            position: relative;
-            width: 600px;
-            min-height: 700px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 25px;
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 35px 80px rgba(0, 0, 0, 0.2);
-            padding: 40px;
-            transform-style: preserve-3d;
-            transition: all 0.5s ease;
-            overflow: hidden;
-        }
-
-        .quantum-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(
-                circle at center,
-                rgba(106, 17, 203, 0.2),
-                rgba(37, 117, 252, 0.1)
-            );
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .auth-wrapper {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .mode-toggle {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .mode-btn {
-            background: transparent;
-            border: 2px solid var(--quantum-accent);
-            color: var(--quantum-text);
-            padding: 10px 20px;
-            margin: 0 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .mode-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                120deg, 
-                transparent, 
-                rgba(255,255,255,0.2), 
-                transparent
-            );
-            transition: all 0.5s ease;
-        }
-
-        .mode-btn:hover::before {
-            left: 100%;
-        }
-
-        .mode-btn.active {
-            background: var(--quantum-accent);
-            color: var(--quantum-background);
-        }
-
-        .quantum-form {
-            display: flex;
-            width: 200%;
-            transition: transform 0.5s ease;
-        }
-
-        .form-section {
-            width: 50%;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            padding: 0 20px;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        .quantum-input {
-            width: 100%;
-            padding: 15px 20px 15px 50px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid transparent;
-            border-radius: 15px;
-            color: var(--quantum-text);
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .quantum-input:focus {
-            border-color: var(--quantum-accent);
-            box-shadow: 0 0 20px rgba(0, 255, 252, 0.3);
-        }
-
-        .input-icon {
-            position: absolute;
-            top: 50%;
-            left: 15px;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .quantum-input:focus + .input-icon {
-            color: var(--quantum-accent);
-        }
-
-        .btn1 {
-            width: 50%;
-            align-self: center;
-            padding: 15px;
-            background: transparent;
-            color: var(--quantum-text);
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn1::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                120deg, 
-                transparent, 
-                rgba(255,255,255,0.3), 
-                transparent
-            );
-            transition: all 0.5s ease;
-        }
-
-        .btn1 :hover {
-            background: #00fffc;
-            
-        }
-
-        .security-indicator {
-            width: 100%;
-            height: 5px;
-            background: transparent;
-            margin-top: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .security-level {
-            height: 100%;
-            width: 0;
-            transition: width 0.3s ease;
-        }
-
-        .alternative-login {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .social-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: var(--quantum-text);
-            padding: 10px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .social-btn:hover {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: particleAnimation 5s infinite alternate;
-        }
-
-        @keyframes particleAnimation {
-            0% {
-                transform: translateY(0) scale(0.5);
-                opacity: 0.5;
-            }
-            100% {
-                transform: translateY(-200vh) scale(1.5);
-                opacity: 0;
-            }
-        }
-
-        h1{
-            color:#00fffc;
-            text-align: center;
-            text-decoration: underline;
-        }
-    </style>
 </head>
 <body>
+
     <div class="container">
-        <div class="quantum-overlay"></div>
-        <h1>FORMS</h1>
-        <br>
+        <div class="visual">
+            <div class="visual-content">
+                <div class="logo">
+                    <i class="ri-arrow" style="font-size: 48px;"></i>
+                </div>
+                <h1>FORM</h1>
+               
+            </div>
+        </div>
         
-        <div class="auth-wrapper">
-            <div class="mode-toggle">
-                <button class="mode-btn active" id="loginModeBtn">Login</button>
-                <button class="mode-btn" id="signupModeBtn">Signup</button>
+        
+        <div class="auth">
+            <div class="auth-toggle">
+                <button class="toggle-btn active" id="loginToggle">Login</button>
+                <button class="toggle-btn" id="signupToggle">Signup</button>
             </div>
 
-            <br>
-
             <div class="form-container">
-                <div class="quantum-form" id="quantumForm">
-                    <!-- Login Form -->
+                <div class="form" id="authForm">
+                    <!-- Login Section -->
                     <div class="form-section login-section">
                         <div class="input-wrapper">
                             <i class="ri-user-line input-icon"></i>
-                            <input type="text" class="quantum-input" placeholder="Username" id="loginUsername" required>
+                            <input type="text" class="input" placeholder="Username" required>
                         </div>
-
                         <div class="input-wrapper">
                             <i class="ri-lock-line input-icon"></i>
-                            <input type="password" class="quantum-input" placeholder="Password" id="loginPassword" required>
+                            <input type="password" class="input" placeholder="Password" required>
                         </div>
-
-                        <button class="btn1" id="loginBtn">
-                            Login
-                        </button>
-
-                        <div class="alternative-login">
-                            <button class="social-btn">
-                                <i class="ri-google-line"></i>
-                            </button>
-                            <button class="social-btn">
-                                <i class="ri-facebook-line"></i>
-                            </button>
-                            <button class="social-btn">
-                                <i class="ri-github-line"></i>
-                            </button>
-                        </div>
+                        <button class="quantum-btn">Login</button>
+                        
+                       
                     </div>
 
-                    <!-- Signup Form -->
+                    <!-- Signup Section -->
                     <div class="form-section signup-section">
                         <div class="input-wrapper">
                             <i class="ri-user-add-line input-icon"></i>
-                            <input type="text" class="quantum-input" placeholder="Full Name" id="signupName" required>
+                            <input type="text" class="input" placeholder="Full Name" required>
                         </div>
-
                         <div class="input-wrapper">
                             <i class="ri-mail-line input-icon"></i>
-                            <input type="email" class="quantum-input" placeholder="Email" id="signupEmail" required>
+                            <input type="email" class="input" placeholder="Email" required>
                         </div>
-
                         <div class="input-wrapper">
                             <i class="ri-lock-line input-icon"></i>
-                            <input type="password" class="quantum-input" placeholder="Password" id="signupPassword" required>
-                            <div class="security-indicator">
-                                <div class="security-level" id="passwordSecurityLevel"></div>
+                            <input type="password" class="input" placeholder="Password" required>
+                            <div class="password-strength">
+                                <div class="strength-indicator" id="passwordStrength"></div>
                             </div>
                         </div>
-
                         <div class="input-wrapper">
                             <i class="ri-lock-line input-icon"></i>
-                            <input type="password" class="quantum-input" placeholder="Confirm Password" id="signupConfirmPassword" required>
+                            <input type="password" class="input" placeholder="Confirm Password" required>
                         </div>
-
-                        <button class="btn1" id="signupBtn">
-                            Signup
-                        </button>
+                        <button class="quantum-btn">Signup</button>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="particles" id="particleContainer"></div>
     </div>
-
     <script>
-        // Advanced Authentication Logic
-        class QuantumAuth {
-            constructor() {
-                this.initEventListeners();
-                this.initParticles();
-                this.initPasswordSecurity();
-            }
+        class QuantumAuthentication {
+    constructor() {
+        this.initEventListeners();
+        this.initPasswordStrength();
+    }
 
-            initEventListeners() {
-                const loginModeBtn = document.getElementById('loginModeBtn');
-                const signupModeBtn = document.getElementById('signupModeBtn');
-                const quantumForm = document.getElementById('quantumForm');
+    initEventListeners() {
+        const loginToggle = document.getElementById('loginToggle');
+        const signupToggle = document.getElementById('signupToggle');
+        const authForm = document.getElementById('authForm');
 
-                loginModeBtn.addEventListener('click', () => {
-                    quantumForm.style.transform = 'translateX(0)';
-                    loginModeBtn.classList.add('active');
-                    signupModeBtn.classList.remove('active');
-                });
+        loginToggle.addEventListener('click', () => {
+            authForm.style.transform = 'translateX(0)';
+            loginToggle.classList.add('active');
+            signupToggle.classList.remove('active');
+        });
 
-                signupModeBtn.addEventListener('click', () => {
-                    quantumForm.style.transform = 'translateX(-50%)';
-                    signupModeBtn.classList.add('active');
-                    loginModeBtn.classList.remove('active');
-                });
+        signupToggle.addEventListener('click', () => {
+            authForm.style.transform = 'translateX(-50%)';
+            signupToggle.classList.add('active');
+            loginToggle.classList.remove('active');
+        });
+    }
 
-                // Login and Signup Button Handlers
-                document.getElementById('loginBtn').addEventListener('click', this.handleLogin);
-                document.getElementById('signupBtn').addEventListener('click', this.handleSignup);
-            }
+    initPasswordStrength() {
+        const passwordInput = document.querySelector('.signup-section input[type="password"]');
+        const strengthIndicator = document.getElementById('passwordStrength');
 
-            initParticles() {
-                const particleContainer = document.getElementById('particleContainer');
-                for (let i = 0; i < 150; i++) {
-                    const particle = document.createElement('div');
-                    particle.classList.add('particle');
-                    
-                    const size = Math.random() * 6;
-                    particle.style.width = `${size}px`;
-                    particle.style.height = `${size}px`;
-                    
-                    particle.style.left = `${Math.random() * 100}%`;
-                    particle.style.top = `${Math.random() * 100}%`;
-                    
-                    particle.style.animationDuration = `${Math.random() * 5 + 3}s`;
-                    particle.style.animationDelay = `${Math.random() * 2}s`;
+        passwordInput.addEventListener('input', () => {
+            const strength = this.calculatePasswordStrength(passwordInput.value);
+            strengthIndicator.style.width = `${strength}%`;
+        });
+    }
 
-                    particleContainer.appendChild(particle);
-                }
-            }
+    calculatePasswordStrength(password) {
+        let strength = 0;
+        if (password.length > 7) strength += 25;
+        if (password.match(/[a-z]+/)) strength += 25;
+        if (password.match(/[A-Z]+/)) strength += 25;
+        if (password.match(/[0-9]+/)) strength += 25;
+        return Math.min(strength, 100);
+    }
+}
 
-            initPasswordSecurity() {
-                const passwordInput = document.getElementById('signupPassword');
-                const securityLevel = document.getElementById('passwordSecurityLevel');
+// Initialize Quantum Authentication
+new QuantumAuthentication();
 
-                passwordInput.addEventListener('input', () => {
-                    const password = passwordInput.value;
-                    const strength = this.calculatePasswordStrength(password);
-                    
-                    securityLevel.style.width = `${strength}%`;
-                    securityLevel.style.background = this.getPasswordStrengthColor(strength);
-                });
-            }
 
-            calculatePasswordStrength(password) {
-                let strength = 0;
-                if (password.length > 7) strength += 25;
-                if (password.match(/[a-z]+/)) strength += 25;
-                if (password.match(/[A-Z]+/)) strength += 25;
-                if (password.match(/[0-9]+/)) strength += 25;
-                return strength;
-            }
-
-            getPasswordStrengthColor(strength) {
-                if (strength < 50) return 'linear-gradient(to right, red, orange)';
-                if (strength < 75) return 'linear-gradient(to right, orange, yellow)';
-                return 'linear-gradient(to right, yellow, green)';
-            }
-
-            handleLogin() {
-                const username = document.getElementById('loginUsername').value;
-                const password = document.getElementById('loginPassword').value;
-                
-                // Placeholder for login logic
-                console.log('Login Attempt:', { username, password });
-                alert('Login functionality to be implemented');
-            }
-
-            handleSignup() {
-                const name = document.getElementById('signupName').value;
-                const email = document.getElementById('signupEmail').value;
-                const password = document.getElementById('signupPassword').value;
-                const confirmPassword = document.getElementById('signupConfirmPassword').value;
-
-                if (password !== confirmPassword) {
-                    alert('Passwords do not match!');
-                    return;
-                }
-
-                // Placeholder for signup logic
-                console.log('Signup Attempt:', { name, email, password });
-                alert('Signup functionality to be implemented');
-            }
-        }
-
-        // Initialize Quantum Authentication
-        new QuantumAuth();
     </script>
+
+  
 </body>
 </html>

@@ -1,1 +1,106 @@
-l
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Advanced Game Preloader</title>
+    </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --primary-color: #00ffff;
+            --secondary-color: #8a2be2;
+            --background-dark: #0a0a2a;
+            --quantum-primary: #00f5d4;
+            --quantum-secondary: #8c1eff;
+            --quantum-background: #0a0a1a;
+            --quantum-text: #e0e0ff;
+            --quantum-glow: rgba(0, 245, 212, 0.4);
+            --bg-primary: #0f1020;
+            --bg-secondary: #1a1a2e;
+            --color-accent: #4a6cf7;
+            --color-text-primary: #e6e6e6;
+            --color-text-secondary: #a0a0a0;
+            --transition-speed: 0.3s;
+            --text-color: #e0e0ff;
+            --card-background: rgba(15,15,40,0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: black;
+            color:auto ;
+            line-height: 1.6;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            background:black;
+       
+            user-select: none;
+        }
+
+        /* Navigation Styles */
+        #navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 6%;
+            background-color: black;
+            position: fixed;
+            border-radius: 1px 1px;
+            top: 10;
+            width: 100%;
+            backdrop-filter: blur(20px) saturate(300%);
+            z-index:  1000;
+            box-shadow: 0 2px 10px #00ffff;
+        }
+
+
+        #search-input {
+            background:black;
+            padding: 0.5rem;
+            width: 400px;
+            font-size: large;
+            height: 50px;
+            border-radius: 2rem 2rem;
+            border: none;
+            margin-right: 10px;
+            text-align: center;
+            color: #00ffff;
+            font-family: 'Orbitron', sans-serif;
+            box-shadow: 0 2px 10px #00ffff;
+        }
+
+        ::placeholder{
+        color: white;
+        font-family: 'Orbitron', sans-serif;
+
+    }
+
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00f5d4;
+        }
+
+        </style>
+            <!-- Navigation -->
+    <nav id="navbar">
+        <div class="logo">SMILEX </div>
+        
+        <div class="search-container">
+            <input type="text" id="search-input" i class="fas fa-search" placeholder="Search games..." ></i>
+           
+            
+        </div>
+    </nav>
+
+</body>
+</html>
+
+        

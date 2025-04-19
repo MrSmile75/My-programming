@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="weight=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <title>SmileX learning Hub</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
@@ -21,6 +22,11 @@
             height: 100vh;
             overflow: hidden;
             perspective: 1000px;
+            color: var(--text-color);
+            line-height: 1.6;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+        
         }
 
         .preloader {
@@ -42,14 +48,15 @@
             position: absolute;
             background: linear-gradient(
                 45deg, 
-                purple, 
-                 purple, 
-                purple,
+                rgb(255, 2, 255), 
+                 rgb(249, 1, 249), 
+                rgb(254, 1, 254),
             );
             border-radius: 15px;
             box-shadow: 
-                0 0 20px purple,
-                0 0 40px purple ;
+                0 0 20px rgb(250, 1, 250),
+                0 0 40px rgb(253, 1, 253) ;
+                opacity: 3;
         }
 
         .x-line:nth-child(1) {
@@ -90,17 +97,17 @@
             bottom: -80px;
             left: 50%;
             transform: translateX(-50%);
-            color: purple;
+            color: rgb(255, 4, 255);
             font-family: 'Orbitron', sans-serif;
             font-size: 24px;
             letter-spacing: 5px;
             text-transform: uppercase;
-            text-shadow: 0 0 10px purple;
+            text-shadow: 0 0 10px rgb(255, 1, 255);
         }
 
         .particle {
             position: absolute;
-            background: purple;
+            background: rgb(254, 1, 254);
             border-radius: 50%;
             pointer-events: none;
             animation: particle-float 3s infinite;

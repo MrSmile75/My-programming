@@ -3,99 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WELCOME TO SMILEX</title>
-</head>
+    <title>ABOUT US</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-         :root {
-            --primary-color: #00f3bf;
-            --secondary-color: #ff4da6;
-            --bg-dark: #0a0a0f;
-            --quantum-primary: #00f3bf;
-            --quantum-secondary: #ff4da6;
-            --quantum-dark: #2a2a3084;
-            --quantum-light: #1a1a2e;
-            --my-color:#833ab4;
-            --primary-gradient: linear-gradient(45deg, #4a6cf7, #7a92ff);
-            --secondary-gradient: linear-gradient(45deg, #4acdf7, #76e4ff);
-            --enterprise-gradient: linear-gradient(45deg, #ff6b6b, #ff9a9a);
-            --background-color: #f4f6fd;
-            --text-primary: #2c3e50;
-            --text-secondary: #7f8c8d;
-        
-        }
-
-        * {
-            * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scrollbar-width: thin;
-            scrollbar-color: var(--enterprise-gradient) var(--primary-gradient);
-        }
-        }
-
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            background:black;
-            color: white;
-            background: black;
-            color: white;
-            font-size: larger;
-            
-
-        }
-
-        .quantum-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 90px;
-            background: transparent;
-            backdrop-filter: blur(20px);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 5%;
-            z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .search-bar input{
-            background: black;
-            color: purple;
-            padding: 1rem 1rem;
-            justify-content: center;
-            align-items: center;
-            border-radius: 1rem 1rem;
-            box-shadow: 0 0 15px purple;
-            left: 0%;
-            margin-top: 13%;
-            
-      
-            width: 300px;
-        }
-
-
-        input{
-            background: black;
-            color: purple;
-            padding: 1rem 1rem;
-            justify-content: center;
-            align-items: center;
-        }
-
-
-         h1,h2,h3{
-            text-align: center;
-            weight:10rem 10rem;
-            color:gold;
-        }
-
-
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="aboutus.css">
+    <script src="aboutus.js"></script>
+</head>
+  
        <header class="quantum-header" id="quantumHeader">
         <!-- Particle Background -->
         <div class="header-particles" id="particleContainer"></div>
@@ -105,9 +20,7 @@
            <h2>
             <span class="logo-text">SMILE<B>X</B></span>
            </h2>
-
-           
-           
+ 
         </div>
 
         <!-- Navigation -->
@@ -117,51 +30,74 @@
 
     </header>
 
+    <br>
 
+
+    <div class="dynamic-text-container">
+                 
+        <span id="dynamic-text" class="dynamic-text">Hi,</span>
+        <span class="cursor"></span>
+    </div>
 
 
       <br><br>
-     
 
- 
 <p>SmileX  is used world wide both local and international for <b><u>commerical</u></b> and <b><u>entertainment</u></b> purposes, designed by SmileX Inc to make life easy.We are always available to assist people and we make sure to keep your smile always. Contact us if you encounter any problem, and we promise to make Smile the best for you</p>
 <br>
-<p>Follow us on our social media platforms to get information and stay updated. For more enquires <b><u>contact us</u></b> on  <a href="www.smileforme.com" target = "_blank">Smileforme.com</a></p> <p>Or folow us on <u>Youtube</u>, <u>X</u>, <u>Discord</u>, <u>IG</u> and <u>Tiktok</u></p>
+<p>Follow us on our social media platforms to get information and stay updated. For more enquires <b><u>contact us</u></b> on  <a href="service.html">smilex.com</a></p> <p>Or folow us on <u>Youtube</u>, <u>X</u>, <u>Discord</u>, <u>IG</u> and <u>Tiktok</u></p>
 <br><br>
-<img src="c:\Users\User\Downloads\download.png" alt="png" width="50px" height="100px"> Youtube at <a href="https://www.youtube.com" target="_blank">SmileX Inc</a>
-<img src="c:\Users\User\Downloads\download (1).png" alt="png" width="50px" height="100px"> X at <a href="https://www.x.com" target="_blank">SmileX Inc</a>
-<img src="c:\Users\User\Downloads\download (2).jpg" alt="jpg" width="50px" height="100px"> Instagram at <a href="https://www.instagram.com" target="_blank">Smile Inc</a>
-<img src="c:\Users\User\Downloads\download (2).png" alt="png" width="50px" height="100px"> Tiktok at <a href="https://www.tiktok.com/" target="_blank">SmileX  Inc</a>
-<img src="c:\Users\User\Downloads\download (3).png" alt="png" width="50px" height="100px"> Discord at <a href="https://www.discord.com" target="_blank">SmileX Inc</a>
-<br><br>
-
+  <!-- SOCIAL MEDIA SECTION - STANDALONE AND PROMINENT -->
+  <section class="social-section">
+    <!-- Particle Background -->
+    <div class="particle-bg" id="particleContainer"></div>
+    
+    <div class="social-content">
+        <h2 class="social-title">FOLLOW US ON</h2>
+        
+        <div class="social-logo-grid">
+            <div class="social-logo facebook" onclick="openSocialLink('facebook')">
+                <i class="fab fa-facebook-f"></i>
+            </div>
+            <div class="social-logo twitter" onclick="openSocialLink('twitter')">
+                <i class="fab fa-twitter"></i>
+            </div>
+            <div class="social-logo instagram" onclick="openSocialLink('instagram')">
+                <i class="fab fa-instagram"></i>
+            </div>
+            <div class="social-logo linkedin" onclick="openSocialLink('linkedin')">
+                <i class="fab fa-linkedin-in"></i>
+            </div>
+        </div>
+    </div>
+</section>
 <h2>Download link</h2>
 <br>
 <p>Below shows versions and links. Select carefully according to your device !!!</p>
 <br><br>
-<tr>
-    <th rowspan="2">Version</th>
-    <th rowspan="2">Links</th>
-</tr>
-
-<td><img src="c:\Users\User\Downloads\download (3).jpg" alt="jpg" width="50px" height="100px"></td>
-<td><a href="https://play.google.com/store/apps/details?id=YOUR_APP_ID" target="_blank">SmileX </a></td>
-<tr>
-
-    <td><img src="c:\Users\User\Downloads\download (4).jpg" alt="jpg" width="50px" height="100px"></td>
-    <td><a href="https://apps.apple.com/us/app/YOUR_APP_NAME/idYOUR_APP_ID" target="_blank">SmileX </a></td>
-</tr>
-
-<tr>
-<td><img src="c:\Users\User\Downloads\download (4).png" alt="png" width="150px" height="100px"></td>
-<td><a href="https://play.google.com/store/apps/details?id=YOUR_APP_ID" target="_blank">SmileX</a></td>
-</tr>
-
-<tr>
-<td><img src="c:\Users\User\Downloads\download (5).png" alt="png" width="50px" height="100px"></td>
-<td><a href="https://apps.apple.com/us/app/YOUR_APP_NAME/idYOUR_APP_ID" target="_blank">SmileX</a></td>
-</tr>
-
+  <!--  APP SECTION - STANDALONE AND PROMINENT -->
+  <section class="app-section">
+    <!-- Particle Background -->
+    <div class="particle-bg" id="particleContainer"></div>
+    
+    <div class="app-content">
+        <h2 class="app-title">DOWNLOAD LINK</h2>
+        
+        <div class="app-logo-grid">
+            <div class="app-logo play-store" onclick="openLink('playstore')">
+                <i class="fab fa-google-play"></i>
+            </div>
+            <div class="app-logo app-store" onclick="openLink('appstore')">
+                <i class="fab fa-app-store"></i>
+            </div>
+            <div class="app-logo windows" onclick="openLink('windows')">
+                <i class="fab fa-windows"></i>
+            </div>
+            <div class="app-logo apple" onclick="openLink('apple')">
+                <i class="fab fa-apple"></i>
+            </div>
+        </div>
+    </div>
+</section>
 <br>
 
 <p>If you have any problem with the following above, click here <a href="service.html">CONTACT US</a> to help solve problems bothering you.</p>
@@ -181,22 +117,46 @@
 
 <p>Also you can get more information on our social media platforms </p>
 <br>
-<img src="c:\Users\User\Downloads\download.png" alt="png" width="50px" height="100px">
-<img src="c:\Users\User\Downloads\download (1).png" alt="png" width="50px" height="100px">
-<img src="c:\Users\User\Downloads\download (2).jpg" alt="jpg" width="50px" height="100px">
-<img src="c:\Users\User\Downloads\download (3).png" alt="png" width="50px" height="100px">
-<br>
+  <!-- SOCIAL MEDIA SECTION - STANDALONE AND PROMINENT -->
+  <section class="social-section">
+    <!-- Particle Background -->
+    <div class="particle-bg" id="particleContainer"></div>
+    
+    <div class="social-content">
+        <h2 class="social-title">Connect With Us</h2>
+        
+        <div class="social-logo-grid">
+            <div class="social-logo facebook" onclick="openSocialLink('facebook')">
+                <i class="fab fa-facebook-f"></i>
+            </div>
+            <div class="social-logo twitter" onclick="openSocialLink('twitter')">
+                <i class="fab fa-twitter"></i>
+            </div>
+            <div class="social-logo instagram" onclick="openSocialLink('instagram')">
+                <i class="fab fa-instagram"></i>
+            </div>
+            <div class="social-logo linkedin" onclick="openSocialLink('linkedin')">
+                <i class="fab fa-linkedin-in"></i>
+            </div>
+        </div>
+    </div>
+</section>
 <p>If you have any problem or question, contact us immediately or if you have any problem click ; <a href="service.html">I have a question</a></p>
 <br>
 
 <h2>About Us</h2>
 <br>
-<p>SmileX comparies of the <u>CEO</u>, <u>Co-executives</u>, and <u>other various workers</u> who have brought up an idea of designing SmileX for everyone , both the young and old . This  has been designed and brought up to make a big difference in every life , that is to make life more easier and better.Also ,  has been programmed to assist people and many more. We are always available and ready to attend and assist others in times of need, and help you to keep a smile. Also, awards are given to those who <u>participate in certain activities and are declared winners</u> and <u>premium subscribers</u>. We ensure <u>fairness</u> and <u>equality</u> and also we encourage people who are willing to join our team . But before, each person give a full detail about him or herself including <u>certificates</u> and <u>testimonals</u> before he or she gets qualified . We ban any acts of crime either by law or society . Such acts include ; <u>Theft</u>, <u>violence</u>, <u>murder</u>, <u>and other activities forbidden</u> . NB;<u>WE AWARD GOOD DEEDS</u> . But remember that ; <u>Terms and conditions apply</u>. We are hoping to gain enough support as to enhance our business and help others by make life easier. The more we gain support, the more we are supported , the more we help others. We are invite anyone to our page online  and our social media platforms.</p>
+<p>SmileX comparies of the <b>CEO</b>, <b>Co-executives</b>, and <b>other various workers</b> who have brought up an idea of designing SmileX for everyone , both the young and old . This  has been designed and brought up to make a big difference in every life , that is to make life more easier and better.Also ,  has been programmed to assist people and many more. We are always available and ready to attend and assist others in times of need, and help you to keep a smile. Also, awards are given to those who <b>participate in certain activities and are declared winners</b> and <b>premium subscribers</b>. We ensure <b>fairness</b> and <b>equality</b> and also we encourage people who are willing to join our team . But before, each person give a full detail about him or herself including <b>certificates</b> and <b>testimonals</b> before he or she gets qualified . We ban any acts of crime either by law or society . Such acts include ; <b>Theft</b>, <b>violence</b>, <b>murder</b>, <u>and other activities forbidden</b> . <b>NB;WE AWARD GOOD DEEDS</b> . But remember that ; <b>Terms and conditions apply</b>. We are hoping to gain enough support as to enhance our business and help others by make life easier. The more we gain support, the more we are supported , the more we help others. We are invite anyone to our page online  and our social media platforms.</p>
+ <br><br>
+
+
+ <div class="layer">
+<p>MOTTO: KEEP THE SMILE</p>
+ </div>
+
+
 </body> 
 </div>
 
-<script>
-
-    </script>
 </body>
 </html>

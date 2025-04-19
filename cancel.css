@@ -1,0 +1,239 @@
+:root {
+    --primary-color: #6366f1;
+    --secondary-color: #4f46e5;
+    --background-color: #f8fafc;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --card-background: #ffffff;
+    --border-radius: 16px;
+    --quantum-primary:gold;
+    --quantum-background: black;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scrollbar-width: thick;
+    scrollbar-color: var(--quantum-primary) var(--quantum-background);
+}
+
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: black;
+    color: var(--text-primary);
+    line-height: 1.6;
+    perspective: 1000px;
+}
+
+
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+}
+
+.header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4rem;
+    background: linear-gradient(45deg, var(--quantum-primary), var(--quantum-));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: gold;
+    text-shadow: 0 0 30px gold;
+    letter-spacing: 2px;
+}
+
+
+.pricing-container {
+    
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+
+
+.pricing-header p {
+    max-width: 800px;
+    margin: 0 auto;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.billing-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+.toggle-wrapper {
+    background-color: transparent;
+    display: inline-flex;
+    border-radius: 50px;
+    padding: 0.5rem;
+    box-shadow: 0 4px 6px gold;
+}
+
+.toggle-option {
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    position: relative;
+    font-weight: 600;
+}
+
+.toggle-option.active {
+    background-color: transparent;
+    color: gold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+}
+
+.pricing-card {
+    background: black;
+    border-radius: var(--border-radius);
+    padding: 2.5rem;
+    box-shadow: 0 0 15px gold;
+    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform-style: preserve-3d;
+    transform: rotateX(10deg) rotateY(-10deg) scale(0.9);
+    opacity: 0.8;
+}
+
+.pricing-card:hover {
+    transform: rotateX(0) rotateY(0) scale(1);
+    box-shadow: 0 40px 60px -15px rgba(0,0,0,0.2);
+    opacity: 1;
+    z-index: 10;
+}
+
+.pricing-card.recommended {
+    border: 2px solid gold;
+    transform: rotateX(0) rotateY(0) scale(1.05);
+    opacity: 1;
+}
+
+.pricing-card.recommended::before {
+    content: 'Best Value';
+    position: absolute;
+    top: 30px;
+    right: -50px;
+    background: gold;
+    color: black;
+    padding: 0.5rem 2.5rem;
+    transform: rotate(45deg);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.plan-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+}
+
+.plan-price {
+    font-size: 3rem;
+    font-weight: 800;
+    color: gold;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.plan-price::after {
+    content: '/mo';
+    font-size: 1rem;
+    color: gold;
+    position: absolute;
+    top: 10px;
+}
+
+.plan-features {
+    flex-grow: 1;
+    margin-bottom: 2rem;
+}
+
+.plan-features ul {
+    list-style-type: none;
+}
+
+.plan-features li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+}
+
+.plan-features li i {
+    color: gold;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+}
+
+.plan-cta {
+    display: block;
+    text-align: center;
+    padding: 1.25rem 1.5rem;
+    background: black;
+    color: white;
+    text-decoration: none;
+    border: 3px solid gold;
+    border-radius: 50px;
+    font-weight: 700;
+    transition: all 0.4s ease;
+    margin-top: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.plan-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: all 0.5s ease;
+}
+
+.plan-cta:hover::before {
+    left: 100%;
+}
+
+.plan-cta:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 1200px) {
+    .pricing-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .pricing-grid {
+        grid-template-columns: 1fr;
+    }
+}

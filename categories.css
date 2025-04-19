@@ -1,0 +1,198 @@
+:root {
+    --primary-color: #00ffff;
+    --secondary-color: #8a2be2;
+    --background-dark: #0a0a2a;
+    --quantum-primary: #00f5d4;
+    --quantum-secondary: #8c1eff;
+    --quantum-background: #0a0a1a;
+    --quantum-text: #e0e0ff;
+    --quantum-glow: rgba(0, 245, 212, 0.4);
+    --bg-primary: #0f1020;
+    --bg-secondary: #1a1a2e;
+    --color-accent: #4a6cf7;
+    --color-text-primary: #e6e6e6;
+    --color-text-secondary: #a0a0a0;
+    --transition-speed: 0.3s;
+    --text-color: #e0e0ff;
+    --card-background: rgba(15,15,40,0.8);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: var(--quantum-primary) var(--quantum-background);
+}
+
+
+body, html {
+    font-family: 'Poppins', sans-serif;
+    height: 100%;
+    display: inline;
+    overflow: flex;
+    background: var(--background-dark);
+    cursor: none;
+    user-select: none;
+}
+
+
+/* Quantum Background Canvas */
+#quantum-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Custom Cursor */
+.quantum-cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+    mix-blend-mode: difference;
+    z-index: 9999;
+    box-shadow: 0 0 20px rgba(0,255,255,0.5);
+}
+
+.container {
+    display: absolute ;
+    left: 10% ;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    perspective: 2000px;
+    position: absolute;
+    padding: 50px;
+}
+
+.header {
+    text-align: left;
+    margin-bottom: 40px;
+    color: var(--text-color);
+}
+
+.header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 30px rgba(0,255,255,0.5);
+    letter-spacing: 2px;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.category-card {
+    background: var(--card-background);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.5s ease;
+    transform-style: preserve-3d;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(0,255,255,0.2);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        transparent,
+        var(--primary-color),
+        transparent
+    );
+    transform: rotate(-45deg);
+    opacity: 0.1;
+    transition: all 0.5s ease;
+}
+
+.category-card:hover {
+    transform: scale(1.05) rotateX(10deg) rotateY(10deg);
+    box-shadow: 0 25px 45px rgba(0,255,255,0.3);
+}
+
+.category-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover .category-icon {
+    transform: scale(1.2) rotate(360deg);
+}
+
+.category-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.category-description {
+    color: rgba(224,224,255,0.7);
+    font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header h1 {
+        font-size: 2.5rem;
+    }
+}
+
+/* Particle Trail Effect */
+.particle-trail {
+    position: absolute;
+    pointer-events: none;
+    z-index: 9998;
+}
+
+.particle {
+    position: flex;
+    width: 705px;
+    height: 705px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    opacity: 0.7;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: auto;
+    font-size: 14px;
+    color: #aaa;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}
