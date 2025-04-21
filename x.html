@@ -2,292 +2,164 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ultimate Advanced Marquee System</title>
+    <title>Login/Signup Form</title>
     <style>
-        :root {
-            --marquee-primary-color: #2c3e50;
-            --marquee-secondary-color: #3498db;
-            --marquee-background: #ecf0f1;
-            --marquee-text-color: #333;
-            --marquee-border-radius: 12px;
-            --marquee-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Arial', sans-serif;
-            background:black;
-            color: gold;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            height: 100vh;
+            background-color: #f0f2f5;
         }
-
-        .ultimate-marquee-container {
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 350px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input {
             width: 100%;
-            max-width: 1200px;
-            position: relative;
-            overflow: hidden;
-            background: transparent;
-            border-radius: var(--marquee-border-radius);
-            box-shadow: var(--marquee-shadow);
-            border: 2px solid transparent;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
-
-        .marquee-wrapper {
+        .toggle-btn {
             display: flex;
-            overflow: hidden;
-            user-select: none;
-            position: relative;
+            justify-content: space-around;
+            margin-bottom: 20px;
         }
-
-        .marquee-track {
-            display: flex;
-            animation: marqueeAnimation linear infinite;
-            width: max-content;
+        .toggle-btn button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px;
         }
-
-        .marquee-item {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            white-space: nowrap;
-            transition: all 0.3s ease;
+        .toggle-btn button.active {
+            border-bottom: 2px solid #007bff;
+            color: #007bff;
         }
-
-        .marquee-item:hover {
-            background-color: rgba(52, 152, 219, 0.1);
-            transform: scale(1.05);
+        #signup-form {
+            display: none;
         }
-
-        .marquee-item-icon {
-            margin-right: 10px;
-            font-size: 1.2em;
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
         }
-
-        .marquee-item-badge {
-            background-color: transparent;
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
             color: white;
-            padding: 3px 8px;
-            border: 3px solid gold;
-            border-radius: 20px;
-            font-size: 2em;
-            margin-left: 10px;
-        }
-
-        @keyframes marqueeAnimation {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-
-        /* Responsive Breakpoints */
-        @media (max-width: 768px) {
-            .marquee-item {
-                padding: 10px 15px;
-                font-size: 0.9em;
-            }
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <h2>
-    <div id="ultimateMarquee" class="ultimate-marquee-container"></div>
+    <div class="container">
+        <div class="toggle-btn">
+            <button id="login-toggle" class="active" onclick="toggleForm('login')">Login</button>
+            <button id="signup-toggle" onclick="toggleForm('signup')">Sign Up</button>
+        </div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <input type="email" id="login-email" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="login-password" placeholder="Password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+
+        <form id="signup-form">
+            <div class="form-group">
+                <input type="text" id="signup-name" placeholder="Full Name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <div id="email-error" class="error"></div>
+            </div>
+            <div class="form-group">
+                <input type="password" id="signup-password" placeholder="Password" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+                <div id="password-error" class="error"></div>
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
 
     <script>
-    class UltimateMarquee {
-        constructor(config = {}) {
-            // Advanced Configuration Options
-            this.defaultConfig = {
-                container: 'ultimateMarquee',
-                items: [],
-                speed: 50,
-                direction: 'left',
-                pauseOnHover: true,
-                responsive: true,
-                theme: 'default',
-                customClasses: {},
-                interactions: {
-                    click: null,
-                    hover: null
-                }
-            };
+        function toggleForm(type) {
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const loginToggle = document.getElementById('login-toggle');
+            const signupToggle = document.getElementById('signup-toggle');
 
-            // Merge configurations
-            this.config = this.deepMerge(this.defaultConfig, config);
-            this.container = document.getElementById(this.config.container);
-            
-            // Initialize marquee
-            this.init();
-        }
-
-        // Deep merge utility method
-        deepMerge(target, source) {
-            const output = Object.assign({}, target);
-            if (this.isObject(target) && this.isObject(source)) {
-                Object.keys(source).forEach(key => {
-                    if (this.isObject(source[key])) {
-                        if (!(key in target))
-                            Object.assign(output, { [key]: source[key] });
-                        else
-                            output[key] = this.deepMerge(target[key], source[key]);
-                    } else {
-                        Object.assign(output, { [key]: source[key] });
-                    }
-                });
-            }
-            return output;
-        }
-
-        // Check if value is an object
-        isObject(item) {
-            return (item && typeof item === 'object' && !Array.isArray(item));
-        }
-
-        // Initialize marquee
-        init() {
-            this.createMarqueeStructure();
-            this.applyTheme();
-            this.setupInteractions();
-        }
-
-        // Create marquee DOM structure
-        createMarqueeStructure() {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'marquee-wrapper';
-
-            const track = document.createElement('div');
-            track.className = 'marquee-track';
-
-            // Duplicate items for continuous animation
-            const items = [...this.config.items, ...this.config.items];
-            
-            items.forEach(item => {
-                const marqueeItem = this.createMarqueeItem(item);
-                track.appendChild(marqueeItem);
-            });
-
-            wrapper.appendChild(track);
-            this.container.appendChild(wrapper);
-
-            // Set animation properties
-            this.setAnimationProperties(track);
-        }
-
-        // Create individual marquee item
-        createMarqueeItem(itemData) {
-            const item = document.createElement('div');
-            item.className = 'marquee-item';
-
-            // Support for complex item configurations
-            if (typeof itemData === 'object') {
-                // Icon support
-                if (itemData.icon) {
-                    const icon = document.createElement('span');
-                    icon.className = `marquee-item-icon ${itemData.icon}`;
-                    item.appendChild(icon);
-                }
-
-                // Text content
-                const text = document.createElement('span');
-                text.textContent = itemData.text || '';
-                item.appendChild(text);
-
-                // Badge support
-                if (itemData.badge) {
-                    const badge = document.createElement('span');
-                    badge.className = 'marquee-item-badge';
-                    badge.textContent = itemData.badge;
-                    item.appendChild(badge);
-                }
-
-                // Custom classes
-                if (itemData.classes) {
-                    item.classList.add(...itemData.classes);
-                }
+            if (type === 'login') {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                loginToggle.classList.add('active');
+                signupToggle.classList.remove('active');
             } else {
-                item.textContent = itemData;
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                loginToggle.classList.remove('active');
+                signupToggle.classList.add('active');
             }
-
-            return item;
         }
 
-        // Set animation properties
-        setAnimationProperties(track) {
-            track.style.animationDuration = `${this.config.speed}s`;
+        // Email validation function
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Signup form validation
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            if (this.config.direction === 'right') {
-                track.style.animationDirection = 'reverse';
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const emailError = document.getElementById('email-error');
+            const passwordError = document.getElementById('password-error');
+
+            // Reset previous errors
+            emailError.textContent = '';
+            passwordError.textContent = '';
+
+            // Email validation
+            if (!validateEmail(email)) {
+                emailError.textContent = 'Please enter a valid email address';
+                return;
             }
-        }
 
-        // Apply theme
-        applyTheme() {
-            const themes = {
-                default: {
-                    primaryColor: '#2c3e50',
-                    secondaryColor: '#3498db',
-                    background: '#ecf0f1'
-                },
-                dark: {
-                    primaryColor: '#34495e',
-                    secondaryColor: '#2980b9',
-                    background: '#2c3e50'
-                }
-            };
-
-            const selectedTheme = themes[this.config.theme] || themes.default;
-            
-            this.container.style.setProperty('--marquee-primary-color', selectedTheme.primaryColor);
-            this.container.style.setProperty('--marquee-secondary-color', selectedTheme.secondaryColor);
-            this.container.style.setProperty('--marquee-background', selectedTheme.background);
-        }
-
-        // Setup interactions
-        setupInteractions() {
-            if (this.config.pauseOnHover) {
-                this.container.addEventListener('mouseenter', () => {
-                    const track = this.container.querySelector('.marquee-track');
-                    track.style.animationPlayState = 'paused';
-                });
-
-                this.container.addEventListener('mouseleave', () => {
-                    const track = this.container.querySelector('.marquee-track');
-                    track.style.animationPlayState = 'running';
-                });
+            // Password match validation
+            if (password !== confirmPassword) {
+                passwordError.textContent = 'Passwords do not match';
+                return;
             }
-        }
-    }
 
-    // Example Usage
-    document.addEventListener('DOMContentLoaded', () => {
-        new UltimateMarquee({
-            items: [
-                { 
-                    text: 'Special Offer', 
-                    icon: 'fa-gift', 
-                    badge: 'New',
-                    classes: ['highlight']
-                },
-                'Free Shipping Worldwide',
-                { 
-                    text: 'Summer Sale', 
-                    badge: '50% OFF' 
-                },
-                'Join Our Community'
-            ],
-            speed: 30,
-            direction: 'left',
-            theme: 'default',
-            pauseOnHover: true
+            // If all validations pass
+            alert('Sign Up Successful!');
         });
-    });
+
+        // Login form submission
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Login Successful!');
+        });
     </script>
 </body>
 </html>

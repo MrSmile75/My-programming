@@ -1,130 +1,179 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Authentication Forms</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="login.css">
-    <script src="login.js"></script>
-
-</head>
-<body>
-
-    <div class="container">
-        <div class="visual">
-            <div class="visual-content">
-                <div class="logo">
-                    <i class="ri-arrow" style="font-size: 48px;"></i>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Authentication Forms</title>
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+        <style>
+            /* [Previous CSS remains the same] */
+            .error-message {
+                color: red;
+                font-size: 12px;
+                margin-top: 5px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- [Previous HTML structure remains the same] -->
+            
+            <div class="auth">
+                <div class="auth-toggle">
+                    <button class="toggle-btn active" id="loginToggle">Login</button>
+                    <button class="toggle-btn" id="signupToggle">Signup</button>
                 </div>
-                <h1>FORM</h1>
-               
-            </div>
-        </div>
-        
-        
-        <div class="auth">
-            <div class="auth-toggle">
-                <button class="toggle-btn active" id="loginToggle">Login</button>
-                <button class="toggle-btn" id="signupToggle">Signup</button>
-            </div>
-
-            <div class="form-container">
-                <div class="form" id="authForm">
-                    <!-- Login Section -->
-                    <div class="form-section login-section">
-                        <div class="input-wrapper">
-                            <i class="ri-user-line input-icon"></i>
-                            <input type="text" class="input" placeholder="Username" required>
-                        </div>
-                        <div class="input-wrapper">
-                            <i class="ri-lock-line input-icon"></i>
-                            <input type="password" class="input" placeholder="Password" required>
-                        </div>
-                        <button class="quantum-btn">Login</button>
-                        
-                       
-                    </div>
-
-                    <!-- Signup Section -->
-                    <div class="form-section signup-section">
-                        <div class="input-wrapper">
-                            <i class="ri-user-add-line input-icon"></i>
-                            <input type="text" class="input" placeholder="Full Name" required>
-                        </div>
-                        <div class="input-wrapper">
-                            <i class="ri-mail-line input-icon"></i>
-                            <input type="email" class="input" placeholder="Email" required>
-                        </div>
-                        <div class="input-wrapper">
-                            <i class="ri-lock-line input-icon"></i>
-                            <input type="password" class="input" placeholder="Password" required>
-                            <div class="password-strength">
-                                <div class="strength-indicator" id="passwordStrength"></div>
+    
+                <div class="form-container">
+                    <div class="form" id="authForm">
+                        <!-- Login Section -->
+                        <div class="form-section login-section">
+                            <div class="input-wrapper">
+                                <i class="ri-user-line input-icon"></i>
+                                <input type="email" id="login-email" class="input" placeholder="Email" required>
                             </div>
+                            <div class="input-wrapper">
+                                <i class="ri-lock-line input-icon"></i>
+                                <input type="password" id="login-password" class="input" placeholder="Password" required>
+                            </div>
+                            <div id="login-error" class="error-message"></div>
+                            <button id="login-btn" class="my-btn">Login</button>
                         </div>
-                        <div class="input-wrapper">
-                            <i class="ri-lock-line input-icon"></i>
-                            <input type="password" class="input" placeholder="Confirm Password" required>
+    
+                        <!-- Signup Section -->
+                        <div class="form-section signup-section">
+                            <div class="input-wrapper">
+                                <i class="ri-user-add-line input-icon"></i>
+                                <input type="text" id="signup-name" class="input" placeholder="Full Name" required>
+                            </div>
+                            <div class="input-wrapper">
+                                <i class="ri-mail-line input-icon"></i>
+                                <input type="email" id="signup-email" class="input" placeholder="Email" required>
+                            </div>
+                            <div class="input-wrapper">
+                                <i class="ri-lock-line input-icon"></i>
+                                <input type="password" id="signup-password" class="input" placeholder="Password" required>
+                            </div>
+                            <div class="input-wrapper">
+                                <i class="ri-lock-line input-icon"></i>
+                                <input type="password" id="confirm-password" class="input" placeholder="Confirm Password" required>
+                            </div>
+                            <div id="signup-error" class="error-message"></div>
+                            <button id="signup-btn" class="my-btn">Signup</button>
                         </div>
-                        <button class="quantum-btn">Signup</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-        class QuantumAuthentication {
-    constructor() {
-        this.initEventListeners();
-        this.initPasswordStrength();
-    }
-
-    initEventListeners() {
-        const loginToggle = document.getElementById('loginToggle');
-        const signupToggle = document.getElementById('signupToggle');
-        const authForm = document.getElementById('authForm');
-
-        loginToggle.addEventListener('click', () => {
-            authForm.style.transform = 'translateX(0)';
-            loginToggle.classList.add('active');
-            signupToggle.classList.remove('active');
-        });
-
-        signupToggle.addEventListener('click', () => {
-            authForm.style.transform = 'translateX(-50%)';
-            signupToggle.classList.add('active');
-            loginToggle.classList.remove('active');
-        });
-    }
-
-    initPasswordStrength() {
-        const passwordInput = document.querySelector('.signup-section input[type="password"]');
-        const strengthIndicator = document.getElementById('passwordStrength');
-
-        passwordInput.addEventListener('input', () => {
-            const strength = this.calculatePasswordStrength(passwordInput.value);
-            strengthIndicator.style.width = `${strength}%`;
-        });
-    }
-
-    calculatePasswordStrength(password) {
-        let strength = 0;
-        if (password.length > 7) strength += 25;
-        if (password.match(/[a-z]+/)) strength += 25;
-        if (password.match(/[A-Z]+/)) strength += 25;
-        if (password.match(/[0-9]+/)) strength += 25;
-        return Math.min(strength, 100);
-    }
-}
-
-// Initialize Quantum Authentication
-new QuantumAuthentication();
-
-
-    </script>
-
-  
-</body>
-</html>
+    
+        <script>
+            class MyAuthentication {
+                constructor() {
+                    this.initEventListeners();
+                }
+    
+                initEventListeners() {
+                    const loginToggle = document.getElementById('loginToggle');
+                    const signupToggle = document.getElementById('signupToggle');
+                    const authForm = document.getElementById('authForm');
+    
+                    // Toggle form
+                    loginToggle.addEventListener('click', () => {
+                        authForm.style.transform = 'translateX(0)';
+                        loginToggle.classList.add('active');
+                        signupToggle.classList.remove('active');
+                    });
+    
+                    signupToggle.addEventListener('click', () => {
+                        authForm.style.transform = 'translateX(-50%)';
+                        signupToggle.classList.add('active');
+                        loginToggle.classList.remove('active');
+                    });
+    
+                    // Login validation
+                    document.getElementById('login-btn').addEventListener('click', () => {
+                        this.validateLogin();
+                    });
+    
+                    // Signup validation
+                    document.getElementById('signup-btn').addEventListener('click', () => {
+                        this.validateSignup();
+                    });
+                }
+    
+                validateEmail(email) {
+                    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return re.test(email);
+                }
+    
+                validateLogin() {
+                    const email = document.getElementById('login-email');
+                    const password = document.getElementById('login-password');
+                    const errorElement = document.getElementById('login-error');
+    
+                    // Reset previous errors
+                    errorElement.textContent = '';
+    
+                    // Validate email
+                    if (!this.validateEmail(email.value)) {
+                        errorElement.textContent = 'Please enter a valid email address';
+                        return;
+                    }
+    
+                    // Validate password
+                    if (password.value.length < 6) {
+                        errorElement.textContent = 'Password must be at least 6 characters long';
+                        return;
+                    }
+    
+                    // If all validations pass
+                    alert('Login Successful!');
+                }
+    
+                validateSignup() {
+                    const name = document.getElementById('signup-name');
+                    const email = document.getElementById('signup-email');
+                    const password = document.getElementById('signup-password');
+                    const confirmPassword = document.getElementById('confirm-password');
+                    const errorElement = document.getElementById('signup-error');
+    
+                    // Reset previous errors
+                    errorElement.textContent = '';
+    
+                    // Validate name
+                    if (name.value.trim().length < 2) {
+                        errorElement.textContent = 'Please enter a valid name';
+                        return;
+                    }
+    
+                    // Validate email
+                    if (!this.validateEmail(email.value)) {
+                        errorElement.textContent = 'Please enter a valid email address';
+                        return;
+                    }
+    
+                    // Validate password
+                    if (password.value.length < 6) {
+                        errorElement.textContent = 'Password must be at least 6 characters long';
+                        return;
+                    }
+    
+                    // Validate password confirmation
+                    if (password.value !== confirmPassword.value) {
+                        errorElement.textContent = 'Passwords do not match';
+                        return;
+                    }
+    
+                    // If all validations pass
+                    alert('Signup Successful!');
+                }
+            }
+    
+            // Initialize Authentication
+            new MyAuthentication();
+        </script>
+    </body>
+    </html>
+    

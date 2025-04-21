@@ -1,10 +1,10 @@
 :root {
-    --quantum-primary: #6a11cb;
-    --quantum-secondary: #2575fc;
-    --quantum-background: #0f0c29;
-    --quantum-text: #ffffff;
-    --quantum-accent: #00fffc;
-    --quantum-gradient: linear-gradient(135deg, #6a11cb, #2575fc);
+    --my-primary: #6a11cb;
+    --my-secondary: #2575fc;
+    --my-background: #0f0c29;
+    --my-text: #ffffff;
+    --my-accent: #00fffc;
+    --my-gradient: linear-gradient(135deg, #6a11cb, #2575fc);
 }
 
 * {
@@ -22,6 +22,7 @@ body {
     background: black;
     perspective: 2000px;
     overflow: hidden;
+    color: #6a11cb;
     
     
 }
@@ -84,7 +85,7 @@ body {
     z-index: 10;
 }
 
-.quantum-logo {
+.my-logo {
     width: 100px;
     height: 100px;
     background: transparent;
@@ -113,7 +114,7 @@ body {
 .toggle-btn {
     background: transparent;
     border: 2px solid transparent;
-    color: var(--quantum-text);
+    color: var(--my-text);
     padding: 10px 20px;
     margin: 0 10px;
     border-radius: 10px;
@@ -180,10 +181,11 @@ letter-spacing: -1px;
 
 
 
-.quantum-btn {
-    width: 100%;
+.my-btn {
+    width: 50%;
     padding: 15px;
     background: linear-gradient(90deg,#ff4da6,#6a11cb,#405de6);
+    align-self: center;
     color: black;
     border: 1px solid transparent;
     border-radius: 15px;
@@ -194,7 +196,7 @@ letter-spacing: -1px;
    
 }
 
-.quantum-btn:hover {
+.my-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 0 45px #9802fd;
 }
