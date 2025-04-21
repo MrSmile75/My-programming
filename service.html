@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <link rel="stylesheet" href="service.css">
-    <script src="service.js"></script>
+   
     
 </head>
 <body>
@@ -66,33 +66,9 @@
         </div>
     </div>
 
-    <script>
-          // Background bubble animation
-  function createBubbles() {
-    const backgroundAnimation = document.getElementById('backgroundAnimation');
-    const bubbleCount = 40;
-
-    for (let i = 0; i < bubbleCount; i++) {
-        const bubble = document.createElement('div');
-        bubble.classList.add('bubble');
-        
-        // Random sizing
-        const size = Math.random() * 50 + 10;
-        bubble.style.width = `${size}px`;
-        bubble.style.height = `${size}px`;
-        
-        // Random positioning
-        bubble.style.left = `${Math.random() * 100}%`;
-        bubble.style.animationDuration = `${Math.random() * 20 + 10}s`;
-        bubble.style.animationDelay = `${Math.random() * 10}s`;
-        
-        backgroundAnimation.appendChild(bubble);
-    }
-}
-
-// Initialize bubbles on page load
-createBubbles();
+    <script src="service.js">
       
+
       
     </script>
 </body>

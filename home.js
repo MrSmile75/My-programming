@@ -710,6 +710,8 @@ document.addEventListener('DOMContentLoaded', () => {
     animator.start();
 });
 
+
+       
 // Initialize the map and set the default view (in case geolocation fails)
 const map = L.map('map').setView([51.505, -0.09], 13); // default position is London
 
@@ -737,5 +739,3 @@ alert("Geolocation failed. Showing default location.");
 } else {
 alert("Geolocation is not supported by this browser.");
 }
-
-

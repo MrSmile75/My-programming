@@ -1,28 +1,29 @@
-  // Background bubble animation
-  function createBubbles() {
-    const backgroundAnimation = document.getElementById('backgroundAnimation');
-    const bubbleCount = 40;
-
-    for (let i = 0; i < bubbleCount; i++) {
-        const bubble = document.createElement('div');
-        bubble.classList.add('bubble');
-        
-        // Random sizing
-        const size = Math.random() * 50 + 10;
-        bubble.style.width = `${size}px`;
-        bubble.style.height = `${size}px`;
-        
-        // Random positioning
-        bubble.style.left = `${Math.random() * 100}%`;
-        bubble.style.animationDuration = `${Math.random() * 20 + 10}s`;
-        bubble.style.animationDelay = `${Math.random() * 10}s`;
-        
-        backgroundAnimation.appendChild(bubble);
+    // Background bubble animation
+    function createBubbles() {
+        const backgroundAnimation = document.getElementById('backgroundAnimation');
+        const bubbleCount = 40;
+    
+        for (let i = 0; i < bubbleCount; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            
+            // Random sizing
+            const size = Math.random() * 50 + 10;
+            bubble.style.width = `${size}px`;
+            bubble.style.height = `${size}px`;
+            
+            // Random positioning
+            bubble.style.left = `${Math.random() * 100}%`;
+            bubble.style.animationDuration = `${Math.random() * 20 + 10}s`;
+            bubble.style.animationDelay = `${Math.random() * 10}s`;
+            
+            backgroundAnimation.appendChild(bubble);
+        }
     }
-}
-
-// Initialize bubbles on page load
-createBubbles();
+    
+    // Initialize bubbles on page load
+    createBubbles();
+    
 
 // EmailJS initialization and form submission
 (function(){
