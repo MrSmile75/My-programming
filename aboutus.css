@@ -35,7 +35,7 @@ body {
 }
 
 
-.quantum-header {
+.header {
     position: sticky;
     top: 0;
     left: 0;
@@ -134,7 +134,7 @@ a {
 }
 
 
-.quantum-logo {
+.logo {
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -371,7 +371,7 @@ b {
     letter-spacing: -1px;
 }
 
-.quantum-nav {
+.nav {
     display: flex;
     align-items: center;
 }

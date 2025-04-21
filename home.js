@@ -457,7 +457,7 @@ const reviews = [
     },
     {
         name: "Mark Peterson",
-        role: "Software Engineer",
+        role: "Software Enginner",
         image: "https://randomuser.me/api/portraits/men/43.jpg",
         stars: 5,
         comment: "I recommend anyone to try this website and know more about it",

@@ -1,13 +1,13 @@
 :root {
-    --primary-color: #00f3bf;
+    --my-color: #00f3bf;
     --secondary-color: #ff4da6;
     --bg-dark: #0a0a0f;
-    --quantum-primary: #00f3bf;
-    --quantum-secondary: #ff4da6;
-    --quantum-dark: #2a2a3084;
-    --quantum-light: #1a1a2e;
+    --my-primary: #00f3bf;
+    --my-secondary: #ff4da6;
+    --my-dark: #2a2a3084;
+    --my-light: #1a1a2e;
     --my-color:#833ab4;
-    --primary-gradient: linear-gradient(45deg, #4a6cf7, #7a92ff);
+    --my-gradient: linear-gradient(45deg, #4a6cf7, #7a92ff);
     --secondary-gradient: linear-gradient(45deg, #4acdf7, #76e4ff);
     --enterprise-gradient: linear-gradient(45deg, #ff6b6b, #ff9a9a);
     --background-color: #f4f6fd;
@@ -33,7 +33,7 @@ body {
     overflow-x: hidden;
 }
 
-.quantum-header {
+.header {
     position: fixed;
     top: 0;
     left: 0;
@@ -50,8 +50,8 @@ body {
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* QUANTUM LOGO */
-.quantum-logo {
+/* LOGO */
+.logo {
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -61,7 +61,7 @@ body {
 
 .logo-icon {
     font-size: 40px;
-    color: var(--quantum-primary);
+    color: var(--my-primary);
     transform-style: preserve-3d;
     transition: all 0.5s ease;
 }
@@ -70,14 +70,14 @@ body {
     margin-left: 15px;
     font-size: 28px;
     font-weight: bold;
-    background: linear-gradient(45deg, var(--quantum-primary), var(--quantum-secondary));
+    background: linear-gradient(45deg, var(--my-primary), var(--my-secondary));
     -webkit-background-clip: text;
     color: transparent;
     letter-spacing: -1px;
 }
 
 /* NAVIGATION */
-.quantum-nav {
+.nav {
     display: flex;
     align-items: center;
 }
@@ -104,7 +104,7 @@ body {
     left: -100%;
     width: 100%;
     height: 2px;
-    background: linear-gradient(45deg, var(--quantum-primary), var(--quantum-secondary));
+    background: linear-gradient(45deg, var(--my-primary), var(--my-secondary));
     transition: all 0.4s ease;
 }
 
@@ -113,7 +113,7 @@ body {
 }
 
 .nav-link:hover {
-    color: var(--quantum-primary);
+    color: var(--my-primary);
     transform: scale(1.05);
 }
 
@@ -126,7 +126,7 @@ body {
   
 }
 
-.quantum-button {
+.my-button {
     position: relative;
     padding: 1rem 1rem;
     background: transparent;
@@ -138,7 +138,7 @@ body {
     transition: all 0.4s ease;
 }
 
-.quantum-button::before {
+.my-button::before {
     content: '';
     position: absolute;
     top: 0;
@@ -150,11 +150,11 @@ body {
     z-index: -1;
 }
 
-.quantum-button:hover::before {
+.my-button:hover::before {
     left: 0;
 }
 
-.quantum-button:hover {
+.my-button:hover {
     color: white;
 }
 

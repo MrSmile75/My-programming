@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('quantum-background');
+    const canvas = document.getElementById('background');
     const ctx = canvas.getContext('2d');
-    const cursor = document.querySelector('.quantum-cursor');
+    const cursor = document.querySelector('.cursor');
 
     // Resize canvas
     function resizeCanvas() {
