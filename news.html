@@ -10,21 +10,46 @@
 </head>
 <body>
     <div id="preloader">
-        <div id="galaxy-container"></div>
-        
-        <div class="black-hole"></div>
-        
-        <div id="planet1" class="planet"></div>
-        <div id="planet2" class="planet"></div>
-        
-        <div id="spaceship-trail"></div>
-        <div id="spaceship"></div>
-        
-        <div id="loading-text">Loading  News</div>
-        
-        <div id="progress-bar">
-            <div id="progress-fill"></div>
+        <div class="news-loader">
+            <div class="news-grid">
+                <div class="news-block"></div>
+                <div class="news-block"></div>
+                <div class="news-block"></div>
+                <div class="news-block"></div>
+                <div class="news-block"></div>
+                <div class="news-block"></div>
+                <div class="news-block"></div>
+                <div class="news-block"></div>
+                <div class="news-block"></div>
+            </div>
         </div>
+        <div class="progress-wrapper">
+            <div class="progress-bar"></div>
+        </div>
+        <div class="loading-text">Gathering Latest News</div>
+        <div class="breaking-news-ticker">
+            <div class="ticker-content">
+                 News Tips: Get ready | Global news upcoming | Be notified for the coming update|SmileX
+            </div>
+        </div>
+    </div>
+
+    <div id="error-overlay" class="error-overlay">
+        <h2>News Connection Failed</h2>
+        <p>Unable to fetch latest news. Check your connection.</p>
+        <button id="retry-btn" style="
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: black;
+            color: black;
+            border: none;
+            border-radius: 5px 5px;
+            cursor: pointer;
+        ">Retry Connection</button>
+    </div>
+
+    <div id="main-content" style="display:none;">
+        <!-- Main news website content -->
     </div>
 
  

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> SmileX:Generate Anything....</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="ai.css">
+    
+</head>
+<body>
+    <div id="welcomeOverlay">
+        <div id="welcomeText">Welcome!</div>
+    </div>
+    <div id="dynamic-text-container">
+        <div id="typing-text"></div>
+    </div>
+    <br>
+    <div class="quantum-input-container">
+        <div class="input-wrapper">
+            <input 
+                type="text" 
+                class="quantum-input" 
+                id="quantumInput" 
+                placeholder="Type to generate..."
+                maxlength="250"
+            >
+            <div class="input-actions">
+                <button class="send-button" onclick="transmitMessage()">
+                    <i class="ri-send-plane-fill"></i> Generate
+                </button>
+            </div>
+            <div class="emoji-picker">
+                <span>🚀</span>
+                <span>✨</span>
+                <span>🌈</span>
+                <span>❤️</span>
+                <span>🎉</span>
+                <span>🔥</span>
+                <span>🍭</span>
+                <span>💰</span>
+                <span>😎</span>
+            </div>
+            <div class="char-counter" id="charCount">0 / 250</div>
+            
+            <div class="notification-area" id="notificationArea">
+                <div class="notification" id="notification"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="ai.js">
+            
+    </script>
+</body>
+</html>

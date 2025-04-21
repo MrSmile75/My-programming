@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ultimate Chat Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #5cb85c;
+            --background-color: #f4f7f6;
+            --text-color: #2c3e50;
+            --message-bg-sent: #e6f2ff;
+            --message-bg-received: #f1f0f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        #app-container {
+            width: 195%;
+            max-width: 1400px;
+            height: 100vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            display: flex;
+            overflow: hidden;
+        }
+
+        #sidebar {
+            width: 200px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #user-profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        #user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        #chat-section {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #message-area {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: #f9fafc;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            max-width: 70%;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 15px;
+            position: relative;
+            clear: both;
+            word-wrap: break-word;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background-color: var(--message-bg-sent);
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background-color: var(--message-bg-received);
+            border-bottom-left-radius: 5px;
+        }
+
+        #input-container {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: white;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+        }
+
+        #message-input {
+            flex-grow: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 30px;
+            margin-right: 10px;
+            transition: border-color 0.3s;
+        }
+
+        #message-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        #username-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #username-form {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        #username-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+        }
+
+        .emoji-picker {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 10px;
+        }
+
+        .emoji-picker span {
+            cursor: pointer;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div id="username-modal">
+        <div id="username-form">
+            <h2>Create Your Profile</h2>
+            <input 
+                type="text" 
+                id="username-input" 
+                placeholder="Choose a unique username"
+                maxlength="20"
+            >
+            <div class="emoji-picker">
+                <span>🐱</span>
+                <span>🚀</span>
+                <span>🌈</span>
+                <span>🤖</span>
+                <span>🍕</span>
+            </div>
+            <button class="btn" id="username-submit">Join Chat</button>
+        </div>
+    </div>
+
+    <div id="app-container">
+        <div id="sidebar">
+            <div id="user-profile">
+                <div id="user-avatar">
+                    <i class="fas fa-user" style="font-size: 30px;"></i>
+                </div>
+                <div>
+                    <h3 id="profile-username">Anonymous</h3>
+                    <p id="online-status">Online</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="chat-section">
+            <div id="message-area"></div>
+            <div id="input-container">
+                <textarea 
+                    id="message-input" 
+                    placeholder="Type your message..."
+                    rows="1"
+                ></textarea>
+                <div class="action-buttons">
+                    <input 
+                        type="file" 
+                        id="file-input" 
+                        accept="image/*,video/*"
+                        style="display:none"
+                    >
+                    <button class="btn" onclick="document.getElementById('file-input').click()">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <button class="btn" id="voice-record">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="btn" id="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+       
+        
+    </script>
+</body>
+</html>
+

@@ -1,3 +1,88 @@
+class AdvancedPreloader {
+    constructor() {
+        this.preloader = document.getElementById('preloader');
+        this.mainContent = document.getElementById('main-content');
+        this.progressBar = document.querySelector('.progress-bar');
+        this.loadingDetails = document.querySelector('.loading-details');
+        this.errorOverlay = document.getElementById('error-overlay');
+        this.retryBtn = document.getElementById('retry-btn');
+
+        this.loadingStages = [
+            { text: 'Connecting to Servers', progress: 20 },
+            { text: 'Loading Movie Database', progress: 40 },
+            { text: 'Preparing Recommendations', progress: 60 },
+            { text: 'Optimizing User Experience', progress: 80 },
+            { text: 'Almost Ready', progress: 100 }
+        ];
+
+        this.init();
+    }
+
+    updateProgress(stage) {
+        this.loadingDetails.textContent = stage.text;
+        this.progressBar.style.width = `${stage.progress}%`;
+    }
+
+    simulateLoading() {
+        return new Promise((resolve, reject) => {
+            // Simulated network request
+            const networkLatency = Math.random() * 1000 + 500;
+
+            this.loadingStages.forEach((stage, index) => {
+                setTimeout(() => {
+                    this.updateProgress(stage);
+
+                    // Simulate potential error
+                    if (Math.random() < 0.05) {
+                        reject(new Error('Network connection failed'));
+                    }
+
+                    if (index === this.loadingStages.length - 1) {
+                        setTimeout(resolve, networkLatency);
+                    }
+                }, index * 800);
+            });
+        });
+    }
+
+    async initializeContent() {
+        try {
+            await this.simulateLoading();
+            
+            this.preloader.classList.add('fade-out');
+            
+            setTimeout(() => {
+                this.preloader.style.display = 'none';
+                this.mainContent.style.display = 'block';
+            }, 700);
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+
+    handleError(error) {
+        console.error('.', error);
+        this.preloader.style.display = 'none';
+        this.errorOverlay.style.display = 'flex';
+    }
+
+    init() {
+        this.retryBtn.addEventListener('click', () => {
+            this.errorOverlay.style.display = 'none';
+            this.preloader.style.display = 'flex';
+            this.initializeContent();
+        });
+
+        this.initializeContent();
+    }
+}
+
+// Initialize preloader when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    new AdvancedPreloader();
+});
+           
+           
            // IMPORTANT: Replace with  actual TMDb API key
            const API_KEY = '48ea0449a84effd8baed92d45fa6175f';
            const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';

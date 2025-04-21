@@ -6,8 +6,9 @@
     <title>Chat X</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet"  href="chat.css">  
-    <script src="chat.js"></script>
+    
   
 </head>
 <body>
@@ -31,25 +32,70 @@
         </div>
     </div>
 
-    <script>
-        // Advanced loading simulation
-        function simulateLoading() {
-            const loader = document.querySelector('.chat-preloader');
-            
-            setTimeout(() => {
-                loader.style.transition = 'all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
-                loader.style.transform = 'rotateX(0deg) scale(0)';
-                loader.style.opacity = 0;
-                
-                // Optional: Trigger next screen or chat interface
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                }, 800);
-            }, 4000);
-        }
+    <div id="username-modal">
+        <div id="username-form">
+            <h2>Create Your Profile</h2>
+            <input 
+                type="text" 
+                id="username-input" 
+                placeholder="Choose a unique username"
+                maxlength="20"
+            >
+            <div class="emoji-picker">
+                <span>❤️</span>
+                <span>🔥</span>
+                <span>🍭</span>
+                <span>💰</span>
+                <span>😎</span>
+            </div>
+            <button class="btn" id="username-submit">Join Chat</button>
+        </div>
+    </div>
 
-        // Initialize loading
-        simulateLoading();
+    <div id="app-container">
+        <div id="sidebar">
+            <div id="user-profile">
+                <div id="user-avatar">
+                    <i class="fas fa-user" style="font-size: 30px;"></i>
+                </div>
+                <div>
+                    <h3 id="profile-username">Anonymous</h3>
+                    <p id="online-status">Online</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="chat-section">
+            <div id="message-area"></div>
+            <div id="input-container">
+                <textarea 
+                    id="message-input" 
+                    placeholder="Type your message..."
+                    rows="1"
+                ></textarea>
+                <div class="action-buttons">
+                    <input 
+                        type="file" 
+                        id="file-input" 
+                        accept="image/*,video/*"
+                        style="display:none"
+                    >
+                    <button class="btn" onclick="document.getElementById('file-input').click()">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <button class="btn" id="voice-record">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="btn" id="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="chat.js">
+     
     </script>
 </body>
 </html>

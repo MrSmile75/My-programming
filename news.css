@@ -18,137 +18,137 @@ body {
     font-family: 'Arial', sans-serif;
 }
 
+
 #preloader {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: black
+    ;
+    z-index: 9999;
+    transition: all 0.6s ease;
+}
+
+.news-loader {
+    position: relative;
+    width: 250px;
+    height: 250px;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
-    perspective: 1000px;
 }
 
-#galaxy-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.star {
-    position: absolute;
-    background-color: white;
-    border-radius: 50%;
-    animation: twinkle 1s infinite alternate;
-}
-
-@keyframes twinkle {
-    0% { opacity: 0.2; }
-    100% { opacity: 1; }
-}
-
-#spaceship {
-    position: absolute;
-    width: 150px;
-    height: 75px;
-    background: transparent;
-    clip-path: polygon(0% 25%, 100% 0%, 100% 100%, 0% 75%);
-    transform-origin: center;
-    transition: all 1s ease;
-    z-index: 100;
-}
-
-#spaceship-trail {
-    position: absolute;
-    width: 200px;
-    height: 20px;
-    background: transparent;
-    transform-origin: right center;
-    opacity: 0.7;
-}
-
-#loading-text {
-    position: absolute;
-    bottom: 20%;
-    color: white;
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 10px;
-    text-shadow: 0 0 10px white;
-}
-
-#progress-bar {
-    position: absolute;
-    bottom: 15%;
-    width: 50%;
-    height: 10px;
-    background-color:transparent;
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-#progress-fill {
-    width: 0;
-    height: 100%;
-    background: transparent;
-    transition: width 2s ease;
-}
-
-.planet {
-    position: absolute;
-    border-radius: 50%;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-}
-
-#planet1 {
-    top: 10%;
-    left: 20%;
-    width: 80px;
-    height: 80px;
-    background: transparent;
-    animation: orbit1 15s linear infinite;
-    box-shadow: 0 0 15px gold;
-}
-
-#planet2 {
-    top: 70%;
-    right: 15%;
-    width: 120px;
-    height: 120px;
-    background: transparent;
-    animation: orbit2 20s linear infinite;
-    box-shadow: 0 0 45px gold;
-}
-
-@keyframes orbit1 {
-    0% { transform: rotate(0deg) translateX(200px) rotate(0deg); }
-    100% { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
-}
-
-@keyframes orbit2 {
-    0% { transform: rotate(180deg) translateX(250px) rotate(-180deg); }
-    100% { transform: rotate(540deg) translateX(250px) rotate(-540deg); }
-}
-
-.black-hole {
-    position: absolute;
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
     width: 200px;
     height: 200px;
-    background: radial-gradient(circle, transparent 0%, transparent 100%);
-    border-radius: 50%;
-    box-shadow: 0 0 100px rgba(0,0,0,0.8);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.7;
-    animation: pulse 3s infinite alternate;
 }
 
-@keyframes pulse {
-    0% { transform: translate(-50%, -50%) scale(1); }
-    100% { transform: translate(-50%, -50%) scale(1.1); }
+.news-block {
+    background: gold;
+    opacity: 0;
+    transition: all 0.3s ease;
+    transform: scale(0.7);
+}
+
+.news-block:nth-child(1) { animation: loadBlock 1.5s infinite 0s; }
+.news-block:nth-child(2) { animation: loadBlock 1.5s infinite 0.2s; }
+.news-block:nth-child(3) { animation: loadBlock 1.5s infinite 0.4s; }
+.news-block:nth-child(4) { animation: loadBlock 1.5s infinite 0.6s; }
+.news-block:nth-child(5) { animation: loadBlock 1.5s infinite 0.8s; }
+.news-block:nth-child(6) { animation: loadBlock 1.5s infinite 1s; }
+.news-block:nth-child(7) { animation: loadBlock 1.5s infinite 1.2s; }
+.news-block:nth-child(8) { animation: loadBlock 1.5s infinite 1.4s; }
+.news-block:nth-child(9) { animation: loadBlock 1.5s infinite 1.6s; }
+
+@keyframes loadBlock {
+    0%, 100% { 
+        opacity: 0;
+        transform: scale(0.7);
+        background: gold;
+    }
+    50% { 
+        opacity: 1;
+        transform: scale(1);
+        background: gold;
+    }
+}
+
+.progress-wrapper {
+    width: 300px;
+    background:transparent;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 30px;
+}
+
+.progress-bar {
+    width: 0;
+    height: 10px;
+    background: transparent;
+    transition: width 0.5s ease;
+}
+
+.loading-text {
+    color: gold;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.breaking-news-ticker {
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    background: gold;
+    color: black;
+    padding: 10px 0;
+    text-align: center;
+    overflow: hidden;
+}
+
+.ticker-content {
+    display: inline-block;
+    white-space: nowrap;
+    animation: tickerScroll 15s linear infinite;
+}
+
+@keyframes tickerScroll {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+.error-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    color: white;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .news-loader {
+        width: 200px;
+        height: 200px;
+    }
+    .progress-wrapper {
+        width: 250px;
+    }
 }

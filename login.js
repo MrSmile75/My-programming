@@ -24,6 +24,8 @@ class MyAuthentication {
         });
     }
 
+    
+
     switchToLogin() {
         this.loginToggle.classList.add('active');
         this.signupToggle.classList.remove('active');
@@ -110,3 +112,4 @@ class MyAuthentication {
 
 // Initialize Authentication
 new MyAuthentication();
+

@@ -1,98 +1,112 @@
-class CosmicPreloader {
+class NewsPreloader {
     constructor() {
-        this.galaxyContainer = document.getElementById('galaxy-container');
-        this.spaceship = document.getElementById('spaceship');
-        this.spacshipTrail = document.getElementById('spaceship-trail');
-        this.progressFill = document.getElementById('progress-fill');
-        this.loadingText = document.getElementById('loading-text');
-        
-        this.init();
+        this.initializeElements();
+        this.setupEventListeners();
+        this.startLoading();
     }
 
-    init() {
-        this.createStars(500);
-        this.animateSpaceship();
-        this.updateProgress();
+    initializeElements() {
+        this.preloader = document.getElementById('preloader');
+        this.mainContent = document.getElementById('main-content');
+        this.progressBar = document.querySelector('.progress-bar');
+        this.loadingText = document.querySelector('.loading-text');
+        this.errorOverlay = document.getElementById('error-overlay');
+        this.retryButton = document.getElementById('retry-btn');
     }
 
-    createStars(count) {
-        for (let i = 0; i < count; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            
-            star.style.width = `${Math.random() * 3}px`;
-            star.style.height = star.style.width;
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.animationDelay = `${Math.random() * 2}s`;
-            
-            this.galaxyContainer.appendChild(star);
+    setupEventListeners() {
+        this.retryButton.addEventListener('click', () => this.retryLoading());
+    }
+
+    createLoadingStages() {
+        return [
+            { 
+                text: 'Connecting to News Networks', 
+                progress: 20,
+                duration: 1000 
+            },
+            { 
+                text: 'Fetching Breaking News', 
+                progress: 40,
+                duration: 1400 
+            },
+            { 
+                text: 'Updating Global Headlines', 
+                progress: 60,
+                duration: 1800 
+            },
+            { 
+                text: 'Preparing News Feed', 
+                progress: 80,
+                duration: 2300 
+            },
+            { 
+                text: 'News Ready', 
+                progress: 100,
+                duration: 2900 
+            }
+        ];
+    }
+
+    async startLoading() {
+        try {
+            await this.simulateLoading();
+            this.completeLoading();
+        } catch (error) {
+            this.handleLoadingError(error);
         }
     }
 
-    animateSpaceship() {
-        const path = [
-            { x: '10%', y: '80%', rotation: -45 },
-            { x: '50%', y: '30%', rotation: 0 },
-            { x: '90%', y: '70%', rotation: 45 }
-        ];
+    simulateLoading() {
+        const stages = this.createLoadingStages();
 
-        let currentIndex = 0;
+        return new Promise((resolve, reject) => {
+            stages.forEach((stage, index) => {
+                setTimeout(() => {
+                    this.updateLoadingProgress(stage);
 
-        const moveSpaceship = () => {
-            const current = path[currentIndex];
-            
-            this.spaceship.style.transform = `
-                translate(${current.x}, ${current.y}) 
-                rotate(${current.rotation}deg)
-            `;
+                    // Simulate potential random error
+                    if (Math.random() < 0.05 && index > 2) {
+                        reject(new Error('News Network Connection Failed'));
+                    }
 
-            this.spacshipTrail.style.transform = `
-                translate(${current.x}, ${current.y}) 
-                rotate(${current.rotation}deg)
-            `;
-
-            currentIndex = (currentIndex + 1) % path.length;
-            setTimeout(moveSpaceship, 2000);
-        };
-
-        moveSpaceship();
+                    if (index === stages.length - 1) {
+                        setTimeout(resolve, stage.duration);
+                    }
+                }, stage.duration);
+            });
+        });
     }
 
-    updateProgress() {
-        let progress = 0;
-        const messages = [
-            'Warping through result...',
-            'Collecting  data...',
-            'Decoding  signals...',
-            'Preparing news transmission...'
-        ];
-
-        const progressInterval = setInterval(() => {
-            progress += Math.random() * 25;
-            this.progressFill.style.width = `${progress}%`;
-            
-            // Update loading text
-            this.loadingText.textContent = messages[
-                Math.floor(progress / 25)
-            ] || 'News ready for launch!';
-
-            if (progress >= 100) {
-                clearInterval(progressInterval);
-                this.completeLoading();
-            }
-        }, 1000);
+    updateLoadingProgress(stage) {
+        this.loadingText.textContent = stage.text;
+        this.progressBar.style.width = `${stage.progress}%`;
     }
 
     completeLoading() {
+        this.preloader.style.opacity = 0;
+        
         setTimeout(() => {
-            document.getElementById('preloader').style.opacity = 0;
-            document.getElementById('preloader').style.visibility = 'hidden';
-        }, 1500);
+            this.preloader.style.display = 'none';
+            this.mainContent.style.display = 'block';
+        }, 600);
+    }
+
+    handleLoadingError(error) {
+        console.error('Loading Error:', error);
+        this.preloader.style.display = 'none';
+        this.errorOverlay.style.display = 'flex';
+    }
+
+    retryLoading() {
+        this.errorOverlay.style.display = 'none';
+        this.preloader.style.display = 'flex';
+        this.progressBar.style.width = '0%';
+        this.startLoading();
     }
 }
 
-// Initialize Cosmic Preloader
+// Initialize preloader
 document.addEventListener('DOMContentLoaded', () => {
-    new CosmicPreloader();
+    new NewsPreloader();
 });

@@ -14,21 +14,21 @@
     font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
-.input {
-    width: 100%;
-    padding: 15px 20px 15px 50px;
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 10px;
-    color: white;
-    transition: all 0.3s ease;
-    outline: none; /* Added to improve focus state */
-}
+        .input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            color: white;
+            transition: all 0.3s ease;
+            outline: none; /* Added to improve focus state */
+        }
 
-.input:focus {
-    border-color: #9802fc;
-    box-shadow: 0 0 10px rgba(152, 2, 253, 0.3);
-}
+        .input:focus {
+            border-color: #9802fc;
+            box-shadow: 0 0 10px rgba(152, 2, 253, 0.3);
+        }
 
 body {
     display: flex;
