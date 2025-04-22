@@ -2,261 +2,400 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ultimate Chat Experience</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Ultimate Game Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4a90e2;
-            --secondary-color: #5cb85c;
-            --background-color: #f4f7f6;
-            --text-color: #2c3e50;
-            --message-bg-sent: #e6f2ff;
-            --message-bg-received: #f1f0f0;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --game-bg: #1a1a2e;
+            --card-bg: #16213e;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-
-        #app-container {
-            width: 195%;
-            max-width: 1400px;
-            height: 100vh;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            display: flex;
-            overflow: hidden;
-        }
-
-        #sidebar {
-            width: 200px;
-            background-color: var(--primary-color);
+            background-color: var(--game-bg);
             color: white;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
+            font-family: 'Arial', sans-serif;
         }
 
-        #user-profile {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        #user-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: rgba(255,255,255,0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 15px;
-        }
-
-        #chat-section {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        #message-area {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px;
-            background-color: #f9fafc;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .message {
-            max-width: 70%;
-            margin-bottom: 15px;
-            padding: 12px 15px;
-            border-radius: 15px;
-            position: relative;
-            clear: both;
-            word-wrap: break-word;
-        }
-
-        .message.sent {
-            align-self: flex-end;
-            background-color: var(--message-bg-sent);
-            border-bottom-right-radius: 5px;
-        }
-
-        .message.received {
-            align-self: flex-start;
-            background-color: var(--message-bg-received);
-            border-bottom-left-radius: 5px;
-        }
-
-        #input-container {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background-color: white;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
-        }
-
-        #message-input {
-            flex-grow: 1;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 30px;
-            margin-right: 10px;
-            transition: border-color 0.3s;
-        }
-
-        #message-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            background-color: var(--primary-color);
-            color: white;
+        .game-card {
+            background-color: var(--card-bg);
             border: none;
-            padding: 10px 15px;
-            border-radius: 25px;
-            cursor: pointer;
             transition: all 0.3s ease;
+            overflow: hidden;
         }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        .game-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
         }
 
-        #username-modal {
+        .game-card-img {
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover .game-card-img {
+            transform: scale(1.1);
+        }
+
+        .game-preview-modal {
+            background: rgba(0,0,0,0.9);
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .preview-content {
+            background: var(--card-bg);
+            max-width: 1000px;
+            margin: 30px auto;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .genre-filter {
+            background-color: var(--card-bg);
+            border-radius: 30px;
+        }
+
+        .genre-btn {
+            margin: 0 5px;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .genre-btn.active {
+            background-color: var(--primary-color);
+        }
+
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 1500;
         }
 
-        #username-form {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            width: 400px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        #username-input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 25px;
-        }
-
-        .emoji-picker {
-            display: flex;
-            justify-content: center;
-            margin-top: 15px;
-            gap: 10px;
-        }
-
-        .emoji-picker span {
-            cursor: pointer;
-            font-size: 24px;
+        .platform-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0,0,0,0.7);
+            padding: 5px 10px;
+            border-radius: 20px;
         }
     </style>
 </head>
 <body>
-    <div id="username-modal">
-        <div id="username-form">
-            <h2>Create Your Profile</h2>
-            <input 
-                type="text" 
-                id="username-input" 
-                placeholder="Choose a unique username"
-                maxlength="20"
-            >
-            <div class="emoji-picker">
-                <span>🐱</span>
-                <span>🚀</span>
-                <span>🌈</span>
-                <span>🤖</span>
-                <span>🍕</span>
+    <nav class="navbar navbar-dark" style="background: linear-gradient(to right, var(--primary-color), var(--secondary-color));">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-gamepad"></i> Ultimate Game Hub
+            </a>
+            <div class="d-flex">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="form-control me-2" 
+                    placeholder="Search games..."
+                >
+                <button id="searchButton" class="btn btn-light">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
-            <button class="btn" id="username-submit">Join Chat</button>
+        </div>
+    </nav>
+
+    <!-- Genre Filters -->
+    <div class="container mt-3">
+        <div class="genre-filter text-center p-3">
+            <button class="btn genre-btn" data-genre="action">Action</button>
+            <button class="btn genre-btn" data-genre="adventure">Adventure</button>
+            <button class="btn genre-btn" data-genre="rpg">RPG</button>
+            <button class="btn genre-btn" data-genre="strategy">Strategy</button>
+            <button class="btn genre-btn" data-genre="sports">Sports</button>
         </div>
     </div>
 
-    <div id="app-container">
-        <div id="sidebar">
-            <div id="user-profile">
-                <div id="user-avatar">
-                    <i class="fas fa-user" style="font-size: 30px;"></i>
-                </div>
-                <div>
-                    <h3 id="profile-username">Anonymous</h3>
-                    <p id="online-status">Online</p>
-                </div>
+    <!-- Games Container -->
+    <div class="container mt-4">
+        <div id="gamesContainer" class="row g-4"></div>
+        
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" style="display:none;">
+            <div class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
         </div>
+    </div>
 
-        <div id="chat-section">
-            <div id="message-area"></div>
-            <div id="input-container">
-                <textarea 
-                    id="message-input" 
-                    placeholder="Type your message..."
-                    rows="1"
-                ></textarea>
-                <div class="action-buttons">
-                    <input 
-                        type="file" 
-                        id="file-input" 
-                        accept="image/*,video/*"
-                        style="display:none"
-                    >
-                    <button class="btn" onclick="document.getElementById('file-input').click()">
-                        <i class="fas fa-paperclip"></i>
-                    </button>
-                    <button class="btn" id="voice-record">
-                        <i class="fas fa-microphone"></i>
-                    </button>
-                    <button class="btn" id="send-btn">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
+    <!-- Game Preview Modal -->
+    <div id="gamePreviewModal" class="game-preview-modal" style="display:none;">
+        <div class="preview-content p-4">
+            <div id="previewContent"></div>
+            <div class="text-center mt-3">
+                <button id="closePreviewBtn" class="btn btn-danger me-2">Close</button>
+                <button id="playGameBtn" class="btn btn-success">Play Game</button>
             </div>
         </div>
     </div>
 
     <script>
-       
-        
+    class UltimateGameHub {
+        constructor() {
+            this.initializeProperties();
+            this.setupEventListeners();
+            this.loadInitialGames();
+        }
+
+        initializeProperties() {
+            // Core properties
+            this.page = 1;
+            this.currentGenre = 'action';
+            this.isLoading = false;
+
+            // DOM Element References
+            this.gamesContainer = document.getElementById('gamesContainer');
+            this.searchInput = document.getElementById('searchInput');
+            this.searchButton = document.getElementById('searchButton');
+            this.genreButtons = document.querySelectorAll('.genre-btn');
+            this.loadingOverlay = document.getElementById('loadingOverlay');
+            this.previewModal = document.getElementById('gamePreviewModal');
+            this.previewContent = document.getElementById('previewContent');
+            this.closePreviewBtn = document.getElementById('closePreviewBtn');
+            this.playGameBtn = document.getElementById('playGameBtn');
+        }
+
+        setupEventListeners() {
+            // Search functionality
+            this.searchButton.addEventListener('click', () => this.searchGames());
+            this.searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') this.searchGames();
+            });
+
+            // Genre filters
+            this.genreButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    this.genreButtons.forEach(b => b.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+                    
+                    this.currentGenre = btn.dataset.genre;
+                    this.loadGenreGames();
+                });
+            });
+
+            // Preview modal close
+            this.closePreviewBtn.addEventListener('click', () => this.closePreview());
+
+            // Play game button
+            this.playGameBtn.addEventListener('click', () => this.playGame());
+
+            // Infinite scroll
+            window.addEventListener('scroll', () => {
+                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+                    this.loadMoreGames();
+                }
+            });
+        }
+
+        async loadInitialGames() {
+            this.gamesContainer.innerHTML = ''; // Clear previous games
+            this.page = 1;
+            await this.fetchGames();
+        }
+
+        async loadGenreGames() {
+            this.gamesContainer.innerHTML = '';
+            this.page = 1;
+            await this.fetchGames();
+        }
+
+        async loadMoreGames() {
+            if (!this.isLoading) {
+                this.page++;
+                await this.fetchGames();
+            }
+        }
+
+        async fetchGames() {
+            this.isLoading = true;
+            this.showLoadingOverlay();
+
+            try {
+                // Using RAWG Video Games Database API
+                const apiKey = 'YOUR_RAWG_API_KEY'; // Replace with actual key
+                const url = `https://api.rawg.io/api/games?key=${apiKey}&genres=${this.currentGenre}&page=${this.page}&page_size=12`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+
+                this.displayGames(data.results);
+            } catch (error) {
+                console.error('Games fetch error:', error);
+                this.showErrorMessage();
+            } finally {
+                this.isLoading = false;
+                this.hideLoadingOverlay();
+            }
+        }
+
+        displayGames(games) {
+            games.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'col-md-4';
+                gameCard.innerHTML = `
+                    <div class="card game-card h-100 text-white">
+                        <img 
+                            src="${game.background_image || 'https://via.placeholder.com/400x300'}" 
+                            class="card-img-top game-card-img" 
+                            alt="${game.name}"
+                        >
+                        <span class="platform-badge">
+                            ${game.platforms ? game.platforms[0]?.platform.name : 'Multi-Platform'}
+                        </span>
+                        <div class="card-body">
+                            <h5 class="card-title">${this.truncateText(game.name, 40)}</h5>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-primary">${game.rating || 'N/A'} Rating</span>
+                                <button class="btn btn-sm btn-outline-light preview-btn">Preview</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                const previewBtn = gameCard.querySelector('.preview-btn');
+                previewBtn.addEventListener('click', () => this.showPreview(game));
+
+                this.gamesContainer.appendChild(gameCard);
+            });
+        }
+
+        showPreview(game) {
+            this.currentGame = game;
+            this.previewContent.innerHTML = `
+                <div class="row">
+                    <div class="col-md-8">
+                        <img 
+                            src="${game.background_image}" 
+                            class="img-fluid rounded mb-3"
+                            alt="${game.name}"
+                        >
+                    </div>
+                    <div class="col-md-4">
+                        <h2>${game.name}</h2>
+                        <div class="mb-3">
+                            <span class="badge bg-primary me-2">Rating: ${game.rating || 'N/A'}</span>
+                            <span class="badge bg-success">
+                                Metacritic: ${game.metacritic || 'N/A'}
+                            </span>
+                        </div>
+                        <h4>Platforms</h4>
+                        <ul class="list-unstyled">
+                            ${game.platforms ? game.platforms.map(p => 
+                                `<li>${p.platform.name}</li>`
+                            ).join('') : 'No platform info'}
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <h4>Game Description</h4>
+                    <p>${this.fetchGameDescription(game)}</p>
+                </div>
+            `;
+            this.previewModal.style.display = 'block';
+        }
+
+        fetchGameDescription(game) {
+            // In a real-world scenario, you'd fetch detailed description from an additional API call
+            return "Detailed game description would be loaded here. This is a placeholder description for the game.";
+        }
+
+        playGame() {
+            if (this.currentGame) {
+                // In a real implementation, this would launch the game
+                // For now, we'll simulate with an alert
+                alert(`Launching ${this.currentGame.name}. In a real app, this would start the game!`);
+            }
+        }
+
+        // Utility Methods
+        truncateText(text, length) {
+            return text && text.length > length 
+                ? text.substring(0, length) + '...' 
+                : text || '';
+        }
+
+        showLoadingOverlay() {
+            this.loadingOverlay.style.display = 'flex';
+        }
+
+        hideLoadingOverlay() {
+            this.loadingOverlay.style.display = 'none';
+        }
+
+        showErrorMessage() {
+            this.gamesContainer.innerHTML = `
+                <div class="col-12 text-center">
+                    <h3>Unable to fetch games. Please try again later.</h3>
+                </div>
+            `;
+        }
+
+        closePreview() {
+            this.previewModal.style.display = 'none';
+        }
+
+        searchGames() {
+            const searchTerm = this.searchInput.value.trim();
+            if (searchTerm) {
+                this.currentGenre = ''; // Reset genre
+                this.gamesContainer.innerHTML = ''; // Clear previous results
+                this.page = 1;
+                this.fetchSearchedGames(searchTerm);
+            }
+        }
+
+        async fetchSearchedGames(searchTerm) {
+            this.isLoading = true;
+            this.showLoadingOverlay();
+
+            try {
+                const apiKey = 'YOUR_RAWG_API_KEY'; // Replace with actual key
+                const url = `https://api.rawg.io/api/games?key=${apiKey}&search=${searchTerm}&page=${this.page}&page_size=12`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+
+                this.displayGames(data.results);
+            } catch (error) {
+                console.error('Game search error:', error);
+                this.showErrorMessage();
+            } finally {
+                this.isLoading = false;
+                this.hideLoadingOverlay();
+            }
+        }
+    }
+
+    // Initialize the Ultimate Game Hub
+    document.addEventListener('DOMContentLoaded', () => {
+        new UltimateGameHub();
+    });
     </script>
 </body>
 </html>
-

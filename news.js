@@ -1,112 +1,143 @@
-class NewsPreloader {
+class NewsHub {
     constructor() {
-        this.initializeElements();
-        this.setupEventListeners();
-        this.startLoading();
+        this.page = 1;
+        this.isLoading = false;
+        this.searchTerm = '';
+
+        // DOM Elements
+        this.newsContainer = document.getElementById('newsContainer');
+        this.searchInput = document.getElementById('searchInput');
+        this.searchButton = document.getElementById('searchButton');
+        this.loadingSpinner = document.getElementById('loadingSpinner');
+        this.previewModal = document.getElementById('newsPreviewModal');
+        this.previewContent = document.getElementById('previewContent');
+        this.closePreviewBtn = document.getElementById('closePreviewBtn');
+
+        this.initializeEventListeners();
+        this.loadInitialNews();
+        this.setupInfiniteScroll();
     }
 
-    initializeElements() {
-        this.preloader = document.getElementById('preloader');
-        this.mainContent = document.getElementById('main-content');
-        this.progressBar = document.querySelector('.progress-bar');
-        this.loadingText = document.querySelector('.loading-text');
-        this.errorOverlay = document.getElementById('error-overlay');
-        this.retryButton = document.getElementById('retry-btn');
+    initializeEventListeners() {
+        this.searchButton.addEventListener('click', () => this.searchNews());
+        this.searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.searchNews();
+        });
+        this.closePreviewBtn.addEventListener('click', () => this.closePreview());
     }
 
-    setupEventListeners() {
-        this.retryButton.addEventListener('click', () => this.retryLoading());
-    }
-
-    createLoadingStages() {
-        return [
-            { 
-                text: 'Connecting to News Networks', 
-                progress: 20,
-                duration: 1000 
-            },
-            { 
-                text: 'Fetching Breaking News', 
-                progress: 40,
-                duration: 1400 
-            },
-            { 
-                text: 'Updating Global Headlines', 
-                progress: 60,
-                duration: 1800 
-            },
-            { 
-                text: 'Preparing News Feed', 
-                progress: 80,
-                duration: 2300 
-            },
-            { 
-                text: 'News Ready', 
-                progress: 100,
-                duration: 2900 
+    setupInfiniteScroll() {
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+                this.loadMoreNews();
             }
-        ];
-    }
-
-    async startLoading() {
-        try {
-            await this.simulateLoading();
-            this.completeLoading();
-        } catch (error) {
-            this.handleLoadingError(error);
-        }
-    }
-
-    simulateLoading() {
-        const stages = this.createLoadingStages();
-
-        return new Promise((resolve, reject) => {
-            stages.forEach((stage, index) => {
-                setTimeout(() => {
-                    this.updateLoadingProgress(stage);
-
-                    // Simulate potential random error
-                    if (Math.random() < 0.05 && index > 2) {
-                        reject(new Error('News Network Connection Failed'));
-                    }
-
-                    if (index === stages.length - 1) {
-                        setTimeout(resolve, stage.duration);
-                    }
-                }, stage.duration);
-            });
         });
     }
 
-    updateLoadingProgress(stage) {
-        this.loadingText.textContent = stage.text;
-        this.progressBar.style.width = `${stage.progress}%`;
+    async loadInitialNews() {
+        this.page = 1;
+        await this.fetchNews();
     }
 
-    completeLoading() {
-        this.preloader.style.opacity = 0;
-        
-        setTimeout(() => {
-            this.preloader.style.display = 'none';
-            this.mainContent.style.display = 'block';
-        }, 600);
+    async loadMoreNews() {
+        if (!this.isLoading) {
+            this.page++;
+            await this.fetchNews(this.searchTerm);
+        }
     }
 
-    handleLoadingError(error) {
-        console.error('Loading Error:', error);
-        this.preloader.style.display = 'none';
-        this.errorOverlay.style.display = 'flex';
+    async searchNews() {
+        this.searchTerm = this.searchInput.value;
+        this.newsContainer.innerHTML = ''; // Clear previous results
+        this.page = 1;
+        await this.fetchNews(this.searchTerm);
     }
 
-    retryLoading() {
-        this.errorOverlay.style.display = 'none';
-        this.preloader.style.display = 'flex';
-        this.progressBar.style.width = '0%';
-        this.startLoading();
+    async fetchNews(query = '') {
+        this.isLoading = true;
+        this.showLoadingSpinner();
+
+        try {
+            const apiKey = 'dcb071f269784ec280990d91a82ecc23'; // Replace with actual API key
+            const url = `https://newsapi.org/v2/everything?q=${query || 'technology'}&page=${this.page}&pageSize=10&apiKey=${apiKey}`;
+            
+            const response = await fetch(url);
+            const data = await response.json();
+
+            this.displayNews(data.articles);
+        } catch (error) {
+            console.error('News fetch error:', error);
+            this.showErrorMessage();
+        } finally {
+            this.isLoading = false;
+            this.hideLoadingSpinner();
+        }
+    }
+
+    displayNews(articles) {
+        articles.forEach(article => {
+            const newsCard = document.createElement('div');
+            newsCard.className = 'col-md-4';
+            newsCard.innerHTML = `
+                <div class="card news-card h-100">
+                    <img 
+                        src="${article.urlToImage || 'https://via.placeholder.com/350x200'}" 
+                        class="card-img-top" 
+                        alt="${article.title}"
+                    >
+                    <div class="card-body">
+                        <h5 class="card-title">${article.title}</h5>
+                        <p class="card-text">${article.description?.substring(0, 100) || 'No description available'}...</p>
+                        <button class="btn btn-primary preview-btn" data-url="${article.url}">Preview</button>
+                    </div>
+                </div>
+            `;
+
+            // Add preview event listener
+            const previewBtn = newsCard.querySelector('.preview-btn');
+            previewBtn.addEventListener('click', () => this.showPreview(article));
+
+            this.newsContainer.appendChild(newsCard);
+        });
+    }
+
+    showPreview(article) {
+        this.previewContent.innerHTML = `
+            <h2>${article.title}</h2>
+            <img 
+                src="${article.urlToImage || 'https://via.placeholder.com/800x400'}" 
+                class="img-fluid mb-3"
+            >
+            <p><strong>Source:</strong> ${article.source.name}</p>
+            <p><strong>Published:</strong> ${new Date(article.publishedAt).toLocaleString()}</p>
+            <p>${article.content || article.description}</p>
+            <a href="${article.url}" target="_blank" class="btn btn-primary">Read Full Article</a>
+        `;
+        this.previewModal.style.display = 'block';
+    }
+
+    closePreview() {
+        this.previewModal.style.display = 'none';
+    }
+
+    showLoadingSpinner() {
+        this.loadingSpinner.style.display = 'block';
+    }
+
+    hideLoadingSpinner() {
+        this.loadingSpinner.style.display = 'none';
+    }
+
+    showErrorMessage() {
+        this.newsContainer.innerHTML = `
+            <div class="col-12 text-center">
+                <h3>Unable to fetch news. Please try again later.</h3>
+            </div>
+        `;
     }
 }
 
-// Initialize preloader
+// Initialize the News Hub
 document.addEventListener('DOMContentLoaded', () => {
-    new NewsPreloader();
+    new NewsHub();
 });
