@@ -1,115 +1,98 @@
-class MyAuthentication {
-    constructor() {
-        this.loginToggle = document.getElementById('loginToggle');
-        this.signupToggle = document.getElementById('signupToggle');
-        this.loginSection = document.getElementById('loginSection');
-        this.signupSection = document.getElementById('signupSection');
-        
-        this.initEventListeners();
+       // Form Toggle Function
+       function toggleForm() {
+        const container = document.getElementById('authContainer');
+        container.classList.toggle('active');
     }
 
-    initEventListeners() {
-        // Toggle form
-        this.loginToggle.addEventListener('click', () => this.switchToLogin());
-        this.signupToggle.addEventListener('click', () => this.switchToSignup());
+    // Password Strength Checker
+    function checkPasswordStrength(password) {
+        const strengthMeter = document.querySelector('.password-strength-meter');
+        const criteria = [
+            { regex: /.{8,}/, points: 20 },     // Length
+            { regex: /[A-Z]/, points: 20 },     // Uppercase
+            { regex: /[a-z]/, points: 20 },     // Lowercase
+            { regex: /[0-9]/, points: 20 },     // Number
+            { regex: /[^A-Za-z0-9]/, points: 20 } // Special Character
+        ];
 
-        // Login validation
-        document.getElementById('login-btn').addEventListener('click', () => {
-            this.validateLogin();
+        let strength = 0;
+        criteria.forEach(criterion => {
+            if (criterion.regex.test(password)) {
+                strength += criterion.points;
+            }
         });
 
-        // Signup validation
-        document.getElementById('signup-btn').addEventListener('click', () => {
-            this.validateSignup();
-        });
-    }
-
-    
-
-    switchToLogin() {
-        this.loginToggle.classList.add('active');
-        this.signupToggle.classList.remove('active');
+        strengthMeter.style.width = `${strength}%`;
         
-        this.loginSection.classList.add('active');
-        this.signupSection.classList.remove('active');
+        // Color coding
+        if (strength <= 40) strengthMeter.style.backgroundColor = 'red';
+        else if (strength <= 80) strengthMeter.style.backgroundColor = 'orange';
+        else strengthMeter.style.backgroundColor = 'green';
+
+        return strength === 100;
     }
 
-    switchToSignup() {
-        this.signupToggle.classList.add('active');
-        this.loginToggle.classList.remove('active');
+    // Signup Form Validation
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        e.preventDefault();
         
-        this.signupSection.classList.add('active');
-        this.loginSection.classList.remove('active');
-    }
+        const password = document.getElementById('signupPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const name = document.getElementById('signupName').value;
+        const email = document.getElementById('signupEmail').value;
 
-    validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
-
-    validateLogin() {
-        const email = document.getElementById('login-email');
-        const password = document.getElementById('login-password');
-        const errorElement = document.getElementById('login-error');
-
-        // Reset previous errors
-        errorElement.textContent = '';
-
-        // Validate email
-        if (!this.validateEmail(email.value)) {
-            errorElement.textContent = 'Please enter a valid email address';
+        // Comprehensive Validation
+        if (!name || !email) {
+            alert('Please fill in all fields');
             return;
         }
 
-        // Validate password
-        if (password.value.length < 6) {
-            errorElement.textContent = 'Password must be at least 6 characters long';
+        if (password !== confirmPassword) {
+            alert('Passwords do not match');
             return;
         }
 
-        // If all validations pass
-        alert('Login Successful!');
-    }
-
-    validateSignup() {
-        const name = document.getElementById('signup-name');
-        const email = document.getElementById('signup-email');
-        const password = document.getElementById('signup-password');
-        const confirmPassword = document.getElementById('confirm-password');
-        const errorElement = document.getElementById('signup-error');
-
-        // Reset previous errors
-        errorElement.textContent = '';
-
-        // Validate name
-        if (name.value.trim().length < 2) {
-            errorElement.textContent = 'Please enter a valid name';
+        const isStrongPassword = checkPasswordStrength(password);
+        if (!isStrongPassword) {
+            alert('Password is not strong enough. Include uppercase, lowercase, numbers, and special characters.');
             return;
         }
 
-        // Validate email
-        if (!this.validateEmail(email.value)) {
-            errorElement.textContent = 'Please enter a valid email address';
-            return;
-        }
-
-        // Validate password
-        if (password.value.length < 6) {
-            errorElement.textContent = 'Password must be at least 6 characters long';
-            return;
-        }
-
-        // Validate password confirmation
-        if (password.value !== confirmPassword.value) {
-            errorElement.textContent = 'Passwords do not match';
-            return;
-        }
-
-        // If all validations pass
+        // Successful Signup Logic
         alert('Signup Successful!');
-    }
-}
+    });
 
-// Initialize Authentication
-new MyAuthentication();
+    // Login Form Validation
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
 
+        if (!email || !password) {
+            alert('Please fill in all fields');
+            return;
+        }
+
+        // Simulated Login Logic
+        if (rememberMe) {
+            // In real-world scenario, implement secure token storage
+            localStorage.setItem('rememberedEmail', email);
+        }
+
+        alert('Login Successful!');
+    });
+
+    // Password Strength Real-time Check
+    document.getElementById('signupPassword').addEventListener('input', function() {
+        checkPasswordStrength(this.value);
+    });
+
+    // Check for Remembered Email on Page Load
+    window.addEventListener('load', () => {
+        const rememberedEmail = localStorage.getItem('rememberedEmail');
+        if (rememberedEmail) {
+            document.getElementById('loginEmail').value = rememberedEmail;
+        }
+    });

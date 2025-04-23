@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new DynamicTypingText(typingTextElement, phrases, {
         typingSpeed: 100,
         deletingSpeed: 50,
-        pauseBetween: 400
+        pauseBetween: 400,
     });
 });
 
@@ -97,7 +97,7 @@ class QuantumMessenger {
         const currentLength = this.input.value.length;
         this.charCount.textContent = `${currentLength} / 250`;
         
-        this.charCount.style.color = currentLength > 200 
+        this.charCount.style.color = currentLength > 250 
             ? 'rgba(255,0,0,0.7)' 
             : 'var(--primary-color)';
     }
@@ -119,7 +119,7 @@ class QuantumMessenger {
         }
 
         if (message.length > 250) {
-            this.showNotification('Message exceeds maximum length');
+            this.showNotification('Too Lengthy');
             return false;
         }
 
@@ -196,3 +196,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }, 3000);
 });
+
+
