@@ -111,7 +111,7 @@ class NewsHub {
             <p><strong>Source:</strong> ${article.source.name}</p>
             <p><strong>Published:</strong> ${new Date(article.publishedAt).toLocaleString()}</p>
             <p>${article.content || article.description}</p>
-            <a href="${article.url}" target="_blank" class="btn btn-primary">Read Full Article</a>
+            <a href="${article.url}" target="_blank" class="btn btn-primary">Read Article</a>
         `;
         this.previewModal.style.display = 'block';
     }

@@ -6,8 +6,8 @@ body {
     cursor: pointer;
 }
 .news-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transform: scale(1.04);
+    box-shadow: 0 0 15px rgb(252, 250, 250);
 }
 .news-preview-modal {
     position: fixed;
@@ -32,4 +32,5 @@ body {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
+  
 }
