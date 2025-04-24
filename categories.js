@@ -1,7 +1,10 @@
+     /* © SMILEX - This code is licensed and protected. */
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('background');
     const ctx = canvas.getContext('2d');
     const cursor = document.querySelector('.cursor');
+
+        /* © SMILEX - This code is licensed and protected. */
 
     // Resize canvas
     function resizeCanvas() {
@@ -11,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
+        /* © SMILEX - This code is licensed and protected. */
+
   
 
     // Cursor and Interaction Management
@@ -18,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cursor.style.left = `${e.clientX}px`;
         cursor.style.top = `${e.clientY}px`;
     });
+
+        /* © SMILEX - This code is licensed and protected. */
 
     // Category Card Interactions
     const categoryCards = document.querySelectorAll('.category-card');
@@ -29,6 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.href = link;
             }, 200);
         });
+
+            /* © SMILEX - This code is licensed and protected. */
 
         // 3D Tilt Effect
         card.addEventListener('mousemove', (e) => {
@@ -44,3 +53,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+    /* © SMILEX - This code is licensed and protected. */

@@ -1,3 +1,4 @@
+    /* © SMILEX - This code is licensed and protected. */
 class DynamicTypingText {
     constructor(element, phrases, options = {}) {
         this.element = element;
@@ -15,6 +16,8 @@ class DynamicTypingText {
         this.init();
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     init() {
         this.createCursor();
         this.type();
@@ -25,6 +28,8 @@ class DynamicTypingText {
         this.cursorElement.classList.add('typing-cursor');
         this.element.parentNode.appendChild(this.cursorElement);
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     type() {
         const currentPhrase = this.phrases[this.phraseIndex];
@@ -38,6 +43,8 @@ class DynamicTypingText {
             this.element.textContent = currentPhrase.substring(0, this.charIndex);
             this.charIndex--;
         } 
+
+            /* © SMILEX - This code is licensed and protected. */
         else {
             this.isDeleting = !this.isDeleting;
             this.phraseIndex = (this.phraseIndex + 1) % this.phrases.length;
@@ -52,6 +59,8 @@ class DynamicTypingText {
     }
 }
 
+    /* © SMILEX - This code is licensed and protected. */
+
 // Initialize the dynamic typing text when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     const typingTextElement = document.getElementById('typing-text');
@@ -63,12 +72,16 @@ document.addEventListener('DOMContentLoaded', () => {
         'By Typing Anying',
     ];
 
+        /* © SMILEX - This code is licensed and protected. */
+
     new DynamicTypingText(typingTextElement, phrases, {
         typingSpeed: 100,
         deletingSpeed: 50,
         pauseBetween: 400,
     });
 });
+
+    /* © SMILEX - This code is licensed and protected. */
 
 
 class QuantumMessenger {
@@ -80,6 +93,8 @@ class QuantumMessenger {
         
         this.setupEventListeners();
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     setupEventListeners() {
         this.input.addEventListener('input', () => this.updateCharCount());
@@ -93,6 +108,8 @@ class QuantumMessenger {
         });
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     updateCharCount() {
         const currentLength = this.input.value.length;
         this.charCount.textContent = `${currentLength} / 250`;
@@ -101,6 +118,8 @@ class QuantumMessenger {
             ? 'rgba(255,0,0,0.7)' 
             : 'var(--primary-color)';
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     showNotification(message, type = 'error') {
         this.notification.textContent = message;
@@ -111,6 +130,8 @@ class QuantumMessenger {
             this.notificationArea.style.opacity = '0';
         }, 3000);
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     validateMessage(message) {
         if (!message) {
@@ -125,6 +146,8 @@ class QuantumMessenger {
 
         return true;
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     transmitMessage() {
         const message = this.input.value.trim();
@@ -142,6 +165,8 @@ class QuantumMessenger {
     }
 }
 
+    /* © SMILEX - This code is licensed and protected. */
+
 // Initialize the Quantum Messenger
 const quantumMessenger = new QuantumMessenger();
 
@@ -150,6 +175,7 @@ function transmitMessage() {
     quantumMessenger.transmitMessage();
 }
 
+    /* © SMILEX - This code is licensed and protected. */
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -172,6 +198,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     createParticles();
 
     // Check if name is stored
@@ -188,6 +216,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     // Fade out and remove overlay after 3 seconds
     setTimeout(() => {
         welcomeOverlay.style.opacity = '0';
@@ -198,3 +228,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+    /* © SMILEX - This code is licensed and protected. */

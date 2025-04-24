@@ -1,11 +1,15 @@
       // Advanced loading simulation
       function simulateLoading() {
         const loader = document.querySelector('.chat-preloader');
+
+            /* © SMILEX - This code is licensed and protected. */
         
         setTimeout(() => {
             loader.style.transition = 'all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
             loader.style.transform = 'rotateX(0deg) scale(0)';
             loader.style.opacity = 0;
+
+                /* © SMILEX - This code is licensed and protected. */
             
             // Optional: Trigger next screen or chat interface
             setTimeout(() => {
@@ -13,6 +17,8 @@
             }, 800);
         }, 4000);
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     // Initialize loading
     simulateLoading();
@@ -25,12 +31,16 @@
             this.addEventListeners();
         }
 
+            /* © SMILEX - This code is licensed and protected. */
+
         initializeElements() {
             // Modal and Form Elements
             this.usernameModal = document.getElementById('username-modal');
             this.usernameInput = document.getElementById('username-input');
             this.usernameSubmit = document.getElementById('username-submit');
             this.profileUsername = document.getElementById('profile-username');
+
+                /* © SMILEX - This code is licensed and protected. */
             
             // Chat Elements
             this.messageArea = document.getElementById('message-area');
@@ -43,6 +53,8 @@
             this.emojiPicker = document.querySelectorAll('.emoji-picker span');
         }
 
+            /* © SMILEX - This code is licensed and protected. */
+
         loadSavedUsername() {
             const savedUsername = localStorage.getItem('chatUsername');
             if (savedUsername) {
@@ -50,6 +62,8 @@
                 this.usernameModal.style.display = 'none';
             }
         }
+
+            /* © SMILEX - This code is licensed and protected. */
 
         addEventListeners() {
             // Username Submission
@@ -61,6 +75,8 @@
                     this.usernameInput.value = emoji.textContent + this.usernameInput.value;
                 });
             });
+
+                /* © SMILEX - This code is licensed and protected. */
 
             // Message Sending
             this.sendBtn.addEventListener('click', () => this.sendMessage());
@@ -82,6 +98,8 @@
             }
         }
 
+            /* © SMILEX - This code is licensed and protected. */
+
         setUsername(username) {
             // Save username to local storage
             localStorage.setItem('chatUsername', username);
@@ -89,6 +107,8 @@
             // Update profile
             this.profileUsername.textContent = username;
         }
+
+            /* © SMILEX - This code is licensed and protected. */
 
         sendMessage() {
             const messageText = this.messageInput.value.trim();
@@ -105,6 +125,8 @@
                     messageDiv.appendChild(textSpan);
                 }
 
+                    /* © SMILEX - This code is licensed and protected. */
+
                 // File Attachment
                 if (fileToSend) {
                     const mediaElement = fileToSend.type.startsWith('image/') 
@@ -117,6 +139,8 @@
                     messageDiv.appendChild(mediaElement);
                 }
 
+                    /* © SMILEX - This code is licensed and protected. */
+
                 this.messageArea.appendChild(messageDiv);
                 this.messageArea.scrollTop = this.messageArea.scrollHeight;
 
@@ -127,10 +151,14 @@
         }
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     // Initialize Chat Application
     document.addEventListener('DOMContentLoaded', () => {
         new AdvancedChatApp();
     });
+
+        /* © SMILEX - This code is licensed and protected. */
 
     // Advanced Chat Application Logic
     class ChatApp {
@@ -156,6 +184,8 @@
             this.audioChunks = [];
         }
 
+            /* © SMILEX - This code is licensed and protected. */
+
         addEventListeners() {
             // Username Selection
             this.usernameSubmit.addEventListener('click', () => this.setUsername());
@@ -169,12 +199,16 @@
                 }
             });
 
+                /* © SMILEX - This code is licensed and protected. */
+
             // Voice Recording
             this.voiceRecordBtn.addEventListener('click', () => this.toggleVoiceRecording());
 
             // File Input
             this.fileInput.addEventListener('change', () => this.handleFilePreview());
         }
+
+            /* © SMILEX - This code is licensed and protected. */
 
      
 
@@ -190,6 +224,8 @@
                 const headerDiv = document.createElement('div');
                 headerDiv.classList.add('message-header');
 
+                    /* © SMILEX - This code is licensed and protected. */
+
                 const usernameSpan = document.createElement('span');
                 usernameSpan.classList.add('username');
                 usernameSpan.textContent = this.username;
@@ -198,9 +234,13 @@
                 timestampSpan.classList.add('timestamp');
                 timestampSpan.textContent = this.getCurrentTime();
 
+                    /* © SMILEX - This code is licensed and protected. */
+
                 headerDiv.appendChild(usernameSpan);
                 headerDiv.appendChild(timestampSpan);
                 messageDiv.appendChild(headerDiv);
+
+                    /* © SMILEX - This code is licensed and protected. */
 
                 // Message Content
                 if (messageText) {
@@ -208,6 +248,8 @@
                     textSpan.textContent = messageText;
                     messageDiv.appendChild(textSpan);
                 }
+
+                    /* © SMILEX - This code is licensed and protected. */
 
                 // File Attachment
                 if (fileToSend) {
@@ -230,6 +272,8 @@
             }
         }
 
+            /* © SMILEX - This code is licensed and protected. */
+
         handleFilePreview() {
             const file = this.fileInput.files[0];
             if (file) {
@@ -237,6 +281,8 @@
                 console.log('File selected:', file.name);
             }
         }
+
+            /* © SMILEX - This code is licensed and protected. */
 
         async toggleVoiceRecording() {
             try {
@@ -254,6 +300,8 @@
                     const messageDiv = document.createElement('div');
                     messageDiv.classList.add('message');
 
+                        /* © SMILEX - This code is licensed and protected. */
+
                     const headerDiv = document.createElement('div');
                     headerDiv.classList.add('message-header');
 
@@ -261,9 +309,13 @@
                     usernameSpan.classList.add('username');
                     usernameSpan.textContent = this.username;
 
+                        /* © SMILEX - This code is licensed and protected. */
+
                     const timestampSpan = document.createElement('span');
                     timestampSpan.classList.add('timestamp');
                     timestampSpan.textContent = this.getCurrentTime();
+
+                        /* © SMILEX - This code is licensed and protected. */
 
                     headerDiv.appendChild(usernameSpan);
                     headerDiv.appendChild(timestampSpan);
@@ -274,11 +326,15 @@
                     audioElement.controls = true;
                     messageDiv.appendChild(audioElement);
 
+                        /* © SMILEX - This code is licensed and protected. */
+
                     this.messageArea.appendChild(messageDiv);
                     this.messageArea.scrollTop = this.messageArea.scrollHeight;
 
                     this.audioChunks = [];
                 };
+
+                    /* © SMILEX - This code is licensed and protected. */
 
                 this.mediaRecorder.start();
                 this.voiceRecordBtn.textContent = '🛑 Stop';
@@ -298,8 +354,12 @@
         }
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     // Initialize Chat Application
     document.addEventListener('DOMContentLoaded', () => {
         new ChatApp();
     });
+
+        /* © SMILEX - This code is licensed and protected. */
     

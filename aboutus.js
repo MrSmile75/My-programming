@@ -13,6 +13,8 @@
                 this.displayText = '';
             }
 
+                /* © SMILEX - This code is licensed and protected. */
+
             animate() {
                 const currentText = this.texts[this.currentIndex];
                 
@@ -41,6 +43,9 @@
                 // Schedule next animation frame
                 setTimeout(() => this.animate(), speed);
             }
+
+
+                /* © SMILEX - This code is licensed and protected. */
 
             start() {
                 this.animate();
@@ -85,6 +90,8 @@
                  
             ];
 
+                /* © SMILEX - This code is licensed and protected. */
+
             const animator = new DynamicTextAnimator(
                 dynamicTextElement, 
                 textOptions
@@ -114,6 +121,8 @@
             `;
         });
 
+            /* © SMILEX - This code is licensed and protected. */
+
         logoIcon.addEventListener('mouseleave', () => {
             logoIcon.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
         });
@@ -140,3 +149,5 @@
             };
             window.open(appLinks[platform], '_blank');
         }
+
+            /* © SMILEX - This code is licensed and protected. */

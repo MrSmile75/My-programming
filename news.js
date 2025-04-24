@@ -1,3 +1,4 @@
+    /* © SMILEX - This code is licensed and protected. */
 class NewsHub {
     constructor() {
         this.page = 1;
@@ -18,6 +19,8 @@ class NewsHub {
         this.setupInfiniteScroll();
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     initializeEventListeners() {
         this.searchButton.addEventListener('click', () => this.searchNews());
         this.searchInput.addEventListener('keypress', (e) => {
@@ -26,6 +29,8 @@ class NewsHub {
         this.closePreviewBtn.addEventListener('click', () => this.closePreview());
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     setupInfiniteScroll() {
         window.addEventListener('scroll', () => {
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
@@ -33,6 +38,8 @@ class NewsHub {
             }
         });
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     async loadInitialNews() {
         this.page = 1;
@@ -46,6 +53,8 @@ class NewsHub {
         }
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     async searchNews() {
         this.searchTerm = this.searchInput.value;
         this.newsContainer.innerHTML = ''; // Clear previous results
@@ -57,12 +66,18 @@ class NewsHub {
         this.isLoading = true;
         this.showLoadingSpinner();
 
+            /* © SMILEX - This code is licensed and protected. */
+
         try {
             const apiKey = 'dcb071f269784ec280990d91a82ecc23'; // Replace with actual API key
             const url = `https://newsapi.org/v2/everything?q=${query || 'technology'}&page=${this.page}&pageSize=10&apiKey=${apiKey}`;
+
+                /* © SMILEX - This code is licensed and protected. */
             
             const response = await fetch(url);
             const data = await response.json();
+
+                /* © SMILEX - This code is licensed and protected. */
 
             this.displayNews(data.articles);
         } catch (error) {
@@ -73,6 +88,8 @@ class NewsHub {
             this.hideLoadingSpinner();
         }
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     displayNews(articles) {
         articles.forEach(article => {
@@ -93,6 +110,8 @@ class NewsHub {
                 </div>
             `;
 
+                /* © SMILEX - This code is licensed and protected. */
+
             // Add preview event listener
             const previewBtn = newsCard.querySelector('.preview-btn');
             previewBtn.addEventListener('click', () => this.showPreview(article));
@@ -100,6 +119,8 @@ class NewsHub {
             this.newsContainer.appendChild(newsCard);
         });
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     showPreview(article) {
         this.previewContent.innerHTML = `
@@ -116,6 +137,8 @@ class NewsHub {
         this.previewModal.style.display = 'block';
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     closePreview() {
         this.previewModal.style.display = 'none';
     }
@@ -124,9 +147,13 @@ class NewsHub {
         this.loadingSpinner.style.display = 'block';
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     hideLoadingSpinner() {
         this.loadingSpinner.style.display = 'none';
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     showErrorMessage() {
         this.newsContainer.innerHTML = `
@@ -141,3 +168,5 @@ class NewsHub {
 document.addEventListener('DOMContentLoaded', () => {
     new NewsHub();
 });
+
+    /* © SMILEX - This code is licensed and protected. */

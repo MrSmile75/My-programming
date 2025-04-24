@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ultimate Game Hub</title>
+     <!-- © SMILEX. This code is protected. -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -117,6 +118,7 @@
             </div>
         </div>
     </nav>
+     <!-- © SMILEX. This code is protected. -->
 
     <!-- Genre Filters -->
     <div class="container mt-3">
@@ -142,6 +144,7 @@
     </div>
 
     <!-- Game Preview Modal -->
+      <!-- © SMILEX. This code is protected. -->
     <div id="gamePreviewModal" class="game-preview-modal" style="display:none;">
         <div class="preview-content p-4">
             <div id="previewContent"></div>
@@ -153,6 +156,7 @@
     </div>
 
     <script>
+         /* © SMILEX - This code is licensed and protected. */
     class UltimateGameHub {
         constructor() {
             this.initializeProperties();
@@ -166,6 +170,8 @@
             this.currentGenre = 'action';
             this.isLoading = false;
 
+             /* © SMILEX - This code is licensed and protected. */
+
             // DOM Element References
             this.gamesContainer = document.getElementById('gamesContainer');
             this.searchInput = document.getElementById('searchInput');
@@ -177,6 +183,8 @@
             this.closePreviewBtn = document.getElementById('closePreviewBtn');
             this.playGameBtn = document.getElementById('playGameBtn');
         }
+
+         /* © SMILEX - This code is licensed and protected. */
 
         setupEventListeners() {
             // Search functionality
@@ -199,6 +207,8 @@
                 });
             });
 
+             /* © SMILEX - This code is licensed and protected. */
+
             // Preview modal close
             this.closePreviewBtn.addEventListener('click', () => this.closePreview());
 
@@ -213,11 +223,15 @@
             });
         }
 
+         /* © SMILEX - This code is licensed and protected. */
+
         async loadInitialGames() {
             this.gamesContainer.innerHTML = ''; // Clear previous games
             this.page = 1;
             await this.fetchGames();
         }
+
+         /* © SMILEX - This code is licensed and protected. */
 
         async loadGenreGames() {
             this.gamesContainer.innerHTML = '';
@@ -232,17 +246,24 @@
             }
         }
 
+         /* © SMILEX - This code is licensed and protected. */
+
         async fetchGames() {
             this.isLoading = true;
             this.showLoadingOverlay();
 
+             /* © SMILEX - This code is licensed and protected. */
+
             try {
                 // Using RAWG Video Games Database API
+                 /* © SMILEX - This code is licensed and protected. */
                 const apiKey = 'YOUR_RAWG_API_KEY'; // Replace with actual key
                 const url = `https://api.rawg.io/api/games?key=${apiKey}&genres=${this.currentGenre}&page=${this.page}&page_size=12`;
                 
                 const response = await fetch(url);
                 const data = await response.json();
+
+                 /* © SMILEX - This code is licensed and protected. */
 
                 this.displayGames(data.results);
             } catch (error) {
@@ -253,6 +274,8 @@
                 this.hideLoadingOverlay();
             }
         }
+
+         /* © SMILEX - This code is licensed and protected. */
 
         displayGames(games) {
             games.forEach(game => {
@@ -284,6 +307,8 @@
                 this.gamesContainer.appendChild(gameCard);
             });
         }
+
+         /* © SMILEX - This code is licensed and protected. */
 
         showPreview(game) {
             this.currentGame = game;
@@ -320,6 +345,8 @@
             this.previewModal.style.display = 'block';
         }
 
+         /* © SMILEX - This code is licensed and protected. */
+
         fetchGameDescription(game) {
             // In a real-world scenario, you'd fetch detailed description from an additional API call
             return "Detailed game description would be loaded here. This is a placeholder description for the game.";
@@ -332,6 +359,8 @@
                 alert(`Launching ${this.currentGame.name}. In a real app, this would start the game!`);
             }
         }
+
+         /* © SMILEX - This code is licensed and protected. */
 
         // Utility Methods
         truncateText(text, length) {
@@ -356,6 +385,8 @@
             `;
         }
 
+         /* © SMILEX - This code is licensed and protected. */
+
         closePreview() {
             this.previewModal.style.display = 'none';
         }
@@ -369,6 +400,8 @@
                 this.fetchSearchedGames(searchTerm);
             }
         }
+
+         /* © SMILEX - This code is licensed and protected. */
 
         async fetchSearchedGames(searchTerm) {
             this.isLoading = true;
@@ -396,6 +429,12 @@
     document.addEventListener('DOMContentLoaded', () => {
         new UltimateGameHub();
     });
+     /* © SMILEX - This code is licensed and protected. */
     </script>
+
+<script>
+    document.addEventListener('contextmenu', event => event.preventDefault());
+  </script>
+   <!-- © SMILEX. This code is protected. -->
 </body>
 </html>

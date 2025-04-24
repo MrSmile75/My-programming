@@ -1,3 +1,4 @@
+    /* © SMILEX - This code is licensed and protected. */
 class AdvancedPreloader {
     constructor() {
         this.preloader = document.getElementById('preloader');
@@ -15,13 +16,19 @@ class AdvancedPreloader {
             { text: 'Almost Ready', progress: 100 }
         ];
 
+            /* © SMILEX - This code is licensed and protected. */
+
         this.init();
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     updateProgress(stage) {
         this.loadingDetails.textContent = stage.text;
         this.progressBar.style.width = `${stage.progress}%`;
     }
+
+     /* © SMILEX - This code is licensed and protected. */
 
     simulateLoading() {
         return new Promise((resolve, reject) => {
@@ -45,6 +52,11 @@ class AdvancedPreloader {
         });
     }
 
+     /* © SMILEX - This code is licensed and protected. */
+
+        
+
+
     async initializeContent() {
         try {
             await this.simulateLoading();
@@ -59,6 +71,8 @@ class AdvancedPreloader {
             this.handleError(error);
         }
     }
+
+     /* © SMILEX - This code is licensed and protected. */
 
     handleError(error) {
         console.error('.', error);
@@ -76,6 +90,8 @@ class AdvancedPreloader {
         this.initializeContent();
     }
 }
+
+ /* © SMILEX - This code is licensed and protected. */
 
 // Initialize preloader when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
@@ -97,6 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
    
                const loadingIndicator = document.getElementById('loadingIndicator');
                const movieContainer = document.getElementById('movieContainer');
+
+                /* © SMILEX - This code is licensed and protected. */
    
                try {
                    // Show loading
@@ -106,6 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
                    // Fetch upcoming movies
                    const response = await fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${currentPage}`);
                    const data = await response.json();
+
+                    /* © SMILEX - This code is licensed and protected. */
    
                    // Hide loading
                    loadingIndicator.style.display = 'none';
@@ -114,6 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
                    data.results.forEach(movie => {
                        // Skip movies without poster
                        if (!movie.poster_path) return;
+
+                        /* © SMILEX - This code is licensed and protected. */
    
                        const movieCard = document.createElement('div');
                        movieCard.classList.add('movie-card');
@@ -138,6 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
                    loadingIndicator.textContent = 'Check internet connection. Please try again.';
                }
            }
+
+            /* © SMILEX - This code is licensed and protected. */
    
            // Optional: Show movie details modal
            function showMovieDetails(movie) {
@@ -152,9 +176,12 @@ document.addEventListener('DOMContentLoaded', () => {
    
            // Initial fetch when page loads
            fetchMovies();
+
+            /* © SMILEX - This code is licensed and protected. */
    
    
            // Advanced Movie Application Class
+            /* © SMILEX - This code is licensed and protected. */
            class CinemaVerseApp {
                constructor() {
                    this.API_KEY = '48ea0449a84effd8baed92d45fa6175f';
@@ -165,10 +192,12 @@ document.addEventListener('DOMContentLoaded', () => {
                        'default': 'https://www.youtube.com/embed/',
                        'backup': 'https://player.vimeo.com/video/'
                    };
+                    /* © SMILEX - This code is licensed and protected. */
    
                    this.initEventListeners();
                    this.loadMovies('trending');
                }
+                /* © SMILEX - This code is licensed and protected. */
    
                // Initialize Event Listeners
                initEventListeners() {
@@ -178,6 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
                            this.searchMovies();
                        }
                    });
+                    /* © SMILEX - This code is licensed and protected. */
    
                    // Close movie player on clicking outside
                    document.getElementById('movie-player-modal').addEventListener('click', (e) => {
@@ -186,6 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
                        }
                    });
                }
+                /* © SMILEX - This code is licensed and protected. */
    
                // Show Loading Spinner
                showLoader() {
@@ -196,12 +227,16 @@ document.addEventListener('DOMContentLoaded', () => {
                hideLoader() {
                    document.getElementById('loader').style.display = 'none';
                }
+
+                /* © SMILEX - This code is licensed and protected. */
    
                // Load Movies
                async loadMovies(category = 'trending') {
                    this.showLoader();
                    const movieGrid = document.getElementById('movie-grid');
                    movieGrid.innerHTML = '';
+                   
+                    /* © SMILEX - This code is licensed and protected. */
    
                    try {
                        let endpoint = '';
@@ -216,6 +251,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                endpoint = `/movie/upcoming?api_key=${this.API_KEY}`;
                                break;
                        }
+
+                        /* © SMILEX - This code is licensed and protected. */
    
                        const response = await fetch(`${this.BASE_URL}${endpoint}`);
                        const data = await response.json();
@@ -246,11 +283,15 @@ document.addEventListener('DOMContentLoaded', () => {
                        this.hideLoader();
                    }
                }
+
+                /* © SMILEX - This code is licensed and protected. */
    
                // Search Movies
                async searchMovies() {
                    const searchInput = document.getElementById('search-input');
                    const query = searchInput.value.trim();
+
+                    /* © SMILEX - This code is licensed and protected. */
    
                    if (query === '') return;
    
@@ -266,6 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
                            movieGrid.innerHTML = '<p>No movies found.</p>';
                            return;
                        }
+
+                        /* © SMILEX - This code is licensed and protected. */
    
                        data.results.forEach(movie => {
                            const movieCard = document.createElement('div');
@@ -286,6 +329,8 @@ document.addEventListener('DOMContentLoaded', () => {
                            `;
                            movieGrid.appendChild(movieCard);
                        });
+
+                        /* © SMILEX - This code is licensed and protected. */
                    } catch (error) {
                        console.error('Search error:', error);
                        alert('Failed to search movies. Please try again.');
@@ -293,6 +338,8 @@ document.addEventListener('DOMContentLoaded', () => {
                        this.hideLoader();
                    }
                }
+
+                /* © SMILEX - This code is licensed and protected. */
    
                // Play Movie
                async playMovie(movieId, movieTitle) {
@@ -307,10 +354,13 @@ document.addEventListener('DOMContentLoaded', () => {
                            video.site === 'YouTube' && 
                            (video.type === 'Trailer' || video.type === 'Teaser')
                        );
+                        /* © SMILEX - This code is licensed and protected. */
    
                        if (trailer) {
                            const playerModal = document.getElementById('movie-player-modal');
                            const moviePlayer = document.getElementById('movie-player');
+
+                            /* © SMILEX - This code is licensed and protected. */
                            
                            // Set trailer source
                            moviePlayer.src = `${this.MOVIE_SOURCES.default}${trailer.key}?autoplay=1&mute=0`;
@@ -327,6 +377,8 @@ document.addEventListener('DOMContentLoaded', () => {
                        this.hideLoader();
                    }
                }
+
+                /* © SMILEX - This code is licensed and protected. */
    
                // Close Movie Player
                closeMoviePlayer() {
@@ -337,8 +389,11 @@ document.addEventListener('DOMContentLoaded', () => {
                    moviePlayer.src = ''; // Reset source
                }
            }
+
+            /* © SMILEX - This code is licensed and protected. */
    
            
    
            // Initialize the App
            const cinemaVerse = new CinemaVerseApp();
+            /* © SMILEX - This code is licensed and protected. */

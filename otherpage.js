@@ -1,3 +1,4 @@
+     /* © SMILEX - This code is licensed and protected. */
  // Star Field Generation
  function createStarField() {
     const starField = document.getElementById('starField');
@@ -16,6 +17,8 @@
         starField.appendChild(star);
     }
 }
+
+    /* © SMILEX - This code is licensed and protected. */
 
 
 
@@ -55,6 +58,7 @@ function startQuantumCountdown() {
             goButton.style.display = 'block';
         }
     }, 1000);
+        /* © SMILEX - This code is licensed and protected. */
 
     goButton.addEventListener('click', () => {
         // Advanced transition or redirect
@@ -74,3 +78,4 @@ window.onload = () => {
     personalizeWelcome();
     startQuantumCountdown();
 };
+    /* © SMILEX - This code is licensed and protected. */

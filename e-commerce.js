@@ -1,3 +1,4 @@
+    /* © SMILEX - This code is licensed and protected. */
 class AdvancedPreloader {
     constructor() {
         this.preloader = document.getElementById('preloader');
@@ -5,11 +6,15 @@ class AdvancedPreloader {
         this.setupLoadingSequence();
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     initParticles() {
         for (let i = 0; i < 50; i++) {
             this.createParticle();
         }
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     createParticle() {
         const particle = document.createElement('div');
@@ -34,6 +39,8 @@ class AdvancedPreloader {
         this.sequentialLoading(loadingStages);
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     sequentialLoading(stages) {
         const loadingText = document.querySelector('.loading-text');
         
@@ -49,6 +56,8 @@ class AdvancedPreloader {
         });
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     completeLoading() {
         this.preloader.style.opacity = 0;
         setTimeout(() => {
@@ -62,6 +71,7 @@ class AdvancedPreloader {
         document.dispatchEvent(new Event('app-ready'));
     }
 }
+    /* © SMILEX - This code is licensed and protected. */
 
 // Initialize Preloader
 document.addEventListener('DOMContentLoaded', () => {
@@ -74,3 +84,4 @@ document.addEventListener('app-ready', () => {
     console.log('Application is now ready to use');
 });
 
+    /* © SMILEX - This code is licensed and protected. */

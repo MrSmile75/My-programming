@@ -9,6 +9,8 @@ class AdvancedPersonalityQuiz {
         this.initEventListeners();
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     initEventListeners() {
         document.querySelectorAll('.option-button').forEach(button => {
             button.addEventListener('click', () => this.handleResponse(button));
@@ -43,6 +45,8 @@ class AdvancedPersonalityQuiz {
         }
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     updateProgressBar() {
         const progress = ((this.currentQuestionIndex + 1) / this.questions.length) * 100;
         this.progressBar.style.width = `${progress}%`;
@@ -64,6 +68,7 @@ class AdvancedPersonalityQuiz {
             window.location.href = this.generatePersonalizedRedirectURL();
         }, 2500);
     }
+        /* © SMILEX - This code is licensed and protected. */
 
     generatePersonalizedRedirectURL() {
         // Create a personalized redirect based on responses
@@ -77,3 +82,4 @@ class AdvancedPersonalityQuiz {
 document.addEventListener('DOMContentLoaded', () => {
     new AdvancedPersonalityQuiz();
 });
+    /* © SMILEX - This code is licensed and protected. */

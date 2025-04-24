@@ -4,6 +4,9 @@ class AdvancedPreloader {
         this.initPreloader();
     }
 
+    /* © SMILEX - This code is licensed and protected. */
+
+
     initCursor() {
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
@@ -55,6 +58,8 @@ class AdvancedPreloader {
             }
         };
 
+            /* © SMILEX - This code is licensed and protected. */
+
         // Start the logo animation
         animateLogo();
     }
@@ -85,3 +90,5 @@ class AdvancedPreloader {
 document.addEventListener('DOMContentLoaded', () => {
     new AdvancedPreloader();
 });
+
+    /* © SMILEX - This code is licensed and protected. */

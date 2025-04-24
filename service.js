@@ -2,7 +2,11 @@
     function createBubbles() {
         const backgroundAnimation = document.getElementById('backgroundAnimation');
         const bubbleCount = 40;
+
+            /* © SMILEX - This code is licensed and protected. */
     
+
+
         for (let i = 0; i < bubbleCount; i++) {
             const bubble = document.createElement('div');
             bubble.classList.add('bubble');
@@ -20,9 +24,13 @@
             backgroundAnimation.appendChild(bubble);
         }
     }
+
+        /* © SMILEX - This code is licensed and protected. */
     
     // Initialize bubbles on page load
     createBubbles();
+
+        /* © SMILEX - This code is licensed and protected. */
     
 
 // EmailJS initialization and form submission
@@ -30,14 +38,20 @@
     emailjs.init("BSgchpWL-Aup83us2"); // Replace with your EmailJS User ID
 })();
 
+    /* © SMILEX - This code is licensed and protected. */
+
 document.getElementById('contactForm').addEventListener('submit', function(event) {
     event.preventDefault();
+
+        /* © SMILEX - This code is licensed and protected. */
 
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const message = document.getElementById('message').value;
     const statusMessage = document.getElementById('statusMessage');
     const submitBtn = document.querySelector('.submit-btn');
+
+        /* © SMILEX - This code is licensed and protected. */
 
     // Disable submit button and clear previous messages
     submitBtn.disabled = true;
@@ -52,6 +66,8 @@ document.getElementById('contactForm').addEventListener('submit', function(event
         message: message
     };
 
+        /* © SMILEX - This code is licensed and protected. */
+
     // Send email using EmailJS
     emailjs.send(
         'service_36lbox4',    // Replace with your EmailJS Service ID
@@ -62,6 +78,8 @@ document.getElementById('contactForm').addEventListener('submit', function(event
         // Success
         statusMessage.textContent = 'Message sent successfully!';
         statusMessage.classList.add('success');
+
+            /* © SMILEX - This code is licensed and protected. */
         
         // Reset form
         document.getElementById('contactForm').reset();
@@ -77,3 +95,5 @@ document.getElementById('contactForm').addEventListener('submit', function(event
         submitBtn.textContent = 'Send Message';
     });
 });
+
+    /* © SMILEX - This code is licensed and protected. */

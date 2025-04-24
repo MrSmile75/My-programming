@@ -22,6 +22,8 @@
             }
         });
 
+            /* © SMILEX - This code is licensed and protected. */
+
         strengthMeter.style.width = `${strength}%`;
         
         // Color coding
@@ -62,6 +64,8 @@
         alert('Signup Successful!');
     });
 
+        /* © SMILEX - This code is licensed and protected. */
+
     // Login Form Validation
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -84,6 +88,8 @@
         alert('Login Successful!');
     });
 
+        /* © SMILEX - This code is licensed and protected. */
+
     // Password Strength Real-time Check
     document.getElementById('signupPassword').addEventListener('input', function() {
         checkPasswordStrength(this.value);
@@ -96,3 +102,5 @@
             document.getElementById('loginEmail').value = rememberedEmail;
         }
     });
+
+        /* © SMILEX - This code is licensed and protected. */

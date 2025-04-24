@@ -1,4 +1,4 @@
-
+    /* © SMILEX - This code is licensed and protected. */
         // Interactive Logo Animation
         const logoIcon = document.querySelector('.logo-icon');
         
@@ -18,6 +18,8 @@
             `;
         });
 
+            /* © SMILEX - This code is licensed and protected. */
+
         logoIcon.addEventListener('mouseleave', () => {
             logoIcon.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
         });
@@ -36,6 +38,8 @@
             });
         });
 
+            /* © SMILEX - This code is licensed and protected. */
+
         // Initialize Particle System
         createParticleSystem();
 
@@ -47,6 +51,8 @@ document.addEventListener('mousemove', (e) => {
     const { clientX, clientY } = e;
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
+
+        /* © SMILEX - This code is licensed and protected. */
 
     // Calculate movement
     const moveX = (clientX - centerX) / 50;
@@ -69,6 +75,8 @@ window.addEventListener('resize', () => {
         text.style.fontSize = `${15 * (window.innerWidth / 1920)}vw`;
     });
 });
+
+    /* © SMILEX - This code is licensed and protected. */
 
 
 
@@ -98,6 +106,9 @@ class UltimateMarquee {
             this.init();
         }
 
+            /* © SMILEX - This code is licensed and protected. */
+
+
         // Deep merge utility method
         deepMerge(target, source) {
             const output = Object.assign({}, target);
@@ -116,6 +127,8 @@ class UltimateMarquee {
             return output;
         }
 
+            /* © SMILEX - This code is licensed and protected. */
+
         // Check if value is an object
         isObject(item) {
             return (item && typeof item === 'object' && !Array.isArray(item));
@@ -127,6 +140,8 @@ class UltimateMarquee {
             this.applyTheme();
             this.setupInteractions();
         }
+
+            /* © SMILEX - This code is licensed and protected. */
 
         // Create marquee DOM structure
         createMarqueeStructure() {
@@ -150,6 +165,8 @@ class UltimateMarquee {
             // Set animation properties
             this.setAnimationProperties(track);
         }
+
+            /* © SMILEX - This code is licensed and protected. */
 
         // Create individual marquee item
         createMarqueeItem(itemData) {
@@ -188,6 +205,8 @@ class UltimateMarquee {
 
             return item;
         }
+
+            /* © SMILEX - This code is licensed and protected. */
 
         // Set animation properties
         setAnimationProperties(track) {
@@ -236,6 +255,8 @@ class UltimateMarquee {
         }
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     // Example Usage
     document.addEventListener('DOMContentLoaded', () => {
         new UltimateMarquee({
@@ -259,6 +280,8 @@ class UltimateMarquee {
             pauseOnHover: true
         });
     });
+
+        /* © SMILEX - This code is licensed and protected. */
 
 
 
@@ -286,5 +309,7 @@ class UltimateMarquee {
                 link.style.transform = 'scale(1)';
             });
         });
+
+            /* © SMILEX - This code is licensed and protected. */
     
       

@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navLinksContainer = document.querySelector('.nav-links');
 
+
+        /* © SMILEX - This code is licensed and protected. */
+
     // Active Link Handling
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
@@ -19,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileMenuToggle.classList.toggle('open');
     });
 
+        /* © SMILEX - This code is licensed and protected. */
+
     // Smooth Scrolling
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -34,6 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+    /* © SMILEX - This code is licensed and protected. */
 
 
 class QuantumCarousel {
@@ -78,9 +85,13 @@ class QuantumCarousel {
             const contentElement = document.createElement('div');
             contentElement.classList.add('slide-content');
 
+                /* © SMILEX - This code is licensed and protected. */
+
             const titleElement = document.createElement('h2');
             titleElement.classList.add('slide-title');
             titleElement.textContent = slide.title;
+
+                /* © SMILEX - This code is licensed and protected. */
 
             const descriptionElement = document.createElement('p');
             descriptionElement.classList.add('slide-description');
@@ -90,6 +101,9 @@ class QuantumCarousel {
             ctaElement.classList.add('quantum-cta');
             ctaElement.textContent = slide.ctaText || 'Explore';
             ctaElement.href = slide.redirectUrl;
+
+
+                /* © SMILEX - This code is licensed and protected. */
 
             // Assemble
             contentElement.appendChild(titleElement);
@@ -102,6 +116,8 @@ class QuantumCarousel {
 
             this.wrapper.appendChild(slideElement);
 
+                /* © SMILEX - This code is licensed and protected. */
+
             // Indicator
             const indicator = document.createElement('div');
             indicator.classList.add('indicator');
@@ -110,10 +126,14 @@ class QuantumCarousel {
             this.indicatorsContainer.appendChild(indicator);
         });
 
+            /* © SMILEX - This code is licensed and protected. */
+
         // Set initial active slide
         this.wrapper.children[0].classList.add('active');
         this.indicatorsContainer.children[0].classList.add('active');
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     setupEventListeners() {
         this.wrapper.addEventListener('click', (event) => {
@@ -126,6 +146,8 @@ class QuantumCarousel {
             }
         });
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     createParticleEffects() {
         const particleLayers = document.querySelectorAll('.particle-layer');
@@ -311,6 +333,8 @@ class QuantumReality {
         this.drawConnections();
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     drawConnections() {
         const connectionDistance = 100;
         
@@ -345,6 +369,8 @@ class QuantumReality {
         window.addEventListener('resize', () => this.resize());
     }
 }
+
+    /* © SMILEX - This code is licensed and protected. */
 
 class QuantumInteractions {
     constructor() {
@@ -381,6 +407,8 @@ class QuantumInteractions {
             });
         });
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     initButtonInteractions() {
         const buttons = document.querySelectorAll('.quantum-button');
@@ -420,11 +448,16 @@ class QuantumInteractions {
     }
 }
 
+
+    /* © SMILEX - This code is licensed and protected. */
+
 // Initialize on load
 window.addEventListener('load', () => {
     new QuantumReality();
     new QuantumInteractions();
 });
+
+    /* © SMILEX - This code is licensed and protected. */
 
 const reviews = [
     {
@@ -543,6 +576,8 @@ class ReviewSlider {
         }
     }
 
+        /* © SMILEX - This code is licensed and protected. */
+
     startProgressBar() {
         this.progressBar.style.width = '0%';
         
@@ -565,6 +600,8 @@ class ReviewSlider {
 
         requestAnimationFrame(animate);
     }
+
+        /* © SMILEX - This code is licensed and protected. */
 
     advanceReview() {
         this.currentIndex = (this.currentIndex + 1) % this.reviews.length;
@@ -676,6 +713,10 @@ window.onload = initQuantumAssistant;
     }
 }
 
+    /* © SMILEX - This code is licensed and protected. */
+
+
+
 // Initialize the dynamic text animator
 document.addEventListener('DOMContentLoaded', () => {
     const dynamicTextElement = document.getElementById('dynamic-text');
@@ -710,7 +751,7 @@ document.addEventListener('DOMContentLoaded', () => {
     animator.start();
 });
 
-
+    /* © SMILEX - This code is licensed and protected. */
        
 // Initialize the map and set the default view (in case geolocation fails)
 const map = L.map('map').setView([51.505, -0.09], 13); // default position is London
@@ -720,6 +761,8 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright"></a>'
 }).addTo(map);
 
+    /* © SMILEX - This code is licensed and protected. */
+
 // Try to get the user's location
 if (navigator.geolocation) {
 navigator.geolocation.getCurrentPosition(function(position) {
@@ -728,6 +771,8 @@ const lon = position.coords.longitude;
 
 // Center the map to the user's location
 map.setView([lat, lon], 13);
+
+    /* © SMILEX - This code is licensed and protected. */
 
 // Add a marker at the user's location
 L.marker([lat, lon]).addTo(map)
@@ -739,3 +784,5 @@ alert("Geolocation failed. Showing default location.");
 } else {
 alert("Geolocation is not supported by this browser.");
 }
+
+    /* © SMILEX - This code is licensed and protected. */
