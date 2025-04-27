@@ -142,10 +142,10 @@
             // app Link Function
             function openLink(platform) {
             const appLinks = {
-                playstore: 'https://playstore.com',
-                appstore: 'https://applestore.com',
-                windows: 'https://microsoft.com',
-                apple: 'https://app.com'
+                playstore: 'https://googleplay.com',
+                appstore: 'https://appstore.com',
+                windows: 'https://microsoftstore.com',
+                apple: 'https://applestore.com'
             };
             window.open(appLinks[platform], '_blank');
         }
