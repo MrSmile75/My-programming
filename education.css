@@ -1,0 +1,27 @@
+body {
+    background-color: black;
+    font-family: 'Orbitron', sans-serif;
+font-size: 1rem;
+color: rgba(6, 149, 244, 0.87);
+}
+.story-card {
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.story-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+.story-card-img {
+    height: 250px;
+    object-fit: cover;
+}
+#loadingSpinner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+
+}
