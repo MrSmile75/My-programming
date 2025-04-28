@@ -1,14 +1,15 @@
 :root {
     --primary-color: #6a11cb;
-    --secondary-color: #2575fc;
+    --secondary-primary: #00f5d4;
     --game-bg: #1a1a2e;
     --card-bg: #16213e;
 }
 
 body {
-    background-color: var(--game-bg);
-    color: white;
-    font-family: 'Arial', sans-serif;
+    background-color: black;
+    color: linear-gradient(to right,purple,blue);
+    font-family: 'Orbitron', sans-serif;
+  
 }
 
 .game-card {
@@ -20,7 +21,7 @@ body {
 
 .game-card:hover {
     transform: scale(1.05);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    box-shadow: 0 0 15px white;
 }
 
 .game-card-img {
@@ -45,15 +46,17 @@ body {
 }
 
 .preview-content {
-    background: var(--card-bg);
+    background: var(to right,purple,blue);
     max-width: 1000px;
     margin: 30px auto;
     border-radius: 15px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
 
+
+
 .genre-filter {
-    background-color: var(--card-bg);
+    background-color: transparent;
     border-radius: 30px;
 }
 
@@ -63,8 +66,17 @@ body {
     border: 1px solid rgba(255,255,255,0.2);
 }
 
+.genre-btn:hover{
+    background:black;
+    color: purple;
+
+}
+
+
+
 .genre-btn.active {
-    background-color: var(--primary-color);
+    background: linear-gradient(45deg,purple,blue);
+    color: white;
 }
 
 #loadingOverlay {
@@ -73,18 +85,20 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.8);
+    background: linear-gradient(to right,purple,blue);
+    color:white ;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1500;
+    
 }
 
 .platform-badge {
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: rgba(0,0,0,0.7);
+    background-color: linear-gradient(to right,purple,blue);
     padding: 5px 10px;
     border-radius: 20px;
 }
