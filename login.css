@@ -20,6 +20,27 @@ body {
     perspective: 1000px;
 }
 
+#starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+}
+
+.star {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    animation: move-right linear infinite;
+}
+
+@keyframes move-right {
+    from { transform: translateX(-10px); }
+    to { transform: translateX(100vw); }
+}
+
 .container {
     width: 800px;
     height: 500px;
@@ -35,7 +56,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: black;
+    background: transparent;
     color: gold;
     border-radius: 1rem 1rem;
     display: flex;

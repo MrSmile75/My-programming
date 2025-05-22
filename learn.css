@@ -33,6 +33,10 @@ body {
     overflow-x: hidden;
 }
 
+button{
+    font-family: 'Orbitron', sans-serif;
+}
+
 .header {
     position: fixed;
     top: 0;

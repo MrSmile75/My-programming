@@ -1,4 +1,122 @@
       /* © SMILEX - This code is licensed and protected. */
+      class StarBackground {
+        constructor() {
+            this.starField = document.getElementById('starField');
+            this.width = window.innerWidth;
+            this.height = window.innerHeight;
+            this.createStars();
+            this.setupEventListeners();
+        }
+
+        createStars() {
+            const starCount = Math.floor(this.width / 20);
+            for (let i = 0; i < starCount; i++) {
+                const star = this.createSingleStar();
+                this.starField.appendChild(star);
+            }
+        }
+
+        createSingleStar() {
+            const star = document.createElement('div');
+            star.classList.add('star');
+
+            const y = Math.random() * this.height;
+            const size = Math.random() * 2;
+            const animationDuration = (Math.random() * 10 + 5) + 's';
+
+            star.style.cssText = `
+                top: ${y}px;
+                left: -10px;
+                width: ${size}px;
+                height: ${size}px;
+                animation-duration: ${animationDuration};
+                opacity: ${Math.random()};
+            `;
+
+            star.addEventListener('animationend', () => {
+                this.starField.removeChild(star);
+                this.starField.appendChild(this.createSingleStar());
+            });
+
+            return star;
+        }
+
+        setupEventListeners() {
+            window.addEventListener('resize', () => {
+                this.width = window.innerWidth;
+                this.height = window.innerHeight;
+                this.starField.innerHTML = '';
+                this.createStars();
+            });
+        }
+    }
+
+    // Search functionality
+    document.addEventListener('DOMContentLoaded', () => {
+        new StarBackground();
+
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const searchResults = document.getElementById('searchResults');
+
+        // Mock search data (replace with actual data source)
+        const stories = [
+            { title: "Cosmic Journey", author: "Alex Star" },
+            { title: "Whispers of the Galaxy", author: "Luna Nebula" },
+            { title: "Starlight Chronicles", author: "Nova Horizon" },
+            { title: "Quantum Dreams", author: "Stella Cosmos" }
+        ];
+
+        function performSearch() {
+            const query = searchInput.value.trim().toLowerCase();
+            
+            // Filter stories based on search query
+            const filteredStories = stories.filter(story => 
+                story.title.toLowerCase().includes(query) || 
+                story.author.toLowerCase().includes(query)
+            );
+
+            // Clear previous results
+            searchResults.innerHTML = '';
+            searchResults.style.display = 'none';
+
+            // Display results if query is not empty
+            if (query && filteredStories.length > 0) {
+                filteredStories.forEach(story => {
+                    const resultItem = document.createElement('div');
+                    resultItem.classList.add('search-result-item');
+                    resultItem.innerHTML = `
+                        <strong>${story.title}</strong>
+                        <br>
+                        <small>by ${story.author}</small>
+                    `;
+                    resultItem.addEventListener('click', () => {
+                        // Handle story selection
+                        console.log('Selected story:', story);
+                        searchInput.value = story.title;
+                        searchResults.style.display = 'none';
+                    });
+                    searchResults.appendChild(resultItem);
+                });
+                searchResults.style.display = 'block';
+            }
+        }
+
+        // Search on button click
+        searchButton.addEventListener('click', performSearch);
+
+        // Search on input
+        searchInput.addEventListener('input', performSearch);
+
+        // Hide results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.style.display = 'none';
+            }
+        });
+    });
+
+
       class StoryRealm {
         constructor() {
             this.page = 1;

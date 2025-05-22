@@ -103,4 +103,69 @@
         }
     });
 
+
+    class StarBackground {
+        constructor() {
+            this.starfield = document.getElementById('starfield');
+            this.width = window.innerWidth;
+            this.height = window.innerHeight;
+            
+            this.createStars();
+            this.setupEventListeners();
+        }
+
+        createStars() {
+            const starCount = 400;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = this.createSingleStar();
+                this.starfield.appendChild(star);
+            }
+        }
+
+        createSingleStar() {
+            const star = document.createElement('div');
+            star.classList.add('star');
+
+            // Random vertical positioning
+            const y = Math.random() * this.height;
+
+            // Random size
+            const size = Math.random() * 2;
+
+            // Random animation duration for varied movement
+            const animationDuration = (Math.random() * 10 + 5) + 's';
+
+            star.style.cssText = `
+                top: ${y}px;
+                left: -10px;
+                width: ${size}px;
+                height: ${size}px;
+                animation-duration: ${animationDuration};
+                opacity: ${Math.random()};
+            `;
+
+            // Remove star when it goes off-screen
+            star.addEventListener('animationend', () => {
+                this.starfield.removeChild(star);
+                this.starfield.appendChild(this.createSingleStar());
+            });
+            /* © SMILEX - This code is licensed and protected. */
+
+            return star;
+        }
+
+        setupEventListeners() {
+            window.addEventListener('resize', () => {
+                this.width = window.innerWidth;
+                this.height = window.innerHeight;
+            });
+        }
+    }
+/* © SMILEX - This code is licensed and protected. */
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        new StarBackground();
+    });
+
         /* © SMILEX - This code is licensed and protected. */

@@ -2,417 +2,285 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Quantum Nexus Authentication</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <title>Story Hub</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         :root {
-            --quantum-primary: #6a11cb;
-            --quantum-secondary: #2575fc;
-            --quantum-background: #0f0c29;
-            --quantum-text: #ffffff;
-            --quantum-accent: #00fffc;
-            --quantum-gradient: linear-gradient(135deg, #6a11cb, #2575fc);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
         }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: black;
-            perspective: 2000px;
-            overflow: hidden;
-            color: black;
-            font-size: 32px;
-            font-style: italic;
+            background-color: #0f0f0f;
+            color: #ffffff;
+            overflow-x: hidden;
         }
 
-        .quantum-container {
+        .cosmic-header {
             position: relative;
-            width: 800px;
-            height: 600px;
-            display: flex;
+            background: linear-gradient(135deg, rgba(106,17,203,0.8), rgba(37,117,252,0.8));
             overflow: hidden;
-            border-radius: 1rem 1rem;
-            box-shadow: 0 0 10px transparent;
-            background: transparent;
-            border: 1px solid transparent;
-            backdrop-filter: blur(20px);
+            padding: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .quantum-visual {
-            flex: 1;
-            background: url("");
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
-            z-index: 100;
-        }
-
-        .quantum-visual::before {
-            content: '';
+        .star-background {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background-color: transparent;
-            background: radial-gradient(
-                circle at center, 
-                transparent, 
-                transparent 70%
-            );
-            animation: rotate 20s linear infinite;
-            
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        @keyframes rotate {
-            100% {
-                transform: rotate(360deg);
-            }
+        .star {
+            position: absolute;
+            background-color: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            animation: 
+                moveRight linear infinite,
+                twinkle 2s infinite alternate;
         }
 
-        .quantum-visual-content {
-            text-align: center;
+        @keyframes moveRight {
+            from { transform: translateX(-10px); }
+            to { transform: translateX(100vw); }
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .header-content {
+            position: relative;
             z-index: 10;
         }
 
-        .quantum-logo {
-            width: 100px;
-            height: 100px;
-            background: transparent;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto 20px;
+        .logo-text {
+            font-weight: bold;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
         }
 
-        .quantum-auth {
-            flex: 1.5;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 40px;
-            background: transparent;
-        }
-
-        .auth-toggle {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .toggle-btn {
-            background: transparent;
-            border: 2px solid transparent;
-            color: var(--quantum-text);
-            padding: 10px 20px;
-            margin: 0 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            
-        }
-
-        .toggle-btn.active {
-            background: black;
-            color: #00fffc;
-        }
-
-        .quantum-form {
-            display: flex;
-            width: 200%;
-            transition: transform 0.5s ease;
-        }
-
-        .form-section {
-            width: 50%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 0 20px;
-        }
-
-        .input-wrapper {
+        .search-container {
             position: relative;
         }
 
-        .quantum-input {
-            width: 100%;
-            padding: 15px 20px 15px 50px;
-            background: transparent;
-            border: 2px solid transparent;
-            border-radius: 15px;
-            color: grey;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .input-icon {
-            position: absolute;
-            top: 50%;
-            left: 15px;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        ::placeholder{
-            color: #00fffc;
-        }
-
-        .quantum-btn {
-            width: 100%;
-            padding: 15px;
-            background: transparent;
-            color: rgb(255, 255, 255);
-            border: 1px solid transparent;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-           
-        }
-
-        .quantum-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px #00fffc;
-        }
-
-        .social-login {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .social-btn {
-            background: transparent;
+        .search-input {
+            background-color: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
             color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .social-btn:hover {
+        .search-input:focus {
+            background-color: rgba(255,255,255,0.2);
+            box-shadow: 0 0 15px rgba(106,17,203,0.5);
+        }
+
+        .search-btn {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            border: none;
+            transition: transform 0.3s ease;
+        }
+
+        .search-btn:hover {
             transform: scale(1.1);
-            color: #00fffc;
         }
 
-        .password-strength {
-            height: 5px;
-            background: linear-gradient(move to left, #00fffc, transparent );
-            margin-top: 5px;
-            border-radius: 3px;
-            overflow: hidden;
+        @media (max-width: 768px) {
+            .cosmic-header {
+                text-align: center;
+            }
+            .search-container {
+                margin-top: 1rem;
+            }
         }
 
-        .strength-indicator {
-            height: 100%;
-            width: 0;
-            transition: width 0.3s ease;
-        }
-
-        a{
-            color: #00fffc;
-            text-decoration: none;
-        }
-
-
-        
-        .bubble {
+        /* Search Results Styling */
+        #searchResults {
             position: absolute;
-            border-radius: 90%;
-            background: transparent;
-            border: 1px solid #00fffc;
-            box-shadow: 
-                inset -5px -5px 10px transparent,
-                0 0 5px #00fffc;
-            animation: float 3s ease-in-out infinite;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: rgba(15,15,15,0.9);
+            border-radius: 0 0 10px 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-50px); }
+        .search-result-item {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-result-item:hover {
+            background-color: rgba(255,255,255,0.1);
         }
     </style>
 </head>
 <body>
-
-    <div class="quantum-container">
-        <div class="quantum-visual">
-            <div class="quantum-visual-content">
-                <div class="quantum-logo">
-                    <i class="ri-arrow" style="font-size: 48px;"></i>
+    <header class="cosmic-header">
+        <div class="star-background" id="starField"></div>
+        <div class="container header-content">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-5">
+                        <sub class="logo-text">smilex</sub>🌟 STORY HUB
+                    </h1>
+                    <p class="lead text-white-50 animate__animated animate__fadeIn">
+                        Discover Endless Narratives
+                    </p>
                 </div>
-                <h1>FORM</h1>
-               
-            </div>
-        </div>
-        
-        
-        <div class="quantum-auth">
-            <div class="auth-toggle">
-                <button class="toggle-btn active" id="loginToggle">Login</button>
-                <button class="toggle-btn" id="signupToggle">Signup</button>
-            </div>
-
-            <div class="quantum-form-container">
-                <div class="quantum-form" id="authForm">
-                    <!-- Login Section -->
-                    <div class="form-section login-section">
-                        <div class="input-wrapper">
-                            <i class="ri-user-line input-icon"></i>
-                            <input type="text" class="quantum-input" placeholder="Username" required>
-                        </div>
-                        <div class="input-wrapper">
-                            <i class="ri-lock-line input-icon"></i>
-                            <input type="password" class="quantum-input" placeholder="Password" required>
-                        </div>
-                        <button class="quantum-btn">Login</button>
-                        
-                        <div class="social-login">
-                            <div class="social-btn"><a href="https://www.google.com " target="_blank"><i class="ri-google-line"></i></a></div>
-                            <div class="social-btn"><a href="https://www.facebook.com " target="_blank"><i class="ri-facebook-line"></i></a></div>
-                            <div class="social-btn"><a href="https://www.github.com " target="_blank"><i class="ri-github-line"></i></a></div>
-                        </div>
+                <div class="col-md-4 search-container position-relative">
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            class="form-control search-input" 
+                            placeholder="Search stories..."
+                        >
+                        <button 
+                            id="searchButton" 
+                            class="btn search-btn text-white"
+                        > 
+                            <i class="bi bi-search"></i>
+                        </button>
                     </div>
-
-                    <!-- Signup Section -->
-                    <div class="form-section signup-section">
-                        <div class="input-wrapper">
-                            <i class="ri-user-add-line input-icon"></i>
-                            <input type="text" class="quantum-input" placeholder="Full Name" required>
-                        </div>
-                        <div class="input-wrapper">
-                            <i class="ri-mail-line input-icon"></i>
-                            <input type="email" class="quantum-input" placeholder="Email" required>
-                        </div>
-                        <div class="input-wrapper">
-                            <i class="ri-lock-line input-icon"></i>
-                            <input type="password" class="quantum-input" placeholder="Password" required>
-                            <div class="password-strength">
-                                <div class="strength-indicator" id="passwordStrength"></div>
-                            </div>
-                        </div>
-                        <div class="input-wrapper">
-                            <i class="ri-lock-line input-icon"></i>
-                            <input type="password" class="quantum-input" placeholder="Confirm Password" required>
-                        </div>
-                        <button class="quantum-btn">Signup</button>
-                    </div>
+                    <div id="searchResults"></div>
                 </div>
             </div>
         </div>
-    </div>
+    </header>
 
     <script>
-        class QuantumAuthentication {
+        class StarBackground {
             constructor() {
-                this.initEventListeners();
-                this.initPasswordStrength();
+                this.starField = document.getElementById('starField');
+                this.width = window.innerWidth;
+                this.height = window.innerHeight;
+                this.createStars();
+                this.setupEventListeners();
             }
 
-            initEventListeners() {
-                const loginToggle = document.getElementById('loginToggle');
-                const signupToggle = document.getElementById('signupToggle');
-                const authForm = document.getElementById('authForm');
-
-                loginToggle.addEventListener('click', () => {
-                    authForm.style.transform = 'translateX(0)';
-                    loginToggle.classList.add('active');
-                    signupToggle.classList.remove('active');
-                });
-
-                signupToggle.addEventListener('click', () => {
-                    authForm.style.transform = 'translateX(-50%)';
-                    signupToggle.classList.add('active');
-                    loginToggle.classList.remove('active');
-                });
+            createStars() {
+                const starCount = Math.floor(this.width / 20);
+                for (let i = 0; i < starCount; i++) {
+                    const star = this.createSingleStar();
+                    this.starField.appendChild(star);
+                }
             }
 
-            initPasswordStrength() {
-                const passwordInput = document.querySelector('.signup-section input[type="password"]');
-                const strengthIndicator = document.getElementById('passwordStrength');
+            createSingleStar() {
+                const star = document.createElement('div');
+                star.classList.add('star');
 
-                passwordInput.addEventListener('input', () => {
-                    const strength = this.calculatePasswordStrength(passwordInput.value);
-                    strengthIndicator.style.width = `${strength}%`;
+                const y = Math.random() * this.height;
+                const size = Math.random() * 2;
+                const animationDuration = (Math.random() * 10 + 5) + 's';
+
+                star.style.cssText = `
+                    top: ${y}px;
+                    left: -10px;
+                    width: ${size}px;
+                    height: ${size}px;
+                    animation-duration: ${animationDuration};
+                    opacity: ${Math.random()};
+                `;
+
+                star.addEventListener('animationend', () => {
+                    this.starField.removeChild(star);
+                    this.starField.appendChild(this.createSingleStar());
                 });
+
+                return star;
             }
 
-            calculatePasswordStrength(password) {
-                let strength = 0;
-                if (password.length > 7) strength += 25;
-                if (password.match(/[a-z]+/)) strength += 25;
-                if (password.match(/[A-Z]+/)) strength += 25;
-                if (password.match(/[0-9]+/)) strength += 25;
-                return Math.min(strength, 100);
+            setupEventListeners() {
+                window.addEventListener('resize', () => {
+                    this.width = window.innerWidth;
+                    this.height = window.innerHeight;
+                    this.starField.innerHTML = '';
+                    this.createStars();
+                });
             }
         }
 
-        // Initialize Quantum Authentication
-        new QuantumAuthentication();
+        // Search functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            new StarBackground();
 
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const searchResults = document.getElementById('searchResults');
 
-        function createWaterBubble() {
-            const bubble = document.createElement('div');
-            
-            // REALISTIC BUBBLE SIZING
-            const size = Math.random() * 100 + 20; // 20-120px
-            
-            bubble.classList.add('bubble');
-            bubble.style.width = `${size}px`;
-            bubble.style.height = `${size}px`;
-            
-            // RANDOM POSITIONING
-            bubble.style.left = `${Math.random() * 100}%`;
-            bubble.style.top = `${Math.random() * 100}%`;
-            
-            // WATER-LIKE TRANSPARENCY
-            bubble.style.opacity = Math.random() * 0.5 + 0.3;
-            
-            // ADD REFLECTION EFFECT
-            bubble.style.background = `
-                radial-gradient(
-                    circle at 30% 30%, 
-                    transparent, 
-                    transparent
-                )
-            `;
+            // Mock search data (replace with actual data source)
+            const stories = [
+                { title: "Cosmic Journey", author: "Alex Star" },
+                { title: "Whispers of the Galaxy", author: "Luna Nebula" },
+                { title: "Starlight Chronicles", author: "Nova Horizon" },
+                { title: "Quantum Dreams", author: "Stella Cosmos" }
+            ];
 
-            document.body.appendChild(bubble);
+            function performSearch() {
+                const query = searchInput.value.trim().toLowerCase();
+                
+                // Filter stories based on search query
+                const filteredStories = stories.filter(story => 
+                    story.title.toLowerCase().includes(query) || 
+                    story.author.toLowerCase().includes(query)
+                );
 
-            // REMOVE BUBBLE AFTER ANIMATION
-            setTimeout(() => {
-                document.body.removeChild(bubble);
-            }, 1000);
-        }
+                // Clear previous results
+                searchResults.innerHTML = '';
+                searchResults.style.display = 'none';
 
-        // GENERATE BUBBLES CONTINUOUSLY
-        function startBubbleGeneration() {
-            setInterval(createWaterBubble, 700);
-        }
+                // Display results if query is not empty
+                if (query && filteredStories.length > 0) {
+                    filteredStories.forEach(story => {
+                        const resultItem = document.createElement('div');
+                        resultItem.classList.add('search-result-item');
+                        resultItem.innerHTML = `
+                            <strong>${story.title}</strong>
+                            <br>
+                            <small>by ${story.author}</small>
+                        `;
+                        resultItem.addEventListener('click', () => {
+                            // Handle story selection
+                            console.log('Selected story:', story);
+                            searchInput.value = story.title;
+                            searchResults.style.display = 'none';
+                        });
+                        searchResults.appendChild(resultItem);
+                    });
+                    searchResults.style.display = 'block';
+                }
+            }
 
-        // START BUBBLE MAGIC
-        startBubbleGeneration();
+            // Search on button click
+            searchButton.addEventListener('click', performSearch);
 
-        
+            // Search on input
+            searchInput.addEventListener('input', performSearch);
+
+            // Hide results when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                    searchResults.style.display = 'none';
+                }
+            });
+        });
     </script>
 </body>
 </html>
