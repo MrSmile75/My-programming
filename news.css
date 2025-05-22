@@ -2,6 +2,69 @@ body {
     font-family: 'Orbitron', sans-serif;
     background-color: black;
 }
+.navbar-custom {
+    background: white;
+    
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.location-info {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 0.9rem;
+    color: black;
+}
+
+.time-display {
+    margin-left: 15px;
+    font-weight: bold;
+    color: black;
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-input {
+    border-radius: 20px;
+    padding-right: 40px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255,255,255,0.25);
+}
+
+.search-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #6c757d;
+    z-index: 10;
+}
+
+.weather-icon {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+    .location-info {
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .time-display {
+        margin-left: 0;
+        margin-top: 5px;
+    }
+}
+
+
 .news-card {
     transition: all 0.3s ease;
     cursor: pointer;

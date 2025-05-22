@@ -4,247 +4,385 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Traders Marketplace</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        /* Advanced Color Palette and Global Styles */
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #3498db;
             --accent-color: #e74c3c;
             --background-light: #ecf0f1;
             --background-dark: #34495e;
-            --text-primary: #333;
-            --text-secondary: #666;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            line-height: 1.6;
-            background-color: black;
-            color: gold;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-light);
         }
 
-        /* Landing Page Styles */
-        .landing-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .action-btn {
-            padding: 1rem 2rem;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .sell-btn {
-            background-color: #2ecc71;
-            color: white;
-        }
-
-        .buy-btn {
-            background-color: var(--secondary-color);
-            color: white;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 8px rgba(0,0,0,0.2);
-        }
-
-        /* Marketplace Styles */
         .marketplace-container {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            background-color: white;
-            padding: 2rem;
-            border-right: 1px solid #e0e0e0;
-        }
-
-        .main-content {
-            padding: 2rem;
-        }
-
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         .item-card {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
         }
 
         .item-card:hover {
             transform: scale(1.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .item-image {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
+        .sell-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .item-details {
-            padding: 1rem;
-        }
-
-        /* Form Styles */
-        .modal {
-            display: none;
+        #notificationContainer {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
+            top: 20px;
+            right: 20px;
             z-index: 1000;
-            justify-content: center;
-            align-items: center;
         }
 
-        .modal-content {
-            background-color: transparent;
-            padding: 2rem;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 80%;
-            overflow-y: auto;
+        .notification {
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .form-grid {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .marketplace-container {
-                grid-template-columns: 1fr;
-            }
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
         }
     </style>
 </head>
 <body>
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <!-- Cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Your Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cartItems"></div>
+                    <div class="mt-3">
+                        <strong>Total: <span id="cartTotal">$0.00</span></strong>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="checkoutCart()">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Landing Page -->
-    <div class="landing-container" id="landingPage">
-        <div class="action-buttons">
-            <button class="action-btn sell-btn" onclick="showSellPage()">
-                Sell Item
+    <div class="container text-center my-5" id="landingPage">
+        <h1 class="display-4 mb-4">Global Traders Marketplace</h1>
+        <div class="d-flex justify-content-center gap-3">
+            <button class="btn btn-success btn-lg" onclick="showSellPage()">
+                <i class="bi bi-tag me-2"></i>Sell Items
             </button>
-            <button class="action-btn buy-btn" onclick="showBuyPage()">
-                Buy Items
+            <button class="btn btn-primary btn-lg" onclick="showBuyPage()">
+                <i class="bi bi-cart me-2"></i>Buy Items
             </button>
         </div>
     </div>
 
     <!-- Sell Page -->
-    <div id="sellPage" style="display:none;">
-        <div class="marketplace-container">
-            <aside class="sidebar">
-                <h3>Seller Categories</h3>
-                <div id="sellerCategories">
-                    <button onclick="selectCategory('Electronics')">Electronics</button>
-                    <button onclick="selectCategory('Fashion')">Fashion</button>
-                    <button onclick="selectCategory('Home')">Home & Garden</button>
-                    <button onclick="selectCategory('Sports')">Sports</button>
-                </div>
-            </aside>
-            <main class="main-content">
-                <form id="sellForm" class="form-grid">
-                    <input type="text" name="itemName" class="form-input" placeholder="Item Name" required>
-                    
-                    <div style="display:flex; gap:1rem;">
-                        <select name="currency" class="form-input" required>
-                            <option value="">Select Currency</option>
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                            <option value="GBP">GBP</option>
-                            <option value="JPY">JPY</option>
-                        </select>
-                        <input type="number" name="itemPrice" class="form-input" placeholder="Price" required>
+    <div id="sellPage" style="display:none;" class="marketplace-container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3>Seller Guidelines</h3>
                     </div>
-                    
-                    <textarea name="itemDescription" class="form-input" placeholder="Item Description" required></textarea>
-                    
-                    <input type="file" name="itemImage" accept="image/*" required>
-                    
-                    <button type="submit" class="action-btn sell-btn">List Item</button>
-                </form>
-            </main>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li>✅ Provide clear, accurate item descriptions</li>
+                            <li>✅ Use high-quality images</li>
+                            <li>✅ Set competitive pricing</li>
+                            <li>✅ Be honest about item condition</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Categories</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary" onclick="selectCategory('Electronics')">
+                                <i class="bi bi-laptop me-2"></i>Electronics
+                            </button>
+                            <button class="btn btn-outline-primary" onclick="selectCategory('Fashion')">
+                                <i class="bi bi-bag me-2"></i>Fashion
+                            </button>
+                            <button class="btn btn-outline-primary" onclick="selectCategory('Home')">
+                                <i class="bi bi-house me-2"></i>Home & Garden
+                            </button>
+                            <button class="btn btn-outline-primary" onclick="selectCategory('Sports')">
+                                <i class="bi bi-bicycle me-2"></i>Sports
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="sell-form">
+                    <h2 class="mb-4">List Your Item</h2>
+                    <form id="sellForm">
+                        <div class="mb-3">
+                            <label class="form-label">Item Name</label>
+                            <input type="text" class="form-control" name="itemName" required>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Price</label>
+                                <div class="input-group">
+                                    <select class="form-select" name="currency" style="max-width: 100px;">
+                                        <option value="USD">USD</option>
+                                        <option value="EUR">EUR</option>
+                                        <option value="GBP">GBP</option>
+                                    </select>
+                                    <input type="number" class="form-control" name="itemPrice" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Condition</label>
+                                <select class="form-select" name="itemCondition">
+                                    <option>New</option>
+                                    <option>Like New</option>
+                                    <option>Good</option>
+                                    <option>Fair</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" name="itemDescription" rows="4" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Item Image</label>
+                            <input type="file" class="form-control" name="itemImage" accept="image/*" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-upload me-2"></i>List Item
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Buy Page -->
-    <div id="buyPage" style="display:none;">
-        <div class="marketplace-container">
-            <aside class="sidebar">
-                <h3>Item Categories</h3>
-                <div id="buyCategories">
-                    <button onclick="filterItems('Electronics')">Electronics</button>
-                    <button onclick="filterItems('Fashion')">Fashion</button>
-                    <button onclick="filterItems('Home')">Home & Garden</button>
-                    <button onclick="filterItems('Sports')">Sports</button>
+    <div id="buyPage" style="display:none;" class="marketplace-container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3>Filter Items</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary" onclick="filterItems('Electronics')">
+                                <i class="bi bi-laptop me-2"></i>Electronics
+                            </button>
+                            <button class="btn btn-outline-primary" onclick="filterItems('Fashion')">
+                                <i class="bi bi-bag me-2"></i>Fashion
+                            </button>
+                            <button class="btn btn-outline-primary" onclick="filterItems('Home')">
+                                <i class="bi bi-house me-2"></i>Home & Garden
+                            </button>
+                            <button class="btn btn-outline-primary" onclick="filterItems('Sports')">
+                                <i class="bi bi-bicycle me-2"></i>Sports
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </aside>
-            <main class="main-content">
-                <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Search items...">
-                    <button onclick="searchItems()">Search</button>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Price Range</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Min Price</label>
+                            <input type="number" class="form-control" id="minPriceFilter">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Max Price</label>
+                            <input type="number" class="form-control" id="maxPriceFilter">
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="applyPriceFilter()">
+                            Apply Filter
+                        </button>
+                    </div>
                 </div>
-                <div id="itemsContainer" class="items-grid">
-                    <!-- Items will be dynamically populated -->
+            </div>
+
+            <div class="col-md-9">
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="input-group" style="width: 70%;">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search items...">
+                        <button class="btn btn-primary" onclick="searchItems()">
+                            <i class="bi bi-search me-2"></i>Search
+                        </button>
+                    </div>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#cartModal">
+                        <i class="bi bi-cart me-2"></i>Cart (<span id="cartItemCount">0</span>)
+                    </button>
                 </div>
-            </main>
+
+                <div id="itemsContainer" class="row g-4">
+                    <!-- Dynamically populated items -->
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Advanced State Management
+        // Cart Management Class
+        class CartManager {
+            constructor() {
+                this.cart = [];
+                this.loadCartFromLocalStorage();
+            }
+
+            addToCart(item) {
+                const existingItem = this.cart.find(cartItem => cartItem.id === item.id);
+                
+                if (existingItem) {
+                    existingItem.quantity = (existingItem.quantity || 1) + 1;
+                } else {
+                    this.cart.push({
+                        ...item,
+                        quantity: 1
+                    });
+                }
+
+                this.saveCartToLocalStorage();
+                this.updateCartUI();
+                this.showNotification(`${item.itemName} added to cart!`);
+            }
+
+            removeFromCart(itemId) {
+                this.cart = this.cart.filter(item => item.id !== itemId);
+                this.saveCartToLocalStorage();
+                this.updateCartUI();
+            }
+
+            updateQuantity(itemId, quantity) {
+                const item = this.cart.find(item => item.id === itemId);
+                if (item) {
+                    item.quantity = quantity > 0 ? quantity : 1;
+                    this.saveCartToLocalStorage();
+                    this.updateCartUI();
+                }
+            }
+
+            calculateTotal() {
+                return this.cart.reduce((total, item) => 
+                    total + (parseFloat(item.itemPrice) * item.quantity), 0
+                ).toFixed(2);
+            }
+
+            saveCartToLocalStorage() {
+                localStorage.setItem('marketplaceCart', JSON.stringify(this.cart));
+            }
+
+            loadCartFromLocalStorage() {
+                const savedCart = localStorage.getItem('marketplaceCart');
+                this.cart = savedCart ? JSON.parse(savedCart) : [];
+                this.updateCartUI();
+            }
+
+            updateCartUI() {
+                const cartItemsContainer = document.getElementById('cartItems');
+                const cartTotalElement = document.getElementById('cartTotal');
+                const cartItemCountElement = document.getElementById('cartItemCount');
+
+                // Clear existing cart items
+                cartItemsContainer.innerHTML = '';
+
+                // Populate cart items
+                this.cart.forEach(item => {
+                    const cartItemElement = document.createElement('div');
+                    cartItemElement.className = 'cart-item d-flex justify-content-between align-items-center mb-2';
+                    cartItemElement.innerHTML = `
+                        <div class="d-flex align-items-center">
+                            <img src="${item.imageUrl}" class="img-thumbnail me-2">
+                            <div>
+                                <h6 class="mb-0">${item.itemName}</h6>
+                                <small>${item.currency} ${item.itemPrice}</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <input type="number" 
+                                   class="form-control form-control-sm" 
+                                   value="${item.quantity}" 
+                                   min="1" 
+                                   style="width: 70px;"
+                                   onchange="cartManager.updateQuantity(${item.id}, this.value)">
+                            <button class="btn btn-danger btn-sm ms-2" 
+                                    onclick="cartManager.removeFromCart(${item.id})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(cartItemElement);
+                });
+
+                // Update total and item count
+                cartTotalElement.textContent = `$${this.calculateTotal()}`;
+                cartItemCountElement.textContent = this.cart.length;
+            }
+
+            showNotification(message) {
+                const container = document.getElementById('notificationContainer');
+                const notification = document.createElement('div');
+                notification.className = `alert alert-success notification`;
+                notification.textContent = message;
+                
+                container.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '1';
+                }, 10);
+
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => container.removeChild(notification), 300);
+                }, 3000);
+            }
+        }
+
+        // Marketplace Manager Class
         class MarketplaceManager {
             constructor() {
                 this.items = [];
-                this.cart = [];
                 this.categories = ['Electronics', 'Fashion', 'Home', 'Sports'];
+                this.selectedCategory = null;
+                this.loadItemsFromLocalStorage();
             }
 
-            // Add Item Method
             addItem(itemData) {
                 const newItem = {
                     id: Date.now(),
@@ -254,142 +392,189 @@
                 this.items.push(newItem);
                 this.saveItemsToLocalStorage();
                 this.renderItems();
+                this.showNotification('Item listed successfully!');
+                return newItem;
             }
 
-            // Render Items Method
             renderItems(filteredItems = null) {
                 const container = document.getElementById('itemsContainer');
                 container.innerHTML = '';
 
                 const itemsToRender = filteredItems || this.items;
 
+                if (itemsToRender.length === 0) {
+                    container.innerHTML = `
+                        <div class="col-12 text-center">
+                            <p class="text-muted">No items found</p>
+                        </div>
+                    `;
+                    return;
+                }
+
                 itemsToRender.forEach(item => {
                     const itemCard = document.createElement('div');
-                    itemCard.classList.add('item-card');
+                    itemCard.className = 'col-md-4';
                     itemCard.innerHTML = `
-                        <img src="${item.imageUrl}" alt="${item.itemName}" class="item-image">
-                        <div class="item-details">
-                            <h3>${item.itemName}</h3>
-                            <p>${item.currency} ${item.itemPrice}</p>
-                            <p>${item.itemDescription}</p>
-                            <button onclick="marketplaceManager.addToCart(${item.id})">Add to Cart</button>
+                        <div class="card item-card h-100">
+                            <img src="${item.imageUrl}" class="card-img-top" alt="${item.itemName}" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">${item.itemName}</h5>
+                                <p class="card-text">${item.itemDescription.substring(0, 100)}${item.itemDescription.length > 100 ? '...' : ''}</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-primary">${item.category}</span>
+                                    <strong>${item.currency} ${item.itemPrice}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="badge bg-secondary">Condition: ${item.itemCondition}</span>
+                                    <button class="btn btn-success btn-sm" onclick="marketplaceManager.addToCart(${item.id})">
+                                        <i class="bi bi-cart-plus me-1"></i>Add to Cart
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     `;
                     container.appendChild(itemCard);
                 });
             }
 
-            // Search Items Method
-            searchItems(query) {
-                const filteredItems = this.items.filter(item => 
-                    item.itemName.toLowerCase().includes(query.toLowerCase()) ||
-                    item.itemDescription.toLowerCase().includes(query.toLowerCase())
-                );
-                this.renderItems(filteredItems);
-            }
-
-            // Filter Items by Category
-            filterItemsByCategory(category) {
-                const filteredItems = this.items.filter(item => 
-                    item.category === category
-                );
-                this.renderItems(filteredItems);
-            }
-
-            // Add to Cart Method
             addToCart(itemId) {
                 const item = this.items.find(i => i.id === itemId);
                 if (item) {
-                    this.cart.push(item);
-                    this.saveCartToLocalStorage();
-                    alert(`${item.itemName} added to cart!`);
+                    cartManager.addToCart(item);
                 }
             }
 
-            // Local Storage Methods
             saveItemsToLocalStorage() {
                 localStorage.setItem('marketplaceItems', JSON.stringify(this.items));
             }
 
-            saveCartToLocalStorage() {
-                localStorage.setItem('marketplaceCart', JSON.stringify(this.cart));
+            loadItemsFromLocalStorage() {
+                const savedItems = localStorage.getItem('marketplaceItems');
+                this.items = savedItems ? JSON.parse(savedItems) : [];
+                this.renderItems();
             }
 
-            // Initialize Method
-            init() {
-                const storedItems = localStorage.getItem('marketplaceItems');
-                if (storedItems) {
-                    this.items = JSON.parse(storedItems);
-                    this.renderItems();
-                }
+            showNotification(message, type = 'success') {
+                const container = document.getElementById('notificationContainer');
+                const notification = document.createElement('div');
+                notification.className = `alert alert-${type} notification`;
+                notification.textContent = message;
+                
+                container.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '1';
+                }, 10);
 
-                this.setupEventListeners();
-            }
-
-            // Event Listeners
-            setupEventListeners() {
-                const sellForm = document.getElementById('sellForm');
-                sellForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const formData = new FormData(sellForm);
-                    
-                    // Handle image upload
-                    const imageFile = formData.get('itemImage');
-                    const imageUrl = imageFile ? URL.createObjectURL(imageFile) : '';
-
-                    const itemData = {
-                        itemName: formData.get('itemName'),
-                        itemPrice: formData.get('itemPrice'),
-                        currency: formData.get('currency'),
-                        itemDescription: formData.get('itemDescription'),
-                        imageUrl: imageUrl,
-                        category: this.selectedCategory || 'Uncategorized'
-                    };
-
-                    this.addItem(itemData);
-                    sellForm.reset();
-                    alert('Item listed successfully!');
-                });
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => container.removeChild(notification), 300);
+                }, 3000);
             }
         }
 
-        // Global Variables and Initialization
+        // Global Instances
+        const cartManager = new CartManager();
         const marketplaceManager = new MarketplaceManager();
-        let selectedCategory = null;
 
         // Page Navigation Functions
         function showSellPage() {
             document.getElementById('landingPage').style.display = 'none';
             document.getElementById('sellPage').style.display = 'block';
+            document.getElementById('buyPage').style.display = 'none';
         }
 
         function showBuyPage() {
             document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('sellPage').style.display = 'none';
             document.getElementById('buyPage').style.display = 'block';
             marketplaceManager.renderItems();
         }
 
         // Category Selection
         function selectCategory(category) {
-            selectedCategory = category;
             marketplaceManager.selectedCategory = category;
-            alert(`Selected Category: ${category}`);
+            marketplaceManager.showNotification(`Selected Category: ${category}`);
         }
 
         // Search and Filter Functions
         function searchItems() {
-            const searchQuery = document.getElementById('searchInput').value;
-            marketplaceManager.searchItems(searchQuery);
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const filteredItems = marketplaceManager.items.filter(item => 
+                item.itemName.toLowerCase().includes(searchQuery) ||
+                item.itemDescription.toLowerCase().includes(searchQuery)
+            );
+            marketplaceManager.renderItems(filteredItems);
         }
 
         function filterItems(category) {
-            marketplaceManager.filterItemsByCategory(category);
+            const filteredItems = marketplaceManager.items.filter(item => 
+                item.category === category
+            );
+            marketplaceManager.renderItems(filteredItems);
         }
 
-        // Initialize on page load
+        function applyPriceFilter() {
+            const minPrice = document.getElementById('minPriceFilter').value;
+            const maxPrice = document.getElementById('maxPriceFilter').value;
+
+            const filteredItems = marketplaceManager.items.filter(item => {
+                const price = parseFloat(item.itemPrice);
+                return (!minPrice || price >= parseFloat(minPrice)) && 
+                       (!maxPrice || price <= parseFloat(maxPrice));
+            });
+
+            marketplaceManager.renderItems(filteredItems);
+        }
+
+        // Checkout Function
+        function checkoutCart() {
+            if (cartManager.cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            // Simulate checkout process
+            alert(`Checkout successful! Total: $${cartManager.calculateTotal()}`);
+            
+            // Clear cart
+            cartManager.cart = [];
+            cartManager.saveCartToLocalStorage();
+            cartManager.updateCartUI();
+        }
+
+        // Event Listeners
         document.addEventListener('DOMContentLoaded', () => {
-            marketplaceManager.init();
+            const sellForm = document.getElementById('sellForm');
+            
+            sellForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const formData = new FormData(sellForm);
+                
+                const imageFile = formData.get('itemImage');
+                const imageUrl = imageFile && imageFile.size > 0 
+                    ? URL.createObjectURL(imageFile) 
+                    : 'https://via.placeholder.com/300x200?text=No+Image';
+
+                const itemData = {
+                    itemName: formData.get('itemName'),
+                    itemPrice: formData.get('itemPrice'),
+                    currency: formData.get('currency'),
+                    itemDescription: formData.get('itemDescription'),
+                    imageUrl: imageUrl,
+                    category: marketplaceManager.selectedCategory || 'Uncategorized',
+                    itemCondition: formData.get('itemCondition')
+                };
+
+                marketplaceManager.addItem(itemData);
+                sellForm.reset();
+            });
         });
+
+        
+
+        
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

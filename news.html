@@ -7,23 +7,42 @@
     <title>SmileX Global News Hub</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="news.css">
 
 </head>
 <body>
  
-
-    <nav class="navbar navbar-expand-lg navbar-dark bg-white" >
+    <nav class="navbar navbar-expand-lg navbar-white navbar-custom">
         <div class="container">
-            <a class="navbar-brand" href="#" style="color: black;">Global News Hub</a>
-            <div class="d-flex">
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    class="form-control me-2" 
-                    placeholder="Search news..."
-                >
-                <button id="searchButton" class="btn btn-primary " style="background: grey;">Search</button>
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-globe2 me-2"></i>Global News Hub
+            </a>
+            
+            <div class="ms-auto d-flex align-items-center">
+                <div class="location-info me-3">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-geo-alt weather-icon" id="locationIcon"></i>
+                        <span id="locationDisplay">Detecting location...</span>
+                    </div>
+                    <div class="time-display" id="timeDisplay">
+                        Loading time...
+                    </div>
+                </div>
+
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="form-control search-input" 
+                        placeholder="Search news..."
+                    >
+                    <button id="searchButton" class="search-btn">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>

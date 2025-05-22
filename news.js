@@ -1,4 +1,143 @@
     /* © SMILEX - This code is licensed and protected. */
+    class LocationTimeManager {
+        constructor() {
+            this.locationDisplay = document.getElementById('locationDisplay');
+            this.timeDisplay = document.getElementById('timeDisplay');
+            this.locationIcon = document.getElementById('locationIcon');
+
+            this.initializeLocationAndTime();
+            this.startTimerUpdate();
+        }
+
+        async initializeLocationAndTime() {
+            try {
+                // Geolocation
+                const position = await this.getCurrentPosition();
+                const { latitude, longitude } = position.coords;
+                
+                // Reverse Geocoding
+                const locationData = await this.reverseGeocode(latitude, longitude);
+                this.updateLocationDisplay(locationData);
+
+                // Weather
+                const weatherData = await this.fetchWeather(latitude, longitude);
+                this.updateWeatherIcon(weatherData);
+            } catch (error) {
+                this.handleLocationError(error);
+            }
+        }
+
+        getCurrentPosition() {
+            return new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
+        }
+
+        async reverseGeocode(latitude, longitude) {
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                const data = await response.json();
+                return {
+                    city: data.address.city || data.address.town || data.address.village || 'Unknown',
+                    country: data.address.country || 'Unknown',
+                    latitude,
+                    longitude
+                };
+            } catch (error) {
+                console.error('Geocoding error:', error);
+                return { city: 'Unknown', country: 'Unknown' };
+            }
+        }
+
+        async fetchWeather(latitude, longitude) {
+            const API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your API key
+            try {
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`);
+                return await response.json();
+            } catch (error) {
+                console.error('Weather fetch error:', error);
+                return null;
+            }
+        }
+
+        updateLocationDisplay(locationData) {
+            this.locationDisplay.textContent = `${locationData.city}, ${locationData.country}`;
+        }
+
+        updateWeatherIcon(weatherData) {
+            if (weatherData && weatherData.weather) {
+                const weatherCondition = weatherData.weather[0].main.toLowerCase();
+                const iconMap = {
+                    'clear': '☀️',
+                    'clouds': '☁️',
+                    'rain': '🌧️',
+                    'drizzle': '🌦️',
+                    'thunderstorm': '⛈️',
+                    'snow': '❄️'
+                };
+                this.locationIcon.textContent = iconMap[weatherCondition] || '🌍';
+            }
+        }
+
+        handleLocationError(error) {
+            console.warn('Location error:', error);
+            this.locationDisplay.textContent = 'Location unavailable';
+            this.locationIcon.textContent = '🌍';
+        }
+
+        startTimerUpdate() {
+            const updateTime = () => {
+                const now = new Date();
+                const options = {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                };
+                this.timeDisplay.textContent = now.toLocaleString(undefined, options);
+            };
+
+            updateTime(); // Initial call
+            setInterval(updateTime, 1000); // Update every second
+        }
+    }
+
+    // Search Functionality
+    class NewsSearch {
+        constructor() {
+            this.searchInput = document.getElementById('searchInput');
+            this.searchButton = document.getElementById('searchButton');
+
+            this.setupEventListeners();
+        }
+
+        setupEventListeners() {
+            this.searchButton.addEventListener('click', () => this.performSearch());
+            this.searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') this.performSearch();
+            });
+        }
+
+        performSearch() {
+            const query = this.searchInput.value.trim();
+            if (query) {
+                console.log('Searching for:', query);
+                // Implement actual search logic here
+            }
+        }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        new LocationTimeManager();
+        new NewsSearch();
+    });
+
+
 class NewsHub {
     constructor() {
         this.page = 1;
