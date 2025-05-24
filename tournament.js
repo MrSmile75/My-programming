@@ -140,7 +140,7 @@ class UnstoppableQuiz {
         // Move to next question after a delay
         setTimeout(() => {
             this.nextQuestion();
-        }, 2000);
+        }, 4000);
     }
 
     handleTimeOut() {
@@ -149,7 +149,7 @@ class UnstoppableQuiz {
         feedbackElement.textContent = 'Time is up!';
         feedbackElement.className = 'incorrect';
 
-        setTimeout(() => this.nextQuestion(), 2000);
+        setTimeout(() => this.nextQuestion(), 3000);
     }
 
          /* © SMILEX - This code is licensed and protected. */
@@ -199,4 +199,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const quiz = new UnstoppableQuiz();
 });
 
+
+
+const starfield = document.getElementById('starfield');
+const starCount = 200;
+
+function createStars() {
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        
+        // Random star size
+        const size = Math.random() * 3;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        
+        // Random vertical position
+        star.style.top = `${Math.random() * 100}%`;
+        
+        // Randomized animation speed
+        const speed = 10 + Math.random() * 30;
+        star.style.animationDuration = `${speed}s`;
+        
+        // Slight opacity variation
+        star.style.opacity = 0.5 + Math.random() * 0.5;
+        
+        star.classList.add('star');
+        starfield.appendChild(star);
+    }
+}
+
+// Create stars
+createStars();
+
+// Recreate stars on window resize
+window.addEventListener('resize', () => {
+    starfield.innerHTML = '';
+    createStars();
+});
      /* © SMILEX - This code is licensed and protected. */
