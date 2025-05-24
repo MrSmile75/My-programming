@@ -486,6 +486,8 @@
             this.modal = new bootstrap.Modal(document.getElementById('tournamentModal'));
             this.joinBtn = document.getElementById('joinTournament');
             this.dismissBtn = document.getElementById('dismissTournament');
+
+                 /* © SMILEX - This code is licensed and protected. */
         }
     
         setupEventListeners() {
@@ -498,6 +500,8 @@
             this.modal.show();
             this.trackInteraction('modal_shown');
         }
+
+             /* © SMILEX - This code is licensed and protected. */
     
         joinTournament() {
             // Implement tournament registration logic
