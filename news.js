@@ -50,7 +50,7 @@
         }
 
         async fetchWeather(latitude, longitude) {
-            const API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your API key
+            const API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with API key
             try {
                 const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`);
                 return await response.json();
@@ -306,6 +306,245 @@ class NewsHub {
 // Initialize the News Hub
 document.addEventListener('DOMContentLoaded', () => {
     new NewsHub();
+});
+
+
+class AdvancedLiveManager {
+    constructor() {
+        this.initializeElements();
+        this.bindEvents();
+        this.setupErrorHandling();
+    }
+
+    initializeElements() {
+        this.liveTrigger = document.getElementById('liveTrigger');
+        this.liveModal = document.getElementById('liveModal');
+        this.liveOverlay = document.getElementById('liveOverlay');
+        this.cancelBtn = document.getElementById('cancelBtn');
+        this.proceedBtn = document.getElementById('proceedBtn');
+    }
+
+    bindEvents() {
+        // Safe event binding with error prevention
+        this.safeAddEvent(this.liveTrigger, 'click', () => this.showLiveModal());
+        this.safeAddEvent(this.cancelBtn, 'click', () => this.hideLiveModal());
+        this.safeAddEvent(this.liveOverlay, 'click', () => this.hideLiveModal());
+        this.safeAddEvent(this.proceedBtn, 'click', () => this.navigateToLive());
+    }
+
+    safeAddEvent(element, event, handler) {
+        try {
+            if (element) {
+                element.addEventListener(event, handler);
+            }
+        } catch (error) {
+            console.error(`Event binding error: ${error.message}`);
+        }
+    }
+
+    showLiveModal() {
+        try {
+            this.liveModal.classList.add('show');
+            this.liveOverlay.classList.add('show');
+        } catch (error) {
+            console.error('Modal display error', error);
+        }
+    }
+
+    hideLiveModal() {
+        try {
+            this.liveModal.classList.remove('show');
+            this.liveOverlay.classList.remove('show');
+        } catch (error) {
+            console.error('Modal hide error', error);
+        }
+    }
+
+    navigateToLive() {
+        try {
+            // Implement your live page navigation
+            window.location.href = 'newslive.html';
+        } catch (error) {
+            console.error('Navigation error', error);
+            alert('Unable to navigate. Please try again.');
+        }
+    }
+
+    setupErrorHandling() {
+        window.addEventListener('error', (event) => {
+            console.error('Unhandled error:', event.error);
+            // Optional: Send error to monitoring service
+        });
+    }
+}
+
+// Safe initialization with error boundary
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        new AdvancedLiveManager();
+    } catch (initError) {
+        console.error('Initialization failed', initError);
+    }
+});
+
+
+
+class AnimatedScrollController {
+    constructor() {
+        // DOM Elements
+        this.upBtn = document.getElementById('upScrollBtn');
+        this.downBtn = document.getElementById('downScrollBtn');
+        this.scrollIndicator = document.getElementById('scrollIndicator');
+
+        // Scroll State
+        this.isScrolling = false;
+        this.scrollInterval = null;
+        this.scrollSpeed = 0;
+
+        // Animation Configuration
+        this.animationConfig = {
+            maxScrollSpeed: 30,
+            acceleration: 0.5,
+            particleCount: 10,
+            particleLifespan: 1000
+        };
+
+        // Initialize
+        this.initializeEventListeners();
+        this.setupScrollTracking();
+    }
+
+    initializeEventListeners() {
+        // Down Scroll
+        this.downBtn.addEventListener('mousedown', this.startDownScroll.bind(this));
+        this.downBtn.addEventListener('mouseup', this.stopScroll.bind(this));
+        this.downBtn.addEventListener('mouseleave', this.stopScroll.bind(this));
+
+        // Up Scroll
+        this.upBtn.addEventListener('click', this.quickScrollToTop.bind(this));
+
+        // Touch Support
+        this.downBtn.addEventListener('touchstart', this.startDownScroll.bind(this));
+        this.downBtn.addEventListener('touchend', this.stopScroll.bind(this));
+    }
+
+    startDownScroll(event) {
+        event.preventDefault();
+        this.stopScroll();
+        this.isScrolling = true;
+        this.scrollSpeed = 1;
+
+        // Particle Animation
+        this.createScrollParticles(this.downBtn);
+
+        this.scrollInterval = setInterval(() => {
+            // Accelerate scroll
+            this.scrollSpeed = Math.min(
+                this.scrollSpeed + this.animationConfig.acceleration, 
+                this.animationConfig.maxScrollSpeed
+            );
+
+            // Scroll the page
+            window.scrollBy({
+                top: this.scrollSpeed,
+                behavior: 'auto'
+            });
+
+            // Stop if reached bottom
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                this.stopScroll();
+            }
+        }, 20);
+    }
+
+    quickScrollToTop(event) {
+        event.preventDefault();
+        this.stopScroll();
+
+        // Particle Animation
+        this.createScrollParticles(this.upBtn);
+
+        // Smooth scroll with animation
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    stopScroll() {
+        if (this.scrollInterval) {
+            clearInterval(this.scrollInterval);
+            this.isScrolling = false;
+            this.scrollSpeed = 0;
+        }
+    }
+
+    setupScrollTracking() {
+        window.addEventListener('scroll', this.updateScrollIndicator.bind(this));
+    }
+
+    updateScrollIndicator() {
+        const scrollPercentage = 
+            (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+        
+        this.scrollIndicator.style.width = `${scrollPercentage}%`;
+    }
+
+    createScrollParticles(sourceBtn) {
+        for (let i = 0; i < this.animationConfig.particleCount; i++) {
+            this.createParticle(sourceBtn);
+        }
+    }
+
+    createParticle(sourceBtn) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+
+        // Get button position
+        const rect = sourceBtn.getBoundingClientRect();
+        
+        // Randomize particle properties
+        const size = Math.random() * 10 + 5;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+
+        // Starting position (center of button)
+        particle.style.left = `${rect.left + rect.width / 2}px`;
+        particle.style.top = `${rect.top + rect.height / 2}px`;
+
+        // Random direction and speed
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 5 + 2;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+
+        // Animate particle
+        let x = 0, y = 0;
+        let opacity = 1;
+
+        const animateParticle = () => {
+            x += vx;
+            y += vy;
+            opacity -= 0.02;
+
+            particle.style.transform = `translate(${x}px, ${y}px)`;
+            particle.style.opacity = opacity;
+
+            if (opacity > 0) {
+                requestAnimationFrame(animateParticle);
+            } else {
+                document.body.removeChild(particle);
+            }
+        };
+
+        document.body.appendChild(particle);
+        animateParticle();
+    }
+}
+
+// Initialize on DOM Load
+document.addEventListener('DOMContentLoaded', () => {
+    new AnimatedScrollController();
 });
 
     /* © SMILEX - This code is licensed and protected. */

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ShopSphere - User Onboarding</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff6f00;
+            --secondary-color: #2c3e50;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f9f9f9 0%, #f0f0f0 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .onboarding-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .onboarding-header {
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .onboarding-form {
+            padding: 30px;
+        }
+
+        .consent-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .consent-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            background-color: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .consent-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.1);
+        }
+
+        .consent-item i {
+            margin-right: 15px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        #submitBtn {
+            background-color: var(--primary-color);
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        #submitBtn:hover {
+            background-color: #ff8f00;
+            transform: translateY(-3px);
+        }
+
+        #submitBtn:disabled {
+            background-color: #ffcc80;
+            cursor: not-allowed;
+        }
+
+        .rule-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-left: 35px;
+        }
+    </style>
+</head>
+<body>
+   
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('registrationForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const inputs = form.querySelectorAll('input, select');
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+
+            // Prevent multiple registrations
+            if (localStorage.getItem('userRegistered') === 'true') {
+                document.getElementById('onboardingModal').style.display = 'none';
+                return;
+            }
+
+            // Validation function
+            function validateForm() {
+                const allInputsFilled = Array.from(inputs)
+                    .every(input => input.validity.valid);
+                
+                const allCheckboxesChecked = Array.from(checkboxes)
+                    .every(checkbox => checkbox.checked);
+
+                submitBtn.disabled = !(allInputsFilled && allCheckboxesChecked);
+            }
+
+            // Add event listeners
+            inputs.forEach(input => {
+                input.addEventListener('input', validateForm);
+                input.addEventListener('change', validateForm);
+            });
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', validateForm);
+            });
+
+            // Form submission
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const userData = Object.fromEntries(formData.entries());
+
+                // Remove consent checkboxes from stored data
+                for (let i = 1; i <= 6; i++) {
+                    delete userData[`rule${i}`];
+                }
+
+                // Store user data
+                localStorage.setItem('userData', JSON.stringify(userData));
+                localStorage.setItem('userRegistered', 'true');
+
+                // Hide modal or redirect
+                document.getElementById('onboardingModal').style.display = 'none';
+
+                // Notification
+                alert('Welcome to ShopSphere! Your account is now active.');
+            });
+        });
+    </script>
+</body>
+</html>

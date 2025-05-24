@@ -321,5 +321,225 @@
 
     // Initialize on DOM load
     document.addEventListener('DOMContentLoaded', () => new StoryRealm());
+
+
+    class AdvancedScrollController {
+        constructor() {
+            // DOM Elements
+            this.upBtn = document.getElementById('upScrollBtn');
+            this.downBtn = document.getElementById('downScrollBtn');
+            this.scrollProgress = document.getElementById('scrollProgress');
+            this.scrollIndicator = document.getElementById('scrollIndicator');
+
+            // Scroll State
+            this.isScrolling = false;
+            this.scrollInterval = null;
+            this.scrollSpeed = 0;
+            this.maxScrollSpeed = 50;
+
+            // Performance Optimization
+            this.scrollThrottle = this.createThrottle();
+
+            // Initialize
+            this.initializeEventListeners();
+            this.setupScrollTracking();
+        }
+
+        // Enhanced Event Listeners
+        initializeEventListeners() {
+            // Scroll Buttons
+            this.downBtn.addEventListener('mousedown', this.startDownScroll.bind(this));
+            this.downBtn.addEventListener('mouseup', this.stopScroll.bind(this));
+            this.downBtn.addEventListener('mouseleave', this.stopScroll.bind(this));
+
+            this.upBtn.addEventListener('click', this.handleUpScroll.bind(this));
+
+            // Touch Support
+            this.downBtn.addEventListener('touchstart', this.startDownScroll.bind(this));
+            this.downBtn.addEventListener('touchend', this.stopScroll.bind(this));
+            this.upBtn.addEventListener('touchstart', this.handleUpScroll.bind(this));
+
+            // Keyboard Accessibility
+            document.addEventListener('keydown', this.handleKeyboardScroll.bind(this));
+        }
+
+        // Dynamic Scroll Down
+        startDownScroll(event) {
+            event.preventDefault();
+            this.isScrolling = true;
+            this.scrollSpeed = 1;
+
+            const incrementSpeed = () => {
+                if (this.scrollSpeed < this.maxScrollSpeed) {
+                    this.scrollSpeed += 0.5;
+                }
+            };
+
+            this.scrollInterval = setInterval(() => {
+                window.scrollBy({
+                    top: this.scrollSpeed,
+                    behavior: 'smooth'
+                });
+
+                incrementSpeed();
+
+                // Stop if reached bottom
+                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                    this.stopScroll();
+                }
+            }, 20);
+        }
+
+        // Smooth Up Scroll
+        handleUpScroll() {
+            // Multiple scroll strategies
+            const scrollOptions = [
+                { behavior: 'smooth', top: 0 },
+                { behavior: 'auto', top: 0 }
+            ];
+
+            // Try smooth scroll, fallback to instant
+            try {
+                window.scrollTo(scrollOptions[0]);
+            } catch {
+                window.scrollTo(scrollOptions[1]);
+            }
+        }
+
+        // Stop Scrolling
+        stopScroll() {
+            if (this.scrollInterval) {
+                clearInterval(this.scrollInterval);
+                this.isScrolling = false;
+                this.scrollSpeed = 0;
+            }
+        }
+
+        // Scroll Tracking
+        setupScrollTracking() {
+            window.addEventListener('scroll', this.scrollThrottle(() => {
+                // Progress Bar
+                const scrollPercentage = 
+                    (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+                
+                this.scrollProgress.style.width = `${scrollPercentage}%`;
+
+                // Scroll Indicator
+                this.updateScrollIndicator(scrollPercentage);
+            }));
+        }
+
+        // Scroll Indicator
+        updateScrollIndicator(percentage) {
+            this.scrollIndicator.style.display = 'block';
+            this.scrollIndicator.textContent = `Scroll: ${percentage.toFixed(2)}%`;
+
+            // Auto-hide after 2 seconds
+            clearTimeout(this.indicatorTimeout);
+            this.indicatorTimeout = setTimeout(() => {
+                this.scrollIndicator.style.display = 'none';
+            }, 2000);
+        }
+
+        // Keyboard Scroll Support
+        handleKeyboardScroll(event) {
+            switch(event.key) {
+                case 'ArrowDown':
+                    this.startDownScroll(event);
+                    break;
+                case 'ArrowUp':
+                    this.handleUpScroll();
+                    break;
+            }
+        }
+
+        // Performance Throttle
+        createThrottle(delay = 50) {
+            let lastExecution = 0;
+            return (callback) => {
+                return (...args) => {
+                    const now = Date.now();
+                    if (now - lastExecution >= delay) {
+                        callback(...args);
+                        lastExecution = now;
+                    }
+                };
+            };
+        }
+    }
+
+    // Initialize on DOM Load
+    document.addEventListener('DOMContentLoaded', () => {
+        new AdvancedScrollController();
+    });
+
+
+    class TournamentReminder {
+        constructor() {
+            this.initializeElements();
+            this.setupEventListeners();
+            this.checkTournamentEligibility();
+        }
+    
+        initializeElements() {
+            this.reminderBtn = document.getElementById('tournamentReminder');
+            this.modal = new bootstrap.Modal(document.getElementById('tournamentModal'));
+            this.joinBtn = document.getElementById('joinTournament');
+            this.dismissBtn = document.getElementById('dismissTournament');
+        }
+    
+        setupEventListeners() {
+            this.reminderBtn.addEventListener('click', () => this.showModal());
+            this.joinBtn.addEventListener('click', () => this.joinTournament());
+            this.dismissBtn.addEventListener('click', () => this.dismissTournament());
+        }
+    
+        showModal() {
+            this.modal.show();
+            this.trackInteraction('modal_shown');
+        }
+    
+        joinTournament() {
+            // Implement tournament registration logic
+            window.location.href = 'tournament.html';
+            this.trackInteraction('tournament_joined');
+        }
+    
+        dismissTournament() {
+            this.modal.hide();
+            this.trackInteraction('tournament_dismissed');
+        }
+    
+        checkTournamentEligibility() {
+            const lastInteraction = this.getLastInteractionTime();
+            const currentTime = new Date().getTime();
+    
+            // Show reminder if not shown in last 24 hours
+            if (!lastInteraction || (currentTime - lastInteraction > 86400000)) {
+                setTimeout(() => this.showModal(), 3000);
+            }
+        }
+    
+        trackInteraction(type) {
+            const interactions = JSON.parse(localStorage.getItem('tournamentInteractions') || '[]');
+            interactions.push({
+                type,
+                timestamp: new Date().getTime()
+            });
+            localStorage.setItem('tournamentInteractions', JSON.stringify(interactions));
+        }
+    
+        getLastInteractionTime() {
+            const interactions = JSON.parse(localStorage.getItem('tournamentInteractions') || '[]');
+            return interactions.length > 0 
+                ? interactions[interactions.length - 1].timestamp 
+                : null;
+        }
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        new TournamentReminder();
+    });
      /* © SMILEX - This code is licensed and protected. */
 

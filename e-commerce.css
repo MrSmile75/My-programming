@@ -2,7 +2,16 @@
     --primary-color: #3498db;
     --secondary-color: #2ecc71;
     --accent-color: #e74c3c;
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --background-light: #ecf0f1;
+    --background-dark: #34495e;
+    --primary-colour: #ff6f00;
+            --secondary-colour: #2c3e50;
+
 }
+
 
 body {
     background-color: black;
@@ -51,6 +60,7 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    z-index: 1000;
 }
 
 .loader {
@@ -69,6 +79,7 @@ body {
     border-radius: 50%;
     opacity: 0.5;
     transition: all 0.5s ease;
+    z-index: 100000;
 }
 
 .loader-segment:nth-child(1) {
@@ -187,6 +198,14 @@ body {
     animation: fadeIn 1s ease forwards 2.5s;
 }
 
+
+
+
+
+
+
+
+
 /* Advanced Card Design */
 .advanced-card {
 transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -234,3 +253,46 @@ margin-left: 0;
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+
+
+.marketplace-container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 20px;
+}
+
+.item-card {
+transition: transform 0.3s ease;
+}
+
+.item-card:hover {
+transform: scale(1.05);
+box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.sell-form {
+background-color: white;
+padding: 30px;
+border-radius: 10px;
+box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#notificationContainer {
+position: fixed;
+top: 20px;
+right: 20px;
+z-index: 1000;
+}
+
+.notification {
+opacity: 0;
+transition: opacity 0.3s ease;
+}
+
+.cart-item img {
+width: 50px;
+height: 50px;
+object-fit: cover;
+}
+

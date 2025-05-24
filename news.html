@@ -47,6 +47,26 @@
         </div>
     </nav>
 
+     <!-- Scroll Indicator -->
+     <div class="scroll-indicator" id="scrollIndicator"></div>
+
+     <!-- Scroll Control Buttons -->
+     <div class="scroll-control-container">
+         <button id="upScrollBtn" class="scroll-btn">
+             <svg viewBox="0 0 24 24">
+                 <path d="M7 11l5-5 5 5z"/>
+                 <path d="M7 17l5-5 5 5z"/>
+             </svg>
+         </button>
+         <button id="downScrollBtn" class="scroll-btn">
+             <svg viewBox="0 0 24 24">
+                 <path d="M7 10l5 5 5-5z"/>
+                 <path d="M7 15l5 5 5-5z"/>
+             </svg>
+         </button>
+     </div>
+ 
+
     <div class="container mt-4">
         <div id="newsContainer" class="row g-4">
             <!-- News will be dynamically loaded here -->
@@ -67,6 +87,34 @@
             <div id="previewContent">
                 <!-- Preview content will be dynamically inserted -->
                   <!-- © SMILEX. This code is protected. -->
+            </div>
+        </div>
+    </div>
+
+     <!-- Live Button -->
+     <div class="live-button" id="liveTrigger">
+        <span class="live-text">Live</span>
+    </div>
+
+    <!-- Live Overlay -->
+    <div class="live-overlay" id="liveOverlay"></div>
+
+    <!-- Live Modal -->
+    <div class="live-modal" id="liveModal">
+        <div class="live-modal-content">
+            <div class="live-modal-icon">🔴</div>
+            <h2 class="mb-3">Breaking Live News</h2>
+            <p class="text-muted mb-4">
+                Stay connected with real-time news coverage
+            </p>
+            
+            <div class="d-flex justify-content-center w-100">
+                <button class="btn btn-outline-secondary me-3" id="cancelBtn">
+                    Cancel
+                </button>
+                <button class="btn btn-danger" id="proceedBtn">
+                    Go Live
+                </button>
             </div>
         </div>
     </div>

@@ -135,7 +135,7 @@ class QuantumMessenger {
 
     validateMessage(message) {
         if (!message) {
-            this.showNotification('Type Something');
+            this.showNotification('Input Something');
             return false;
         }
 
@@ -155,9 +155,9 @@ class QuantumMessenger {
         if (!this.validateMessage(message)) return;
 
         // Simulated message transmission
-        console.log('Transmitting message:', message);
+        console.log('Transmitting input:', message);
         
-        this.showNotification('Message transmitted successfully!', 'success');
+        this.showNotification('Input transmitting!', 'success');
         
         // Reset input
         this.input.value = '';
