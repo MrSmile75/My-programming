@@ -11,6 +11,22 @@
 </head>
 <body>
     <div id="starfield"></div>
+
+
+  
+    
+    
+    
+    <script>
+      function handleCredentialResponse(response) {
+        console.log("✅ Logged in! ID Token:", response.credential);
+        alert("Login successful! Check console for token.");
+      }
+    </script>
+   
+   
+    
+
     <div class="container" id="authContainer">
         <!-- Login Container -->
          
@@ -61,13 +77,32 @@
             <div class="image-section">
                 <h3>Welcome Back!</h3>
                 <p>Login to continue your journey</p>
-                <button 
-                    class="toggle-btn" 
-                    onclick="toggleForm()"
-                
-                >
-                    Sign Up
-                </button>
+              
+                <div id="g_id_onload"
+         data-client_id="274439436751-29keoc5pa7sek0afe9mjgvq16011n4uk.apps.googleusercontent.com"
+         data-context="signin"
+         data-ux_mode="popup"
+         data-callback="handleCredentialResponse">
+    </div>
+    
+    <div class="g_id_signin" 
+         data-type="standard"
+         data-shape="rectangular"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-size="large">
+    </div>
+    <br><br>
+
+    <button 
+    class="toggle-btn" 
+    onclick="toggleForm()"
+
+>
+    Sign Up
+</button>
+
+
             </div>
         </div>
 
@@ -142,9 +177,24 @@
         </div>
     </div>
 
+
+
+
+<script>
+  function handleCredentialResponse(response) {
+    console.log("ID Token: " + response.credential);
+    // Send this token to your backend for login verification
+  }
+</script>
+
+</body>
+</html>
+
+
     <script src="login.js">
 
     </script>
+     <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script>
     document.addEventListener('contextmenu', event => event.preventDefault());
   </script>

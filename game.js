@@ -99,7 +99,7 @@
             try {
                 // Using RAWG Video Games Database API
                  /* © SMILEX - This code is licensed and protected. */
-                const apiKey = 'YOUR_RAWG_API_KEY'; // Replace with actual key
+                const apiKey = '4dj34h24445dns123'; // Replace with actual key
                 const url = `https://api.rawg.io/api/games?key=${apiKey}&genres=${this.currentGenre}&page=${this.page}&page_size=12`;
                 
                 const response = await fetch(url);

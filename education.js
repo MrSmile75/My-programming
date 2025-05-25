@@ -222,7 +222,7 @@
                 coverImage: story.cover_i 
                     ? `https://covers.openlibrary.org/b/id/${story.cover_i}-M.jpg`
                     : 'https://via.placeholder.com/250x350.png?text=Story+Cover',
-                description: story.first_sentence?.[0] || 'No description available'
+                description: story.first_sentence?.[0] || 'No description available now'
             };
         }
 
