@@ -85,7 +85,7 @@
             localStorage.setItem('rememberedEmail', email);
         }
 
-        alert('Login Successful!');
+        
     });
 
         /* © SMILEX - This code is licensed and protected. */
