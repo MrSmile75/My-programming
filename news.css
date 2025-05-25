@@ -1,7 +1,163 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --breaking-color: #e74c3c;
+    --text-primary: #2c3e50;
+    --background-color: #f4f6f7;
+    --gradient-primary: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+
+
 body {
     font-family: 'Orbitron', sans-serif;
     background-color: black;
 }
+
+.news-headline-bar {
+    position: relative;
+    width: 100%;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    backdrop-filter: blur(10px);
+}
+
+.breaking-section {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.breaking-indicator {
+    background-color: var(--breaking-color);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: pulse 1.5s infinite alternate;
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+    animation: live-pulse 1s infinite alternate;
+}
+
+.headline-ticker {
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+    height: 40px;
+}
+
+.headline-content {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 100%;
+    animation: ticker 60s linear infinite;
+    transition: transform 0.3s ease;
+}
+
+.headline-content:hover {
+    animation-play-state: paused;
+}
+
+.headline-item {
+    display: inline-block;
+    margin-right: 30px;
+    color: black;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.headline-item:hover {
+    color:black;
+    transform: scale(1.02);
+}
+
+.headline-category {
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-right: 10px;
+    text-transform: uppercase;
+    font-size: 0.8em;
+}
+
+.news-actions h4 {
+align-self: center;
+}
+
+.action-button {
+    background-color: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.action-button:hover {
+    background-color: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+}
+
+@keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.05); opacity: 0.9; }
+}
+
+@keyframes live-pulse {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.error-message {
+    color: var(--breaking-color);
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+}
+
+.live-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    margin-right: 8px;
+    animation: live-pulse 1s infinite alternate;
+}
+
+.time-display {
+    color: gold;
+    font-size: 0.9em;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
 
 
 .scroll-control-container {

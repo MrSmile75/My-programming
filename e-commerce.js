@@ -200,6 +200,8 @@ document.addEventListener('app-ready', () => {
     }
 }
 
+
+
 // Marketplace Manager Class
 class MarketplaceManager {
     constructor() {

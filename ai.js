@@ -228,4 +228,98 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+class WavyBackground {
+    constructor() {
+        this.background = document.getElementById('wavy-background');
+        this.circuitOverlay = document.querySelector('.circuit-overlay');
+        this.colors = [
+            'rgba(0, 255, 255, 0.7)',   // Cyan
+            'rgba(255, 0, 255, 0.7)',   // Magenta
+            'rgba(0, 255, 0, 0.7)',     // Green
+            'rgba(255, 165, 0, 0.7)',   // Orange
+            'rgba(138, 43, 226, 0.7)'   // Purple
+        ];
+
+        this.initializeBackground();
+        this.createWaveLines();
+        this.setupInteractivity();
+    }
+
+    initializeBackground() {
+        // Create wave particles
+        for (let i = 0; i < 200; i++) {
+            this.createWaveParticle();
+        }
+    }
+
+    createWaveParticle() {
+        const particle = document.createElement('div');
+        particle.classList.add('wave-particle');
+        
+        // Size variation
+        const size = Math.random() * 15 + 3;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+
+        // Position with wavy distribution
+        particle.style.left = `${Math.random() * 120}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+
+        // Color and animation
+        particle.style.background = this.colors[Math.floor(Math.random() * this.colors.length)];
+        particle.style.animation = `wavyMotion ${Math.random() * 5 + 3}s infinite alternate`;
+
+        this.background.appendChild(particle);
+        return particle;
+    }
+
+    createWaveLines() {
+        for (let i = 0; i < 30; i++) {
+            const line = document.createElement('div');
+            line.classList.add('wave-line');
+            
+            line.style.width = `${Math.random() * 300 + 100}px`;
+            line.style.height = '2px';
+            line.style.top = `${Math.random() * 100}%`;
+            line.style.left = `-100px`;
+            line.style.animationDuration = `${Math.random() * 5 + 3}s`;
+
+            this.circuitOverlay.appendChild(line);
+        }
+    }
+
+    setupInteractivity() {
+        window.addEventListener('mousemove', (event) => {
+            this.handleMouseMove(event);
+        });
+    }
+
+    handleMouseMove(event) {
+        const particles = document.querySelectorAll('.wave-particle');
+        particles.forEach(particle => {
+            const rect = particle.getBoundingClientRect();
+            const distanceX = event.clientX - (rect.left + rect.width / 2);
+            const distanceY = event.clientY - (rect.top + rect.height / 2);
+            
+            const maxDistance = 150;
+            const strength = Math.max(0, maxDistance - Math.sqrt(distanceX**2 + distanceY**2)) / maxDistance;
+            
+            particle.style.transform = `
+                translate(
+                    ${distanceX * strength * 0.2}px, 
+                    ${distanceY * strength * 0.2}px
+                )
+                rotate(${distanceX * strength * 0.1}deg)
+            `;
+        });
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    new WavyBackground();
+});
+
+
     /* © SMILEX - This code is licensed and protected. */
