@@ -13,18 +13,7 @@
     <div id="starfield"></div>
 
 
-  
-    
-    
-    
-    <script>
-      function handleCredentialResponse(response) {
-        console.log("✅ Logged in! ID Token:", response.credential);
-        alert("Login successful! Check console for token.");
-      }
-    </script>
-   
-   
+
     
 
     <div class="container" id="authContainer">
@@ -195,7 +184,15 @@
 
     </script>
      <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script>
+
+        <script>
+      function handleCredentialResponse(response) {
+        console.log("✅ Logged in! ID Token:", response.credential);
+        alert("Login successful! Check console for token.");
+      }
+    </script>
+     <script>
+   
     document.addEventListener('contextmenu', event => event.preventDefault());
   </script>
   

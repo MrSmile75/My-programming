@@ -548,126 +548,125 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-class AdvancedNewsHeadlineBar {
-    constructor() {
-        this.API_KEY = 'dcb071f269784ec280990d91a82ecc23'; 
-        this.BASE_URL = 'https://newsapi.org/v2/top-headlines';
-        
-        this.categories = [
-            'general', 'business', 'technology', 
-            'science', 'sports', 'entertainment'
-        ];
-        this.currentCategoryIndex = 0;
+ class AdvancedNewsHeadlineBar {
+        constructor() {
+            this.API_KEY = 'dcb071f269784ec280990d91a82ecc23'; 
+            this.BASE_URL = 'https://newsapi.org/v2/top-headlines';
+            
+            this.categories = [
+                'general', 'business', 'technology', 
+                'science', 'sports', 'entertainment'
+            ];
+            this.currentCategoryIndex = 0;
 
-        // DOM Elements
-        this.headlineContent = document.getElementById('headlineContent');
-        this.refreshButton = document.getElementById('refreshButton');
-        this.categoryToggleButton = document.getElementById('categoryToggle');
-        this.timeDisplay = document.getElementById('currentTime');
+            // DOM Elements
+            this.headlineContent = document.getElementById('headlineContent');
+            this.refreshButton = document.getElementById('refreshButton');
+            this.categoryToggleButton = document.getElementById('categoryToggle');
+            this.timeDisplay = document.getElementById('currentTime');
 
-        // Setup event listeners and initial setup
-        this.setupEventListeners();
-        this.updateTime();
-        this.startTimerUpdate();
-        this.fetchLatestHeadlines();
-    }
+            // Setup event listeners and initial setup
+            this.setupEventListeners();
+            this.updateTime();
+            this.startTimerUpdate();
+            this.fetchLatestHeadlines();
+        }
 
-    setupEventListeners() {
-        this.refreshButton?.addEventListener('click', () => this.fetchLatestHeadlines());
-        this.categoryToggleButton?.addEventListener('click', () => this.cycleCategory());
-    }
+        setupEventListeners() {
+            this.refreshButton?.addEventListener('click', () => this.fetchLatestHeadlines());
+            this.categoryToggleButton?.addEventListener('click', () => this.cycleCategory());
+        }
 
-    updateTime() {
-        const now = new Date();
-        const timeString = now.toLocaleTimeString([], {
-            hour: '2-digit', 
-            minute: '2-digit', 
-            hour12: true
-        });
-        this.timeDisplay.textContent = timeString;
-    }
-
-    startTimerUpdate() {
-        setInterval(() => this.updateTime(), 1000);
-    }
-
-    cycleCategory() {
-        this.currentCategoryIndex = 
-            (this.currentCategoryIndex + 1) % this.categories.length;
-        this.fetchLatestHeadlines();
-    }
-
-    async fetchLatestHeadlines() {
-        const currentCategory = this.categories[this.currentCategoryIndex];
-        
-        try {
-            const response = await fetch(
-                `${this.BASE_URL}?country=us&category=${currentCategory}&apiKey=${this.API_KEY}`
-            );
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-
-            // Clear previous headlines
-            this.headlineContent.innerHTML = '';
-
-            // Process and display headlines
-            data.articles.slice(0, 5).forEach(article => {
-                this.addHeadline({
-                    category: currentCategory.toUpperCase(),
-                    headline: article.title,
-                    source: article.source.name,
-                    url: article.url
-                });
+        updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], {
+                hour: '2-digit', 
+                minute: '2-digit', 
+                hour12: true
             });
-        } catch (error) {
-            console.error('Error fetching headlines:', error);
-            this.displayErrorMessage(error);
+            this.timeDisplay.textContent = timeString;
+        }
+
+        startTimerUpdate() {
+            setInterval(() => this.updateTime(), 1000);
+        }
+
+        cycleCategory() {
+            this.currentCategoryIndex = 
+                (this.currentCategoryIndex + 1) % this.categories.length;
+            this.fetchLatestHeadlines();
+        }
+
+        async fetchLatestHeadlines() {
+            const currentCategory = this.categories[this.currentCategoryIndex];
+            
+            try {
+                const response = await fetch(
+                    `${this.BASE_URL}?country=us&category=${currentCategory}&apiKey=${this.API_KEY}`
+                );
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+
+                // Clear previous headlines
+                this.headlineContent.innerHTML = '';
+
+                // Process and display headlines
+                data.articles.slice(0, 5).forEach(article => {
+                    this.addHeadline({
+                        category: currentCategory.toUpperCase(),
+                        headline: article.title,
+                        source: article.source.name,
+                        url: article.url
+                    });
+                });
+            } catch (error) {
+                console.error('Error fetching headlines:', error);
+                this.displayErrorMessage(error);
+            }
+        }
+
+        addHeadline(headline) {
+            const newHeadlineElement = document.createElement('span');
+            newHeadlineElement.classList.add('headline-item');
+            newHeadlineElement.innerHTML = `
+                <span class="live-indicator"></span>
+                <span class="headline-category">${headline.category}</span>
+                ${headline.headline} 
+                <small>(${headline.source})</small>
+            `;
+            
+            // Add click event to open article
+            newHeadlineElement.addEventListener('click', () => {
+                window.open(headline.url, '_blank');
+            });
+
+            this.headlineContent.appendChild(newHeadlineElement);
+        }
+
+        displayErrorMessage(error) {
+            const errorElement = document.createElement('div');
+            errorElement.classList.add('error-message');
+            errorElement.textContent = `Error: ${error.message}. Unable to fetch news.`;
+            this.headlineContent.appendChild(errorElement);
+        }
+
+        // Periodic auto-refresh
+        startAutoRefresh() {
+            setInterval(() => {
+                this.fetchLatestHeadlines();
+            }, 5 * 60 * 1000); // Refresh every 5 minutes
         }
     }
 
-    addHeadline(headline) {
-        const newHeadlineElement = document.createElement('span');
-        newHeadlineElement.classList.add('headline-item');
-        newHeadlineElement.innerHTML = `
-            <span class="live-indicator"></span>
-            <span class="headline-category">${headline.category}</span>
-            ${headline.headline} 
-            <small>(${headline.source})</small>
-        `;
-        
-        // Add click event to open article
-        newHeadlineElement.addEventListener('click', () => {
-            window.open(headline.url, '_blank');
-        });
-
-        this.headlineContent.appendChild(newHeadlineElement);
-    }
-
-    displayErrorMessage(error) {
-        const errorElement = document.createElement('div');
-        errorElement.classList.add('error-message');
-        errorElement.textContent = `Error: ${error.message}. Unable to fetch news.`;
-        this.headlineContent.appendChild(errorElement);
-    }
-
-    // Periodic auto-refresh
-    startAutoRefresh() {
-        setInterval(() => {
-            this.fetchLatestHeadlines();
-        }, 5 * 60 * 1000); // Refresh every 5 minutes
-    }
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const newsBar = new AdvancedNewsHeadlineBar();
-    newsBar.startAutoRefresh();
-});
-
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        const newsBar = new AdvancedNewsHeadlineBar();
+        newsBar.startAutoRefresh();
+    });
 
 
 

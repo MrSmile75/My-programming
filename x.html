@@ -2,37 +2,282 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Advanced Dynamic News Headline Bar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Advanced AI Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2ecc71;
-            --breaking-color: #e74c3c;
-            --text-primary: #2c3e50;
-            --background-color: #f4f6f7;
-            --gradient-primary: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        /* [Previous CSS remains the same] */
+        .dot-loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background-color:rgb(249, 2, 249);
+            border-radius: 50%;
+            animation: bounce 0.5s ease-in-out infinite alternate;
+        }
+        .dot:nth-child(2) { animation-delay: 0.1s; }
+        .dot:nth-child(3) { animation-delay: 0.2s; }
+        @keyframes bounce {
+            to { transform: translateY(-10px); }
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        #userInput {
+            padding: 15px;
+            border: 2px solid #3498db;
+            resize: none;
+            font-size: 46px;
+        }
+        #analyzeBtn {
+            width: 100%;
+            padding: 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+        #analysisOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: none;
+            flex-direction: column;
+            padding: 20px;
+            color: white;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .chat-bubble {
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .profile-pic {
+            border-radius: 0.1rem 0.1rem;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        .chat-content {
+            flex-grow: 1;
+        }
+        .loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid purple;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            background-color: var(--background-color);
-            color: var(--text-primary);
-        }
+        
+    
+        .decision-btn {
+    background: linear-gradient(
+        45deg, 
+        var(--primary-color), 
+        var(--secondary-color)
+    );
+    color: var(--bg-dark);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+ 
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+}
 
-     
+        .no-btn {
+            background-color:rgb(190, 186, 186);
+            color: white;
+        }
+        .typing-animation {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end);
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <input type="text" id="nameInput" placeholder="Enter Your Name">
+        <textarea id="quantumInput" placeholder="Enter text for AI analysis..."></textarea>
+        <button id="btn1">Analyze</button>
+        
+        <div id="analysisOverlay">
+            <div id="analysisContent"></div>
+        </div>
+    </div>
     
-   
-</body>
-</html>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const nameInput = document.getElementById('nameInput');
+        const userInput = document.getElementById('quantumInput');
+        const analyzeBtn = document.getElementById('btn1');
+        const analysisOverlay = document.getElementById('analysisOverlay');
+        const analysisContent = document.getElementById('analysisContent');
+    
+        // Load saved name
+        const savedName = localStorage.getItem('userName');
+        if (savedName) {
+            nameInput.value = savedName;
+        }
+    
+        // Save name on change
+        nameInput.addEventListener('change', () => {
+            localStorage.setItem('userName', nameInput.value.trim());
+        });
+    
+        analyzeBtn.addEventListener('click', async () => {
+            const userName = nameInput.value.trim();
+            const text = userInput.value.trim();
+            
+            if (!userName || !text) {
+                alert('Please enter your name and text to analyze');
+                return;
+            }
+    
+            // Show overlay
+            analysisOverlay.style.display = 'flex';
+            analysisContent.innerHTML = '';
+    
+            // Add user input bubble
+            const userBubble = document.createElement('div');
+            userBubble.classList.add('chat-bubble');
+            userBubble.innerHTML = `
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="profile-pic" alt="User" style="width:50px; height:50px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;">
+                <div class="chat-content">
+                    <strong>${userName}:</strong>
+                    <p>${text}</p>
+                </div>
+            `;
+            analysisContent.appendChild(userBubble);
+    
+            // Show 3-dot loader
+            const loaderDiv = document.createElement('div');
+            loaderDiv.classList.add('loader');
+            loaderDiv.innerHTML = `
+                <div class="dot-loader">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            `;
+            analysisContent.appendChild(loaderDiv);
+    
+            try {
+                // Fetch meaning and analyze
+                const aiAnalysis = await fetchMeaningAndAnalyze(userName, text);
+    
+                // Remove loader
+                loaderDiv.remove();
+    
+                // Add AI analysis bubble
+                const aiBubble = document.createElement('div');
+                aiBubble.classList.add('chat-bubble');
+                
+                aiBubble.innerHTML = `
+                    <img src="https://randomuser.me/api/portraits/ai/1.jpg" class="profile-pic" alt="AI">
+                    <div class="chat-content">
+                        <strong>AI:</strong>
+                        <br>
+                        <p class="typing-animation">${aiAnalysis.meaning}</p>
+                        <div class="decision-buttons">
+                            <button class="decision-btn yes-btn">Yes, Looks Correct</button>
+                            <button class="decision-btn no-btn">No, Revise</button>
+                        </div>
+                    </div>
+                `;
+                
+                analysisContent.appendChild(aiBubble);
+    
+                // Add event listeners to decision buttons
+                const yesBtn = aiBubble.querySelector('.yes-btn');
+                const noBtn = aiBubble.querySelector('.no-btn');
+    
+                yesBtn.addEventListener('click', () => {
+                    alert('Great! Proceeding with the current analysis.');
+                    // Add further processing logic
+                });
+    
+                noBtn.addEventListener('click', () => {
+                    alert('We will help you refine the analysis.');
+                    // Add revision logic
+                });
+    
+            } catch (error) {
+                loaderDiv.remove();
+                const errorBubble = document.createElement('div');
+                errorBubble.classList.add('chat-bubble');
+                errorBubble.innerHTML = `
+                    <div class="chat-content">
+                        <strong>Error:</strong>
+                        <p>Unable to process analysis. ${error.message}</p>
+                    </div>
+                `;
+                analysisContent.appendChild(errorBubble);
+            }
+        });
+    
+        // Simulate meaning fetch and analysis
+        async function fetchMeaningAndAnalyze(userName, text) {
+            // Simulated API call (replace with actual API)
+            await new Promise(resolve => setTimeout(resolve, 2000));
+    
+            // Mock meaning extraction and analysis
+            const meanings = {
+                general: [
+                    "A statement expressing personal thoughts or experiences",
+                    "A descriptive text about a specific topic",
+                    "An exploratory piece of writing"
+                ],
+                insights: [
+                    "Reveals potential emotional context",
+                    "Demonstrates critical thinking",
+                    "Shows nuanced understanding"
+                ]
+            };
+    
+            // Generate dynamic, personalized analysis
+            const meaning = meanings.general[Math.floor(Math.random() * meanings.general.length)];
+            const insight = meanings.insights[Math.floor(Math.random() * meanings.insights.length)];
+    
+            return {
+                meaning: `Hello ${userName}! It's seems, this appears to be ${meaning}. ${insight}. 
+    
+    The text suggests: "${text.substring(0, 200)}${text.length > 200 ? '...' : ''}"
+    
+    Would you like me to generate?`
+            };
+        }
+    });
+    </script>
+    
