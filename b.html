@@ -5,66 +5,7 @@
     <title>Advanced AI Analyzer</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2ecc71;
-            --bg-dark: #2c3e50;
-            --text-color: #333;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        body {
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 600px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            padding: 30px;
-        }
-
-        #quantumInput {
-            width: 100%;
-            min-height: 200px;
-            padding: 15px;
-            border: 2px solid var(--primary-color);
-            border-radius: 8px;
-            resize: vertical;
-            margin-bottom: 15px;
-            font-size: 16px;
-        }
-
-        #btn1 {
-            width: 100%;
-            padding: 15px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.3s ease;
-        }
-
-        #btn1:hover {
-            background-color: #2980b9;
-        }
-
+       
         .dot-loader {
             display: flex;
             justify-content: center;
@@ -172,116 +113,18 @@
             to { width: 100% }
         }
 
-        /* Name Prompt Modal Styles */
-        #namePromptModal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-
-        .name-prompt-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        #namePromptInput {
-            width: 100%;
-            padding: 12px;
-            margin: 20px 0;
-            border: 2px solid var(--primary-color);
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        #saveNameBtn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        #saveNameBtn:hover {
-            background-color: #2980b9;
-        }
     </style>
 </head>
 <body>
-    <!-- Name Prompt Modal -->
-    <div id="namePromptModal" style="display: none;">
-        <div class="name-prompt-content">
-            <h2>Welcome!</h2>
-            <p>Please enter your name to continue</p>
-            <input type="text" id="namePromptInput" placeholder="Enter your name">
-            <button id="saveNameBtn">Save</button>
-        </div>
-    </div>
-
-    <div class="container">
-        <textarea id="quantumInput" placeholder="Enter text for AI analysis..."></textarea>
-        <button id="btn1">Analyze</button>
-        
-        <div id="analysisOverlay">
-            <div id="analysisContent"></div>
-        </div>
-    </div>
+  
     
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const namePromptModal = document.getElementById('namePromptModal');
-        const namePromptInput = document.getElementById('namePromptInput');
-        const saveNameBtn = document.getElementById('saveNameBtn');
-        const userInput = document.getElementById('quantumInput');
-        const analyzeBtn = document.getElementById('btn1');
+       
         const analysisOverlay = document.getElementById('analysisOverlay');
         const analysisContent = document.getElementById('analysisContent');
 
-        // Function to check and prompt for name
-        function checkAndPromptForName() {
-            const savedName = localStorage.getItem('userName');
-            
-            if (!savedName) {
-                // Show name prompt modal
-                namePromptModal.style.display = 'flex';
-            } else {
-                console.log(`Welcome back, ${savedName}!`);
-            }
-        }
-
-        // Save name event listener
-        saveNameBtn.addEventListener('click', () => {
-            const enteredName = namePromptInput.value.trim();
-            
-            if (enteredName) {
-                // Validate name (optional)
-                if (enteredName.length < 2) {
-                    alert('Please enter a valid name (at least 2 characters)');
-                    return;
-                }
-
-                // Save name to local storage
-                localStorage.setItem('userName', enteredName);
-                
-                // Hide modal
-                namePromptModal.style.display = 'none';
-            } else {
-                alert('Please enter a valid name');
-            }
-        });
+      
 
         // Check for name on page load
         checkAndPromptForName();
@@ -291,11 +134,6 @@
             const userName = localStorage.getItem('userName') || 'User';
             const text = userInput.value.trim();
             
-            if (!text) {
-                alert('Please enter text to analyze');
-                return;
-            }
-
             // Show overlay
             analysisOverlay.style.display = 'flex';
             analysisContent.innerHTML = '';

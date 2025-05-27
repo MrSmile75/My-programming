@@ -20,7 +20,7 @@ body {
     align-items: center;
     min-height: 100vh;
     background-color: white;
-    font-family: 'Poppins', sans-serif;
+     font-family: 'Orbitron', sans-serif;
     
     color: var(--text-color);
     line-height: 1.6;
@@ -42,6 +42,7 @@ body {
     justify-content: center;
     z-index: 10000; /* High z-index to overlay other content */
     pointer-events: none; /* Allow interaction with underlying content */
+    font-family: 'Orbitron', sans-serif;
 }
 
 .loader-container {
@@ -194,6 +195,7 @@ body {
     transform: scale(0.7);
     opacity: 0;
     transition: all 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
 }
 
 /* Active States */
@@ -242,7 +244,7 @@ body {
 
 .onboarding-form {
     padding: 10px;
-    width: ;
+   
 }
 
 .form-control, .form-select {
@@ -337,6 +339,7 @@ body {
             display: flex;
             align-items: center;
             color: black;
+                font-family: 'Orbitron', sans-serif;
         }
 
         .profile-btn {
@@ -444,6 +447,7 @@ body {
             justify-content: center;
             align-items: center;
             z-index: 2000;
+                font-family: 'Orbitron', sans-serif;
         }
 
         .camera-modal.show {
@@ -468,6 +472,7 @@ body {
             display: flex;
             justify-content: center;
             gap: 10px;
+                font-family: 'Orbitron', sans-serif;
         }
 
         .camera-controls button {

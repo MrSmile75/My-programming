@@ -323,10 +323,146 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+function transmitMessage() {
+    const quantumInput = document.getElementById('quantumInput');
+    const analysisOverlay = document.getElementById('analysisOverlay');
+    const analysisContent = document.getElementById('analysisContent');
+
+    // Retrieve saved name
+    const userName = localStorage.getItem('userName') || 'User';
+    const text = quantumInput.value.trim();
+    
+    if (!text) {
+        alert('Please enter some text');
+        return;
+    }
+
+    // Show overlay
+    analysisOverlay.style.display = 'flex';
+    analysisContent.innerHTML = '';
+
+    // Add user input bubble
+    const userBubble = document.createElement('div');
+    userBubble.classList.add('chat-bubble');
+    userBubble.innerHTML = `
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="profile-pic" alt="User">
+        <div class="chat-content">
+            <strong>${userName}:</strong>
+            <p>${text}</p>
+        </div>
+    `;
+    analysisContent.appendChild(userBubble);
+
+    // Show 3-dot loader
+    const loaderDiv = document.createElement('div');
+    loaderDiv.classList.add('loader');
+    loaderDiv.innerHTML = `
+        <div class="dot-loader">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    `;
+    analysisContent.appendChild(loaderDiv);
+
+    // Simulate AI analysis
+    setTimeout(async () => {
+        // Remove loader
+        loaderDiv.remove();
+
+        // Generate AI analysis
+        const aiAnalysis = await fetchMeaningAndAnalyze(userName, text);
+
+        // Add AI analysis bubble
+        const aiBubble = document.createElement('div');
+        aiBubble.classList.add('chat-bubble');
+        
+        aiBubble.innerHTML = `
+            <img src="https://randomuser.me/api/portraits/ai/1.jpg" class="profile-pic" alt="AI">
+            <div class="chat-content">
+                <strong>AI:</strong>
+                <br>
+                <p class="typing-animation">${aiAnalysis.meaning}</p>
+                <div class="decision-buttons">
+                    <button class="decision-btn yes-btn">Yes, Looks Correct</button>
+                    <button class="decision-btn no-btn">No, Revise</button>
+                </div>
+            </div>
+        `;
+        
+        analysisContent.appendChild(aiBubble);
+
+        // Add event listeners to decision buttons
+        const yesBtn = aiBubble.querySelector('.yes-btn');
+        const noBtn = aiBubble.querySelector('.no-btn');
+
+        yesBtn.addEventListener('click', () => {
+            alert('Great! Proceeding with the current analysis.');
+        });
+
+        noBtn.addEventListener('click', () => {
+            alert('We will help you refine the analysis.');
+        });
+    }, 2000);
+}
+
+// Meaning fetch and analysis function
+async function fetchMeaningAndAnalyze(userName, text) {
+    // Simulated API call 
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    // Mock meaning extraction and analysis
+    const meanings = {
+        general: [
+            "A statement expressing personal thoughts or experiences",
+            "A descriptive text about a specific topic",
+            "An exploratory piece of writing"
+        ],
+        insights: [
+            "Reveals potential emotional context",
+            "Demonstrates critical thinking",
+            "Shows nuanced understanding"
+        ]
+    };
+
+    // Generate dynamic, personalized analysis
+    const meaning = meanings.general[Math.floor(Math.random() * meanings.general.length)];
+    const insight = meanings.insights[Math.floor(Math.random() * meanings.insights.length)];
+
+    return {
+        meaning: `Hello ${userName}! It seems this appears to be ${meaning}. ${insight}. 
+    
+The text suggests: "${text.substring(0, 200)}${text.length > 200 ? '...' : ''}"
+
+Would you like me to generate further insights?`
+    };
+}
+
+// Name checking function (if not already implemented)
+function checkAndPromptForName() {
+    const userName = localStorage.getItem('userName');
+    if (!userName) {
+        const name = prompt('Please enter your name:');
+        if (name) {
+            localStorage.setItem('userName', name);
+        }
+    }
+}
+
+// Call name check on page load
+document.addEventListener('DOMContentLoaded', checkAndPromptForName);
 
 
 
 
+function adjustOverlayContent() {
+    const overlay = document.getElementById('analysisOverlay');
+    const content = overlay.querySelector('.chat-content');
+    
+    // Ensure content fits
+    content.style.maxHeight = `${overlay.clientHeight - 100}px`;
+    content.style.overflowY = 'auto';
+}
 
 
 

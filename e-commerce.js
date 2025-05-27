@@ -401,7 +401,97 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+ document.addEventListener('DOMContentLoaded', () => {
+            const rulesPopup = document.getElementById('rules-popup');
+            const proceedBtn = document.getElementById('proceed-btn');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
+            // Check if user has previously accepted terms
+            function hasAcceptedTerms() {
+                return localStorage.getItem('termsAccepted') === 'true';
+            }
+
+            // Show popup function
+            function showRulesPopup() {
+                if (!hasAcceptedTerms()) {
+                    rulesPopup.classList.add('show');
+                }
+            }
+
+            // Hide popup function
+            function hideRulesPopup() {
+                rulesPopup.classList.remove('show');
+            }
+
+            // Check if all checkboxes are checked
+            function checkAllChecked() {
+                const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+                proceedBtn.disabled = !allChecked;
+            }
+
+            // Add event listeners to checkboxes
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', checkAllChecked);
+            });
+
+            // Proceed button click handler
+            proceedBtn.addEventListener('click', () => {
+                if (!proceedBtn.disabled) {
+                    // Store acceptance in local storage
+                    localStorage.setItem('termsAccepted', 'true');
+                    
+                    // Hide popup
+                    hideRulesPopup();
+                    
+                    // Add your proceed logic here
+                    alert('Welcome!');
+                }
+            });
+
+            // Show popup on page load if terms not accepted
+            showRulesPopup();
+        });
+
+
+
+                document.addEventListener('DOMContentLoaded', () => {
+            const popup = document.querySelector('.seller-popup-overlay');
+            const proceedBtn = document.querySelector('.seller-proceed-btn');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+            // Show popup
+            function showPopup() {
+                popup.classList.add('show');
+            }
+
+            // Hide popup
+            function hidePopup() {
+                popup.classList.remove('show');
+            }
+
+            // Check checkbox status
+            function checkCheckboxStatus() {
+                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                proceedBtn.disabled = !allChecked;
+            }
+
+            // Add event listeners to checkboxes
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', checkCheckboxStatus);
+            });
+
+            // Proceed button handler
+            proceedBtn.addEventListener('click', () => {
+                if (!proceedBtn.disabled) {
+                    hidePopup();
+                    // Add your proceed logic here
+                    alert('Welcome to our seller platform!');
+                }
+            });
+
+            // Show popup on load
+            showPopup();
+        });
 
 
     /* © SMILEX - This code is licensed and protected. */

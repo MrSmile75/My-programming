@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- © SMILEX. This code is protected. -->
+    <title> SmileX:Generate Anything....</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ai.css">
+    
+    <style>
+        :root {
+            --primary-color: #00ffff;
+            --secondary-color: #ff00ff;
+            --bg-dark: #0a0a1a;
+            --text-light: #ffffff;
+            --accent-color: #6b48ff;
+            --error-color: #ff4444;
+            --success-color: #00ff87;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100dvh;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
+            perspective: 1500px;
+            overflow: hidden;
+            color: var(--text-light);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            overflow: hidden;
+            background: black;
+            perspective: 1000px;
+        }
+
+        #wavy-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .wave-particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.7;
+            filter: blur(2px);
+            transition: all 2s ease;
+            box-shadow: 
+                0 0 10px rgba(0, 255, 255, 0.5),
+                0 0 20px rgba(255, 0, 255, 0.3);
+        }
+
+        @keyframes wavyMotion {
+            0% {
+                transform: 
+                    translateX(0) 
+                    translateY(0) 
+                    rotate(0deg) 
+                    scale(0.8);
+                opacity: 0.4;
+            }
+            50% {
+                transform: 
+                    translateX(50px) 
+                    translateY(20px) 
+                    rotate(180deg) 
+                    scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: 
+                    translateX(100px) 
+                    translateY(0) 
+                    rotate(360deg) 
+                    scale(1);
+                opacity: 0.6;
+            }
+        }
+
+        .circuit-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.2;
+        }
+
+        .wave-line {
+            position: absolute;
+            background: linear-gradient(
+                to right, 
+                transparent, 
+                rgba(0, 255, 255, 0.7), 
+                transparent
+            );
+            animation: waveLineFlow 5s linear infinite;
+        }
+
+        @keyframes waveLineFlow {
+            0% {
+                transform: 
+                    translateX(-100%) 
+                    translateY(0) 
+                    rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: 
+                    translateX(0) 
+                    translateY(20px) 
+                    rotate(10deg);
+                opacity: 0.6;
+            }
+            100% {
+                transform: 
+                    translateX(100%) 
+                    translateY(0) 
+                    rotate(0deg);
+                opacity: 0.3;
+            }
+        }
+
+        /* Typing Text Container */
+        #dynamic-text-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            pointer-events: none;
+            background: transparent;
+        }
+
+        #typing-text {
+            font-family: 'Arial', sans-serif;
+            font-size: 5rem;
+            font-weight: bold;
+            text-align: center;
+            background: rgb(236, 233, 233);
+            background-size: 400% 400%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            padding: 10px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Cursor Animation */
+        .typing-cursor {
+            display: inline-block;
+            margin-left: 5px;
+            width: 10px;
+            height: 50px;
+            background: transparent;
+            animation: 
+                blink 0.7s infinite,
+                cursorGradient 3s ease infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @keyframes cursorGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes textGlow {
+            0% { 
+                text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                transform: scale(1);
+            }
+            100% { 
+                text-shadow: 0 4px 10px rgba(0,0,0,0.4);
+                transform: scale(1.01);
+            }
+        }
+
+        #welcomeOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 1s ease;
+            overflow: hidden;
+        }
+
+        #welcomeText {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            text-align: center;
+            background: linear-gradient(
+                45deg, 
+                #405de6, 
+                #5851db, 
+                #833ab4, 
+                #c13584, 
+                #e1306c, 
+                #fd1d1d
+            );
+            background-size: 400% 400%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: 
+                gradientFlow 10s ease infinite,
+                textGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes particleAnimation {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(
+                45deg, 
+                #405de6, 
+                #5851db, 
+                #833ab4, 
+                #c13584, 
+                #e1306c, 
+                #fd1d1d
+            );
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleAnimation 5s linear infinite;
+        }
+
+        .quantum-input-container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .input-wrapper {
+            background: transparent;
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255,255,255,0.05);
+            box-shadow: 
+                0 25px 45px rgba(0,0,0,0.3),
+                inset 0 0 15px rgba(255,255,255,0.05);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-style: preserve-3d;
+        }
+
+        .input-wrapper:hover {
+            box-shadow: 
+                0 35px 55px rgba(0,0,0,0.4),
+                inset 0 0 25px rgba(255,255,255,0.1);
+        }
+
+        .quantum-input {
+            width: 100%;
+            padding: 15px 70px 15px 20px;
+            font-size: 18px;
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: var(--text-light);
+            outline: none;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .quantum-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 
+                0 0 15px rgba(0, 255, 255, 0.3),
+                inset 0 0 10px rgba(0, 255, 255, 0.1);
+        }
+
+        .input-actions {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 3;
+        }
+
+        .send-button {
+            background: linear-gradient(
+                45deg, 
+                var(--primary-color), 
+                var(--secondary-color)
+            );
+            color: var(--bg-dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 10px 20px rgba(0,255,255,0.3),
+                0 0 20px rgba(255,0,255,0.2);
+        }
+
+        .notification-area {
+            position: absolute;
+            bottom: -60px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .notification {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            max-width: 90%;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .notification.error {
+            background-color: rgba(255, 68, 68, 0.2);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+
+        .notification.success {
+            background-color: rgba(0, 255, 135, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .emoji-picker {
+            position: absolute;
+            bottom: -70px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.4s ease;
+            z-index: 10;
+        }
+
+        .input-wrapper:hover .emoji-picker {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .emoji-picker span {
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .emoji-picker span:hover {
+            transform: scale(1.3) rotate(10deg);
+        }
+
+        .char-counter {
+            position: absolute;
+            bottom: -30px;
+            right: 0;
+            font-size: 12px;
+            color: var(--primary-color);
+            opacity: 0.7;
+        }
+
+        .dot-loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background-color: rgb(249, 2, 249);
+            border-radius: 50%;
+            animation: bounce 0.5s ease-in-out infinite alternate;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.1s; }
+        .dot:nth-child(3) { animation-delay: 0.2s; }
+
+        @keyframes bounce {
+            to { transform: translateY(-10px); }
+        }
+
+        #analysisOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            display: none;
+            flex-direction: column;
+            padding: 20px;
+            color: white;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .chat-bubble {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+            border: 2px solid #ccc;
+        }
+
+        .chat-content {
+            flex-grow: 1;
+        }
+
+        .loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid purple;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .decision-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .no-btn {
+            background-color: #e74c3c;
+        }
+
+        .typing-animation {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end);
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+    </style>
+</head>
+<body>
+    <div id="wavy-background"></div>
+    <div class="circuit-overlay"></div>
+
+    <div id="welcomeOverlay">
+        <div id="welcomeText">Welcome!</div>
+    </div>
+    <div id="dynamic-text-container">
+        <div id="typing-text"></div>
+    </div>
+    <br>
+    <!-- © SMILEX. This code is protected. -->
+    <div class="quantum-input-container">
+        <div class="input-wrapper">
+            <input 
+                type="text" 
+                class="quantum-input" 
+                id="quantumInput" 
+                placeholder="Type to generate..."
+                maxlength="500"
+            >
+            <div class="input-actions">
+                <button class="send-button" id="analyzeBtn" onclick="transmitMessage()">
+                    <i class="ri-send-plane-fill"></i> Generate
+                </button>
+            </div>
+            <!-- © SMILEX. This code is protected. -->
+            <div class="emoji-picker">
+                <span>🚀</span>
+                <span>✨</span>
+                <span>🌈</span>
+                <span>❤️</span>
+                <span>🎉</span>
+                <span>🔥</span>
+            </div>
+            <div class="char-counter" id="charCount">0 / 500</div>
+            
+            <div class="notification-area" id="notificationArea">
+                <div class="notification" id="notification"></div>
+            </div>
+        </div>
+    </div>
+       <div id="analysisOverlay" style="display:none;">
+        <div id="analysisContent"></div>
+    </div>
+
+    <div id="typing-text"></div>
+
+    <script>
+        /* © SMILEX - This code is licensed and protected. */
+        class DynamicTypingText {
+            constructor(element, phrases, options = {}) {
+                this.element = element;
+                this.phrases = phrases;
+                this.options = {
+                    typingSpeed: 100,
+                    deletingSpeed: 50,
+                    pauseBetween: 8000,
+                    ...options
+                };
+                this.phraseIndex = 0;
+                this.charIndex = 0;
+                this.isDeleting = false;
+                this.cursorElement = null;
+                this.init();
+            }
+
+            /* © SMILEX - This code is licensed and protected. */
+            init() {
+                this.createCursor();
+                this.type();
+            }
+
+            createCursor() {
+                this.cursorElement = document.createElement('span');
+                this.cursorElement.classList.add('typing-cursor');
+                this.element.parentNode.appendChild(this.cursorElement);
+            }
+
+            /* © SMILEX - This code is licensed and protected. */
+            type() {
+                const currentPhrase = this.phrases[this.phraseIndex];
+                const speed = this.isDeleting ? this.options.deletingSpeed : this.options.typingSpeed;
+
+                if (!this.isDeleting && this.charIndex <= currentPhrase.length) {
+                    this.element.textContent = currentPhrase.substring(0, this.charIndex + 1);
+                    this.charIndex++;
+                } 
+                else if (this.isDeleting && this.charIndex >= 0) {
+                    this.element.textContent = currentPhrase.substring(0, this.charIndex);
+                    this.charIndex--;
+                } 
+                else {
+                    this.isDeleting = !this.isDeleting;
+                    this.phraseIndex = (this.phraseIndex + 1) % this.phrases.length;
+
+                    if (!this.isDeleting) {
+                        setTimeout(() => this.type(), this.options.pauseBetween);
+                        return;
+                    }
+                }
+
+                setTimeout(() => this.type(), speed);
+            }
+        }
+
+        // Initialize the dynamic typing text when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const typingTextElement = document.getElementById('typing-text');
+            
+            // Array of phrases to type
+            const phrases = [
+                'Hello, there.',
+                'Bring dreams to reality',
+                'By Typing Anything',
+            ];
+
+            /* © SMILEX - This code is licensed and protected. */
+            new DynamicTypingText(typingTextElement, phrases, {
+                typingSpeed: 100,
+                deletingSpeed: 50,
+                pauseBetween: 400,
+            });
+        });
+
+        /* © SMILEX - This code is licensed and protected. */
+        class QuantumMessenger {
+            constructor() {
+                this.input = document.getElementById('quantumInput');
+                this.charCount = document.getElementById('charCount');
+                this.notificationArea = document.getElementById('notificationArea');
+                this.notification = document.getElementById('notification');
+                
+                this.setupEventListeners();
+            }
+
+            /* © SMILEX - This code is licensed and protected. */
+            setupEventListeners() {
+                this.input.addEventListener('input', () => this.updateCharCount());
+                
+                document.querySelector('.emoji-picker').addEventListener('click', (e) => {
+                    if (e.target.tagName === 'SPAN') {
+                        this.input.value += e.target.textContent;
+                        this.input.focus();
+                        this.updateCharCount();
+                    }
+                });
+            }
+
+            /* © SMILEX - This code is licensed and protected. */
+            updateCharCount() {
+                const currentLength = this.input.value.length;
+                this.charCount.textContent = `${currentLength} / 500`;
+                
+                this.charCount.style.color = currentLength > 500 
+                    ? 'rgba(255,0,0,0.7)' 
+                    : 'var(--primary-color)';
+            }
+
+            /* © SMILEX - This code is licensed and protected. */
+            showNotification(message, type = 'error') {
+                this.notification.textContent = message;
+                this.notification.className = `notification ${type}`;
+                this.notificationArea.style.opacity = '1';
+                
+                setTimeout(() => {
+                    this.notificationArea.style.opacity = '0';
+                }, 3000);
+            }
+
+            /* © SMILEX - This code is licensed and protected. */
+            validateMessage(message) {
+                if (!message) {
+                    this.showNotification('Input Something');
+                    return false;
+                }
+
+                if (message.length > 500) {
+                    this.showNotification('Too Lengthy');
+                    return false;
+                }
+
+                return true;
+            }
+
+            /* © SMILEX - This code is licensed and protected. */
+            transmitMessage() {
+                const message = this.input.value.trim();
+
+                if (!this.validateMessage(message)) return;
+
+                // Simulated message transmission
+                console.log('Transmitting input:', message);
+                
+                this.showNotification('Input transmitting!', 'success');
+                
+                // Reset input
+                this.input.value = '';
+                this.updateCharCount();
+            }
+        }
+
+        /* © SMILEX - This code is licensed and protected. */
+        const quantumMessenger = new QuantumMessenger();
+
+        // Expose transmit method globally
+        function transmitMessage() {
+            quantumMessenger.transmitMessage();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const welcomeOverlay = document.getElementById('welcomeOverlay');
+            const welcomeText = document.getElementById('welcomeText');
+
+            // Create particle effect
+            function createParticles() {
+                for (let i = 0; i < 50; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    particle.style.width = `${Math.random() * 10}px`;
+                    particle.style.height = particle.style.width;
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.animationDuration = `${5 + Math.random() * 5}s`;
+                    particle.style.opacity = Math.random();
+
+                    welcomeOverlay.appendChild(particle);
+                }
+            }
+
+            /* © SMILEX - This code is licensed and protected. */
+            createParticles();
+
+            // Check if name is stored
+            const storedName = localStorage.getItem('userName');
+
+            if (storedName) {
+                welcomeText.textContent = `Welcome, ${storedName}!`;
+            } else {
+                // Prompt for name if not stored
+                const name = prompt('Please enter your name:');
+                if (name) {
+                    localStorage.setItem('userName', name);
+                    welcomeText.textContent = `Welcome, ${name}!`;
+                }
+            }
+
+            /* © SMILEX - This code is licensed and protected. */
+            // Fade out and remove overlay after 3 seconds
+            setTimeout(() => {
+                welcomeOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    welcomeOverlay.style.display = 'none';
+                }, 1000);
+            }, 3000);
+        });
+
+        class WavyBackground {
+            constructor() {
+                this.background = document.getElementById('wavy-background');
+                this.circuitOverlay = document.querySelector('.circuit-overlay');
+                this.colors = [
+                    'rgba(0, 255, 255, 0.7)',   // Cyan
+                    'rgba(255, 0, 255, 0.7)',   // Magenta
+                    'rgba(0, 255, 0, 0.7)',     // Green
+                    'rgba(255, 165, 0, 0.7)',   // Orange
+                    'rgba(138, 43, 226, 0.7)'   // Purple
+                ];
+
+                this.initializeBackground();
+                this.createWaveLines();
+                this.setupInteractivity();
+            }
+
+            initializeBackground() {
+                // Create wave particles
+                for (let i = 0; i < 200; i++) {
+                    this.createWaveParticle();
+                }
+            }
+
+            createWaveParticle() {
+                const particle = document.createElement('div');
+                particle.classList.add('wave-particle');
+                
+                // Size variation
+                const size = Math.random() * 15 + 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+
+                // Position with wavy distribution
+                particle.style.left = `${Math.random() * 120}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+
+                // Color and animation
+                particle.style.background = this.colors[Math.floor(Math.random() * this.colors.length)];
+                particle.style.animation = `wavyMotion ${Math.random() * 5 + 3}s infinite alternate`;
+
+                this.background.appendChild(particle);
+                return particle;
+            }
+
+            createWaveLines() {
+                for (let i = 0; i < 30; i++) {
+                    const line = document.createElement('div');
+                    line.classList.add('wave-line');
+                    
+                    line.style.width = `${Math.random() * 300 + 100}px`;
+                    line.style.height = '2px';
+                    line.style.top = `${Math.random() * 100}%`;
+                    line.style.left = `-100px`;
+                    line.style.animationDuration = `${Math.random() * 5 + 3}s`;
+
+                    this.circuitOverlay.appendChild(line);
+                }
+            }
+
+            setupInteractivity() {
+                window.addEventListener('mousemove', (event) => {
+                    this.handleMouseMove(event);
+                });
+            }
+
+            handleMouseMove(event) {
+                const particles = document.querySelectorAll('.wave-particle');
+                particles.forEach(particle => {
+                    const rect = particle.getBoundingClientRect();
+                    const distanceX = event.clientX - (rect.left + rect.width / 2);
+                    const distanceY = event.clientY - (rect.top + rect.height / 2);
+                    
+                    const maxDistance = 150;
+                    const strength = Math.max(0, maxDistance - Math.sqrt(distanceX**2 + distanceY**2)) / maxDistance;
+                    
+                    particle.style.transform = `
+                        translate(
+                            ${distanceX * strength * 0.2}px, 
+                            ${distanceY * strength * 0.2}px
+                        )
+                        rotate(${distanceX * strength * 0.1}deg)
+                    `;
+                });
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            new WavyBackground();
+        });
+
+
+          document.addEventListener('DOMContentLoaded', () => {
+            const analysisOverlay = document.getElementById('analysisOverlay');
+            const analysisContent = document.getElementById('analysisContent');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const userInput = document.getElementById('userInput');
+
+            // Check for name on page load
+            checkAndPromptForName();
+
+            analyzeBtn.addEventListener('click', async () => {
+                const userName = localStorage.getItem('userName') || 'User';
+                const text = userInput.value.trim();
+
+                // Show overlay immediately
+                analysisOverlay.style.display = 'flex';
+                analysisContent.innerHTML = '';
+
+                const userBubble = document.createElement('div');
+                userBubble.classList.add('chat-bubble');
+                userBubble.innerHTML = `
+                    <strong>${userName}:</strong>
+                    <p>${text}</p>
+                `;
+                analysisContent.appendChild(userBubble);
+
+                try {
+                    const aiAnalysis = await fetchMeaningAndAnalyze(userName, text);
+                    
+                    const aiBubble = document.createElement('div');
+                    aiBubble.classList.add('chat-bubble');
+                    
+                    aiBubble.innerHTML = `
+                        <strong>AI:</strong>
+                        <br>
+                        <p>${aiAnalysis.meaning}</p>
+                        <div class="decision-buttons">
+                            <button class="decision-btn yes-btn">Yes, Looks Correct</button>
+                            <button class="decision-btn no-btn">No, Revise</button>
+                        </div>
+                    `;
+                    
+                    analysisContent.appendChild(aiBubble);
+
+                    const yesBtn = aiBubble.querySelector('.yes-btn');
+                    const noBtn = aiBubble.querySelector('.no-btn');
+
+                    yesBtn.addEventListener('click', () => {
+                        alert('Great! Proceeding with the current analysis.');
+                    });
+
+                    noBtn.addEventListener('click', () => {
+                        alert('We will help you refine the analysis.');
+                    });
+
+                } catch (error) {
+                    const errorBubble = document.createElement('div');
+                    errorBubble.classList.add('chat-bubble');
+                    errorBubble.innerHTML = `
+                        <strong>Error:</strong>
+                        <p>Unable to process analysis. ${error.message}</p>
+                    `;
+                    analysisContent.appendChild(errorBubble);
+                }
+            });
+
+            async function fetchMeaningAndAnalyze(userName, text) {
+                // Simulated API call 
+                await new Promise(resolve => setTimeout(resolve, 500)); // Short delay for demo
+
+                // Mock meaning extraction and analysis
+                const meanings = {
+                    general: [
+                        "A statement expressing personal thoughts or experiences",
+                        "A descriptive text about a specific topic",
+                        "An exploratory piece of writing"
+                    ],
+                    insights: [
+                        "Reveals potential emotional context",
+                        "Demonstrates critical thinking",
+                        "Shows nuanced understanding"
+                    ]
+                };
+
+                const meaning = meanings.general[Math.floor(Math.random() * meanings.general.length)];
+                const insight = meanings.insights[Math.floor(Math.random() * meanings.insights.length)];
+
+                return {
+                    meaning: `Hello ${userName}! It seems this appears to be ${meaning}. ${insight}. 
+                    The text suggests: "${text.substring(0, 200)}${text.length > 200 ? '...' : ''}"
+                    Would you like me to generate further insights?`
+                };
+            }
+
+            function checkAndPromptForName() {
+                const storedName = localStorage.getItem('userName');
+                if (!storedName) {
+                    const name = prompt("Please enter your name:");
+                    if (name) {
+                        localStorage.setItem('userName', name);
+                    }
+                }
+            }
+
+            class DynamicTypingText {
+                constructor(element, phrases, options = {}) {
+                    this.element = element;
+                    this.phrases = phrases;
+                    this.options = {
+                        typingSpeed: 100,
+                        deletingSpeed: 50,
+                        pauseBetween: 8000,
+                        ...options
+                    };
+                    this.phraseIndex = 0;
+                    this.charIndex = 0;
+                    this.isDeleting = false;
+                    this.init();
+                }
+
+                init() {
+                    this.type();
+                }
+
+                type() {
+                    const currentPhrase = this.phrases[this.phraseIndex];
+                    const speed = this.isDeleting ? this.options.deletingSpeed : this.options.typingSpeed;
+
+                    if (!this.isDeleting && this.charIndex <= currentPhrase.length) {
+                        this.element.textContent = currentPhrase.substring(0, this.charIndex + 1);
+                        this.charIndex++;
+                    } else if (this.isDeleting && this.charIndex >= 0) {
+                        this.element.textContent = currentPhrase.substring(0, this.charIndex);
+                        this.charIndex--;
+                    } else {
+                        this.isDeleting = !this.isDeleting;
+                        this.phraseIndex = (this.phraseIndex + 1) % this.phrases.length;
+
+                        if (!this.isDeleting) {
+                            setTimeout(() => this.type(), this.options.pauseBetween);
+                            return;
+                        }
+                    }
+
+                    setTimeout(() => this.type(), speed);
+                }
+            }
+
+            const typingTextElement = document.getElementById('typing-text');
+            const phrases = [
+                'Hello, there.',
+                'Bring dreams to reality',
+                'By Typing Anything',
+            ];
+
+            new DynamicTypingText(typingTextElement, phrases, {
+                typingSpeed: 100,
+                deletingSpeed: 50,
+                pauseBetween: 400,
+            });
+        });
+
+        /* © SMILEX - This code is licensed and protected. */
+    </script>
+</body>
+</html>
