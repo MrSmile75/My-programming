@@ -3,21 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <!-- © SMILEX. This code is protected. -->
-    <title>Advanced E-Trading Platform</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>X Trading Hub - Advanced E-Trading Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-   <link rel="stylesheet" href="e-commerce.css">
-   <script src="e-commerce.js"></script>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --secondary: #10b981;
+            --accent: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gold: #f59e0b;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .loader-segment {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 10px solid transparent;
+            border-radius: 50%;
+            opacity: 0.5;
+            transition: all 0.5s ease;
+            z-index: 100000;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+        
+        @keyframes loadProgress {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes particleAnimation {
+            0% {
+                transform: translateX(0) translateY(0) scale(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateX(200px) translateY(-200px) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(45deg, var(--gold), #f97316);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        .item-card {
+            transition: all 0.3s ease;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: var(--gold);
+        }
+        
+        .notification {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-content {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        input, select, textarea {
+            background: rgba(30, 41, 59, 0.7) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3) !important;
+        }
+        
+        .category-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .category-btn:hover {
+            transform: scale(1.05);
+            background: rgba(30, 41, 59, 0.7);
+            border-color: var(--gold);
+        }
+        
+        .category-btn.active {
+            background: var(--gold);
+            color: var(--dark);
+            border-color: var(--gold);
+        }
+        
+        .progress-bar-fill {
+            background: linear-gradient(45deg, var(--gold), #f97316);
+            height: 100%;
+            border-radius: 0.25rem;
+            animation: loadProgress 3s ease forwards;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: particleAnimation 5s infinite;
+        }
+
+        /* Custom styles for new features */
+        .business-name-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 10;
+        }
+
+        .location-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 10;
+        }
+
+        .buyer-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .map-container {
+            height: 200px;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+        }
+
+        .country-flag {
+            width: 20px;
+            height: 15px;
+            margin-right: 8px;
+            object-fit: cover;
+        }
+    </style>
 </head>
-<body>
-     <!-- © SMILEX. This code is protected. -->
-   
-    <div id="preloader">
+<body class="min-h-screen">
+  <div id="preloader">
         <div class="preloader-container">
             <div class="logo">X TRADING HUB</div>
             
@@ -27,387 +226,1213 @@
                 <div class="loader-segment"></div>
                 <div class="loader-segment"></div>
             </div>
-
+            
             <div class="loading-text">Loading Experience</div>
             
             <div class="progress-bar">
                 <div class="progress-bar-fill"></div>
             </div>
-
+            
             <div class="tech-details">
                 SmileX | Version 1.0
-                 <!-- © SMILEX. This code is protected. -->
+                <!-- © SMILEX. This code is protected. -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="fixed top-5 right-5 z-40 space-y-2"></div>
+
+    <!-- Buyer Notification Container -->
+    <div id="buyerNotificationContainer"></div>
+
+    <!-- Main Navigation -->
+    <nav class="bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-lg border-b border-gray-800 fixed w-full z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-yellow-400 font-bold text-xl font-orbitron">X TRADING</span>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <button onclick="showLandingPage()" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-800 hover:text-white">
+                                <i class="bi bi-house-door mr-1"></i> Home
+                            </button>
+                            <button onclick="showBuyPage()" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-800 hover:text-white">
+                                <i class="bi bi-cart3 mr-1"></i> Marketplace
+                            </button>
+                            <button onclick="showSellPage()" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-800 hover:text-white">
+                                <i class="bi bi-tag mr-1"></i> Sell
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <!-- Country Dropdown -->
+                        <div class="relative mr-4">
+                            <button id="countryDropdownBtn" class="flex items-center px-3 py-1 rounded-md text-sm font-medium hover:bg-gray-800">
+                                <img id="selectedFlag" src="https://flagcdn.com/w20/us.png" class="country-flag mr-2">
+                                <span id="selectedCountry">United States</span>
+                                <i class="bi bi-chevron-down ml-1 text-xs"></i>
+                            </button>
+                            <div id="countryDropdown" class="hidden absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-50 max-h-96 overflow-y-auto">
+                                <!-- Countries will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <button onclick="openCartModal()" class="relative p-1 rounded-full text-gray-400 hover:text-white focus:outline-none">
+                            <i class="bi bi-cart3 text-xl"></i>
+                            <span id="cartItemCount" class="absolute -top-2 -right-2 bg-yellow-500 text-gray-900 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobileMenuBtn" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <i class="bi bi-list text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-gray-900 border-t border-gray-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <button onclick="showLandingPage()" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800 hover:text-white w-full text-left">
+                    <i class="bi bi-house-door mr-2"></i> Home
+                </button>
+                <button onclick="showBuyPage()" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800 hover:text-white w-full text-left">
+                    <i class="bi bi-cart3 mr-2"></i> Marketplace
+                </button>
+                <button onclick="showSellPage()" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800 hover:text-white w-full text-left">
+                    <i class="bi bi-tag mr-2"></i> Sell
+                </button>
+                <button onclick="openCartModal()" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800 hover:text-white w-full text-left">
+                    <i class="bi bi-cart3 mr-2"></i> Cart (<span id="mobileCartItemCount">0</span>)
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="fixed inset-0 z-40 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-900 opacity-75"></div>
+            </div>
+            
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            
+            <div class="inline-block align-bottom rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+                <div class="modal-content px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg leading-6 font-medium text-white">
+                            <i class="bi bi-cart3 mr-2"></i> Your Cart
+                        </h3>
+                        <button type="button" onclick="closeCartModal()" class="text-gray-400 hover:text-white focus:outline-none">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                    <div class="mt-4">
+                        <div id="cartItems" class="space-y-3 max-h-96 overflow-y-auto"></div>
+                        <div class="mt-4 pt-4 border-t border-gray-700">
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium">Total:</span>
+                                <span id="cartTotal" class="font-bold text-yellow-400">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 sm:mt-6 grid grid-cols-2 gap-3">
+                        <button type="button" onclick="closeCartModal()" class="w-full inline-flex justify-center rounded-md border border-gray-700 shadow-sm px-4 py-2 bg-gray-800 text-base font-medium text-white hover:bg-gray-700 focus:outline-none sm:text-sm">
+                            Continue Shopping
+                        </button>
+                        <button type="button" onclick="checkoutCart()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-500 text-base font-medium text-gray-900 hover:bg-yellow-600 focus:outline-none sm:text-sm">
+                            Checkout
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-     <!-- Notification Container -->
-     <div id="notificationContainer"></div>
+    <!-- Main Content -->
+    <main class="pt-16 pb-10 min-h-screen">
+        <!-- Landing Page -->
+        <div id="landingPage" class="container mx-auto px-4 py-10">
+            <div class="max-w-4xl mx-auto text-center py-20">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6 font-orbitron">
+                    <span class="gradient-text">Global Traders</span> Marketplace
+                </h1>
+                <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+                    Buy and sell with confidence on our secure trading platform. Join thousands of traders worldwide.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button onclick="showSellPage()" class="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg font-medium text-white hover:from-green-600 hover:to-emerald-700 transition-all flex items-center justify-center">
+                        <i class="bi bi-tag text-xl mr-2"></i> Sell Items
+                    </button>
+                    <button onclick="showBuyPage()" class="px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg font-medium text-white hover:from-blue-600 hover:to-indigo-700 transition-all flex items-center justify-center">
+                        <i class="bi bi-cart3 text-xl mr-2"></i> Buy Items
+                    </button>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto mt-20">
+                <h2 class="text-3xl font-bold text-center mb-10">Why Choose Our Platform?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-gray-700 hover:border-yellow-400 transition-all">
+                        <div class="text-yellow-400 text-4xl mb-4">
+                            <i class="bi bi-shield-lock"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Secure Transactions</h3>
+                        <p class="text-gray-300">Our platform uses advanced encryption to ensure all your transactions are safe and secure.</p>
+                    </div>
+                    <div class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-gray-700 hover:border-yellow-400 transition-all">
+                        <div class="text-yellow-400 text-4xl mb-4">
+                            <i class="bi bi-globe2"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Global Marketplace</h3>
+                        <p class="text-gray-300">Connect with buyers and sellers from around the world with support for multiple currencies.</p>
+                    </div>
+                    <div class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-gray-700 hover:border-yellow-400 transition-all">
+                        <div class="text-yellow-400 text-4xl mb-4">
+                            <i class="bi bi-headset"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">24/7 Support</h3>
+                        <p class="text-gray-300">Our dedicated support team is available around the clock to assist you with any issues.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sell Page -->
+        <div id="sellPage" class="hidden max-w-7xl mx-auto px-4 py-10">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Sidebar -->
+                <div class="w-full lg:w-1/3 space-y-6">
+                    <div class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-gray-700">
+                        <h2 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="bi bi-info-circle text-yellow-400 mr-2"></i> Seller Guidelines
+                        </h2>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start">
+                                <i class="bi bi-check-circle-fill text-green-400 mr-2 mt-1"></i>
+                                <span>Provide clear, accurate item descriptions with high-quality images</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="bi bi-check-circle-fill text-green-400 mr-2 mt-1"></i>
+                                <span>Set competitive pricing based on market research</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="bi bi-check-circle-fill text-green-400 mr-2 mt-1"></i>
+                                <span>Be honest about item condition and any defects</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="bi bi-check-circle-fill text-green-400 mr-2 mt-1"></i>
+                                <span>Respond promptly to buyer inquiries</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="bi bi-check-circle-fill text-green-400 mr-2 mt-1"></i>
+                                <span>Ship items promptly after payment is received</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-gray-700">
+                        <h2 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="bi bi-tags text-yellow-400 mr-2"></i> Select Category
+                        </h2>
+                        <p class="text-sm text-gray-400 mb-4">Choose the most relevant category for your item</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="selectCategory('Electronics')" class="category-btn px-4 py-3 border border-gray-600 rounded-lg hover:bg-gray-700 transition-all flex items-center">
+                                <i class="bi bi-laptop text-blue-400 mr-2"></i> Electronics
+                            </button>
+                            <button onclick="selectCategory('Fashion')" class="category-btn px-4 py-3 border border-gray-600 rounded-lg hover:bg-gray-700 transition-all flex items-center">
+                                <i class="bi bi-bag text-pink-400 mr-2"></i> Fashion
+                            </button>
+                            <button onclick="selectCategory('Home')" class="category-btn px-4 py-3 border border-gray-600 rounded-lg hover:bg-gray-700 transition-all flex items-center">
+                                <i class="bi bi-house text-green-400 mr-2"></i> Home
+                            </button>
+                            <button onclick="selectCategory('Sports')" class="category-btn px-4 py-3 border border-gray-600 rounded-lg hover:bg-gray-700 transition-all flex items-center">
+                                <i class="bi bi-bicycle text-yellow-400 mr-2"></i> Sports
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main Form -->
+                <div class="w-full lg:w-2/3">
+                    <div class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-gray-700">
+                        <h2 class="text-2xl font-bold mb-6 flex items-center">
+                            <i class="bi bi-plus-square text-yellow-400 mr-2"></i> List Your Item
+                        </h2>
+                        <form id="sellForm" class="space-y-4">
+                            <!-- Business Name Input -->
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Business Name (Permanent)</label>
+                                <div class="flex items-center">
+                                    <input type="text" id="businessName" name="businessName" class="w-full px-4 py-2 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required>
+                                    <button type="button" onclick="saveBusinessName()" class="ml-2 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-medium rounded-lg transition-all">
+                                        Save
+                                    </button>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">This will be permanently displayed on your products for identification</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Item Name</label>
+                                <input type="text" name="itemName" class="w-full px-4 py-2 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Price</label>
+                                    <div class="flex">
+                                        <select name="currency" class="px-4 py-2 rounded-l-lg focus:ring-yellow-500 focus:border-yellow-500 w-24">
+                                            <option value="USD">USD</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="GBP">GBP</option>
+                                            <option value="JPY">JPY</option>
+                                            <option value="CAD">CAD</option>
+                                            <option value="AUD">AUD</option>
+                                        </select>
+                                        <input type="number" name="itemPrice" step="0.01" class="w-full px-4 py-2 rounded-r-lg focus:ring-yellow-500 focus:border-yellow-500" required>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Condition</label>
+                                    <select name="itemCondition" class="w-full px-4 py-2 rounded-lg focus:ring-yellow-500 focus:border-yellow-500">
+                                        <option>New</option>
+                                        <option>Like New</option>
+                                        <option>Good</option>
+                                        <option>Fair</option>
+                                        <option>Poor</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Description</label>
+                                <textarea name="itemDescription" rows="4" class="w-full px-4 py-2 rounded-lg focus:ring-yellow-500 focus:border-yellow-500" required></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Item Images</label>
+                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-700 border-dashed rounded-lg">
+                                    <div class="space-y-1 text-center">
+                                        <div class="flex text-sm text-gray-400">
+                                            <label class="relative cursor-pointer bg-gray-900 rounded-md font-medium text-yellow-400 hover:text-yellow-500 focus-within:outline-none">
+                                                <span>Upload files</span>
+                                                <input type="file" name="itemImage" accept="image/*" class="sr-only" required>
+                                            </label>
+                                            <p class="pl-1">or drag and drop</p>
+                                        </div>
+                                        <p class="text-xs text-gray-400">
+                                            PNG, JPG up to 5MB
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-gray-900 font-bold rounded-lg transition-all flex items-center justify-center">
+                                <i class="bi bi-upload mr-2"></i> List Item
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Buy Page -->
+        <div id="buyPage" class="hidden max-w-7xl mx-auto px-4 py-10">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Filters Sidebar -->
+                <div class="w-full lg:w-1/4">
+                    <div class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-gray-700 mb-6">
+                        <h3 class="text-lg font-bold mb-4 flex items-center">
+                            <i class="bi bi-funnel text-yellow-400 mr-2"></i> Filters
+                        </h3>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-sm font-medium mb-2">Categories</h4>
+                            <div class="space-y-2">
+                                <button onclick="filterItems('Electronics')" class="category-btn w-full text-left px-3 py-2 border border-gray-600 rounded-md hover:bg-gray-700 transition-all flex items-center">
+                                    <i class="bi bi-laptop text-blue-400 mr-2"></i> Electronics
+                                </button>
+                                <button onclick="filterItems('Fashion')" class="category-btn w-full text-left px-3 py-2 border border-gray-600 rounded-md hover:bg-gray-700 transition-all flex items-center">
+                                    <i class="bi bi-bag text-pink-400 mr-2"></i> Fashion
+                                </button>
+                                <button onclick="filterItems('Home')" class="category-btn w-full text-left px-3 py-2 border border-gray-600 rounded-md hover:bg-gray-700 transition-all flex items-center">
+                                    <i class="bi bi-house text-green-400 mr-2"></i> Home & Garden
+                                </button>
+                                <button onclick="filterItems('Sports')" class="category-btn w-full text-left px-3 py-2 border border-gray-600 rounded-md hover:bg-gray-700 transition-all flex items-center">
+                                    <i class="bi bi-bicycle text-yellow-400 mr-2"></i> Sports
+                                </button>
+                                <button onclick="filterItems('All')" class="category-btn w-full text-left px-3 py-2 border border-gray-600 rounded-md hover:bg-gray-700 transition-all flex items-center">
+                                    <i class="bi bi-grid text-purple-400 mr-2"></i> All Categories
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-sm font-medium mb-2">Price Range</h4>
+                            <div class="grid grid-cols-2 gap-3 mb-3">
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">Min</label>
+                                    <input type="number" id="minPriceFilter" placeholder="0" class="w-full px-3 py-2 rounded-md text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">Max</label>
+                                    <input type="number" id="maxPriceFilter" placeholder="1000" class="w-full px-3 py-2 rounded-md text-sm">
+                                </div>
+                            </div>
+                            <button onclick="applyPriceFilter()" class="w-full py-2 px-4 bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium rounded-md transition-all">
+                                Apply Price Filter
+                            </button>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-sm font-medium mb-2">Condition</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="conditionNew" class="h-4 w-4 text-yellow-500 focus:ring-yellow-500 border-gray-600 rounded">
+                                    <label for="conditionNew" class="ml-2 text-sm text-gray-300">New</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="conditionLikeNew" class="h-4 w-4 text-yellow-500 focus:ring-yellow-500 border-gray-600 rounded">
+                                    <label for="conditionLikeNew" class="ml-2 text-sm text-gray-300">Like New</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="conditionGood" class="h-4 w-4 text-yellow-500 focus:ring-yellow-500 border-gray-600 rounded">
+                                    <label for="conditionGood" class="ml-2 text-sm text-gray-300">Good</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="conditionFair" class="h-4 w-4 text-yellow-500 focus:ring-yellow-500 border-gray-600 rounded">
+                                    <label for="conditionFair" class="ml-2 text-sm text-gray-300">Fair</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Items List -->
+                <div class="w-full lg:w-3/4">
+                    <div class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-gray-700 mb-6">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                            <h2 class="text-2xl font-bold flex items-center">
+                                <i class="bi bi-grid text-yellow-400 mr-2"></i> Marketplace
+                            </h2>
+                            
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <div class="relative flex-grow">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="bi bi-search text-gray-400"></i>
+                                    </div>
+                                    <input type="text" id="searchInput" placeholder="Search items..." class="pl-10 w-full px-4 py-2 rounded-lg focus:ring-yellow-500 focus:border-yellow-500">
+                                </div>
+                                <button onclick="searchItems()" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-medium rounded-lg transition-all flex items-center justify-center">
+                                    <i class="bi bi-search mr-2"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="itemsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Items will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
-     <!-- Cart Modal -->
-     <div class="modal fade" id="cartModal" tabindex="-1">
-         <div class="modal-dialog">
-             <div class="modal-content">
-                 <div class="modal-header">
-                     <h5 class="modal-title">Your Cart</h5>
-                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                 </div>
-                 <div class="modal-body">
-                     <div id="cartItems"></div>
-                     <div class="mt-3">
-                         <strong>Total: <span id="cartTotal">$0.00</span></strong>
-                     </div>
-                 </div>
-                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                     <button type="button" class="btn btn-primary" onclick="checkoutCart()">Checkout</button>
-                 </div>
-             </div>
-         </div>
-     </div>
- 
-     <!-- Landing Page -->
-     <div class="container text-center my-5" id="landingPage">
-         <h1 class="display-4 mb-4">Global Traders Marketplace</h1>
-         
-         <div class="d-flex justify-content-center gap-3">
-             <button class="btn btn-success btn-lg" onclick="showSellPage()">
-                 <i class="bi bi-tag me-2"></i>Sell Items
-             </button>
-             <button class="btn btn-primary btn-lg" onclick="showBuyPage()">
-                 <i class="bi bi-cart me-2"></i>Buy Items
-             </button>
-         </div>
-     </div>
- 
-     <!-- Sell Page -->
-     <div id="sellPage" style="display:none;" class="marketplace-container">
-         <div class="row">
-             <div class="col-md-4">
-                 <div class="card mb-4">
-                     <div class="card-header">
-                         <h2>Seller Guidelines</h2>
-                     </div>
-                     <div class="card-body">
-                         <ul class="list-unstyled">
-                             <li>✅ Provide clear, accurate item descriptions</li>
-                             <li>✅ Use high-quality images</li>
-                             <li>✅ Set competitive pricing</li>
-                             <li>✅ Be honest about item condition</li>
-                     
-                         </ul>
-                     </div>
-                 </div>
- 
-                 <div class="card">
-                     <div class="card-header">
-                         <h5>Select your item under it's category.</h5>
-                         <h5>Caution:Important!!!</h5>
-                     </div>
-                     <div class="card-body">
-                         <div class="d-grid gap-2">
-                             <button class="btn btn-outline-primary" onclick="selectCategory('Electronics')">
-                                 <i class="bi bi-laptop me-2"></i>Electronics
-                             </button>
-                             <button class="btn btn-outline-primary" onclick="selectCategory('Fashion')">
-                                 <i class="bi bi-bag me-2"></i>Fashion
-                             </button>
-                             <button class="btn btn-outline-primary" onclick="selectCategory('Home')">
-                                 <i class="bi bi-house me-2"></i>Home & Garden
-                             </button>
-                             <button class="btn btn-outline-primary" onclick="selectCategory('Sports')">
-                                 <i class="bi bi-bicycle me-2"></i>Sports
-                             </button>
-                         </div>
-                     </div>
-                 </div>
-             </div>
- 
-             <div class="col-md-8">
-                 <div class="sell-form">
-                     <h2 class="mb-4">List Your Item</h2>
-                     <form id="sellForm">
-                         <div class="mb-3">
-                             <label class="form-label">Item Name</label>
-                             <input type="text" class="form-control" name="itemName" required>
-                         </div>
- 
-                         <div class="row mb-3">
-                             <div class="col-md-6">
-                                 <label class="form-label">Price</label>
-                                 <div class="input-group">
-                                     <select class="form-select" name="currency" style="max-width: 100px;">
-                                        <option value="AED">United Arab Emirates Dirham (AED)</option>
-<option value="AFN">Afghan Afghani (AFN)</option>
-<option value="ALL">Albanian Lek (ALL)</option>
-<option value="AMD">Armenian Dram (AMD)</option>
-<option value="ANG">Netherlands Antillean Guilder (ANG)</option>
-<option value="AOA">Angolan Kwanza (AOA)</option>
-<option value="ARS">Argentine Peso (ARS)</option>
-<option value="AUD">Australian Dollar (AUD)</option>
-<option value="AWG">Aruban Florin (AWG)</option>
-<option value="AZN">Azerbaijani Manat (AZN)</option>
-<option value="BAM">Bosnia and Herzegovina Convertible Mark (BAM)</option>
-<option value="BBD">Barbadian Dollar (BBD)</option>
-<option value="BDT">Bangladeshi Taka (BDT)</option>
-<option value="BGN">Bulgarian Lev (BGN)</option>
-<option value="BHD">Bahraini Dinar (BHD)</option>
-<option value="BIF">Burundian Franc (BIF)</option>
-<option value="BMD">Bermudian Dollar (BMD)</option>
-<option value="BND">Brunei Dollar (BND)</option>
-<option value="BOB">Bolivian Boliviano (BOB)</option>
-<option value="BRL">Brazilian Real (BRL)</option>
-<option value="BSD">Bahamian Dollar (BSD)</option>
-<option value="BTN">Bhutanese Ngultrum (BTN)</option>
-<option value="BWP">Botswana Pula (BWP)</option>
-<option value="BYN">Belarusian Ruble (BYN)</option>
-<option value="BZD">Belize Dollar (BZD)</option>
-<option value="CAD">Canadian Dollar (CAD)</option>
-<option value="CDF">Congolese Franc (CDF)</option>
-<option value="CHF">Swiss Franc (CHF)</option>
-<option value="CLP">Chilean Peso (CLP)</option>
-<option value="CNY">Chinese Yuan (CNY)</option>
-<option value="COP">Colombian Peso (COP)</option>
-<option value="CRC">Costa Rican Colón (CRC)</option>
-<option value="CUP">Cuban Peso (CUP)</option>
-<option value="CVE">Cape Verdean Escudo (CVE)</option>
-<option value="CZK">Czech Koruna (CZK)</option>
-<option value="DJF">Djiboutian Franc (DJF)</option>
-<option value="DKK">Danish Krone (DKK)</option>
-<option value="DOP">Dominican Peso (DOP)</option>
-<option value="DZD">Algerian Dinar (DZD)</option>
-<option value="EGP">Egyptian Pound (EGP)</option>
-<option value="ERN">Eritrean Nakfa (ERN)</option>
-<option value="ETB">Ethiopian Birr (ETB)</option>
-<option value="EUR">Euro (EUR)</option>
-<option value="FJD">Fijian Dollar (FJD)</option>
-<option value="FKP">Falkland Islands Pound (FKP)</option>
-<option value="GBP">British Pound Sterling (GBP)</option>
-<option value="GEL">Georgian Lari (GEL)</option>
-<option value="GGP">Guernsey Pound (GGP)</option>
-<option value="GHS">Ghanaian Cedi (GHS)</option>
-<option value="GIP">Gibraltar Pound (GIP)</option>
-<option value="GMD">Gambian Dalasi (GMD)</option>
-<option value="GNF">Guinean Franc (GNF)</option>
-<option value="GTQ">Guatemalan Quetzal (GTQ)</option>
-<option value="GYD">Guyanese Dollar (GYD)</option>
-<option value="HKD">Hong Kong Dollar (HKD)</option>
-<option value="HNL">Honduran Lempira (HNL)</option>
-<option value="HRK">Croatian Kuna (HRK)</option>
-<option value="HTG">Haitian Gourde (HTG)</option>
-<option value="HUF">Hungarian Forint (HUF)</option>
-<option value="IDR">Indonesian Rupiah (IDR)</option>
-<option value="ILS">Israeli New Shekel (ILS)</option>
-<option value="IMP">Isle of Man Pound (IMP)</option>
-<option value="INR">Indian Rupee (INR)</option>
-<option value="IQD">Iraqi Dinar (IQD)</option>
-<option value="IRR">Iranian Rial (IRR)</option>
-<option value="ISK">Icelandic Króna (ISK)</option>
-<option value="JEP">Jersey Pound (JEP)</option>
-<option value="JMD">Jamaican Dollar (JMD)</option>
-<option value="JOD">Jordanian Dinar (JOD)</option>
-<option value="JPY">Japanese Yen (JPY)</option>
-<option value="KES">Kenyan Shilling (KES)</option>
-<option value="KGS">Kyrgyz Som (KGS)</option>
-<option value="KHR">Cambodian Riel (KHR)</option>
-<option value="KMF">Comorian Franc (KMF)</option>
-<option value="KPW">North Korean Won (KPW)</option>
-<option value="KRW">South Korean Won (KRW)</option>
-<option value="KWD">Kuwaiti Dinar (KWD)</option>
-<option value="KYD">Cayman Islands Dollar (KYD)</option>
-<option value="KZT">Kazakhstani Tenge (KZT)</option>
-<option value="LAK">Laotian Kip (LAK)</option>
-<option value="LBP">Lebanese Pound (LBP)</option>
-<option value="LKR">Sri Lankan Rupee (LKR)</option>
-<option value="LRD">Liberian Dollar (LRD)</option>
-<option value="LSL">Lesotho Loti (LSL)</option>
-<option value="LYD">Libyan Dinar (LYD)</option>
-<option value="MAD">Moroccan Dirham (MAD)</option>
-<option value="MDL">Moldovan Leu (MDL)</option>
-<option value="MGA">Malagasy Ariary (MGA)</option>
-<option value="MKD">Macedonian Denar (MKD)</option>
-<option value="MMK">Myanmar Kyat (MMK)</option>
-<option value="MNT">Mongolian Tögrög (MNT)</option>
-<option value="MOP">Macanese Pataca (MOP)</option>
-<option value="MRU">Mauritanian Ouguiya (MRU)</option>
-<option value="MUR">Mauritian Rupee (MUR)</option>
-<option value="MVR">Maldivian Rufiyaa (MVR)</option>
-<option value="MWK">Malawian Kwacha (MWK)</option>
-<option value="MXN">Mexican Peso (MXN)</option>
-<option value="MYR">Malaysian Ringgit (MYR)</option>
-<option value="MZN">Mozambican Metical (MZN)</option>
-<option value="NAD">Namibian Dollar (NAD)</option>
-<option value="NGN">Nigerian Naira (NGN)</option>
-<option value="NIO">Nicaraguan Córdoba (NIO)</option>
-<option value="NOK">Norwegian Krone (NOK)</option>
-<option value="NPR">Nepalese Rupee (NPR)</option>
-<option value="NZD">New Zealand Dollar (NZD)</option>
-<option value="OMR">Omani Rial (OMR)</option>
-<option value="PAB">Panamanian Balboa (PAB)</option>
-<option value="PEN">Peruvian Sol (PEN)</option>
-<option value="PGK">Papua New Guinean Kina (PGK)</option>
-<option value="PHP">Philippine Peso (PHP)</option>
-<option value="PKR">Pakistani Rupee (PKR)</option>
-<option value="PLN">Polish Złoty (PLN)</option>
-<option value="PYG">Paraguayan Guaraní (PYG)</option>
-<option value="QAR">Qatari Riyal (QAR)</option>
-<option value="RON">Romanian Leu (RON)</option>
-<option value="RSD">Serbian Dinar (RSD)</option>
-<option value="RUB">Russian Ruble (RUB)</option>
-<option value="RWF">Rwandan Franc (RWF)</option>
-<option value="SAR">Saudi Riyal (SAR)</option>
-<option value="SBD">Solomon Islands Dollar (SBD)</option>
-<option value="SCR">Seychellois Rupee (SCR)</option>
-<option value="SDG">Sudanese Pound (SDG)</option>
-<option value="SEK">Swedish Krona (SEK)</option>
-<option value="SGD">Singapore Dollar (SGD)</option>
-<option value="SHP">Saint Helena Pound (SHP)</option>
-<option value="SLL">Sierra Leonean Leone (SLL)</option>
-<option value="SOS">Somali Shilling (SOS)</option>
-<option value="SRD">Surinamese Dollar (SRD)</option>
-<option value="SSP">South Sudanese Pound (SSP)</option>
-<option value="STN">São Tomé and Príncipe Dobra (STN)</option>
-<option value="SVC">Salvadoran Colón (SVC)</option>
-<option value="SYP">Syrian Pound (SYP)</option>
-<option value="SZL">Swazi Lilangeni (SZL)</option>
-<option value="THB">Thai Baht (THB)</option>
-<option value="TJS">Tajikistani Somoni (TJS)</option>
-<option value="TMT">Turkmenistan Manat (TMT)</option>
-<option value="TND">Tunisian Dinar (TND)</option>
-<option value="TOP">Tongan Paʻanga (TOP)</option>
-<option value="TRY">Turkish Lira (TRY)</option>
-<option value="TTD">Trinidad and Tobago Dollar (TTD)</option>
-<option value="TWD">New Taiwan Dollar (TWD)</option>
-<option value="TZS">Tanzanian Shilling (TZS)</option>
-<option value="UAH">Ukrainian Hryvnia (UAH)</option>
-<option value="UGX">Ugandan Shilling (UGX)</option>
-<option value="USD">United States Dollar (USD)</option>
-<option value="UYU">Uruguayan Peso (UYU)</option>
-<option value="UZS">Uzbekistani Som (UZS)</option>
-<option value="VES">Venezuelan Bolívar (VES)</option>
-<option value="VND">Vietnamese Dong (VND)</option>
-<option value="VUV">Vanuatu Vatu (VUV)</option>
-<option value="WST">Samoan Tālā (WST)</option>
-<option value="XAF">Central African CFA Franc (XAF)</option>
-<option value="XCD">East Caribbean Dollar (XCD)</option>
-<option value="XOF">West African CFA Franc (XOF)</option>
-<option value="XPF">CFP Franc (XPF)</option>
-<option value="YER">Yemeni Rial (YER)</option>
-<option value="ZAR">South African Rand (ZAR)</option>
-<option value="ZMW">Zambian Kwacha (ZMW)</option>
-<option value="ZWL">Zimbabwean Dollar (ZWL)</option>
-
-                                         
-                                     </select>
-                                     <input type="number" class="form-control" name="itemPrice" required>
-                                 </div>
-                             </div>
-                             <div class="col-md-6">
-                                 <label class="form-label">Condition</label>
-                                 <select class="form-select" name="itemCondition">
-                                     <option>New</option>
-                                     <option>Like New</option>
-                                     <option>Good</option>
-                                     <option>Fair</option>
-                                 </select>
-                             </div>
-                         </div>
- 
-                         <div class="mb-3">
-                             <label class="form-label">Description</label>
-                             <textarea class="form-control" name="itemDescription" rows="4" required></textarea>
-                         </div>
- 
-                         <div class="mb-3">
-                             <label class="form-label">Item Image</label>
-                             <input type="file" class="form-control" name="itemImage" accept="image/*" required>
-                         </div>
- 
-                         <button type="submit" class="btn btn-success w-100">
-                             <i class="bi bi-upload me-2"></i>List Item
-                         </button>
-                     </form>
-                 </div>
-             </div>
-         </div>
-     </div>
- 
-     <!-- Buy Page -->
-     <div id="buyPage" style="display:none;" class="marketplace-container">
-         <div class="row">
-             <div class="col-md-3">
-                 <div class="card mb-4">
-                     <div class="card-header">
-                         <h4>Choose category</h4>
-                     </div>
-                     <div class="card-body">
-                         <div class="d-grid gap-2">
-                             <button class="btn btn-outline-primary" onclick="filterItems('Electronics')">
-                                 <i class="bi bi-laptop me-2"></i>Electronics
-                             </button>
-                             <button class="btn btn-outline-primary" onclick="filterItems('Fashion')">
-                                 <i class="bi bi-bag me-2"></i>Fashion
-                             </button>
-                             <button class="btn btn-outline-primary" onclick="filterItems('Home')">
-                                 <i class="bi bi-house me-2"></i>Home & Garden
-                             </button>
-                             <button class="btn btn-outline-primary" onclick="filterItems('Sports')">
-                                 <i class="bi bi-bicycle me-2"></i>Sports
-                             </button>
-                         </div>
-                     </div>
-                 </div>
- 
-                 <div class="card">
-                     <div class="card-header">
-                         <h3>Price Range</h3>
-                     </div>
-                     <div class="card-body">
-                         <div class="mb-3">
-                             <label class="form-label">Min Price</label>
-                             <input type="number" class="form-control" id="minPriceFilter">
-                         </div>
-                         <div class="mb-3">
-                             <label class="form-label">Max Price</label>
-                             <input type="number" class="form-control" id="maxPriceFilter">
-                         </div>
-                         <button class="btn btn-primary w-100" onclick="applyPriceFilter()">
-                             Apply Filter
-                         </button>
-                     </div>
-                 </div>
-             </div>
- 
-             <div class="col-md-9">
-                 <div class="d-flex justify-content-between mb-3">
-                     <div class="input-group" style="width: 70%;">
-                         <input type="text" class="form-control" id="searchInput" placeholder="Search items...">
-                         <button class="btn btn-primary" onclick="searchItems()">
-                             <i class="bi bi-search me-2"></i>Search
-                         </button>
-                     </div>
-                     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#cartModal">
-                         <i class="bi bi-cart me-2"></i>Cart (<span id="cartItemCount">0</span>)
-                     </button>
-                 </div>
- 
-                 <div id="itemsContainer" class="row g-4">
-                     <!-- Dynamically populated items -->
-                 </div>
-             </div>
-         </div>
-     </div>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-     <!-- © SMILEX. This code is protected. -->
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold text-yellow-400 mb-4 font-orbitron">X TRADING HUB</h3>
+                    <p class="text-gray-400 text-sm">
+                        The premier global marketplace for secure trading. Buy and sell with confidence.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" onclick="showLandingPage()" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#" onclick="showBuyPage()" class="text-gray-400 hover:text-white transition-colors">Marketplace</a></li>
+                        <li><a href="#" onclick="showSellPage()" class="text-gray-400 hover:text-white transition-colors">Sell Items</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Safety Tips</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">Connect With Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="bi bi-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="bi bi-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="bi bi-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="bi bi-linkedin text-xl"></i>
+                        </a>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-xs text-gray-500">
+                            &copy; 2023 X Trading Hub. All rights reserved.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script>
+        /* © SMILEX - This code is licensed and protected. */
+        class AdvancedPreloader {
+            constructor() {
+                this.preloader = document.getElementById('preloader');
+                this.initParticles();
+                this.setupLoadingSequence();
+            }
+            
+            initParticles() {
+                for (let i = 0; i < 50; i++) {
+                    this.createParticle();
+                }
+            }
+            
+            createParticle() {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                particle.style.left = `${Math.random() * window.innerWidth}px`;
+                particle.style.top = `${Math.random() * window.innerHeight}px`;
+                particle.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                particle.style.animationDelay = `${Math.random() * 2}s`;
+                
+                this.preloader.appendChild(particle);
+            }
+            
+            setupLoadingSequence() {
+                const loadingStages = [
+                    { stage: 'Initializing Core Systems', duration: 1500 },
+                    { stage: 'Loading Resources', duration: 1500 },
+                    { stage: 'Preparing Interface', duration: 1500 },
+                    { stage: 'Finalizing', duration: 1500 }
+                ];
+                
+                this.sequentialLoading(loadingStages);
+            }
+            
+            sequentialLoading(stages) {
+                const loadingText = document.querySelector('.loading-text');
+                
+                stages.reduce((promise, stage) => {
+                    return promise.then(() => {
+                        return new Promise(resolve => {
+                            loadingText.textContent = stage.stage;
+                            setTimeout(resolve, stage.duration);
+                        });
+                    });
+                }, Promise.resolve()).then(() => {
+                    this.completeLoading();
+                });
+            }
+            
+            completeLoading() {
+                this.preloader.style.opacity = 0;
+                setTimeout(() => {
+                    this.preloader.style.display = 'none';
+                    this.triggerMainAppLoad();
+                }, 500);
+            }
+            
+            triggerMainAppLoad() {
+                document.dispatchEvent(new Event('app-ready'));
+            }
+        }
+        
+        /* © SMILEX - This code is licensed and protected. */
+        class CartManager {
+            constructor() {
+                this.cart = [];
+                this.loadCartFromLocalStorage();
+            }
+            
+            addToCart(item) {
+                const existingItem = this.cart.find(cartItem => cartItem.id === item.id);
+                
+                if (existingItem) {
+                    existingItem.quantity = (existingItem.quantity || 1) + 1;
+                } else {
+                    this.cart.push({
+                        ...item,
+                        quantity: 1
+                    });
+                }
+                
+                this.saveCartToLocalStorage();
+                this.updateCartUI();
+                this.showNotification(`${item.itemName} added to cart!`);
+                
+                // Notify seller if this is a new addition (not just quantity increase)
+                if (!existingItem) {
+                    this.notifySeller(item);
+                }
+            }
+            
+            notifySeller(item) {
+                // In a real app, this would send a notification to the seller's account
+                // For this demo, we'll simulate it with a notification
+                const notification = document.createElement('div');
+                notification.className = 'buyer-notification';
+                notification.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-yellow-400">
+                            <i class="bi bi-bell-fill mr-2"></i> New Purchase Request
+                        </h4>
+                        <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-white">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                    <p class="text-sm mb-2">A buyer wants to purchase your item: <strong>${item.itemName}</strong></p>
+                    <div class="flex items-center text-sm mb-1">
+                        <i class="bi bi-geo-alt text-blue-400 mr-2"></i>
+                        <span>Buyer Location: <span class="text-yellow-400">${getRandomLocation()}</span></span>
+                    </div>
+                    <div class="flex items-center text-sm mb-3">
+                        <i class="bi bi-telephone text-green-400 mr-2"></i>
+                        <span>Contact: <span class="text-yellow-400">${generateRandomPhoneNumber()}</span></span>
+                    </div>
+                    <div class="map-container">
+                        <i class="bi bi-map text-3xl"></i>
+                        <span class="ml-2">View Buyer Location</span>
+                    </div>
+                    <div class="flex justify-between mt-3">
+                        <button class="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm flex items-center">
+                            <i class="bi bi-telephone mr-1"></i> Call Buyer
+                        </button>
+                        <button class="px-3 py-1 bg-green-600 hover:bg-green-700 rounded text-sm flex items-center">
+                            <i class="bi bi-chat-left-text mr-1"></i> Message
+                        </button>
+                    </div>
+                `;
+                
+                document.getElementById('buyerNotificationContainer').appendChild(notification);
+                
+                // Auto-remove after 30 seconds
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 30000);
+            }
+            
+            removeFromCart(itemId) {
+                this.cart = this.cart.filter(item => item.id !== itemId);
+                this.saveCartToLocalStorage();
+                this.updateCartUI();
+            }
+            
+            updateQuantity(itemId, quantity) {
+                const item = this.cart.find(item => item.id === itemId);
+                if (item) {
+                    item.quantity = quantity > 0 ? quantity : 1;
+                    this.saveCartToLocalStorage();
+                    this.updateCartUI();
+                }
+            }
+            
+            calculateTotal() {
+                return this.cart.reduce((total, item) => 
+                    total + (parseFloat(item.itemPrice) * item.quantity), 0
+                ).toFixed(2);
+            }
+            
+            saveCartToLocalStorage() {
+                localStorage.setItem('marketplaceCart', JSON.stringify(this.cart));
+            }
+            
+            loadCartFromLocalStorage() {
+                const savedCart = localStorage.getItem('marketplaceCart');
+                this.cart = savedCart ? JSON.parse(savedCart) : [];
+                this.updateCartUI();
+            }
+            
+            updateCartUI() {
+                const cartItemsContainer = document.getElementById('cartItems');
+                const cartTotalElement = document.getElementById('cartTotal');
+                const cartItemCountElement = document.getElementById('cartItemCount');
+                const mobileCartItemCountElement = document.getElementById('mobileCartItemCount');
+                
+                // Clear existing cart items
+                cartItemsContainer.innerHTML = '';
+                
+                // Populate cart items
+                this.cart.forEach(item => {
+                    const cartItemElement = document.createElement('div');
+                    cartItemElement.className = 'flex justify-between items-center py-3 border-b border-gray-700';
+                    cartItemElement.innerHTML = `
+                        <div class="flex items-center">
+                            <img src="${item.imageUrl}" class="w-12 h-12 object-cover rounded mr-3">
+                            <div>
+                                <h6 class="text-sm font-medium">${item.itemName}</h6>
+                                <p class="text-xs text-gray-400">${item.currency} ${item.itemPrice}</p>
+                                <p class="text-xs text-gray-500">Seller: ${item.businessName || 'Unknown'}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="number"
+                                    class="w-16 px-2 py-1 bg-gray-700 rounded text-sm text-center"
+                                    value="${item.quantity}"
+                                    min="1"
+                                   onchange="cartManager.updateQuantity(${item.id}, this.value)">
+                            <button class="ml-2 text-red-400 hover:text-red-500"
+                                     onclick="cartManager.removeFromCart(${item.id})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(cartItemElement);
+                });
+                
+                // Update total and item count
+                cartTotalElement.textContent = `$${this.calculateTotal()}`;
+                const itemCount = this.cart.length;
+                cartItemCountElement.textContent = itemCount;
+                if (mobileCartItemCountElement) {
+                    mobileCartItemCountElement.textContent = itemCount;
+                }
+            }
+            
+            showNotification(message) {
+                const container = document.getElementById('notificationContainer');
+                const notification = document.createElement('div');
+                notification.className = `notification px-4 py-3 rounded-lg shadow-lg flex items-center`;
+                notification.innerHTML = `
+                    <i class="bi bi-check-circle-fill text-green-400 mr-2"></i>
+                    <span>${message}</span>
+                `;
+                
+                container.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '1';
+                }, 10);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => container.removeChild(notification), 300);
+                }, 3000);
+            }
+        }
+        
+        /* © SMILEX - This code is licensed and protected. */
+        class MarketplaceManager {
+            constructor() {
+                this.items = [];
+                this.categories = ['Electronics', 'Fashion', 'Home', 'Sports'];
+                this.selectedCategory = null;
+                this.businessName = localStorage.getItem('sellerBusinessName') || '';
+                this.loadItemsFromLocalStorage();
+                this.initializeSampleItems();
+                this.initializeCountries();
+            }
+            
+            initializeSampleItems() {
+                if (this.items.length === 0) {
+                    const sampleItems = [
+                        {
+                            id: 1,
+                            itemName: "MacBook Pro 2022",
+                            itemPrice: "1999.99",
+                            currency: "USD",
+                            itemDescription: "Brand new MacBook Pro with M2 chip, 16GB RAM, 512GB SSD. Perfect condition.",
+                            imageUrl: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFjYm9vayUyMHByb3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+                            category: "Electronics",
+                            itemCondition: "New",
+                            businessName: "Tech Haven",
+                            location: "San Francisco, CA"
+                        },
+                        {
+                            id: 2,
+                            itemName: "Nike Air Jordan 1",
+                            itemPrice: "249.99",
+                            currency: "USD",
+                            itemDescription: "Limited edition Air Jordan 1 Retro High OG, size 10. Worn once.",
+                            imageUrl: "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YWlyJTIwam9yZGFufGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+                            category: "Fashion",
+                            itemCondition: "Like New",
+                            businessName: "Sneaker Empire",
+                            location: "New York, NY"
+                        },
+                        {
+                            id: 3,
+                            itemName: "Leather Sofa",
+                            itemPrice: "599.99",
+                            currency: "USD",
+                            itemDescription: "High-quality genuine leather sofa in excellent condition. 3-seater.",
+                            imageUrl: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+                            category: "Home",
+                            itemCondition: "Good",
+                            businessName: "Home Comfort",
+                            location: "Chicago, IL"
+                        },
+                        {
+                            id: 4,
+                            itemName: "Yoga Mat",
+                            itemPrice: "29.99",
+                            currency: "USD",
+                            itemDescription: "Eco-friendly yoga mat with carrying strap. Used for 2 months.",
+                            imageUrl: "https://images.unsplash.com/photo-1576678927484-cc9079573c3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8eW9nYSUyMG1hdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+                            category: "Sports",
+                            itemCondition: "Fair",
+                            businessName: "FitLife Gear",
+                            location: "Austin, TX"
+                        },
+                        {
+                            id: 5,
+                            itemName: "Sony WH-1000XM4",
+                            itemPrice: "279.99",
+                            currency: "USD",
+                            itemDescription: "Noise cancelling headphones with 30hr battery life. Like new.",
+                            imageUrl: "https://images.unsplash.com/photo-1615126454705-d88d2416c123?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aGVhZHBob25lc3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+                            category: "Electronics",
+                            itemCondition: "Like New",
+                            businessName: "Audio Masters",
+                            location: "Seattle, WA"
+                        },
+                        {
+                            id: 6,
+                            itemName: "Designer Handbag",
+                            itemPrice: "899.99",
+                            currency: "USD",
+                            itemDescription: "Authentic Gucci handbag from 2021 collection. Excellent condition.",
+                            imageUrl: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z3VjY2klMjBiYWd8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+                            category: "Fashion",
+                            itemCondition: "Good",
+                            businessName: "Luxury Bags",
+                            location: "Miami, FL"
+                        }
+                    ];
+                    
+                    this.items = sampleItems;
+                    this.saveItemsToLocalStorage();
+                }
+            }
+            
+            initializeCountries() {
+                const countries = [
+                    { name: "United States", code: "us" },
+                    { name: "Canada", code: "ca" },
+                    { name: "United Kingdom", code: "gb" },
+                    { name: "Australia", code: "au" },
+                    { name: "Germany", code: "de" },
+                    { name: "France", code: "fr" },
+                    { name: "Japan", code: "jp" },
+                    { name: "China", code: "cn" },
+                    { name: "India", code: "in" },
+                    { name: "Brazil", code: "br" },
+                    { name: "Mexico", code: "mx" },
+                    { name: "Italy", code: "it" },
+                    { name: "Spain", code: "es" },
+                    { name: "South Korea", code: "kr" },
+                    { name: "Russia", code: "ru" }
+                ];
+                
+                const dropdown = document.getElementById('countryDropdown');
+                countries.forEach(country => {
+                    const item = document.createElement('div');
+                    item.className = 'px-4 py-2 hover:bg-gray-700 cursor-pointer flex items-center';
+                    item.innerHTML = `
+                        <img src="https://flagcdn.com/w20/${country.code}.png" class="country-flag mr-2">
+                        <span>${country.name}</span>
+                    `;
+                    item.addEventListener('click', () => {
+                        document.getElementById('selectedCountry').textContent = country.name;
+                        document.getElementById('selectedFlag').src = `https://flagcdn.com/w20/${country.code}.png`;
+                        document.getElementById('countryDropdown').classList.add('hidden');
+                        this.filterByCountry(country.name);
+                    });
+                    dropdown.appendChild(item);
+                });
+                
+                // Set default country
+                document.getElementById('selectedCountry').textContent = countries[0].name;
+                document.getElementById('selectedFlag').src = `https://flagcdn.com/w20/${countries[0].code}.png`;
+            }
+            
+            filterByCountry(country) {
+                // In a real app, this would filter items by seller's country
+                // For this demo, we'll just show a notification
+                this.showNotification(`Showing items from ${country}`, 'info');
+            }
+            
+            addItem(itemData) {
+                // Get current location (simulated for this demo)
+                const location = this.getCurrentLocation();
+                
+                const newItem = {
+                    id: Date.now(),
+                    ...itemData,
+                    businessName: this.businessName,
+                    location: location,
+                    createdAt: new Date()
+                };
+                
+                this.items.push(newItem);
+                this.saveItemsToLocalStorage();
+                this.renderItems();
+                this.showNotification('Item listed successfully!');
+                return newItem;
+            }
+            
+            getCurrentLocation() {
+                // In a real app, this would use geolocation API
+                // For this demo, we'll return a random US location
+                const locations = [
+                    "New York, NY",
+                    "Los Angeles, CA",
+                    "Chicago, IL",
+                    "Houston, TX",
+                    "Phoenix, AZ",
+                    "Philadelphia, PA",
+                    "San Antonio, TX",
+                    "San Diego, CA",
+                    "Dallas, TX",
+                    "San Jose, CA"
+                ];
+                return locations[Math.floor(Math.random() * locations.length)];
+            }
+            
+            renderItems(filteredItems = null) {
+                const container = document.getElementById('itemsContainer');
+                container.innerHTML = '';
+                
+                const itemsToRender = filteredItems || this.items;
+                
+                if (itemsToRender.length === 0) {
+                    container.innerHTML = `
+                        <div class="col-span-3 text-center py-10">
+                            <i class="bi bi-exclamation-circle text-4xl text-gray-500 mb-3"></i>
+                            <p class="text-gray-400">No items found matching your criteria</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                itemsToRender.forEach(item => {
+                    const itemCard = document.createElement('div');
+                    itemCard.className = 'item-card rounded-xl overflow-hidden transition-all relative';
+                    itemCard.innerHTML = `
+                        ${item.businessName ? `<div class="business-name-badge">${item.businessName}</div>` : ''}
+                        ${item.location ? `<div class="location-badge">${item.location}</div>` : ''}
+                        <img src="${item.imageUrl}" class="w-full h-48 object-cover" alt="${item.itemName}">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1 truncate">${item.itemName}</h3>
+                            <p class="text-gray-400 text-sm mb-3 line-clamp-2">${item.itemDescription}</p>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-xs px-2 py-1 rounded ${this.getCategoryColorClass(item.category)}">${item.category}</span>
+                                <span class="font-bold text-yellow-400">${item.currency} ${item.itemPrice}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs text-gray-400">${item.itemCondition}</span>
+                                <button onclick="marketplaceManager.addToCart(${item.id})" class="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-gray-900 text-sm font-medium rounded transition-all flex items-center">
+                                    <i class="bi bi-cart-plus mr-1"></i> Add
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(itemCard);
+                });
+            }
+            
+            getCategoryColorClass(category) {
+                switch(category) {
+                    case 'Electronics': return 'bg-blue-900 text-blue-300';
+                    case 'Fashion': return 'bg-pink-900 text-pink-300';
+                    case 'Home': return 'bg-green-900 text-green-300';
+                    case 'Sports': return 'bg-yellow-900 text-yellow-300';
+                    default: return 'bg-gray-700 text-gray-300';
+                }
+            }
+            
+            addToCart(itemId) {
+                const item = this.items.find(i => i.id === itemId);
+                if (item) {
+                    cartManager.addToCart(item);
+                }
+            }
+            
+            saveItemsToLocalStorage() {
+                localStorage.setItem('marketplaceItems', JSON.stringify(this.items));
+            }
+            
+            loadItemsFromLocalStorage() {
+                const savedItems = localStorage.getItem('marketplaceItems');
+                this.items = savedItems ? JSON.parse(savedItems) : [];
+                this.renderItems();
+            }
+            
+            showNotification(message, type = 'success') {
+                const container = document.getElementById('notificationContainer');
+                const notification = document.createElement('div');
+                
+                let iconClass, bgClass;
+                if (type === 'success') {
+                    iconClass = 'bi-check-circle-fill text-green-400';
+                    bgClass = 'bg-green-900 bg-opacity-50 border-green-700';
+                } else if (type === 'error') {
+                    iconClass = 'bi-exclamation-circle-fill text-red-400';
+                    bgClass = 'bg-red-900 bg-opacity-50 border-red-700';
+                } else {
+                    iconClass = 'bi-info-circle-fill text-blue-400';
+                    bgClass = 'bg-blue-900 bg-opacity-50 border-blue-700';
+                }
+                
+                notification.className = `notification px-4 py-3 rounded-lg shadow-lg flex items-center ${bgClass} border`;
+                notification.innerHTML = `
+                    <i class="bi ${iconClass} mr-2"></i>
+                    <span>${message}</span>
+                `;
+                
+                container.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '1';
+                }, 10);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => container.removeChild(notification), 300);
+                }, 3000);
+            }
+        }
+        
+        // Helper functions
+        function getRandomLocation() {
+            const cities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia"];
+            const states = ["NY", "CA", "IL", "TX", "AZ", "PA"];
+            const randomIndex = Math.floor(Math.random() * cities.length);
+            return `${cities[randomIndex]}, ${states[randomIndex]}`;
+        }
+        
+        function generateRandomPhoneNumber() {
+            const areaCode = Math.floor(100 + Math.random() * 900);
+            const prefix = Math.floor(100 + Math.random() * 900);
+            const lineNumber = Math.floor(1000 + Math.random() * 9000);
+            return `(${areaCode}) ${prefix}-${lineNumber}`;
+        }
+        
+        // Global Instances
+        const cartManager = new CartManager();
+        const marketplaceManager = new MarketplaceManager();
+        
+        // Page Navigation Functions
+        function showLandingPage() {
+            document.getElementById('landingPage').classList.remove('hidden');
+            document.getElementById('sellPage').classList.add('hidden');
+            document.getElementById('buyPage').classList.add('hidden');
+            window.scrollTo(0, 0);
+        }
+        
+        function showSellPage() {
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('sellPage').classList.remove('hidden');
+            document.getElementById('buyPage').classList.add('hidden');
+            
+            // Load saved business name if exists
+            const businessName = localStorage.getItem('sellerBusinessName');
+            if (businessName) {
+                document.getElementById('businessName').value = businessName;
+            }
+            
+            window.scrollTo(0, 0);
+        }
+        
+        function showBuyPage() {
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('sellPage').classList.add('hidden');
+            document.getElementById('buyPage').classList.remove('hidden');
+            marketplaceManager.renderItems();
+            window.scrollTo(0, 0);
+        }
+        
+        // Category Selection
+        function selectCategory(category) {
+            marketplaceManager.selectedCategory = category;
+            
+            // Update active state of buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            marketplaceManager.showNotification(`Selected Category: ${category}`);
+        }
+        
+        // Business Name Functions
+        function saveBusinessName() {
+            const businessNameInput = document.getElementById('businessName');
+            const businessName = businessNameInput.value.trim();
+            
+            if (businessName) {
+                localStorage.setItem('sellerBusinessName', businessName);
+                marketplaceManager.businessName = businessName;
+                marketplaceManager.showNotification('Business name saved successfully!');
+            } else {
+                marketplaceManager.showNotification('Please enter a valid business name', 'error');
+            }
+        }
+        
+        // Search and Filter Functions
+        function searchItems() {
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const filteredItems = marketplaceManager.items.filter(item => 
+                item.itemName.toLowerCase().includes(searchQuery) ||
+                item.itemDescription.toLowerCase().includes(searchQuery) ||
+                (item.businessName && item.businessName.toLowerCase().includes(searchQuery))
+            );
+            marketplaceManager.renderItems(filteredItems);
+        }
+        
+        function filterItems(category) {
+            if (category === 'All') {
+                marketplaceManager.renderItems();
+                return;
+            }
+            
+            const filteredItems = marketplaceManager.items.filter(item => 
+                item.category === category
+            );
+            marketplaceManager.renderItems(filteredItems);
+        }
+        
+        function applyPriceFilter() {
+            const minPrice = document.getElementById('minPriceFilter').value;
+            const maxPrice = document.getElementById('maxPriceFilter').value;
+            
+            const filteredItems = marketplaceManager.items.filter(item => {
+                const price = parseFloat(item.itemPrice);
+                return (!minPrice || price >= parseFloat(minPrice)) &&
+                       (!maxPrice || price <= parseFloat(maxPrice));
+            });
+            
+            marketplaceManager.renderItems(filteredItems);
+        }
+        
+        // Cart Modal Functions
+        function openCartModal() {
+            document.getElementById('cartModal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+        
+        function closeCartModal() {
+            document.getElementById('cartModal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+        
+        // Checkout Function
+        function checkoutCart() {
+            if (cartManager.cart.length === 0) {
+                marketplaceManager.showNotification('Your cart is empty!', 'error');
+                return;
+            }
+            
+            // Simulate checkout process
+            marketplaceManager.showNotification(`Checkout successful! Total: $${cartManager.calculateTotal()}`);
+            
+            // Clear cart
+            cartManager.cart = [];
+            cartManager.saveCartToLocalStorage();
+            cartManager.updateCartUI();
+            
+            closeCartModal();
+        }
+        
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Country Dropdown Toggle
+        function toggleCountryDropdown() {
+            document.getElementById('countryDropdown').classList.toggle('hidden');
+        }
+        
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize preloader
+            new AdvancedPreloader();
+            
+            // Set up mobile menu button
+            document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileMenu);
+            
+            // Set up country dropdown
+            document.getElementById('countryDropdownBtn').addEventListener('click', toggleCountryDropdown);
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (event) => {
+                const dropdown = document.getElementById('countryDropdown');
+                const dropdownBtn = document.getElementById('countryDropdownBtn');
+                
+                if (!dropdown.contains(event.target) && !dropdownBtn.contains(event.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+            
+            // Set up sell form
+            const sellForm = document.getElementById('sellForm');
+            
+            sellForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const formData = new FormData(sellForm);
+                
+                const imageFile = formData.get('itemImage');
+                const imageUrl = imageFile && imageFile.size > 0 
+                    ? URL.createObjectURL(imageFile)
+                    : 'https://via.placeholder.com/300x200?text=No+Image';
+                
+                const itemData = {
+                    itemName: formData.get('itemName'),
+                    itemPrice: formData.get('itemPrice'),
+                    currency: formData.get('currency'),
+                    itemDescription: formData.get('itemDescription'),
+                    imageUrl: imageUrl,
+                    category: marketplaceManager.selectedCategory || 'Uncategorized',
+                    itemCondition: formData.get('itemCondition')
+                };
+                
+                marketplaceManager.addItem(itemData);
+                sellForm.reset();
+            });
+        });
+        
+        document.addEventListener('app-ready', () => {
+            // Main application is ready
+            console.log('Application is now ready to use');
+        });
+        
+        // Prevent right-click
         document.addEventListener('contextmenu', event => event.preventDefault());
-      </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-      
+    </script>
 </body>
 </html>

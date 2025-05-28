@@ -9,10 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet"  href="chat.css">  
     
   
 </head>
+
 <body>
      <!-- © SMILEX. This code is protected. -->
     <div class="chat-preloader">
@@ -402,144 +405,572 @@
     </div>
     </div>
 
-     <div id="app-container">
-        <!-- Profile Setup Modal -->
-        <div id="profile-setup">
-            <div class="profile-modal">
-                <h2>Set Up Your Profile</h2>
-                
-                <img id="profile-pic-preview" src="https://via.placeholder.com/150" alt="">
-                
-                <div class="mb-3">
-                    <input type="text" id="username-input" class="form-control" placeholder="Chat Name" required maxlength="20">
+  <body class="bg-gray-50 dark:bg-dark-900 text-gray-900 dark:text-gray-100 font-sans antialiased transition-colors duration-200">
+    <!-- Navigation -->
+    <nav class="bg-black dark:bg-dark-800 shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo and main nav -->
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center">
+                        <i class="fas fa-smile-beam text-2xl text-smile-500 mr-2"></i>
+                        <span class="text-xl font-bold gradient-text">SmileX</span>
+                    </div>
+                    
                 </div>
                 
-                <div class="mb-3 d-flex justify-content-center gap-2">
-                    <button id="file-pic-btn" class="btn btn-primary">
-                        <i class="fas fa-upload"></i> Upload Picture
-                        <input type="file" id="profile-pic-input" accept="image/*" style="display:none;">
+                <!-- Search and user controls -->
+                <div class="flex items-center space-x-4">
+                    <div class="relative hidden md:block">
+                        <input type="text" placeholder="Search Communities..." 
+                            class="w-64 pl-10 pr-4 py-2 bg-gray-100 dark:bg-dark-700 border border-gray-200 dark:border-dark-600 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-smile-500 focus:border-transparent">
+                        <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                    </div>
+                    
+                    <button class="p-2 rounded-full bg-gray-100 dark:bg-dark-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600">
+                        <i class="fas fa-bell"></i>
                     </button>
                     
-                    <button id="take-photo-btn" class="btn btn-secondary">
-                        <i class="fas fa-camera"></i> Take Photo
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 focus:outline-none">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-r from-smile-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                                <span>U</span>
+                            </div>
+                            <i class="fas fa-chevron-down text-xs text-gray-500 dark:text-gray-400"></i>
+                        </button>
+                    </div>
+                    
+                    <button class="md:hidden p-2 rounded-full bg-gray-100 dark:bg-dark-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600">
+                        <i class="fas fa-bars"></i>
                     </button>
                 </div>
-                
-                <button id="save-profile-btn" class="btn btn-success w-100">Save Profile</button>
             </div>
         </div>
+    </nav>
 
-        <!-- Camera Modal -->
-        <div id="camera-modal" style="display:none;">
-            <video id="camera-feed"></video>
-            <canvas id="photo-canvas" style="display:none;"></canvas>
-            <div class="mt-3">
-                <button id="capture-btn" class="btn btn-light me-2">
-                    <i class="fas fa-camera"></i> Capture
-                </button>
-                <button id="close-camera-btn" class="btn btn-danger">Close</button>
-            </div>
-        </div>
-
-      <!-- Chat Header -->
-    <header class="bg-primary text-white">
-        <div class="header-left">
-            <h2>
-                <i class="fas fa-comments"></i> Community Connect
-            </h2>
-        </div>
-
-      
-
-        <!-- Profile Container -->
-        <div class="profile-container">
-            <!-- Profile Button -->
-            <button class="profile-btn" id="profileToggle">
-                <img id="profileImage" src="default-profile.jpg" alt="Profile">
-            </button>
-
-            <!-- Profile Dropdown -->
-            <div class="profile-dropdown" id="profileDropdown">
-                <div class="profile-header">
-                    <img class="profile-avatar-large" id="largeProfileAvatar" src="default-profile.jpg" alt="Profile">
-                    <div class="profile-info">
-                        <div class="profile-name" id="profileName">MEMBER</div>
-                        <div class="profile-email" id="profileEmail">member@example.com</div>
+    <!-- Main content -->
+    <div class="container mx-auto px-4 py-6">
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Left sidebar - Communities -->
+            <div class="lg:w-1/5 hidden lg:block">
+                <div class="bg-black dark:bg-dark-800 rounded-lg shadow-sm p-4 sticky top-24">
+                    <h3 class="font-bold text-lg mb-4 flex items-center">
+                        <i class="fas fa-users mr-2 text-smile-500"></i>
+                         Communities
+                    </h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700">
+                                <span class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs mr-2">S</span>
+                                <span>SmileX</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700">
+                                <span class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white text-xs mr-2">T</span>
+                                <span>Team SmileX</span>
+                            </a>
+                        </li>
+                        <li>
+                     
+                    
+                    <div class="mt-6">
+                        <button class="w-full py-2 px-4 bg-smile-100 dark:bg-dark-700 text-smile-600 dark:text-smile-400 rounded-lg font-medium hover:bg-smile-200 dark:hover:bg-dark-600 flex items-center justify-center">
+                            <i class="fas fa-plus mr-2"></i> Create Community
+                        </button>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h3 class="font-bold text-lg mb-4 flex items-center">
+                            <i class="fas fa-fire mr-2 text-smile-500"></i>
+                            Trending
+                        </h3>
+                        <ul class="space-y-3">
+                            <li>
+                                <a href="#" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700">
+                                    <div class="flex items-center">
+                                        <span class="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white text-xs mr-2">S</span>
+                                        <span>SmileX</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">+12.5M</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700">
+                                    <div class="flex items-center">
+                                        <span class="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs mr-2">T</span>
+                                        <span>t/Team SmileX</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">+8.2M</span>
+                                </a>
+                            </li>
+                            <li>
+                              
                     </div>
                 </div>
-
-                <div class="profile-menu">
-                    <div class="profile-menu-item" id="editProfileBtn">
-                        <i class="fas fa-user-edit"></i> Edit Profile
+            </div>
+            
+            <!-- Main feed -->
+            <div class="lg:w-3/5">
+                <!-- Create post card -->
+                <div class="bg-black dark:bg-dark-800 rounded-lg shadow-sm mb-6 post-card">
+                    <div class="p-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-smile-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                                <span>U</span>
+                            </div>
+                            <input type="text" placeholder="Create a post..." 
+                                class="flex-1 px-4 py-2 bg-gray-100 dark:bg-dark-700 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-smile-500 focus:border-transparent cursor-pointer"
+                                onclick="document.getElementById('create-post-modal').classList.remove('hidden')">
+                        </div>
+                        <div class="flex justify-between mt-3">
+                            <button class="flex-1 py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 text-gray-600 dark:text-gray-300 flex items-center justify-center">
+                                <i class="far fa-image text-lg mr-2"></i> Image
+                            </button>
+                            <button class="flex-1 py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 text-gray-600 dark:text-gray-300 flex items-center justify-center">
+                                <i class="fas fa-link text-lg mr-2"></i> Link
+                            </button>
+                            <button class="flex-1 py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 text-gray-600 dark:text-gray-300 flex items-center justify-center">
+                                <i class="far fa-file-alt text-lg mr-2"></i> Text
+                            </button>
+                            <button class="flex-1 py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 text-gray-600 dark:text-gray-300 flex items-center justify-center">
+                                <i class="fas fa-poll text-lg mr-2"></i> Poll
+                            </button>
+                        </div>
                     </div>
+                </div>
                 
-                    <div class="profile-menu-divider"></div>
-                    <div class="profile-menu-item" id="logoutBtn">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                <!-- Post sorting -->
+                <div class="bg-black dark:bg-dark-800 rounded-lg shadow-sm mb-6">
+                    <div class="p-3 flex items-center space-x-4 overflow-x-auto scrollbar-hide">
+                        <button class="px-3 py-1.5 bg-smile-100 dark:bg-dark-700 text-smile-600 dark:text-smile-400 rounded-full text-sm font-medium whitespace-nowrap">
+                            <i class="fas fa-bolt mr-1"></i> Hot
+                        </button>
+                        <button class="px-3 py-1.5 bg-gray-100 dark:bg-dark-700 text-gray-600 dark:text-gray-300 rounded-full text-sm font-medium hover:bg-gray-200 dark:hover:bg-dark-600 whitespace-nowrap">
+                            <i class="fas fa-certificate mr-1"></i> New
+                        </button>
+                        <button class="px-3 py-1.5 bg-gray-100 dark:bg-dark-700 text-gray-600 dark:text-gray-300 rounded-full text-sm font-medium hover:bg-gray-200 dark:hover:bg-dark-600 whitespace-nowrap">
+                            <i class="fas fa-arrow-trend-up mr-1"></i> Top
+                        </button>
+                        <button class="px-3 py-1.5 bg-gray-100 dark:bg-dark-700 text-gray-600 dark:text-gray-300 rounded-full text-sm font-medium hover:bg-gray-200 dark:hover:bg-dark-600 whitespace-nowrap">
+                            <i class="fas fa-ellipsis mr-1"></i> More
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Posts feed -->
+                <div id="posts-feed" class="space-y-4">
+                    <!-- Sample post 1 -->
+                    <div class="bg-black dark:bg-dark-800 rounded-lg shadow-sm post-card fade-in">
+                        <div class="p-4">
+                            <div class="flex items-start">
+                                <!-- Vote buttons -->
+                                <div class="flex flex-col items-center mr-4">
+                                    <button class="vote-button text-gray-400 hover:text-smile-500">
+                                        <i class="fas fa-arrow-up text-xl"></i>
+                                    </button>
+                                    <span class="my-1 font-medium text-gray-600 dark:text-gray-300">5.4M</span>
+                                    <button class="vote-button text-gray-400 hover:text-blue-500">
+                                        <i class="fas fa-arrow-down text-xl"></i>
+                                    </button>
+                                </div>
+                                
+                                <!-- Post content -->
+                                <div class="flex-1">
+                                    <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-2">
+                                        <span class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs mr-2">S</span>
+                                        <span class="font-medium">SmileX</span>
+                                        <span class="mx-1">•</span>
+                                        <span>Posted by SmileX</span>
+                                        <span class="mx-1">•</span>
+                                        <span>Later</span>
+                                    </div>
+                                    
+                                    <h3 class="text-xl font-medium mb-2">WELCOME EVERYONE.</h3>
+                                    
+                                    <div class="prose dark:prose-invert max-w-none mb-4">
+                                        <p>Welcome,everyone and those viewing this message to explore and have fun on this page,but remmember the rules and regulations</p>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex space-x-4">
+                                            <button class="flex items-center text-gray-500 dark:text-gray-400 hover:text-smile-500 dark:hover:text-smile-400">
+                                                <i class="far fa-comment mr-1"></i>
+                                                <span>1.4k Comments</span>
+                                            </button>
+                                            <button class="flex items-center text-gray-500 dark:text-gray-400 hover:text-green-500">
+                                                <i class="fas fa-share mr-1"></i>
+                                                <span>Share</span>
+                                            </button>
+                                            <button class="flex items-center text-gray-500 dark:text-gray-400 hover:text-yellow-500">
+                                                <i class="far fa-bookmark mr-1"></i>
+                                                <span>Save</span>
+                                            </button>
+                                        </div>
+                                        <button class="text-gray-500 dark:text-gray-400 hover:text-red-500">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sample post 2 (image) -->
+                    <div class="bg-black dark:bg-dark-800 rounded-lg shadow-sm post-card fade-in">
+                        <div class="p-4">
+                            <div class="flex items-start">
+                                <!-- Vote buttons -->
+                                <div class="flex flex-col items-center mr-4">
+                                    <button class="vote-button text-gray-400 hover:text-smile-500">
+                                        <i class="fas fa-arrow-up text-xl"></i>
+                                    </button>
+                                    <span class="my-1 font-medium text-gray-600 dark:text-gray-300">2.7M</span>
+                                    <button class="vote-button text-gray-400 hover:text-blue-500">
+                                        <i class="fas fa-arrow-down text-xl"></i>
+                                    </button>
+                                </div>
+                                
+                                <!-- Post content -->
+                                <div class="flex-1">
+                                    <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-2">
+                                        <span class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white text-xs mr-2">T</span>
+                                        <span class="font-medium">Team SmileX</span>
+                                        <span class="mx-1">•</span>
+                                        <span>Posted by Team SmileX</span>
+                                        <span class="mx-1">•</span>
+                                        <span>Later</span>
+                                    </div>
+                                    
+                                    <h3 class="text-xl font-medium mb-2">Hi everyone,good luck on this page</h3>
+                                    
+                                    <div class="mb-4">
+                                        <img src="https://source.unsplash.com/random/800x600/?grand,canyon,sunrise" 
+                                            alt="Grand Canyon sunrise" 
+                                            class="w-full h-auto rounded-lg object-cover max-h-96">
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex space-x-4">
+                                            <button class="flex items-center text-gray-500 dark:text-gray-400 hover:text-smile-500 dark:hover:text-smile-400">
+                                                <i class="far fa-comment mr-1"></i>
+                                                <span>423 Comments</span>
+                                            </button>
+                                            <button class="flex items-center text-gray-500 dark:text-gray-400 hover:text-green-500">
+                                                <i class="fas fa-share mr-1"></i>
+                                                <span>Share</span>
+                                            </button>
+                                            <button class="flex items-center text-gray-500 dark:text-gray-400 hover:text-yellow-500">
+                                                <i class="far fa-bookmark mr-1"></i>
+                                                <span>Save</span>
+                                            </button>
+                                        </div>
+                                        <button class="text-gray-500 dark:text-gray-400 hover:text-red-500">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sample post 3 (poll) -->
+                    <div class="bg-black dark:bg-dark-800 rounded-lg shadow-sm post-card fade-in">
+                        <div class="p-4">
+                            <div class="flex items-start">
+                                <!-- Vote buttons -->
+                                <div class="flex flex-col items-center mr-4">
+                                    <button class="vote-button text-gray-400 hover:text-smile-500">
+                                        <i class="fas fa-arrow-up text-xl"></i>
+                                    </button>
+                                    <span class="my-1 font-medium text-gray-600 dark:text-gray-300">7.4M</span>
+                                    <button class="vote-button text-gray-400 hover:text-blue-500">
+                                        <i class="fas fa-arrow-down text-xl"></i>
+                                    </button>
+                                </div>
+                                
+                                <!-- Post content -->
+                                <div class="flex-1">
+                                    <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-2">
+                                        <span class="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center text-white text-xs mr-2">S</span>
+                                        <span class="font-medium">SmileX</span>
+                                        <span class="mx-1">•</span>
+                                        <span>Posted by SmileX</span>
+                                        <span class="mx-1">•</span>
+                                        <span>Later</span>
+                                    </div>
+                                    
+                                    <h3 class="text-xl font-medium mb-2">What are you most excited for?</h3>
+                                    
+                                    <div class="mb-4">
+                                        <div class="space-y-2">
+                                            <div class="flex items-center justify-between p-3 bg-gray-100 dark:bg-dark-700 rounded-lg">
+                                                <span>Entertainment</span>
+                                                <span class="text-sm text-gray-500 dark:text-gray-400">24% (2.6M votes)</span>
+                                            </div>
+                                            <div class="flex items-center justify-between p-3 bg-gray-100 dark:bg-dark-700 rounded-lg">
+                                                <span>Music</span>
+                                                <span class="text-sm text-gray-500 dark:text-gray-400">14% (1.34M votes)</span>
+                                            </div>
+                                            <div class="flex items-center justify-between p-3 bg-gray-100 dark:bg-dark-700 rounded-lg">
+                                                <span>Sports</span>
+                                                <span class="text-sm text-gray-500 dark:text-gray-400">35% (3.7M votes)</span>
+                                            </div>
+                                            <div class="flex items-center justify-between p-3 bg-gray-100 dark:bg-dark-700 rounded-lg">
+                                                <span>Gaming</span>
+                                                <span class="text-sm text-gray-500 dark:text-gray-400">27% (2.9M votes)</span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                                            10.54M votes • Vote ended
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex space-x-4">
+                                            <button class="flex items-center text-gray-500 dark:text-gray-400 hover:text-smile-500 dark:hover:text-smile-400">
+                                                <i class="far fa-comment mr-1"></i>
+                                                <span>872 Comments</span>
+                                            </button>
+                                            <button class="flex items-center text-gray-500 dark:text-gray-400 hover:text-green-500">
+                                                <i class="fas fa-share mr-1"></i>
+                                                <span>Share</span>
+                                            </button>
+                                            <button class="flex items-center text-gray-500 dark:text-gray-400 hover:text-yellow-500">
+                                                <i class="far fa-bookmark mr-1"></i>
+                                                <span>Save</span>
+                                            </button>
+                                        </div>
+                                        <button class="text-gray-500 dark:text-gray-400 hover:text-red-500">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Load more button -->
+                <div class="mt-6 text-center">
+                    <button class="px-6 py-2 bg-smile-100 dark:bg-dark-700 text-smile-600 dark:text-smile-400 rounded-lg font-medium hover:bg-smile-200 dark:hover:bg-dark-600">
+                        Load more posts
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Right sidebar - Recommendations -->
+            <div class="lg:w-1/5 hidden lg:block">
+                <div class="bg-black dark:bg-dark-800 rounded-lg shadow-sm p-4 sticky top-24">
+                    <h3 class="font-bold text-lg mb-4 flex items-center">
+                        <i class="fas fa-compass mr-2 text-smile-500"></i>
+                        Discover
+                    </h3>
+                    
+                    <!-- Recommended communities -->
+                    <div class="space-y-4">
+                        <div class="community-card bg-gray-50 dark:bg-dark-700 rounded-lg p-3">
+                            <div class="flex items-center mb-2">
+                                <span class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs mr-2">t</span>
+                                <div>
+                                    <h4 class="font-medium">SmileX</h4>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">12.5m members</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">The latest in updates and innovation</p>
+                         
+                        
+                        <div class="community-card bg-gray-50 dark:bg-dark-700 rounded-lg p-3">
+                            <div class="flex items-center mb-2">
+                                <span class="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center text-white text-xs mr-2">a</span>
+                                <div>
+                                    <h4 class="font-medium">Team SmileX</h4>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">8.2m members</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">Ask Anything interviews</p>
+                           
+                        </div>
+                        
+                        <div class="community-card bg-gray-50 dark:bg-dark-700 rounded-lg p-3">
+                            <div class="flex items-center mb-2">
+                                <span class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs mr-2">m</span>
+                                <div>
+                                    <h4 class="font-medium">m/Memes</h4>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">5.7m members</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">The funniest memes on the internet</p>
+                           
+                        </div>
+                    </div>
+                    
+                    <!-- Premium ad -->
+                    <div class="mt-6 bg-gradient-to-r from-smile-500 to-purple-500 rounded-lg p-4 text-white">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-crown text-xl mr-2"></i>
+                            <h4 class="font-bold">Smile Premium</h4>
+                        </div>
+                        <p class="text-sm mb-3">Get ad-free browsing, exclusive awards, and support Smile.</p>
+                        <button class="w-full py-1.5 px-3 bg-white text-smile-600 rounded-full text-sm font-medium hover:bg-gray-100">
+                            TRY PREMIUM
+                        </button>
+                    </div>
+                    
+                    <!-- Footer links -->
+                    <div class="mt-6 text-xs text-gray-500 dark:text-gray-400 space-y-2">
+                        <div class="flex flex-wrap gap-2">
+                            <a href="aboutus.html" class="hover:underline">About us</a>
+                            <a href="service.html" class="hover:underline">contact us</a>
+                            <a href="learn.html" class="hover:underline">learn more</a>
+                            <a href="cancel.html" class="hover:underline">get premium</a>
+                           
+                        </div>
+                        <p>© 2026 Smile, Inc. All rights reserved.</p>
                     </div>
                 </div>
             </div>
         </div>
-    </header>
+    </div>
 
-    <!-- Camera Modal -->
-    <div class="camera-modal" id="cameraModal">
-        <div class="camera-modal-content">
-            <video id="cameraFeed" class="camera-preview" autoplay></video>
-            <canvas id="captureCanvas" style="display:none;"></canvas>
-            <div class="camera-controls">
-                <button id="captureBtn">Capture</button>
-                <button id="uploadBtn">Upload</button>
-                <button id="closeModalBtn">Close</button>
+    <!-- Mobile bottom navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-800 shadow-lg border-t border-gray-200 dark:border-dark-700 z-50">
+        <div class="flex justify-around items-center h-16">
+            <a href="#" class="flex flex-col items-center justify-center text-smile-600 dark:text-smile-400">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs mt-1">Home</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center text-gray-600 dark:text-gray-400">
+                <i class="fas fa-compass text-xl"></i>
+                <span class="text-xs mt-1">Explore</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center text-gray-600 dark:text-gray-400">
+                <i class="fas fa-plus-circle text-xl"></i>
+                <span class="text-xs mt-1">Create</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center text-gray-600 dark:text-gray-400">
+                <i class="fas fa-bell text-xl"></i>
+                <span class="text-xs mt-1">Notifications</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center text-gray-600 dark:text-gray-400">
+                <i class="fas fa-inbox text-xl"></i>
+                <span class="text-xs mt-1">Inbox</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Create post modal -->
+    <div id="create-post-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-black dark:bg-dark-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <!-- Modal header -->
+            <div class="p-4 border-b border-gray-200 dark:border-dark-700 flex items-center justify-between">
+                <h3 class="text-lg font-bold">Create a post</h3>
+                <button onclick="document.getElementById('create-post-modal').classList.add('hidden')" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Modal content -->
+            <div class="p-4 flex-1 overflow-y-auto ">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Choose a community</label>
+                    <select class="w-full bg-gray-100 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-smile-500 focus:border-transparent">
+                        <option>Select a community</option>
+                        <option>General</option>
+                        <option>Your post</option>
+                        <option>SmileX</option>
+                        <option>Team SmileX</option>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <input type="text" placeholder="Title" class="w-full bg-gray-100 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-smile-500 focus:border-transparent">
+                </div>
+                
+                <div class="mb-4">
+                    <textarea placeholder="What are your thoughts?" rows="6" class="w-full bg-gray-100 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-smile-500 focus:border-transparent"></textarea>
+                </div>
+                
+                <div class="border-2 border-dashed border-gray-300 dark:border-dark-600 rounded-lg p-4 text-center mb-4">
+                    <i class="fas fa-image text-3xl text-gray-400 mb-2"></i>
+                    <p class="text-gray-500 dark:text-gray-400">Drag and drop images or <button class="text-smile-600 dark:text-smile-400 font-medium">browse</button></p>
+                </div>
+                
+                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                    <div class="flex space-x-3">
+                        <button class="flex items-center">
+                            <i class="far fa-image mr-1"></i> Image
+                        </button>
+                        <button class="flex items-center">
+                            <i class="fas fa-link mr-1"></i> Link
+                        </button>
+                        <button class="flex items-center">
+                            <i class="fas fa-poll mr-1"></i> Poll
+                        </button>
+                    </div>
+                    <button class="text-sm">
+                        <i class="fas fa-markdown mr-1"></i> Markdown
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Modal footer -->
+            <div class="p-4 border-t border-gray-200 dark:border-dark-700 flex justify-end">
+                <button onclick="document.getElementById('create-post-modal').classList.add('hidden')" class="px-4 py-2 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded-lg mr-2 hover:bg-gray-200 dark:hover:bg-dark-600">
+                    Cancel
+                </button>
+                <button class="px-4 py-2 bg-smile-500 text-white rounded-lg hover:bg-smile-600">
+                    Post
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- Dark mode toggle (hidden in the corner) -->
+    <button id="dark-mode-toggle" class="fixed bottom-4 right-4 w-12 h-12 rounded-full bg-white dark:bg-dark-700 shadow-lg flex items-center justify-center text-gray-700 dark:text-gray-300 z-50">
+        <i class="fas fa-moon dark:hidden"></i>
+        <i class="fas fa-sun hidden dark:block"></i>
+    </button>
 
-      
-        <!-- Messages Container -->
-        <div id="messages-container"></div>
-  
-        
-     
-        <!-- Input Container -->
-         
-        <div id="input-container">
-            <input type="text" id="message-input" placeholder="Type a message...">
-            <div class="action-buttons">
-                <input type="file" id="file-input" accept="image/*,video/*" style="display:none;">
-                <button class="action-btn" id="file-upload-btn">
-                    <i class="fas fa-image"></i>
-                </button>
-                <button class="action-btn" id="record-audio-btn">
-                    <i class="fas fa-microphone"></i>
-                </button>
-                <button id="send-message-btn" class="btn btn-primary rounded-circle">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-                <button id="emoji-btn">😊</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="emoji-picker" class="emoji-picker">
-    <div class="emoji-categories">
-        <button class="emoji-category active" data-category="smileys">😀</button>
-        <button class="emoji-category" data-category="animals">🐶</button>
-        <button class="emoji-category" data-category="food">🍔</button>
-    </div>
-    <div class="emoji-grid">
-        <!-- Dynamically populated emojis -->
-    </div>
-</div>
   
     <script src="chat.js">
+        
      
     </script>
  <!-- © SMILEX. This code is protected. -->
 <script>
     document.addEventListener('contextmenu', event => event.preventDefault());
   </script>
+
+  <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        smile: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                        },
+                        dark: {
+                            900: '#0f0f13',
+                            800: '#18181d',
+                            700: '#22222a',
+                            600: '#2d2d37',
+                            500: '#383844',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
   
 </body>
 </html>

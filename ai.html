@@ -3,34 +3,700 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <!-- © SMILEX. This code is protected. -->
-    <title> SmileX:Generate Anything....</title>
+    <title>SmileX: AI-Powered Content Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="ai.css">
-    
+    <style>
+        :root {
+            --primary-color: #00ffff;
+            --secondary-color: #ff00ff;
+            --bg-dark: #0a0a1a;
+            --text-light: #ffffff;
+            --accent-color: #6b48ff;
+            --error-color: #ff4444;
+            --success-color: #00ff87;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100dvh;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
+            perspective: 1500px;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            color: var(--text-light);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        #wavy-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .wave-particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.7;
+            filter: blur(2px);
+            transition: all 2s ease;
+            box-shadow: 
+                0 0 10px rgba(0, 255, 255, 0.5),
+                0 0 20px rgba(255, 0, 255, 0.3);
+        }
+
+        @keyframes wavyMotion {
+            0% {
+                transform: 
+                    translateX(0)
+                    translateY(0)
+                    rotate(0deg)
+                    scale(0.8);
+                opacity: 0.4;
+            }
+            50% {
+                transform: 
+                    translateX(50px)
+                    translateY(20px)
+                    rotate(180deg)
+                    scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: 
+                    translateX(100px)
+                    translateY(0)
+                    rotate(360deg)
+                    scale(1);
+                opacity: 0.6;
+            }
+        }
+
+        .circuit-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.2;
+        }
+
+        .wave-line {
+            position: absolute;
+            background: linear-gradient(
+                to right,
+                transparent,
+                rgba(0, 255, 255, 0.7),
+                transparent
+            );
+            animation: waveLineFlow 5s linear infinite;
+        }
+
+        @keyframes waveLineFlow {
+            0% {
+                transform: 
+                    translateX(-100%)
+                    translateY(0)
+                    rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: 
+                    translateX(0)
+                    translateY(20px)
+                    rotate(10deg);
+                opacity: 0.6;
+            }
+            100% {
+                transform: 
+                    translateX(100%)
+                    translateY(0)
+                    rotate(0deg);
+                opacity: 0.3;
+            }
+        }
+
+        #dynamic-text-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            pointer-events: none;
+            background: transparent;
+        }
+
+        #typing-text {
+            font-family: 'Arial', sans-serif;
+            font-size: 5rem;
+            font-weight: bold;
+            text-align: center;
+            background: rgb(236, 233, 233);
+            background-size: 400% 400%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            padding: 10px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            margin-left: 5px;
+            width: 10px;
+            height: 50px;
+            background: transparent;
+            animation: 
+                blink 0.7s infinite,
+                cursorGradient 3s ease infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @keyframes cursorGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes textGlow {
+            0% { 
+                text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                transform: scale(1);
+            }
+            100% { 
+                text-shadow: 0 4px 10px rgba(0,0,0,0.4);
+                transform: scale(1.01);
+            }
+        }
+
+        #welcomeOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 1s ease;
+            overflow: hidden;
+        }
+
+        #welcomeText {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            text-align: center;
+            background: linear-gradient(
+                45deg,
+                #405de6,
+                #5851db,
+                #833ab4,
+                #c13584,
+                #e1306c,
+                #fd1d1d
+            );
+            background-size: 400% 400%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: 
+                gradientFlow 10s ease infinite,
+                textGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes particleAnimation {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(
+                45deg,
+                #405de6,
+                #5851db,
+                #833ab4,
+                #c13584,
+                #e1306c,
+                #fd1d1d
+            );
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleAnimation 5s linear infinite;
+        }
+
+        .quantum-input-container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .input-wrapper {
+            background: transparent;
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255,255,255,0.05);
+            box-shadow: 
+                0 25px 45px rgba(0,0,0,0.3),
+                inset 0 0 15px rgba(255,255,255,0.05);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-style: preserve-3d;
+        }
+
+        .input-wrapper:hover {
+            box-shadow: 
+                0 35px 55px rgba(0,0,0,0.4),
+                inset 0 0 25px rgba(255,255,255,0.1);
+        }
+
+        .quantum-input {
+            width: 100%;
+            padding: 15px 70px 15px 20px;
+            font-size: 18px;
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: var(--text-light);
+            outline: none;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .quantum-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 
+                0 0 15px rgba(0, 255, 255, 0.3),
+                inset 0 0 10px rgba(0, 255, 255, 0.1);
+        }
+
+        .input-actions {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 3;
+        }
+
+        .send-button {
+            background: linear-gradient(
+                45deg,
+                var(--primary-color),
+                var(--secondary-color)
+            );
+            color: var(--bg-dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 10px 20px rgba(0,255,255,0.3),
+                0 0 20px rgba(255,0,255,0.2);
+        }
+
+        .notification-area {
+            position: absolute;
+            bottom: -60px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .notification {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            max-width: 90%;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .notification.error {
+            background-color: rgba(255, 68, 68, 0.2);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+
+        .notification.success {
+            background-color: rgba(0, 255, 135, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .emoji-picker {
+            position: absolute;
+            bottom: -70px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.4s ease;
+            z-index: 10;
+        }
+
+        .input-wrapper:hover .emoji-picker {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .emoji-picker span {
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .emoji-picker span:hover {
+            transform: scale(1.3) rotate(10deg);
+        }
+
+
+#analysisOverlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: var(--quantum-overlay-bg) !important;
+    backdrop-filter: blur(15px) !important;
+    z-index: 9999 !important;
+    display: none;
+    overflow: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#analysisContent {
+    width: 100% !important;
+    max-width: 800px !important;
+    margin: 50px auto !important;
+    padding: 20px !important;
+}
+
+.quantum-bubble {
+    background: rgba(26, 26, 46, 0.8) !important;
+    border-radius: 15px !important;
+    padding: 20px !important;
+    margin-bottom: 15px !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.quantum-loader {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 20px !important;
+}
+
+.quantum-dot {
+    width: 15px !important;
+    height: 15px !important;
+    background-color: var(--quantum-accent) !important;
+    border-radius: 50% !important;
+    margin: 0 10px !important;
+    animation: quantum-pulse 1s infinite alternate !important;
+}
+
+        #closeOverlayBtn {
+            position: fixed !important;
+            top: 20px !important;
+            right: 20px !important;
+            background: rgba(255,255,255,0.1) !important;
+            color: var(--text-light) !important;
+            border: none !important;
+            border-radius: 50% !important;
+            width: 50px !important;
+            height: 50px !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            cursor: pointer !important;
+            z-index: 10000 !important;
+            transition: all 0.3s ease;
+        }
+
+        #closeOverlayBtn:hover {
+            background: rgba(255,255,255,0.2) !important;
+            transform: rotate(90deg);
+        }
+
+        .chat-bubble {
+            display: flex;
+            align-items: flex-start;
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+        }
+
+        .chat-bubble:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .chat-bubble::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(45deg, var(--accent-color), #8a2be2);
+        }
+
+        .profile-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 20px;
+            object-fit: cover;
+            border: 3px solid var(--accent-color);
+            box-shadow: 0 0 20px rgba(106,90,205,0.3);
+        }
+
+        .chat-content {
+            flex-grow: 1;
+            color: var(--text-light);
+        }
+
+        .decision-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .decision-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .yes-btn {
+            background: linear-gradient(45deg, #4CAF50, #81c784);
+            color: white;
+        }
+
+        .no-btn {
+            background: linear-gradient(45deg, #f44336, #e57373);
+            color: white;
+        }
+
+        .decision-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .dot-loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            margin: 0 5px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            animation: bounce 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes bounce {
+            to { 
+                transform: translateY(-10px);
+                background-color: white;
+            }
+        }
+
+        .typing-animation {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid var(--primary-color);
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary-color); }
+        }
+
+        .content-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .content-option {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .content-option:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-3px);
+        }
+
+        .content-option.active {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--bg-dark);
+            font-weight: bold;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            #typing-text {
+                font-size: 3rem;
+            }
+
+            #welcomeText {
+                font-size: 2.5rem;
+            }
+
+            .quantum-input {
+                font-size: 16px;
+                padding: 12px 60px 12px 15px;
+            }
+
+            .send-button {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+
+            .chat-bubble {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-pic {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .decision-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #typing-text {
+                font-size: 2rem;
+            }
+
+            .quantum-input-container {
+                padding: 15px;
+            }
+
+            .input-wrapper {
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="wavy-background"></div>
     <div class="circuit-overlay"></div>
-
-
+    
     <div id="welcomeOverlay">
-        <div id="welcomeText">Welcome!</div>
+        <div id="welcomeText">Welcome to SmileX!</div>
     </div>
+    
     <div id="dynamic-text-container">
         <div id="typing-text"></div>
     </div>
-    <br>
-     <!-- © SMILEX. This code is protected. -->
-      
+    
     <div class="quantum-input-container">
         <div class="input-wrapper">
             <input 
                 type="text" 
                 class="quantum-input" 
                 id="quantumInput" 
-                placeholder="Type to generate..."
+                placeholder="Describe what you want to create..."
                 maxlength="500"
             >
             <div class="input-actions">
@@ -38,7 +704,7 @@
                     <i class="ri-send-plane-fill"></i> Generate
                 </button>
             </div>
-             <!-- © SMILEX. This code is protected. -->
+            
             <div class="emoji-picker">
                 <span>🚀</span>
                 <span>✨</span>
@@ -46,33 +712,542 @@
                 <span>❤️</span>
                 <span>🎉</span>
                 <span>🔥</span>
-            
-           
             </div>
-            <div class="char-counter" id="charCount">0 / 500</div>
             
             <div class="notification-area" id="notificationArea">
                 <div class="notification" id="notification"></div>
             </div>
         </div>
     </div>
-
-
-    <div id="analysisOverlay">
-   
-    <div id="analysisContent"></div>
-</div>
-   
     
-     <!-- © SMILEX. This code is protected. -->
+    <div id="analysisOverlay">
+        <button id="closeOverlayBtn">✕</button>
+        <div id="analysisContent"></div>
+    </div>
 
-    <script src="ai.js">
+    <script>
+        class DynamicTypingText {
+            constructor(element, phrases, options = {}) {
+                this.element = element;
+                this.phrases = phrases;
+                this.options = {
+                    typingSpeed: 100,
+                    deletingSpeed: 50,
+                    pauseBetween: 8000,
+                    ...options
+                };
+                this.phraseIndex = 0;
+                this.charIndex = 0;
+                this.isDeleting = false;
+                this.cursorElement = null;
+                this.init();
+            }
+
+            init() {
+                this.createCursor();
+                this.type();
+            }
+
+            createCursor() {
+                this.cursorElement = document.createElement('span');
+                this.cursorElement.classList.add('typing-cursor');
+                this.element.parentNode.appendChild(this.cursorElement);
+            }
+
+            type() {
+                const currentPhrase = this.phrases[this.phraseIndex];
+                const speed = this.isDeleting ? this.options.deletingSpeed : this.options.typingSpeed;
+
+                if (!this.isDeleting && this.charIndex <= currentPhrase.length) {
+                    this.element.textContent = currentPhrase.substring(0, this.charIndex + 1);
+                    this.charIndex++;
+                }
+
+                else if (this.isDeleting && this.charIndex >= 0) {
+                    this.element.textContent = currentPhrase.substring(0, this.charIndex);
+                    this.charIndex--;
+                }
+
+                else {
+                    this.isDeleting = !this.isDeleting;
+                    this.phraseIndex = (this.phraseIndex + 1) % this.phrases.length;
+
+                    if (!this.isDeleting) {
+                        setTimeout(() => this.type(), this.options.pauseBetween);
+                        return;
+                    }
+                }
+
+                setTimeout(() => this.type(), speed);
+            }
+        }
+
+        // Initialize the dynamic typing text when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const typingTextElement = document.getElementById('typing-text');
             
-    </script>
+            // Array of phrases to type
+            const phrases = [
+                'Hello there!',
+                'Bring dreams to reality',
+                'Create amazing content',
+                'Powered by SmileX AI'
+            ];
 
-<script>
-    document.addEventListener('contextmenu', event => event.preventDefault());
-  </script>
-  
+            new DynamicTypingText(typingTextElement, phrases, {
+                typingSpeed: 100,
+                deletingSpeed: 50,
+                pauseBetween: 2000,
+            });
+        });
+
+        class QuantumMessenger {
+            constructor() {
+                this.input = document.getElementById('quantumInput');
+                this.notificationArea = document.getElementById('notificationArea');
+                this.notification = document.getElementById('notification');
+                
+                this.setupEventListeners();
+            }
+
+            setupEventListeners() {
+                this.input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.transmitMessage();
+                    }
+                });
+
+                document.querySelector('.emoji-picker').addEventListener('click', (e) => {
+                    if (e.target.tagName === 'SPAN') {
+                        this.input.value += e.target.textContent;
+                        this.input.focus();
+                    }
+                });
+            }
+
+            showNotification(message, type = 'error') {
+                this.notification.textContent = message;
+                this.notification.className = `notification ${type}`;
+                this.notificationArea.style.opacity = '1';
+
+                setTimeout(() => {
+                    this.notificationArea.style.opacity = '0';
+                }, 3000);
+            }
+
+            validateMessage(message) {
+                if (!message) {
+                    this.showNotification('Please enter your idea');
+                    return false;
+                }
+
+                if (message.length > 500) {
+                    this.showNotification('Input is too long (max 500 chars)');
+                    return false;
+                }
+
+                return true;
+            }
+
+            transmitMessage() {
+                const message = this.input.value.trim();
+
+                if (!this.validateMessage(message)) return;
+
+                // Simulated message transmission
+                console.log('Transmitting input:', message);
+                
+                this.showNotification('Generating content...', 'success');
+                
+                // Reset input
+                this.input.value = '';
+                
+                // Process the message
+                processUserInput(message);
+            }
+        }
+
+        // Initialize the Quantum Messenger
+        const quantumMessenger = new QuantumMessenger();
+
+        // Expose transmit method globally
+        function transmitMessage() {
+            quantumMessenger.transmitMessage();
+        }
+
+        // Welcome animation and name prompt
+        document.addEventListener('DOMContentLoaded', () => {
+            const welcomeOverlay = document.getElementById('welcomeOverlay');
+            const welcomeText = document.getElementById('welcomeText');
+
+            // Create particle effect
+            function createParticles() {
+                for (let i = 0; i < 50; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    particle.style.width = `${Math.random() * 10}px`;
+                    particle.style.height = particle.style.width;
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.animationDuration = `${5 + Math.random() * 5}s`;
+                    particle.style.opacity = Math.random();
+
+                    welcomeOverlay.appendChild(particle);
+                }
+            }
+
+            createParticles();
+
+            // Check if name is stored
+            const storedName = localStorage.getItem('userName');
+
+            if (storedName) {
+                welcomeText.textContent = `Welcome back, ${storedName}!`;
+            } else {
+                // Prompt for name if not stored
+                const name = prompt('Please enter your name:');
+                if (name) {
+                    localStorage.setItem('userName', name);
+                    welcomeText.textContent = `Welcome, ${name}!`;
+                }
+            }
+
+            // Fade out and remove overlay after 3 seconds
+            setTimeout(() => {
+                welcomeOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    welcomeOverlay.style.display = 'none';
+                }, 1000);
+            }, 3000);
+        });
+
+        // Wavy background animation
+        class WavyBackground {
+            constructor() {
+                this.background = document.getElementById('wavy-background');
+                this.circuitOverlay = document.querySelector('.circuit-overlay');
+                this.colors = [
+                    'rgba(0, 255, 255, 0.7)',   // Cyan
+                    'rgba(255, 0, 255, 0.7)',   // Magenta
+                    'rgba(0, 255, 0, 0.7)',     // Green
+                    'rgba(255, 165, 0, 0.7)',   // Orange
+                    'rgba(138, 43, 226, 0.7)'   // Purple
+                ];
+
+                this.initializeBackground();
+                this.createWaveLines();
+                this.setupInteractivity();
+            }
+
+            initializeBackground() {
+                // Create wave particles
+                for (let i = 0; i < 200; i++) {
+                    this.createWaveParticle();
+                }
+            }
+
+            createWaveParticle() {
+                const particle = document.createElement('div');
+                particle.classList.add('wave-particle');
+                
+                // Size variation
+                const size = Math.random() * 15 + 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+
+                // Position with wavy distribution
+                particle.style.left = `${Math.random() * 120}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+
+                // Color and animation
+                particle.style.background = this.colors[Math.floor(Math.random() * this.colors.length)];
+                particle.style.animation = `wavyMotion ${Math.random() * 5 + 3}s infinite alternate`;
+
+                this.background.appendChild(particle);
+                return particle;
+            }
+
+            createWaveLines() {
+                for (let i = 0; i < 30; i++) {
+                    const line = document.createElement('div');
+                    line.classList.add('wave-line');
+                    
+                    line.style.width = `${Math.random() * 300 + 100}px`;
+                    line.style.height = '2px';
+                    line.style.top = `${Math.random() * 100}%`;
+                    line.style.left = `-100px`;
+                    line.style.animationDuration = `${Math.random() * 5 + 3}s`;
+
+                    this.circuitOverlay.appendChild(line);
+                }
+            }
+
+            setupInteractivity() {
+                window.addEventListener('mousemove', (event) => {
+                    this.handleMouseMove(event);
+                });
+            }
+
+            handleMouseMove(event) {
+                const particles = document.querySelectorAll('.wave-particle');
+                particles.forEach(particle => {
+                    const rect = particle.getBoundingClientRect();
+                    const distanceX = event.clientX - (rect.left + rect.width / 2);
+                    const distanceY = event.clientY - (rect.top + rect.height / 2);
+                    
+                    const maxDistance = 150;
+                    const strength = Math.max(0, maxDistance - Math.sqrt(distanceX**2 + distanceY**2)) / maxDistance;
+                    
+                    particle.style.transform = `
+                        translate(
+                            ${distanceX * strength * 0.2}px, 
+                            ${distanceY * strength * 0.2}px
+                        )
+                        rotate(${distanceX * strength * 0.1}deg)
+                    `;
+                });
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            new WavyBackground();
+        });
+
+        // Process user input and generate content
+        function processUserInput(text) {
+            const analysisOverlay = document.getElementById('analysisOverlay');
+            const analysisContent = document.getElementById('analysisContent');
+
+            // Retrieve saved name
+            const userName = localStorage.getItem('userName') || 'User';
+
+            // Show overlay
+            analysisOverlay.style.display = 'flex';
+            analysisContent.innerHTML = '';
+
+            // Add user input bubble
+            const userBubble = document.createElement('div');
+            userBubble.classList.add('chat-bubble');
+            userBubble.innerHTML = `
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="profile-pic" alt="User">
+                <div class="chat-content">
+                    <strong>${userName}:</strong>
+                    <p>${text}</p>
+                </div>
+            `;
+            analysisContent.appendChild(userBubble);
+
+            // Show 3-dot loader
+            const loaderDiv = document.createElement('div');
+            loaderDiv.classList.add('loader');
+            loaderDiv.innerHTML = `
+                <div class="dot-loader">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            `;
+            analysisContent.appendChild(loaderDiv);
+
+            // Simulate AI analysis
+            setTimeout(async () => {
+                // Remove loader
+                loaderDiv.remove();
+
+                // Generate AI analysis
+                const aiAnalysis = await generateContentOptions(userName, text);
+
+                // Add AI analysis bubble
+                const aiBubble = document.createElement('div');
+                aiBubble.classList.add('chat-bubble');
+                
+                aiBubble.innerHTML = `
+                    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" class="profile-pic" alt="AI">
+                    <div class="chat-content">
+                        <strong>SmileX AI:</strong>
+                        <br>
+                        <p class="typing-animation">${aiAnalysis.message}</p>
+                        
+                        <div class="content-options">
+                            ${aiAnalysis.options.map(option => `
+                                <div class="content-option" onclick="selectContentOption('${option}')">
+                                    ${option}
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="decision-buttons">
+                            <button class="decision-btn yes-btn">Generate More</button>
+                            <button class="decision-btn no-btn">Start Over</button>
+                        </div>
+                    </div>
+                `;
+                
+                analysisContent.appendChild(aiBubble);
+
+                // Add event listeners to decision buttons
+                const yesBtn = aiBubble.querySelector('.yes-btn');
+                const noBtn = aiBubble.querySelector('.no-btn');
+
+                yesBtn.addEventListener('click', () => {
+                    processUserInput(text);
+                });
+
+                noBtn.addEventListener('click', () => {
+                    closeOverlay();
+                });
+            }, 2000);
+        }
+
+        // Generate content options based on user input
+        async function generateContentOptions(userName, text) {
+            // Simulated API call 
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Mock content generation
+            const contentTypes = [
+                "Video Script",
+                "Blog Post",
+                "Social Media Post",
+                "Product Description",
+                "Marketing Copy",
+                "Short Story"
+            ];
+
+            // Select 3 random content types
+            const selectedOptions = [];
+            while (selectedOptions.length < 3) {
+                const randomIndex = Math.floor(Math.random() * contentTypes.length);
+                if (!selectedOptions.includes(contentTypes[randomIndex])) {
+                    selectedOptions.push(contentTypes[randomIndex]);
+                }
+            }
+
+            return {
+                message: `Hello ${userName}! I've analyzed your input and can generate several types of content for you. Which one would you like me to create?`,
+                options: selectedOptions
+            };
+        }
+
+        // Handle content option selection
+        function selectContentOption(option) {
+            const options = document.querySelectorAll('.content-option');
+            options.forEach(opt => opt.classList.remove('active'));
+            
+            const selectedOption = Array.from(options).find(opt => opt.textContent === option);
+            if (selectedOption) {
+                selectedOption.classList.add('active');
+                
+                // Simulate generating the selected content
+                setTimeout(() => {
+                    const analysisContent = document.getElementById('analysisContent');
+                    const contentBubble = document.createElement('div');
+                    contentBubble.classList.add('chat-bubble');
+                    
+                    contentBubble.innerHTML = `
+                        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" class="profile-pic" alt="AI">
+                        <div class="chat-content">
+                            <strong>SmileX AI:</strong>
+                            <br>
+                            <p>Here's your ${option} based on your input:</p>
+                            <div style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                                ${generateSampleContent(option)}
+                            </div>
+                            <div class="decision-buttons" style="margin-top: 20px;">
+                                <button class="decision-btn yes-btn">Export Content</button>
+                                <button class="decision-btn no-btn">Make Changes</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    analysisContent.appendChild(contentBubble);
+                    
+                    // Scroll to the bottom
+                    analysisContent.scrollTop = analysisContent.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        // Generate sample content based on type
+        function generateSampleContent(type) {
+            const samples = {
+                "Video Script": `
+                    <h3 style="color: var(--primary-color); margin-bottom: 10px;">Video Script Outline</h3>
+                    <p><strong>Opening Hook:</strong> Grab attention with a surprising fact or question.</p>
+                    <p><strong>Introduction:</strong> Briefly introduce the topic and what viewers will learn.</p>
+                    <p><strong>Main Content:</strong> Break down the information into 3 key points.</p>
+                    <p><strong>Call to Action:</strong> Tell viewers what to do next (subscribe, comment, etc.)</p>
+                `,
+                "Blog Post": `
+                    <h3 style="color: var(--primary-color); margin-bottom: 10px;">Blog Post Structure</h3>
+                    <p><strong>Title:</strong> Catchy and SEO-friendly title</p>
+                    <p><strong>Introduction:</strong> Engage readers with a relatable problem or question</p>
+                    <p><strong>Body:</strong> Detailed information with subheadings and examples</p>
+                    <p><strong>Conclusion:</strong> Summarize key points and include a call to action</p>
+                `,
+                "Social Media Post": `
+                    <h3 style="color: var(--primary-color); margin-bottom: 10px;">Social Media Post</h3>
+                    <p><strong>Caption:</strong> Engaging text with emojis and hashtags</p>
+                    <p><strong>Visual:</strong> High-quality image or video that complements the text</p>
+                    <p><strong>Call to Action:</strong> Ask a question or encourage engagement</p>
+                `,
+                "Product Description": `
+                    <h3 style="color: var(--primary-color); margin-bottom: 10px;">Product Description</h3>
+                    <p><strong>Headline:</strong> Clear benefit-focused title</p>
+                    <p><strong>Features:</strong> Bullet points highlighting key features</p>
+                    <p><strong>Benefits:</strong> How the product improves the customer's life</p>
+                    <p><strong>Call to Action:</strong> Clear instruction to purchase</p>
+                `,
+                "Marketing Copy": `
+                    <h3 style="color: var(--primary-color); margin-bottom: 10px;">Marketing Copy</h3>
+                    <p><strong>Headline:</strong> Attention-grabbing statement</p>
+                    <p><strong>Problem:</strong> Identify the customer's pain point</p>
+                    <p><strong>Solution:</strong> Show how your product/service solves it</p>
+                    <p><strong>Proof:</strong> Testimonials or statistics</p>
+                    <p><strong>Call to Action:</strong> Clear next step</p>
+                `,
+                "Short Story": `
+                    <h3 style="color: var(--primary-color); margin-bottom: 10px;">Short Story Opening</h3>
+                    <p>The wind howled through the empty streets as Sarah pulled her coat tighter. She hadn't expected the night to take such a strange turn when she left her apartment. Now, with the mysterious package clutched in her hands and the sound of footsteps echoing behind her, she realized this was only the beginning...</p>
+                `
+            };
+
+            return samples[type] || `<p>Content generation for ${type} is not available yet.</p>`;
+        }
+
+        // Close overlay function
+        function closeOverlay() {
+            const overlay = document.getElementById('analysisOverlay');
+            if (overlay) {
+                overlay.style.display = 'none';
+            }
+        }
+
+        // Event Listener for Close Button
+        document.addEventListener('DOMContentLoaded', () => {
+            const closeBtn = document.getElementById('closeOverlayBtn');
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeOverlay);
+            }
+        });
+
+        // Optional: Close overlay when clicking outside content
+        document.addEventListener('DOMContentLoaded', () => {
+            const overlay = document.getElementById('analysisOverlay');
+            
+            if (overlay) {
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        closeOverlay();
+                    }
+                });
+            }
+        });
+
+        // Prevent right-click
+        document.addEventListener('contextmenu', event => event.preventDefault());
+    </script>
 </body>
 </html>

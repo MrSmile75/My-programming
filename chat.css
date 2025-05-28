@@ -15,17 +15,10 @@
 }
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: white;
-     font-family: 'Orbitron', sans-serif;
-    
-    color: var(--text-color);
-    line-height: 1.6;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1rem;
+    background: black;
+   
+  
+
 }
 
 
@@ -36,7 +29,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: white; 
+    background: black; 
     display: flex; /* Use flex instead of contents */
     align-items: center;
     justify-content: center;
@@ -148,16 +141,6 @@ body {
     50% { transform: scale(1.2); }
 }
 
-
-:root {
-    --primary-color: #4a90e2;
-    --secondary-color: #2c3e50;
-}
-
-body {
-    background: linear-gradient(135deg, #f6f8f9 0%, #e5ebee 100%);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
 /* Overlay Background */
 .overlay {
     position: fixed;
@@ -293,412 +276,52 @@ body {
     display: none;
 }
 
-
-   /* Thin Horizontal Header Styles */
-        header.bg-primary {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 15px;
-            height: 60px;
-            background-color: #007bff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+       .post-card {
+            transition: all 0.3s ease;
         }
-
-        /* Connection Indicator Styles */
-        .connection-indicator {
-            display: flex;
-            align-items: center;
-            margin-right: 15px;
+        .post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
-
-        .connection-status {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
-            transition: background-color 0.3s ease;
+        .vote-button {
+            transition: all 0.2s ease;
         }
-
-        .connection-status.online {
-            background-color: #28a745; /* Green for online */
-        }
-
-        .connection-status.offline {
-            background-color: #dc3545; /* Red for offline */
-        }
-
-        .connection-text {
-            color: white;
-            font-size: 14px;
-        }
-
-        /* Profile Container Styles */
-        .profile-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            color: black;
-                font-family: 'Orbitron', sans-serif;
-        }
-
-        .profile-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-
-        .profile-btn:hover {
+        .vote-button:hover {
             transform: scale(1.1);
         }
-
-        .profile-btn img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
         }
-
-        /* Profile Dropdown Styles */
-        .profile-dropdown {
-            position: absolute;
-            top: 70px;
-            right: 0;
-            width: 300px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            display: none;
-            z-index: 1000;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .profile-dropdown.show {
-            display: block;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background-color: #f4f4f4;
-        }
-
-        .profile-avatar-large {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            margin-right: 15px;
-            object-fit: cover;
-        }
-
-        .profile-info {
-            flex-grow: 1;
-        }
-
-        .profile-name {
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .profile-email {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .profile-menu {
-            padding: 10px 0;
-        }
-
-        .profile-menu-item {
-            padding: 10px 15px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .profile-menu-item:hover {
-            background-color: #f0f0f0;
-        }
-
-        .profile-menu-item i {
-            margin-right: 10px;
-            color: #333;
-        }
-
-        .profile-menu-divider {
-            height: 1px;
-            background-color: #e0e0e0;
-            margin: 10px 0;
-        }
-
-        /* Camera Modal Styles */
-        .camera-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-                font-family: 'Orbitron', sans-serif;
-        }
-
-        .camera-modal.show {
-            display: flex;
-        }
-
-        .camera-modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .camera-preview {
-            max-width: 100%;
-            max-height: 500px;
-            border-radius: 10px;
-        }
-
-        .camera-controls {
-            margin-top: 15px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-                font-family: 'Orbitron', sans-serif;
-        }
-
-        .camera-controls button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .camera-controls button:hover {
-            background-color: #0056b3;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            header.bg-primary {
-                flex-direction: column;
-                height: auto;
-                padding: 10px;
-            }
-
-            .connection-indicator {
-                margin-top: 5px;
-            }
-        }
-#app-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh; /* This already makes it full viewport height */
-    width: 2900vw; /* Add this to make it full viewport width */
-    max-width: none; /* Remove max-width constraint */
-
-    background-color: white;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-
-}
-
-
-        #profile-setup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .profile-modal {
-            background-color: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-
-        #profile-pic-preview {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 20px auto;
-            display: block;
-            border: 3px solid var(--primary-color);
-        }
-
-        #messages-container {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 15px;
-            background-color: white;
-           
-        }
-
-        .message {
-            display: flex;
-            margin-bottom: 15px;
-            align-items: flex-start;
-        }
-
-        .message-content {
-            max-width: 70%;
-            padding: 10px 15px;
-            border-radius: 15px;
-            margin-left: 10px;
-            background-color: #e5e5ea;
-        }
-
-        .user-message {
-            align-self: flex-end;
-        }
-
-        .user-message .message-content {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .profile-pic {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        #input-container {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background-color: white;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        #message-input {
-            flex-grow: 1;
-            border: 1px solid #e0e0e0;
-            border-radius: 20px;
-            padding: 10px 15px;
-            margin-right: 10px;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .action-btn {
-            background: none;
-            border: none;
-            color: #666;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .action-btn:hover {
-            color: var(--primary-color);
-        }
-
-        #file-input, #camera-input {
+        .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
-
-        #camera-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            z-index: 1500;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
-
-        #camera-feed {
-            width: 100%;
-            max-width: 700px;
-            aspect-ratio: 4/3;
-            object-fit: cover;
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
         }
-
-
-        .emoji-picker {
-    position: fixed;
-    bottom: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 400px;
-    height: 300px;
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    display: none;
-    z-index: 1000;
-}
-
-.emoji-categories {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.emoji-category {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    margin: 0 10px;
-    opacity: 0.5;
-    cursor: pointer;
-}
-
-.emoji-category.active {
-    opacity: 1;
-}
-
-.emoji-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
-    padding: 15px;
-    max-height: 250px;
-    overflow-y: auto;
-}
-
-.emoji-item {
-    font-size: 1.5rem;
-    cursor: pointer;
-    text-align: center;
-    transition: transform 0.2s;
-}
-
-.emoji-item:hover {
-    transform: scale(1.2);
-}
-
-
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .community-card {
+            transition: all 0.3s ease;
+        }
+        .community-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #f43f5e 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
