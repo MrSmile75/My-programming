@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>X Trading Hub - Advanced E-Trading Platform</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com/3.4.1"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -26,54 +27,7 @@
         .font-orbitron {
             font-family: 'Orbitron', sans-serif;
         }
-        
-        .loader-segment {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 10px solid transparent;
-            border-radius: 50%;
-            opacity: 0.5;
-            transition: all 0.5s ease;
-            z-index: 100000;
-        }
-        
-        @keyframes rotate {
-            0% { transform: rotateX(0deg) rotateY(0deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg); }
-        }
-        
-        @keyframes loadProgress {
-            0% { width: 0; }
-            100% { width: 100%; }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes particleAnimation {
-            0% {
-                transform: translateX(0) translateY(0) scale(1);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateX(200px) translateY(-200px) scale(0);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateX(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
+    
         
         .gradient-text {
             background-clip: text;
@@ -216,29 +170,7 @@
     </style>
 </head>
 <body class="min-h-screen">
-  <div id="preloader">
-        <div class="preloader-container">
-            <div class="logo">X TRADING HUB</div>
-            
-            <div class="loader">
-                <div class="loader-segment"></div>
-                <div class="loader-segment"></div>
-                <div class="loader-segment"></div>
-                <div class="loader-segment"></div>
-            </div>
-            
-            <div class="loading-text">Loading Experience</div>
-            
-            <div class="progress-bar">
-                <div class="progress-bar-fill"></div>
-            </div>
-            
-            <div class="tech-details">
-                SmileX | Version 1.0
-                <!-- © SMILEX. This code is protected. -->
-            </div>
-        </div>
-    </div>
+
     
     <!-- Notification Container -->
     <div id="notificationContainer" class="fixed top-5 right-5 z-40 space-y-2"></div>
@@ -663,17 +595,16 @@
                         <li><a href="#" onclick="showLandingPage()" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
                         <li><a href="#" onclick="showBuyPage()" class="text-gray-400 hover:text-white transition-colors">Marketplace</a></li>
                         <li><a href="#" onclick="showSellPage()" class="text-gray-400 hover:text-white transition-colors">Sell Items</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="aboutus.html" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
                     </ul>
                 </div>
                 
                 <div>
                     <h4 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">Support</h4>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Help Center</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Safety Tips</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="service.html" class="text-gray-400 hover:text-white transition-colors">Contact us</a></li>
+                        <li><a href="learn.html" class="text-gray-400 hover:text-white transition-colors">Learn more</a></li>
+                     
                     </ul>
                 </div>
                 
@@ -689,13 +620,13 @@
                         <a href="#" class="text-gray-400 hover:text-white transition-colors">
                             <i class="bi bi-instagram text-xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <a href="https://www.linkin.com" class="text-gray-400 hover:text-white transition-colors">
                             <i class="bi bi-linkedin text-xl"></i>
                         </a>
                     </div>
                     <div class="mt-4">
                         <p class="text-xs text-gray-500">
-                            &copy; 2023 X Trading Hub. All rights reserved.
+                            &copy; 2026 SMILEX Trading Hub. All rights reserved.
                         </p>
                     </div>
                 </div>

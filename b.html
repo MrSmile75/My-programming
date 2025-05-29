@@ -2,250 +2,1110 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Advanced AI Analyzer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X Trading Hub - Advanced E-Trading Platform</title>
+<script src="https://cdn.tailwindcss.com/3.4.1"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-       
-        .dot-loader {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+         :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --background-color: #f4f7f6;
+            --text-color: #333;
+            --accent-color: #00b4db;
         }
 
-        .dot {
-            width: 10px;
-            height: 10px;
-            margin: 0 5px;
-            background-color: rgb(249, 2, 249);
-            border-radius: 50%;
-            animation: bounce 0.5s ease-in-out infinite alternate;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scrollbar-width: thick;
+            scrollbar-color: auto;
         }
 
-        .dot:nth-child(2) { animation-delay: 0.1s; }
-        .dot:nth-child(3) { animation-delay: 0.2s; }
-
-        @keyframes bounce {
-            to { transform: translateY(-10px); }
-        }
-
-        #analysisOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.9);
-            display: none;
-            flex-direction: column;
-            padding: 20px;
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background:black;
             color: white;
-            overflow-y: auto;
-            z-index: 1000;
         }
 
-        .chat-bubble {
-            display: flex;
-            align-items: center;
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-
-        .profile-pic {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 15px;
-            object-fit: cover;
-            border: 2px solid #ccc;
-        }
-
-        .chat-content {
-            flex-grow: 1;
-        }
-
-        .loader {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100px;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid purple;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .decision-btn {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 10px;
+          .post-card {
             transition: all 0.3s ease;
         }
 
-        .no-btn {
-            background-color: #e74c3c;
+        .post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        .typing-animation {
-            display: inline-block;
-            overflow: hidden;
-            white-space: nowrap;
-            animation: typing 3s steps(40, end);
+        .vote-button {
+            transition: all 0.2s ease;
         }
 
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
+        .vote-button:hover {
+            transform: scale(1.1);
         }
 
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .community-card {
+            transition: all 0.3s ease;
+        }
+
+        .community-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #f43f5e 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Live Chat Styles */
+        .chat-container {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 350px;
+            max-height: 500px;
+            background: #1a1a1a;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+        }
+
+        .chat-container.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .chat-header {
+            padding: 15px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            font-weight: 600;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #1a1a1a;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-user {
+            font-weight: 600;
+            font-size: 12px;
+            color: #8b5cf6;
+            margin-bottom: 5px;
+        }
+
+        .message-text {
+            background: #2d2d37;
+            padding: 10px 15px;
+            border-radius: 18px;
+            font-size: 14px;
+            max-width: 80%;
+            word-wrap: break-word;
+            color: white;
+        }
+
+        .message-time {
+            font-size: 10px;
+            color: #777;
+            margin-top: 5px;
+            align-self: flex-end;
+        }
+
+        .chat-input-container {
+            padding: 15px;
+            background: #22222a;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: none;
+            background: #383844;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .chat-send {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .chat-send:hover {
+            transform: scale(1.05);
+        }
+
+        .chat-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-toggle.active {
+            transform: rotate(180deg);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .chat-container {
+                width: 90%;
+                right: 5%;
+                bottom: 100px;
+                max-height: 60vh;
+            }
+        }
     </style>
 </head>
-<body>
-  
-    
+    <!-- Main Navigation -->
+    <nav class="bg-black shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo and main nav -->
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center">
+                        <i class="fas fa-smile-beam text-2xl text-purple-500 mr-2"></i>
+                        <span class="text-xl font-bold gradient-text">SmileX</span>
+                    </div>
+                </div>
+
+                <!-- Search and user controls -->
+                <div class="flex items-center space-x-4">
+                    <div class="relative hidden md:block">
+                        <input type="text" placeholder="Search Communities..."
+                            class="w-64 pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                    </div>
+
+                    <button class="p-2 rounded-full bg-gray-800 text-gray-300 hover:bg-gray-700">
+                        <i class="fas fa-bell"></i>
+                    </button>
+
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 focus:outline-none">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold">
+                                <span>U</span>
+                            </div>
+                            <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                        </button>
+                    </div>
+
+                    <button class="md:hidden p-2 rounded-full bg-gray-800 text-gray-300 hover:bg-gray-700">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container mx-auto px-4 py-6">
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Left sidebar - Communities -->
+            <div class="lg:w-1/5 hidden lg:block">
+                <div class="bg-gray-900 rounded-lg shadow-sm p-4 sticky top-24">
+                    <h3 class="font-bold text-lg mb-4 flex items-center">
+                        <i class="fas fa-users mr-2 text-purple-500"></i>
+                        Communities
+                    </h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-800">
+                                <span class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs mr-2">S</span>
+                                <span>SmileX</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-800">
+                                <span class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white text-xs mr-2">T</span>
+                                <span>Team SmileX</span>
+                            </a>
+                        </li>
+                        
+                        <div class="mt-6">
+                            <button class="w-full py-2 px-4 bg-gray-800 text-purple-400 rounded-lg font-medium hover:bg-gray-700 flex items-center justify-center">
+                                <i class="fas fa-plus mr-2"></i> Create Community
+                            </button>
+                        </div>
+
+                        <div class="mt-6">
+                            <h3 class="font-bold text-lg mb-4 flex items-center">
+                                <i class="fas fa-fire mr-2 text-purple-500"></i>
+                                Trending
+                            </h3>
+                            <ul class="space-y-3">
+                                <li>
+                                    <a href="#" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-800">
+                                        <div class="flex items-center">
+                                            <span class="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white text-xs mr-2">S</span>
+                                            <span>SmileX</span>
+                                        </div>
+                                        <span class="text-xs text-gray-400">+12.5M</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-800">
+                                        <div class="flex items-center">
+                                            <span class="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs mr-2">T</span>
+                                            <span>t/Team SmileX</span>
+                                        </div>
+                                        <span class="text-xs text-gray-400">+8.2M</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main feed -->
+            <div class="lg:w-3/5">
+                <!-- Create post card -->
+                <div class="bg-gray-900 rounded-lg shadow-sm mb-6 post-card">
+                    <div class="p-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold">
+                                <span>U</span>
+                            </div>
+                            <input type="text" placeholder="Create a post..."
+                                class="flex-1 px-4 py-2 bg-gray-800 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent cursor-pointer"
+                                onclick="document.getElementById('create-post-modal').classList.remove('hidden')">
+                        </div>
+                        <div class="flex justify-between mt-3">
+                            <button class="flex-1 py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300 flex items-center justify-center">
+                                <i class="far fa-image text-lg mr-2"></i> Image
+                            </button>
+                            <button class="flex-1 py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300 flex items-center justify-center">
+                                <i class="fas fa-link text-lg mr-2"></i> Link
+                            </button>
+                            <button class="flex-1 py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300 flex items-center justify-center">
+                                <i class="far fa-file-alt text-lg mr-2"></i> Text
+                            </button>
+                            <button class="flex-1 py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300 flex items-center justify-center">
+                                <i class="fas fa-poll text-lg mr-2"></i> Poll
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post sorting -->
+                <div class="bg-gray-900 rounded-lg shadow-sm mb-6">
+                    <div class="p-3 flex items-center space-x-4 overflow-x-auto scrollbar-hide">
+                        <button class="px-3 py-1.5 bg-gray-800 text-purple-400 rounded-full text-sm font-medium whitespace-nowrap">
+                            <i class="fas fa-bolt mr-1"></i> Hot
+                        </button>
+                        <button class="px-3 py-1.5 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700 whitespace-nowrap">
+                            <i class="fas fa-certificate mr-1"></i> New
+                        </button>
+                        <button class="px-3 py-1.5 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700 whitespace-nowrap">
+                            <i class="fas fa-arrow-trend-up mr-1"></i> Top
+                        </button>
+                        <button class="px-3 py-1.5 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700 whitespace-nowrap">
+                            <i class="fas fa-ellipsis mr-1"></i> More
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Posts feed -->
+                <div id="posts-feed" class="space-y-4">
+                    <!-- Sample post 1 -->
+                    <div class="bg-gray-900 rounded-lg shadow-sm post-card fade-in">
+                        <div class="p-4">
+                            <div class="flex items-start">
+                                <!-- Vote buttons -->
+                                <div class="flex flex-col items-center mr-4">
+                                    <button class="vote-button text-gray-400 hover:text-purple-500">
+                                        <i class="fas fa-arrow-up text-xl"></i>
+                                    </button>
+                                    <span class="my-1 font-medium text-gray-300">5.4m</span>
+                                    <button class="vote-button text-gray-400 hover:text-blue-500">
+                                        <i class="fas fa-arrow-down text-xl"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Post content -->
+                                <div class="flex-1">
+                                    <div class="flex items-center text-xs text-gray-400 mb-2">
+                                        <span class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs mr-2">S</span>
+                                        <span class="font-medium">SmileX</span>
+                                        <span class="mx-1">•</span>
+                                        <span>Posted by SmileX</span>
+                                        <span class="mx-1">•</span>
+                                        <span>Later</span>
+                                    </div>
+
+                                    <h3 class="text-xl font-medium mb-2">WELCOME EVERYONE.</h3>
+
+                                    <div class="prose dark:prose-invert max-w-none mb-4">
+                                        <p>Welcome, everyone and those viewing this message to explore and have fun on this page, but remember the rules and regulations</p>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex space-x-4">
+                                            <button class="flex items-center text-gray-400 hover:text-purple-400">
+                                                <i class="far fa-comment mr-1"></i>
+                                                <span>1.4k Comments</span>
+                                            </button>
+                                            <button class="flex items-center text-gray-400 hover:text-green-500">
+                                                <i class="fas fa-share mr-1"></i>
+                                                <span>Share</span>
+                                            </button>
+                                            <button class="flex items-center text-gray-400 hover:text-yellow-500">
+                                                <i class="far fa-bookmark mr-1"></i>
+                                                <span>Save</span>
+                                            </button>
+                                        </div>
+                                        <button class="text-gray-400 hover:text-red-500">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sample post 2 (image) -->
+                    <div class="bg-gray-900 rounded-lg shadow-sm post-card fade-in">
+                        <div class="p-4">
+                            <div class="flex items-start">
+                                <!-- Vote buttons -->
+                                <div class="flex flex-col items-center mr-4">
+                                    <button class="vote-button text-gray-400 hover:text-purple-500">
+                                        <i class="fas fa-arrow-up text-xl"></i>
+                                    </button>
+                                    <span class="my-1 font-medium text-gray-300">2.7m</span>
+                                    <button class="vote-button text-gray-400 hover:text-blue-500">
+                                        <i class="fas fa-arrow-down text-xl"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Post content -->
+                                <div class="flex-1">
+                                    <div class="flex items-center text-xs text-gray-400 mb-2">
+                                        <span class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white text-xs mr-2">T</span>
+                                        <span class="font-medium">Team SmileX</span>
+                                        <span class="mx-1">•</span>
+                                        <span>Posted by Team SmileX</span>
+                                        <span class="mx-1">•</span>
+                                        <span>Later</span>
+                                    </div>
+
+                                    <h3 class="text-xl font-medium mb-2">Hi everyone, good luck on this page</h3>
+
+                                    <div class="mb-4">
+                                        <img src="https://source.unsplash.com/random/800x600/?grand,canyon,sunrise"
+                                            alt="Grand Canyon sunrise"
+                                            class="w-full h-auto rounded-lg object-cover max-h-96">
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex space-x-4">
+                                            <button class="flex items-center text-gray-400 hover:text-purple-400">
+                                                <i class="far fa-comment mr-1"></i>
+                                                <span>423 Comments</span>
+                                            </button>
+                                            <button class="flex items-center text-gray-400 hover:text-green-500">
+                                                <i class="fas fa-share mr-1"></i>
+                                                <span>Share</span>
+                                            </button>
+                                            <button class="flex items-center text-gray-400 hover:text-yellow-500">
+                                                <i class="far fa-bookmark mr-1"></i>
+                                                <span>Save</span>
+                                            </button>
+                                        </div>
+                                        <button class="text-gray-400 hover:text-red-500">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sample post 3 (poll) -->
+                    <div class="bg-gray-900 rounded-lg shadow-sm post-card fade-in">
+                        <div class="p-4">
+                            <div class="flex items-start">
+                                <!-- Vote buttons -->
+                                <div class="flex flex-col items-center mr-4">
+                                    <button class="vote-button text-gray-400 hover:text-purple-500">
+                                        <i class="fas fa-arrow-up text-xl"></i>
+                                    </button>
+                                    <span class="my-1 font-medium text-gray-300">7.4m</span>
+                                    <button class="vote-button text-gray-400 hover:text-blue-500">
+                                        <i class="fas fa-arrow-down text-xl"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Post content -->
+                                <div class="flex-1">
+                                    <div class="flex items-center text-xs text-gray-400 mb-2">
+                                        <span class="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center text-white text-xs mr-2">S</span>
+                                        <span class="font-medium">SmileX</span>
+                                        <span class="mx-1">•</span>
+                                        <span>Posted by SmileX</span>
+                                        <span class="mx-1">•</span>
+                                        <span>Later</span>
+                                    </div>
+
+                                    <h3 class="text-xl font-medium mb-2">What are you most excited for?</h3>
+
+                                    <div class="mb-4">
+                                        <div class="space-y-2">
+                                            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                                                <span>Entertainment</span>
+                                                <span class="text-sm text-gray-400">24% (2.6m votes)</span>
+                                            </div>
+                                            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                                                <span>Music</span>
+                                                <span class="text-sm text-gray-400">14% (1.34m votes)</span>
+                                            </div>
+                                            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                                                <span>Sports</span>
+                                                <span class="text-sm text-gray-400">35% (3.7m votes)</span>
+                                            </div>
+                                            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                                                <span>Gaming</span>
+                                                <span class="text-sm text-gray-400">27% (2.9m votes)</span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 text-xs text-gray-400">
+                                            10.54m votes • Vote ended
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex space-x-4">
+                                            <button class="flex items-center text-gray-400 hover:text-purple-400">
+                                                <i class="far fa-comment mr-1"></i>
+                                                <span>872 Comments</span>
+                                            </button>
+                                            <button class="flex items-center text-gray-400 hover:text-green-500">
+                                                <i class="fas fa-share mr-1"></i>
+                                                <span>Share</span>
+                                            </button>
+                                            <button class="flex items-center text-gray-400 hover:text-yellow-500">
+                                                <i class="far fa-bookmark mr-1"></i>
+                                                <span>Save</span>
+                                            </button>
+                                        </div>
+                                        <button class="text-gray-400 hover:text-red-500">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load more button -->
+                <div class="mt-6 text-center">
+                    <button class="px-6 py-2 bg-gray-800 text-purple-400 rounded-lg font-medium hover:bg-gray-700">
+                        Load more posts
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right sidebar - Recommendations -->
+            <div class="lg:w-1/5 hidden lg:block">
+                <div class="bg-gray-900 rounded-lg shadow-sm p-4 sticky top-24">
+                    <h3 class="font-bold text-lg mb-4 flex items-center">
+                        <i class="fas fa-compass mr-2 text-purple-500"></i>
+                        Discover
+                    </h3>
+
+                    <!-- Recommended communities -->
+                    <div class="space-y-4">
+                        <div class="community-card bg-gray-800 rounded-lg p-3">
+                            <div class="flex items-center mb-2">
+                                <span class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs mr-2">t</span>
+                                <div>
+                                    <h4 class="font-medium">SmileX</h4>
+                                    <p class="text-xs text-gray-400">12.5m members</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-300 mb-3">The latest in updates and innovation</p>
+                        </div>
+
+                        <div class="community-card bg-gray-800 rounded-lg p-3">
+                            <div class="flex items-center mb-2">
+                                <span class="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center text-white text-xs mr-2">a</span>
+                                <div>
+                                    <h4 class="font-medium">Team SmileX</h4>
+                                    <p class="text-xs text-gray-400">8.2m members</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-300 mb-3">Ask Anything interviews</p>
+                        </div>
+
+                        <div class="community-card bg-gray-800 rounded-lg p-3">
+                            <div class="flex items-center mb-2">
+                                <span class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs mr-2">m</span>
+                                <div>
+                                    <h4 class="font-medium">m/Memes</h4>
+                                    <p class="text-xs text-gray-400">5.7m members</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-300 mb-3">The funniest memes on the internet</p>
+                        </div>
+                    </div>
+
+                    <!-- Premium ad -->
+                    <div class="mt-6 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg p-4 text-white">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-crown text-xl mr-2"></i>
+                            <h4 class="font-bold">SmileX Premium</h4>
+                        </div>
+                        <p class="text-sm mb-3">Get ad-free browsing, exclusive awards, and support ChatX.</p>
+                        <button class="w-full py-1.5 px-3 bg-white text-purple-600 rounded-full text-sm font-medium hover:bg-gray-100">
+                            TRY PREMIUM
+                        </button>
+                    </div>
+
+                    <!-- Footer links -->
+                    <div class="mt-6 text-xs text-gray-400 space-y-2">
+                        <div class="flex flex-wrap gap-2">
+                            <a href="aboutus.html" class="hover:underline">About us</a>
+                            <a href="service.html" class="hover:underline">Contact us</a>
+                            <a href="learn.html" class="hover:underline">Learn more</a>
+                            <a href="cancel.html" class="hover:underline">Get premium</a>
+                        </div>
+                        <p>© 2026 SmileX, Inc. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile bottom navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-900 shadow-lg border-t border-gray-800 z-50">
+        <div class="flex justify-around items-center h-16">
+            <a href="#" class="flex flex-col items-center justify-center text-purple-400">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs mt-1">Home</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center text-gray-400">
+                <i class="fas fa-compass text-xl"></i>
+                <span class="text-xs mt-1">Explore</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center text-gray-400">
+                <i class="fas fa-plus-circle text-xl"></i>
+                <span class="text-xs mt-1">Create</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center text-gray-400">
+                <i class="fas fa-bell text-xl"></i>
+                <span class="text-xs mt-1">Notifications</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center text-gray-400">
+                <i class="fas fa-inbox text-xl"></i>
+                <span class="text-xs mt-1">Inbox</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Create post modal -->
+    <div id="create-post-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-gray-900 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <!-- Modal header -->
+            <div class="p-4 border-b border-gray-800 flex items-center justify-between">
+                <h3 class="text-lg font-bold">Create a post</h3>
+                <button onclick="document.getElementById('create-post-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-300">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal content -->
+            <div class="p-4 flex-1 overflow-y-auto">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Choose a community</label>
+                    <select class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <option>Select a community</option>
+                        <option>General</option>
+                        <option>Your post</option>
+                        <option>SmileX</option>
+                        <option>Team SmileX</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <input type="text" placeholder="Title" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+
+                <div class="mb-4">
+                    <textarea placeholder="What are your thoughts?" rows="6" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
+                </div>
+
+                <div class="border-2 border-dashed border-gray-700 rounded-lg p-4 text-center mb-4">
+                    <i class="fas fa-image text-3xl text-gray-500 mb-2"></i>
+                    <p class="text-gray-400">Drag and drop images or <button class="text-purple-400 font-medium">browse</button></p>
+                </div>
+
+                <div class="flex items-center justify-between text-sm text-gray-400">
+                    <div class="flex space-x-3">
+                        <button class="flex items-center">
+                            <i class="far fa-image mr-1"></i> Image
+                        </button>
+                        <button class="flex items-center">
+                            <i class="fas fa-link mr-1"></i> Link
+                        </button>
+                        <button class="flex items-center">
+                            <i class="fas fa-poll mr-1"></i> Poll
+                        </button>
+                    </div>
+                    <button class="text-sm">
+                        <i class="fas fa-markdown mr-1"></i> Markdown
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="p-4 border-t border-gray-800 flex justify-end">
+                <button onclick="document.getElementById('create-post-modal').classList.add('hidden')" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg mr-2 hover:bg-gray-700">
+                    Cancel
+                </button>
+                <button class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">
+                    Post
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Chat Toggle Button -->
+    <button id="chat-toggle-btn" class="chat-toggle">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <!-- Live Chat Container -->
+    <div id="chat-container" class="chat-container">
+        <div class="chat-header">
+            <h3>Live Chat Support</h3>
+            <button id="chat-close-btn" class="chat-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <!-- Messages will be added here dynamically -->
+            <div class="message">
+                <div class="message-user">Support Agent</div>
+                <div class="message-text">Hello! How can we help you today?</div>
+                <div class="message-time">Just now</div>
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Type your message...">
+            <button id="chat-send-btn" class="chat-send">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Dark mode toggle -->
+    <button id="dark-mode-toggle" class="fixed bottom-4 right-24 w-12 h-12 rounded-full bg-gray-800 shadow-lg flex items-center justify-center text-gray-300 z-50">
+        <i class="fas fa-moon dark:hidden"></i>
+        <i class="fas fa-sun hidden dark:block"></i>
+    </button>
+
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-       
-        const analysisOverlay = document.getElementById('analysisOverlay');
-        const analysisContent = document.getElementById('analysisContent');
+        
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const html = document.documentElement;
 
-      
+        // Check for saved user preference or system preference
+        const userPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
 
-        // Check for name on page load
-        checkAndPromptForName();
+        if (savedTheme === 'dark' || (!savedTheme && userPrefersDark)) {
+            html.classList.add('dark');
+        }
 
-        analyzeBtn.addEventListener('click', async () => {
-            // Retrieve saved name
-            const userName = localStorage.getItem('userName') || 'User';
-            const text = userInput.value.trim();
-            
-            // Show overlay
-            analysisOverlay.style.display = 'flex';
-            analysisContent.innerHTML = '';
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        });
 
-            // Add user input bubble
-            const userBubble = document.createElement('div');
-            userBubble.classList.add('chat-bubble');
-            userBubble.innerHTML = `
-                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="profile-pic" alt="User">
-                <div class="chat-content">
-                    <strong>${userName}:</strong>
-                    <p>${text}</p>
-                </div>
-            `;
-            analysisContent.appendChild(userBubble);
-
-            // Show 3-dot loader
-            const loaderDiv = document.createElement('div');
-            loaderDiv.classList.add('loader');
-            loaderDiv.innerHTML = `
-                <div class="dot-loader">
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                </div>
-            `;
-            analysisContent.appendChild(loaderDiv);
-
-            try {
-                // Fetch meaning and analyze
-                const aiAnalysis = await fetchMeaningAndAnalyze(userName, text);
-
-                // Remove loader
-                loaderDiv.remove();
-
-                // Add AI analysis bubble
-                const aiBubble = document.createElement('div');
-                aiBubble.classList.add('chat-bubble');
+        // Sample functionality for upvoting/downvoting
+        document.querySelectorAll('.vote-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const voteContainer = this.closest('.flex.flex-col.items-center');
+                const countElement = voteContainer.querySelector('span.font-medium');
+                let count = parseInt(countElement.textContent.replace(/[^\d]/g, ''));
                 
-                aiBubble.innerHTML = `
-                    <img src="https://randomuser.me/api/portraits/ai/1.jpg" class="profile-pic" alt="AI">
-                    <div class="chat-content">
-                        <strong>AI:</strong>
-                        <br>
-                        <p class="typing-animation">${aiAnalysis.meaning}</p>
-                        <div class="decision-buttons">
-                            <button class="decision-btn yes-btn">Yes, Looks Correct</button>
-                            <button class="decision-btn no-btn">No, Revise</button>
+                if (this.querySelector('.fa-arrow-up')) {
+                    if (this.classList.contains('text-purple-500')) {
+                        // Already upvoted - remove vote
+                        this.classList.remove('text-purple-500');
+                        count--;
+                    } else {
+                        // Upvote
+                        this.classList.add('text-purple-500');
+                        const downButton = voteContainer.querySelector('.fa-arrow-down').closest('button');
+                        if (downButton.classList.contains('text-blue-500')) {
+                            downButton.classList.remove('text-blue-500');
+                            count += 2; // Remove downvote and add upvote
+                        } else {
+                            count++;
+                        }
+                    }
+                } else if (this.querySelector('.fa-arrow-down')) {
+                    if (this.classList.contains('text-blue-500')) {
+                        // Already downvoted - remove vote
+                        this.classList.remove('text-blue-500');
+                        count++;
+                    } else {
+                        // Downvote
+                        this.classList.add('text-blue-500');
+                        const upButton = voteContainer.querySelector('.fa-arrow-up').closest('button');
+                        if (upButton.classList.contains('text-purple-500')) {
+                            upButton.classList.remove('text-purple-500');
+                            count -= 2; // Remove upvote and add downvote
+                        } else {
+                            count--;
+                        }
+                    }
+                }
+                
+                // Format the count (e.g., 1.5k for 1500)
+                countElement.textContent = count >= 1000 ? (count / 1000).toFixed(1) + 'k' : count;
+            });
+        });
+
+        // Simulate loading more posts
+        document.querySelector('button:contains("Load more posts")').addEventListener('click', function() {
+            this.textContent = 'Loading...';
+            this.disabled = true;
+
+            // Simulate API call delay
+            setTimeout(() => {
+                const postsFeed = document.getElementById('posts-feed');
+
+                // Create a new sample post
+                const newPost = document.createElement('div');
+                newPost.className = 'bg-gray-900 rounded-lg shadow-sm post-card fade-in';
+                newPost.innerHTML = `
+                    <div class="p-4">
+                        <div class="flex items-start">
+                            <div class="flex flex-col items-center mr-4">
+                                <button class="vote-button text-gray-400 hover:text-purple-500">
+                                    <i class="fas fa-arrow-up text-xl"></i>
+                                </button>
+                                <span class="my-1 font-medium text-gray-300">2.1k</span>
+                                <button class="vote-button text-gray-400 hover:text-blue-500">
+                                    <i class="fas fa-arrow-down text-xl"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="flex-1">
+                                <div class="flex items-center text-xs text-gray-400 mb-2">
+                                    <span class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs mr-2">f</span>
+                                    <span class="font-medium">f/Food</span>
+                                    <span class="mx-1">•</span>
+                                    <span>Posted by u/chef_extraordinaire</span>
+                                    <span class="mx-1">•</span>
+                                    <span>3 hours ago</span>
+                                </div>
+                                
+                                <h3 class="text-xl font-medium mb-2">My homemade sourdough after 6 months of practice</h3>
+                                
+                                <div class="mb-4">
+                                    <img src="https://source.unsplash.com/random/800x600/?bread,sourdough"
+                                        alt="Sourdough bread"
+                                        class="w-full h-auto rounded-lg object-cover max-h-96">
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex space-x-4">
+                                        <button class="flex items-center text-gray-400 hover:text-purple-400">
+                                            <i class="far fa-comment mr-1"></i>
+                                            <span>327 Comments</span>
+                                        </button>
+                                        <button class="flex items-center text-gray-400 hover:text-green-500">
+                                            <i class="fas fa-share mr-1"></i>
+                                            <span>Share</span>
+                                        </button>
+                                        <button class="flex items-center text-gray-400 hover:text-yellow-500">
+                                            <i class="far fa-bookmark mr-1"></i>
+                                            <span>Save</span>
+                                        </button>
+                                    </div>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `;
+
+                // Add the new post to the feed
+                postsFeed.appendChild(newPost);
+
+                // Reattach event listeners to the new vote buttons
+                newPost.querySelectorAll('.vote-button').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const voteContainer = this.closest('.flex.flex-col.items-center');
+                        const countElement = voteContainer.querySelector('span.font-medium');
+                        let count = parseInt(countElement.textContent.replace(/[^\d]/g, ''));
+                        
+                        if (this.querySelector('.fa-arrow-up')) {
+                            if (this.classList.contains('text-purple-500')) {
+                                this.classList.remove('text-purple-500');
+                                count--;
+                            } else {
+                                this.classList.add('text-purple-500');
+                                const downButton = voteContainer.querySelector('.fa-arrow-down').closest('button');
+                                if (downButton.classList.contains('text-blue-500')) {
+                                    downButton.classList.remove('text-blue-500');
+                                    count += 2;
+                                } else {
+                                    count++;
+                                }
+                            }
+                        } else if (this.querySelector('.fa-arrow-down')) {
+                            if (this.classList.contains('text-blue-500')) {
+                                this.classList.remove('text-blue-500');
+                                count++;
+                            } else {
+                                this.classList.add('text-blue-500');
+                                const upButton = voteContainer.querySelector('.fa-arrow-up').closest('button');
+                                if (upButton.classList.contains('text-purple-500')) {
+                                    upButton.classList.remove('text-purple-500');
+                                    count -= 2;
+                                } else {
+                                    count--;
+                                }
+                            }
+                        }
+                        
+                        countElement.textContent = count >= 1000 ? (count / 1000).toFixed(1) + 'k' : count;
+                    });
+                });
+
+                // Reset the button
+                this.textContent = 'Load more posts';
+                this.disabled = false;
+            }, 1000);
+        });
+
+        // Live Chat Functionality
+        const chatToggleBtn = document.getElementById('chat-toggle-btn');
+        const chatCloseBtn = document.getElementById('chat-close-btn');
+        const chatContainer = document.getElementById('chat-container');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const chatSendBtn = document.getElementById('chat-send-btn');
+
+        // Toggle chat visibility
+        chatToggleBtn.addEventListener('click', () => {
+            chatContainer.classList.toggle('active');
+            chatToggleBtn.classList.toggle('active');
+        });
+
+        // Close chat
+        chatCloseBtn.addEventListener('click', () => {
+            chatContainer.classList.remove('active');
+            chatToggleBtn.classList.remove('active');
+        });
+
+        // Send message
+        function sendMessage() {
+            const messageText = chatInput.value.trim();
+            if (messageText) {
+                // Add user message
+                addMessage('You', messageText, 'user');
                 
-                analysisContent.appendChild(aiBubble);
+                // Clear input
+                chatInput.value = '';
+                
+                // Simulate bot response after a delay
+                setTimeout(() => {
+                    const responses = [
+                        "Thanks for your message! How can I help you?",
+                        "I'll look into that for you.",
+                        "Our support team will get back to you shortly.",
+                        "That's a great question! Let me check...",
+                        "I'm here to help with any questions you have."
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addMessage('Support Agent', randomResponse, 'bot');
+                }, 1000);
+            }
+        }
 
-                // Add event listeners to decision buttons
-                const yesBtn = aiBubble.querySelector('.yes-btn');
-                const noBtn = aiBubble.querySelector('.no-btn');
+        // Add message to chat
+        function addMessage(user, text, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message-user';
+            userDiv.textContent = user;
+            
+            const textDiv = document.createElement('div');
+            textDiv.className = 'message-text';
+            textDiv.textContent = text;
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'message-time';
+            timeDiv.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            messageDiv.appendChild(userDiv);
+            messageDiv.appendChild(textDiv);
+            messageDiv.appendChild(timeDiv);
+            
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
 
-                yesBtn.addEventListener('click', () => {
-                    alert('Great! Proceeding with the current analysis.');
-                });
+        // Send message on button click
+        chatSendBtn.addEventListener('click', sendMessage);
 
-                noBtn.addEventListener('click', () => {
-                    alert('We will help you refine the analysis.');
-                });
-
-            } catch (error) {
-                loaderDiv.remove();
-                const errorBubble = document.createElement('div');
-                errorBubble.classList.add('chat-bubble');
-                errorBubble.innerHTML = `
-                    <div class="chat-content">
-                        <strong>Error:</strong>
-                        <p>Unable to process analysis. ${error.message}</p>
-                    </div>
-                `;
-                analysisContent.appendChild(errorBubble);
+        // Send message on Enter key
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
             }
         });
 
-        // Simulate meaning fetch and analysis
-        async function fetchMeaningAndAnalyze(userName, text) {
-            // Simulated API call 
-            await new Promise(resolve => setTimeout(resolve, 2000));
+        // Prevent right-click
+        document.addEventListener('contextmenu', event => event.preventDefault());
+    </script>
 
-            // Mock meaning extraction and analysis
-            const meanings = {
-                general: [
-                    "A statement expressing personal thoughts or experiences",
-                    "A descriptive text about a specific topic",
-                    "An exploratory piece of writing"
-                ],
-                insights: [
-                    "Reveals potential emotional context",
-                    "Demonstrates critical thinking",
-                    "Shows nuanced understanding"
-                ]
-            };
-
-            // Generate dynamic, personalized analysis
-            const meaning = meanings.general[Math.floor(Math.random() * meanings.general.length)];
-            const insight = meanings.insights[Math.floor(Math.random() * meanings.insights.length)];
-
-            return {
-                meaning: `Hello ${userName}! It seems this appears to be ${meaning}. ${insight}. 
-    
-    The text suggests: "${text.substring(0, 200)}${text.length > 200 ? '...' : ''}"
-    
-    Would you like me to generate further insights?`
-            };
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        smile: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                        },
+                        dark: {
+                            900: '#0f0f13',
+                            800: '#18181d',
+                            700: '#22222a',
+                            600: '#2d2d37',
+                            500: '#383844',
+                        }
+                    },
+                    fontFamily: {
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'sans': ['Orbitron', 'sans-serif']
+                    }
+                }
+            }
         }
-    });
     </script>
 </body>
 </html>

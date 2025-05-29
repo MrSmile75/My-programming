@@ -275,7 +275,7 @@ button{
 .social-title {
     font-size: 4rem;
     margin-bottom: 50px;
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(45deg, #ff4da6,#833ab4,#e1306c);
     -webkit-background-clip: text;
     color: transparent;
 }
@@ -450,17 +450,11 @@ button{
     margin-bottom: 15px;
     color: grey;
     font-weight: 700;
-}
-
-:hover .features li{
-    background: transparent;
-    color: auto;
+        background: transparent;
     padding: 1rem 1rem;
     border: 1px solid transparent;
     border-radius: 1rem 1rem;
     transform: scale(1.1);
-    transition-duration:1s ;
-    
 }
 
 .features li i {

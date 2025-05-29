@@ -6,6 +6,26 @@ color: rgba(6, 149, 244, 0.87);
 }
 
 
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 18px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2575fc;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background:#025efd;
+        }
+
+
+
 :root {
     --primary-color: #3498db;
     --secondary-color: #2ecc71;

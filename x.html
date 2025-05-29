@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Email Authentication</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .password-strength-meter {
+            height: 5px;
+            background-color: #e2e8f0;
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .password-strength-meter::before {
+            content: '';
+            display: block;
+            height: 100%;
+            width: 0%;
+            background-color: #ef4444;
+            transition: width 0.3s, background-color 0.3s;
+        }
+        
+        .password-strength-meter.weak::before {
+            width: 30%;
+            background-color: #ef4444;
+        }
+        
+        .password-strength-meter.medium::before {
+            width: 60%;
+            background-color: #f59e0b;
+        }
+        
+        .password-strength-meter.strong::before {
+            width: 100%;
+            background-color: #10b981;
+        }
+        
+        .premium-badge {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .premium-badge::after {
+            content: 'PREMIUM';
+            position: absolute;
+            top: -10px;
+            right: -30px;
+            background-color: #f59e0b;
+            color: white;
+            padding: 2px 30px;
+            font-size: 10px;
+            transform: rotate(45deg);
+        }
+        
+        .device-card {
+            transition: all 0.3s ease;
+        }
+        
+        .device-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .active-device {
+            border-left: 4px solid #10b981;
+        }
+        
+        .inactive-device {
+            border-left: 4px solid #ef4444;
+        }
+        
+        .dashboard-container {
+            display: none;
+        }
+        
+        .blur-effect {
+            filter: blur(5px);
+            pointer-events: none;
+        }
+        
+        .subscription-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .subscription-card {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Auth Container -->
+    <div class="container mx-auto px-4 py-8 max-w-6xl" id="authContainer">
+        <!-- Login Container -->
+        <div class="login-container bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row">
+            <div class="form-section p-8 md:w-1/2">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Login</h2>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-500">New user?</span>
+                        <button class="toggle-btn text-blue-600 font-medium" onclick="toggleForm()">Sign Up</button>
+                    </div>
+                </div>
+                <form id="loginForm">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="loginEmail">Email</label>
+                        <input 
+                            type="email" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent" 
+                            id="loginEmail" 
+                            required
+                            placeholder="Enter your email"
+                        >
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="loginPassword">Password</label>
+                        <input 
+                            type="password" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent" 
+                            id="loginPassword" 
+                            required
+                            placeholder="Enter your password"
+                        >
+                    </div>
+                    <div class="mb-6 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <input 
+                                type="checkbox" 
+                                class="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
+                                id="rememberMe"
+                            >
+                            <label class="ml-2 block text-sm text-gray-700">Remember me</label>
+                        </div>
+                        <a href="#" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
+                    </div>
+                    <button 
+                        type="submit" 
+                        class="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                    >
+                        Login
+                    </button>
+                </form>
+                <div class="mt-6">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 grid grid-cols-2 gap-3">
+                        <button class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                            <i class="fab fa-google text-red-500 mr-2"></i> Google
+                        </button>
+                        <button class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                            <i class="fab fa-apple text-gray-800 mr-2"></i> Apple
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="image-section bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 md:w-1/2 flex flex-col justify-center items-center text-center">
+                <div class="max-w-xs">
+                    <h3 class="text-2xl font-bold mb-4">Welcome Back!</h3>
+                    <p class="text-gray-300 mb-8">Login to access your secure email account and continue your communication journey.</p>
+                    <div class="w-full h-48 bg-gray-800 rounded-lg flex items-center justify-center mb-8">
+                        <i class="fas fa-envelope text-5xl text-gray-400"></i>
+                    </div>
+                    <p class="text-sm text-gray-400">Secure. Private. Reliable.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup Container -->
+        <div class="signup-container bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row hidden">
+            <div class="image-section bg-gradient-to-br from-blue-900 to-blue-700 text-white p-8 md:w-1/2 flex flex-col justify-center items-center text-center">
+                <div class="max-w-xs">
+                    <h3 class="text-2xl font-bold mb-4">Hello, There!</h3>
+                    <p class="text-blue-200 mb-8">Create your account and start your secure email communication journey.</p>
+                    <div class="w-full h-48 bg-blue-800 rounded-lg flex items-center justify-center mb-8">
+                        <i class="fas fa-user-shield text-5xl text-blue-300"></i>
+                    </div>
+                    <p class="text-sm text-blue-300">Your privacy is our priority.</p>
+                </div>
+            </div>
+            <div class="form-section p-8 md:w-1/2">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Sign Up</h2>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-500">Already have an account?</span>
+                        <button class="toggle-btn text-blue-600 font-medium" onclick="toggleForm()">Login</button>
+                    </div>
+                </div>
+                <form id="signupForm">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="signupName">Full Name</label>
+                        <input 
+                            type="text" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent" 
+                            id="signupName" 
+                            required
+                            placeholder="Enter your full name"
+                        >
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="signupEmail">Email</label>
+                        <input 
+                            type="email" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent" 
+                            id="signupEmail" 
+                            required
+                            placeholder="Enter your email"
+                        >
+                        <p class="text-xs text-gray-500 mt-1">This will be your email address</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="signupPassword">Password</label>
+                        <input 
+                            type="password" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent" 
+                            id="signupPassword" 
+                            required
+                            placeholder="Create a password"
+                            oninput="checkPasswordStrength(this.value)"
+                        >
+                        <div class="password-strength mt-2">
+                            <div class="password-strength-meter" id="passwordStrengthMeter"></div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Use 8 or more characters with a mix of letters, numbers & symbols</p>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="confirmPassword">Confirm Password</label>
+                        <input 
+                            type="password" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent" 
+                            id="confirmPassword" 
+                            required
+                            placeholder="Confirm your password"
+                        >
+                    </div>
+                    <div class="mb-6 flex items-center">
+                        <input 
+                            type="checkbox" 
+                            class="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
+                            id="termsCheckbox"
+                            required
+                        >
+                        <label class="ml-2 block text-sm text-gray-700">
+                            I agree to the <a href="#" class="text-blue-600 hover:underline">Terms of Service</a> and <a href="#" class="text-blue-600 hover:underline">Privacy Policy</a>
+                        </label>
+                    </div>
+                    <button 
+                        type="submit" 
+                        class="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                    >
+                        Create Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container container mx-auto px-4 py-8 max-w-6xl" id="dashboardContainer">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <!-- Header -->
+            <div class="bg-gray-900 text-white p-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-2xl font-bold">SecureMail</h1>
+                        <p class="text-gray-300">Your private email solution</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative group">
+                            <button class="flex items-center space-x-2 focus:outline-none">
+                                <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
+                                    <i class="fas fa-user text-lg"></i>
+                                </div>
+                                <span id="userEmailDisplay" class="font-medium"></span>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" id="upgradeToPremiumBtn">Upgrade to Premium</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" id="logoutBtn">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="flex flex-col md:flex-row">
+                <!-- Sidebar -->
+                <div class="w-full md:w-1/4 bg-gray-50 p-4 border-r border-gray-200">
+                    <div class="mb-6">
+                        <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center justify-center">
+                            <i class="fas fa-plus mr-2"></i> Compose
+                        </button>
+                    </div>
+                    <nav>
+                        <ul class="space-y-1">
+                            <li>
+                                <a href="#" class="flex items-center px-3 py-2 text-sm font-medium rounded-md bg-blue-100 text-blue-700">
+                                    <i class="fas fa-inbox mr-3 text-blue-500"></i>
+                                    Inbox
+                                    <span class="ml-auto bg-blue-600 text-white text-xs px-2 py-1 rounded-full">12</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-200">
+                                    <i class="fas fa-paper-plane mr-3 text-gray-500"></i>
+                                    Sent
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-200">
+                                    <i class="fas fa-star mr-3 text-gray-500"></i>
+                                    Starred
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-200">
+                                    <i class="fas fa-trash mr-3 text-gray-500"></i>
+                                    Trash
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-200">
+                                    <i class="fas fa-folder mr-3 text-gray-500"></i>
+                                    Drafts
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="mt-8">
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Account</h3>
+                        <ul class="mt-2 space-y-1">
+                            <li>
+                                <a href="#" class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-200">
+                                    <i class="fas fa-user mr-3 text-gray-500"></i>
+                                    Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-200" id="devicesBtn">
+                                    <i class="fas fa-mobile-alt mr-3 text-gray-500"></i>
+                                    Devices
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-200">
+                                    <i class="fas fa-cog mr-3 text-gray-500"></i>
+                                    Settings
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Email Content -->
+                <div class="w-full md:w-3/4 p-6" id="emailContent">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-gray-800">Inbox</h2>
+                        <div class="flex items-center space-x-2">
+                            <div class="relative">
+                                <input type="text" placeholder="Search emails..." class="pl-8 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent">
+                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                            <button class="p-2 rounded-md hover:bg-gray-200">
+                                <i class="fas fa-filter text-gray-600"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="divide-y divide-gray-200">
+                            <!-- Email Item -->
+                            <div class="p-4 hover:bg-gray-50 cursor-pointer flex items-start">
+                                <div class="flex-shrink-0 pt-1">
+                                    <input type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                </div>
+                                <div class="ml-3 flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-sm font-medium text-gray-900">John Doe</p>
+                                        <p class="text-xs text-gray-500">10:30 AM</p>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-900 mt-1">Meeting Tomorrow</p>
+                                    <p class="text-sm text-gray-500 mt-1 truncate">Hi there, just a reminder about our meeting tomorrow at 2 PM. Please bring your project updates...</p>
+                                </div>
+                            </div>
+                            
+                            <!-- More email items would go here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Devices Content (Hidden by default) -->
+                <div class="w-full md:w-3/4 p-6 hidden" id="devicesContent">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-gray-800">Your Devices</h2>
+                        <div class="flex items-center space-x-2">
+                            <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+                                <i class="fas fa-plus mr-2"></i> Add Device
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 border-b border-gray-200">
+                            <h3 class="text-lg font-medium text-gray-900">Active Sessions</h3>
+                            <p class="text-sm text-gray-500">Manage your active devices and sessions</p>
+                        </div>
+                        
+                        <div class="divide-y divide-gray-200" id="devicesList">
+                            <!-- Device items will be added here dynamically -->
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-circle text-yellow-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700">
+                                    <span class="font-medium">Notice:</span> You're using a free account. With a free account, you can only be logged in on one device at a time. 
+                                    <a href="#" class="font-medium text-yellow-700 underline hover:text-yellow-600" id="upgradeNoticeBtn">Upgrade to Premium</a> to use multiple devices simultaneously.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscription Modal -->
+    <div class="subscription-modal" id="subscriptionModal">
+        <div class="subscription-card bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900">Upgrade to Premium</h3>
+                        <p class="text-sm text-gray-500 mt-1">Unlock all features including multi-device access</p>
+                    </div>
+                    <button class="text-gray-400 hover:text-gray-500" id="closeModalBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="mt-6 space-y-4">
+                    <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-500 transition duration-300 cursor-pointer">
+                        <div class="flex items-center">
+                            <input type="radio" name="subscriptionPlan" id="monthlyPlan" class="h-4 w-4 text-blue-600 focus:ring-blue-500" checked>
+                            <label for="monthlyPlan" class="ml-3 block">
+                                <span class="font-medium text-gray-900">Monthly Plan</span>
+                                <span class="text-gray-500 text-sm block">$9.99/month</span>
+                            </label>
+                            <span class="ml-auto font-medium text-gray-900">$9.99</span>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-500 transition duration-300 cursor-pointer">
+                        <div class="flex items-center">
+                            <input type="radio" name="subscriptionPlan" id="yearlyPlan" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                            <label for="yearlyPlan" class="ml-3 block">
+                                <span class="font-medium text-gray-900">Yearly Plan</span>
+                                <span class="text-gray-500 text-sm block">$99.99/year (Save 16%)</span>
+                            </label>
+                            <span class="ml-auto font-medium text-gray-900">$99.99</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h4 class="text-sm font-medium text-gray-900">Premium Features:</h4>
+                    <ul class="mt-2 space-y-2">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm text-gray-600">Access on multiple devices simultaneously</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm text-gray-600">50GB storage</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm text-gray-600">Custom email domain</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm text-gray-600">Priority customer support</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="mt-6">
+                    <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" id="subscribeBtn">
+                        Upgrade Now
+                    </button>
+                </div>
+                
+                <div class="mt-4 text-center">
+                    <p class="text-xs text-gray-500">By subscribing, you agree to our <a href="#" class="text-blue-600 hover:underline">Terms of Service</a> and <a href="#" class="text-blue-600 hover:underline">Privacy Policy</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulated database
+        const usersDB = {};
+        const sessionsDB = {};
+        let currentUser = null;
+        
+        // DOM Elements
+        const authContainer = document.getElementById('authContainer');
+        const dashboardContainer = document.getElementById('dashboardContainer');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const devicesBtn = document.getElementById('devicesBtn');
+        const emailContent = document.getElementById('emailContent');
+        const devicesContent = document.getElementById('devicesContent');
+        const devicesList = document.getElementById('devicesList');
+        const userEmailDisplay = document.getElementById('userEmailDisplay');
+        const subscriptionModal = document.getElementById('subscriptionModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const upgradeToPremiumBtn = document.getElementById('upgradeToPremiumBtn');
+        const upgradeNoticeBtn = document.getElementById('upgradeNoticeBtn');
+        const subscribeBtn = document.getElementById('subscribeBtn');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is already logged in (from localStorage)
+            const storedUser = localStorage.getItem('currentUser');
+            if (storedUser) {
+                currentUser = JSON.parse(storedUser);
+                showDashboard();
+            }
+            
+            // Generate a device ID for the current browser
+            if (!localStorage.getItem('deviceId')) {
+                localStorage.setItem('deviceId', generateDeviceId());
+            }
+        });
+        
+        // Form Toggle
+        function toggleForm() {
+            const loginContainer = document.querySelector('.login-container');
+            const signupContainer = document.querySelector('.signup-container');
+            
+            loginContainer.classList.toggle('hidden');
+            signupContainer.classList.toggle('hidden');
+        }
+        
+        // Password Strength Checker
+        function checkPasswordStrength(password) {
+            const meter = document.getElementById('passwordStrengthMeter');
+            let strength = 0;
+            
+            // Length check
+            if (password.length >= 8) strength += 1;
+            if (password.length >= 12) strength += 1;
+            
+            // Character variety checks
+            if (/[A-Z]/.test(password)) strength += 1;
+            if (/[0-9]/.test(password)) strength += 1;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+            
+            // Update meter
+            meter.className = 'password-strength-meter';
+            if (strength <= 2) {
+                meter.classList.add('weak');
+            } else if (strength <= 4) {
+                meter.classList.add('medium');
+            } else {
+                meter.classList.add('strong');
+            }
+        }
+        
+        // Signup Form Submission
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Check if user already exists
+            if (usersDB[email]) {
+                alert('An account with this email already exists!');
+                return;
+            }
+            
+            // Create new user
+            usersDB[email] = {
+                name,
+                email,
+                password,
+                isPremium: false,
+                createdAt: new Date().toISOString()
+            };
+            
+            // Log the user in
+            loginUser(email, password);
+        });
+        
+        // Login Form Submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            loginUser(email, password);
+        });
+        
+        // Login Function
+        function loginUser(email, password) {
+            const user = usersDB[email];
+            
+            // Check if user exists
+            if (!user) {
+                alert('No account found with this email!');
+                return;
+            }
+            
+            // Check password
+            if (user.password !== password) {
+                alert('Incorrect password!');
+                return;
+            }
+            
+            // Check if user is already logged in on another device (for free users)
+            if (!user.isPremium && sessionsDB[email]) {
+                const currentSession = sessionsDB[email];
+                const currentDeviceId = localStorage.getItem('deviceId');
+                
+                // If trying to login from a different device
+                if (currentSession.deviceId !== currentDeviceId) {
+                    if (confirm('You are already logged in on another device. Logging in here will log you out from the other device. Continue?')) {
+                        // Logout from the other device
+                        currentSession.isActive = false;
+                    } else {
+                        return;
+                    }
+                }
+            }
+            
+            // Create new session
+            const deviceId = localStorage.getItem('deviceId');
+            const deviceInfo = getDeviceInfo();
+            
+            sessionsDB[email] = {
+                email,
+                deviceId,
+                deviceInfo,
+                isActive: true,
+                lastActive: new Date().toISOString()
+            };
+            
+            // Set current user
+            currentUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Show dashboard
+            showDashboard();
+        }
+        
+        // Logout Function
+        logoutBtn.addEventListener('click', () => {
+            if (currentUser && sessionsDB[currentUser.email]) {
+                sessionsDB[currentUser.email].isActive = false;
+            }
+            
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            
+            showAuth();
+        });
+        
+        // Show Dashboard
+        function showDashboard() {
+            authContainer.classList.add('hidden');
+            dashboardContainer.classList.remove('hidden');
+            
+            // Update user info
+            if (currentUser) {
+                userEmailDisplay.textContent = currentUser.email;
+                
+                // Add premium badge if user is premium
+                if (currentUser.isPremium) {
+                    userEmailDisplay.classList.add('premium-badge');
+                } else {
+                    userEmailDisplay.classList.remove('premium-badge');
+                }
+                
+                // Load devices
+                loadDevices();
+            }
+        }
+        
+        // Show Auth
+        function showAuth() {
+            authContainer.classList.remove('hidden');
+            dashboardContainer.classList.add('hidden');
+            
+            // Reset forms
+            loginForm.reset();
+            signupForm.reset();
+        }
+        
+        // Devices Management
+        devicesBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            emailContent.classList.add('hidden');
+            devicesContent.classList.remove('hidden');
+        });
+        
+        // Load Devices
+        function loadDevices() {
+            if (!currentUser) return;
+            
+            devicesList.innerHTML = '';
+            
+            const session = sessionsDB[currentUser.email];
+            if (!session) return;
+            
+            const deviceItem = createDeviceItem(session, true);
+            devicesList.appendChild(deviceItem);
+            
+            // For demo purposes, add some dummy devices
+            if (!currentUser.isPremium) {
+                const dummyDevice = {
+                    deviceInfo: {
+                        os: 'Windows',
+                        browser: 'Chrome',
+                        device: 'Desktop'
+                    },
+                    lastActive: '2023-07-20T10:30:00Z',
+                    isActive: false
+                };
+                
+                const dummyItem = createDeviceItem(dummyDevice, false);
+                devicesList.appendChild(dummyItem);
+            }
+        }
+        
+        // Create Device Item
+        function createDeviceItem(session, isCurrent) {
+            const deviceItem = document.createElement('div');
+            deviceItem.className = `p-4 device-card ${session.isActive ? 'active-device' : 'inactive-device'}`;
+            
+            const deviceIcon = session.deviceInfo.device === 'Mobile' ? 'mobile-alt' : 'desktop';
+            
+            deviceItem.innerHTML = `
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 pt-1">
+                        <i class="fas fa-${deviceIcon} text-gray-500 text-xl"></i>
+                    </div>
+                    <div class="ml-3 flex-1">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-900">
+                                ${session.deviceInfo.device} (${session.deviceInfo.os}, ${session.deviceInfo.browser})
+                                ${isCurrent ? '<span class="ml-2 text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Current</span>' : ''}
+                                ${currentUser.isPremium && session.isActive ? '<span class="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Active</span>' : ''}
+                            </p>
+                            ${!isCurrent ? '<button class="text-xs text-red-600 hover:text-red-800">Logout</button>' : ''}
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Last active: ${formatDate(session.lastActive)}</p>
+                        ${!currentUser.isPremium && !isCurrent ? 
+                          '<div class="mt-2 text-xs text-red-600">This device was logged out because you have a free account</div>' : ''}
+                    </div>
+                </div>
+            `;
+            
+            return deviceItem;
+        }
+        
+        // Subscription Modal
+        upgradeToPremiumBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            subscriptionModal.style.display = 'flex';
+        });
+        
+        upgradeNoticeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            subscriptionModal.style.display = 'flex';
+        });
+        
+        closeModalBtn.addEventListener('click', () => {
+            subscriptionModal.style.display = 'none';
+        });
+        
+        subscribeBtn.addEventListener('click', () => {
+            if (!currentUser) return;
+            
+            // Upgrade to premium
+            currentUser.isPremium = true;
+            usersDB[currentUser.email].isPremium = true;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Close modal
+            subscriptionModal.style.display = 'none';
+            
+            // Update UI
+            userEmailDisplay.classList.add('premium-badge');
+            loadDevices();
+            
+            // Show success message
+            alert('Congratulations! You are now a premium user. You can now use multiple devices simultaneously.');
+        });
+        
+        // Helper Functions
+        function generateDeviceId() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+        
+        function getDeviceInfo() {
+            const userAgent = navigator.userAgent;
+            let os, browser, device;
+            
+            // Detect OS
+            if (userAgent.match(/android/i)) {
+                os = 'Android';
+            } else if (userAgent.match(/iphone|ipad|ipod/i)) {
+                os = 'iOS';
+            } else if (userAgent.match(/macintosh/i)) {
+                os = 'MacOS';
+            } else if (userAgent.match(/windows/i)) {
+                os = 'Windows';
+            } else if (userAgent.match(/linux/i)) {
+                os = 'Linux';
+            } else {
+                os = 'Unknown OS';
+            }
+            
+            // Detect Browser
+            if (userAgent.match(/firefox|fxios/i)) {
+                browser = 'Firefox';
+            } else if (userAgent.match(/opr\//i)) {
+                browser = 'Opera';
+            } else if (userAgent.match(/edg/i)) {
+                browser = 'Edge';
+            } else if (userAgent.match(/chrome|chromium|crios/i)) {
+                browser = 'Chrome';
+            } else if (userAgent.match(/safari/i)) {
+                browser = 'Safari';
+            } else {
+                browser = 'Unknown Browser';
+            }
+            
+            // Detect Device
+            if (userAgent.match(/mobile/i)) {
+                device = 'Mobile';
+            } else if (userAgent.match(/tablet|ipad|playbook|silk/i)) {
+                device = 'Tablet';
+            } else {
+                device = 'Desktop';
+            }
+            
+            return { os, browser, device };
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString();
+        }
+    </script>
+</body>
+</html>

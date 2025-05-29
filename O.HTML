@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat X</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdn.tailwindcss.com/3.4.1"></script>
-
-
+    <title>X Trading Hub - Advanced E-Trading Platform</title>
+    <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #6a11cb;
@@ -30,250 +28,6 @@
             font-family: 'Orbitron', sans-serif;
             background:black;
             color: white;
-        }
-
-        .chat-preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            pointer-events: none;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .loader-container {
-            background: transparent;
-            pointer-events: none;
-        }
-
-        .chat-bubble-wrapper {
-            position: relative;
-            width: 200px;
-            height: 200px;
-        }
-
-        .chat-bubble {
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 50% 50% 50% 10%;
-            box-shadow: 
-                0 15px 30px rgba(0,0,0,0.2),
-                inset 0 -5px 15px rgba(255,255,255,0.1);
-            animation: 
-                float 3s ease-in-out infinite,
-                pulse 2s ease-in-out infinite alternate;
-            transform-origin: center;
-        }
-
-        .chat-bubble::before {
-            content: '';
-            position: absolute;
-            bottom: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 50px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            filter: blur(10px);
-        }
-
-        .loading-text {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--text-color);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .progress-container {
-            width: 350px;
-            height: 15px;
-            background: rgba(0,0,0,0.1);
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            width: 0;
-            height: 100%;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            border-radius: 20px;
-            animation: progress 2s ease-in-out infinite;
-        }
-
-        .dots {
-            display: flex;
-            gap: 10px;
-        }
-
-        .dot {
-            width: 15px;
-            height: 15px;
-            background: transparent;
-            border-radius: 50%;
-            animation: dot-pulse 1.5s ease-in-out infinite;
-        }
-
-        .dot:nth-child(2) { animation-delay: 0.3s; }
-        .dot:nth-child(3) { animation-delay: 0.6s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.95); }
-            100% { transform: scale(1.05); }
-        }
-
-        @keyframes progress {
-            0% { width: 0; }
-            50% { width: 100%; }
-            100% { width: 0; }
-        }
-
-        @keyframes dot-pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-
-        .onboarding-container {
-            position: relative;
-            max-width: 700px;
-            width: 90%;
-            max-height: 80vh;
-            margin: 0 auto;
-            background: white;
-            color: black;
-            border-radius: 15px;
-            overflow-y: auto;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 40px;
-            transform: scale(0.7);
-            opacity: 0;
-            transition: all 0.3s ease;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .overlay.active .onboarding-container {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .onboarding-container::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .onboarding-container::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-
-        .onboarding-container::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .onboarding-container {
-                width: 95%;
-                padding: 20px;
-                max-height: 90vh;
-            }
-        }
-
-        .onboarding-header {
-            background: var(--primary-color);
-            color: white;
-            text-align: center;
-            padding: 20px;
-            font-size: small;
-        }
-
-        .onboarding-form {
-            padding: 10px;
-        }
-
-        .form-control, .form-select {
-            border-radius: 10px;
-            padding: 12px;
-        }
-
-        .consent-section {
-            background-color: #f4f6f7;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-
-        .consent-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .consent-item i {
-            margin-right: 10px;
-            color: var(--primary-color);
-        }
-
-        #submitBtn {
-            background-color: greenyellow;
-            border: none;
-            transition: all 0.3s ease;
-            border-radius: 3rem 3rem;
-        }
-
-        #submitBtn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px greenyellow;
-        }
-
-        #submitBtn:disabled {
-            background-color: grey;
-            cursor: not-allowed;
-        }
-
-        .validation-error {
-            color: #dc3545;
-            font-size: 0.8rem;
-            margin-top: 5px;
-            display: none;
         }
 
         .post-card {
@@ -501,8 +255,7 @@
             }
         }
 
-
-         /* Custom scrollbar */
+        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -521,341 +274,101 @@
             background: #2575fc;
         }
 
+        /* Modal animations */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .modal-enter-active {
+            opacity: 1;
+            transform: translateX(0);
+            transition: opacity 300ms, transform 300ms;
+        }
+
+        .modal-exit {
+            opacity: 1;
+        }
+
+        .modal-exit-active {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 300ms, transform 300ms;
+        }
+
+        /* Pulse animation for notifications */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #6a11cb;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
-
 <body>
-    <!-- Preloader -->
-    <div class="chat-preloader">
-        <div class="loader-container">
-            <div class="chat-bubble-wrapper">
-                <div class="chat-bubble"></div>
-            </div>
-            <div class="loading-text">Preparing Chat</div>
-            <div class="progress-container">
-                <div class="progress-bar"></div>
-            </div>
-            <div class="dots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Onboarding Modal -->
-    <div class="overlay">
-        <div class="onboarding-container" id="onboardingModal">
-            <div class="onboarding-header">
-                <h2>
-                    <i class="fas fa-user-circle"></i> Chat Onboarding
-                </h2>
-                <p>Complete your profile to join our community</p>
-            </div>
-
-            <form id="registrationForm" class="onboarding-form">
-                <!-- Personal Information -->
-                <div class="mb-3">
-                    <label class="form-label">
-                        <i class="fas fa-user"></i> Full Name
-                    </label>
-                    <input 
-                        type="text" 
-                        class="form-control" 
-                        name="fullName" 
-                        placeholder="Enter your full name"
-                        required 
-                        minlength="2" 
-                        maxlength="50"
-                    >
-                    <div class="validation-error" id="nameError">
-                        Please enter a valid name
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">
-                        <i class="fas fa-envelope"></i> Email Address
-                    </label>
-                    <input 
-                        type="email" 
-                        class="form-control" 
-                        name="email" 
-                        placeholder="your.email@example.com"
-                        required
-                    >
-                    <div class="validation-error" id="emailError">
-                        Please enter a valid email
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">
-                            <i class="fas fa-venus-mars"></i> Gender
-                        </label>
-                        <select class="form-select" name="gender" required>
-                            <option value="">Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">
-                            <i class="fas fa-globe"></i> Country
-                        </label>
-                       <select name="country">
-  <option value="">Select a country</option>
-  <option value="Afghanistan">Afghanistan</option>
-  <option value="Albania">Albania</option>
-  <option value="Algeria">Algeria</option>
-  <option value="Andorra">Andorra</option>
-  <option value="Angola">Angola</option>
-  <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-  <option value="Argentina">Argentina</option>
-  <option value="Armenia">Armenia</option>
-  <option value="Australia">Australia</option>
-  <option value="Austria">Austria</option>
-  <option value="Azerbaijan">Azerbaijan</option>
-  <option value="Bahamas">Bahamas</option>
-  <option value="Bahrain">Bahrain</option>
-  <option value="Bangladesh">Bangladesh</option>
-  <option value="Barbados">Barbados</option>
-  <option value="Belarus">Belarus</option>
-  <option value="Belgium">Belgium</option>
-  <option value="Belize">Belize</option>
-  <option value="Benin">Benin</option>
-  <option value="Bhutan">Bhutan</option>
-  <option value="Bolivia">Bolivia</option>
-  <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-  <option value="Botswana">Botswana</option>
-  <option value="Brazil">Brazil</option>
-  <option value="Brunei">Brunei</option>
-  <option value="Bulgaria">Bulgaria</option>
-  <option value="Burkina Faso">Burkina Faso</option>
-  <option value="Burundi">Burundi</option>
-  <option value="Cabo Verde">Cabo Verde</option>
-  <option value="Cambodia">Cambodia</option>
-  <option value="Cameroon">Cameroon</option>
-  <option value="Canada">Canada</option>
-  <option value="Central African Republic">Central African Republic</option>
-  <option value="Chad">Chad</option>
-  <option value="Chile">Chile</option>
-  <option value="China">China</option>
-  <option value="Colombia">Colombia</option>
-  <option value="Comoros">Comoros</option>
-  <option value="Congo (Congo-Brazzaville)">Congo (Congo-Brazzaville)</option>
-  <option value="Costa Rica">Costa Rica</option>
-  <option value="Croatia">Croatia</option>
-  <option value="Cuba">Cuba</option>
-  <option value="Cyprus">Cyprus</option>
-  <option value="Czech Republic">Czech Republic</option>
-  <option value="Democratic Republic of the Congo">Democratic Republic of the Congo</option>
-  <option value="Denmark">Denmark</option>
-  <option value="Djibouti">Djibouti</option>
-  <option value="Dominica">Dominica</option>
-  <option value="Dominican Republic">Dominican Republic</option>
-  <option value="Ecuador">Ecuador</option>
-  <option value="Egypt">Egypt</option>
-  <option value="El Salvador">El Salvador</option>
-  <option value="Equatorial Guinea">Equatorial Guinea</option>
-  <option value="Eritrea">Eritrea</option>
-  <option value="Estonia">Estonia</option>
-  <option value="Eswatini">Eswatini</option>
-  <option value="Ethiopia">Ethiopia</option>
-  <option value="Fiji">Fiji</option>
-  <option value="Finland">Finland</option>
-  <option value="France">France</option>
-  <option value="Gabon">Gabon</option>
-  <option value="Gambia">Gambia</option>
-  <option value="Georgia">Georgia</option>
-  <option value="Germany">Germany</option>
-  <option value="Ghana">Ghana</option>
-  <option value="Greece">Greece</option>
-  <option value="Grenada">Grenada</option>
-  <option value="Guatemala">Guatemala</option>
-  <option value="Guinea">Guinea</option>
-  <option value="Guinea-Bissau">Guinea-Bissau</option>
-  <option value="Guyana">Guyana</option>
-  <option value="Haiti">Haiti</option>
-  <option value="Honduras">Honduras</option>
-  <option value="Hungary">Hungary</option>
-  <option value="Iceland">Iceland</option>
-  <option value="India">India</option>
-  <option value="Indonesia">Indonesia</option>
-  <option value="Iran">Iran</option>
-  <option value="Iraq">Iraq</option>
-  <option value="Ireland">Ireland</option>
-  <option value="Israel">Israel</option>
-  <option value="Italy">Italy</option>
-  <option value="Jamaica">Jamaica</option>
-  <option value="Japan">Japan</option>
-  <option value="Jordan">Jordan</option>
-  <option value="Kazakhstan">Kazakhstan</option>
-  <option value="Kenya">Kenya</option>
-  <option value="Kiribati">Kiribati</option>
-  <option value="Kuwait">Kuwait</option>
-  <option value="Kyrgyzstan">Kyrgyzstan</option>
-  <option value="Laos">Laos</option>
-  <option value="Latvia">Latvia</option>
-  <option value="Lebanon">Lebanon</option>
-  <option value="Lesotho">Lesotho</option>
-  <option value="Liberia">Liberia</option>
-  <option value="Libya">Libya</option>
-  <option value="Liechtenstein">Liechtenstein</option>
-  <option value="Lithuania">Lithuania</option>
-  <option value="Luxembourg">Luxembourg</option>
-  <option value="Madagascar">Madagascar</option>
-  <option value="Malawi">Malawi</option>
-  <option value="Malaysia">Malaysia</option>
-  <option value="Maldives">Maldives</option>
-  <option value="Mali">Mali</option>
-  <option value="Malta">Malta</option>
-  <option value="Marshall Islands">Marshall Islands</option>
-  <option value="Mauritania">Mauritania</option>
-  <option value="Mauritius">Mauritius</option>
-  <option value="Mexico">Mexico</option>
-  <option value="Micronesia">Micronesia</option>
-  <option value="Moldova">Moldova</option>
-  <option value="Monaco">Monaco</option>
-  <option value="Mongolia">Mongolia</option>
-  <option value="Montenegro">Montenegro</option>
-  <option value="Morocco">Morocco</option>
-  <option value="Mozambique">Mozambique</option>
-  <option value="Myanmar (Burma)">Myanmar (Burma)</option>
-  <option value="Namibia">Namibia</option>
-  <option value="Nauru">Nauru</option>
-  <option value="Nepal">Nepal</option>
-  <option value="Netherlands">Netherlands</option>
-  <option value="New Zealand">New Zealand</option>
-  <option value="Nicaragua">Nicaragua</option>
-  <option value="Niger">Niger</option>
-  <option value="Nigeria">Nigeria</option>
-  <option value="North Korea">North Korea</option>
-  <option value="North Macedonia">North Macedonia</option>
-  <option value="Norway">Norway</option>
-  <option value="Oman">Oman</option>
-  <option value="Pakistan">Pakistan</option>
-  <option value="Palau">Palau</option>
-  <option value="Palestine State">Palestine State</option>
-  <option value="Panama">Panama</option>
-  <option value="Papua New Guinea">Papua New Guinea</option>
-  <option value="Paraguay">Paraguay</option>
-  <option value="Peru">Peru</option>
-  <option value="Philippines">Philippines</option>
-  <option value="Poland">Poland</option>
-  <option value="Portugal">Portugal</option>
-  <option value="Qatar">Qatar</option>
-  <option value="Romania">Romania</option>
-  <option value="Russia">Russia</option>
-  <option value="Rwanda">Rwanda</option>
-  <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-  <option value="Saint Lucia">Saint Lucia</option>
-  <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
-  <option value="Samoa">Samoa</option>
-  <option value="San Marino">San Marino</option>
-  <option value="Sao Tome and Principe">Sao Tome and Principe</option>
-  <option value="Saudi Arabia">Saudi Arabia</option>
-  <option value="Senegal">Senegal</option>
-  <option value="Serbia">Serbia</option>
-  <option value="Seychelles">Seychelles</option>
-  <option value="Sierra Leone">Sierra Leone</option>
-  <option value="Singapore">Singapore</option>
-  <option value="Slovakia">Slovakia</option>
-  <option value="Slovenia">Slovenia</option>
-  <option value="Solomon Islands">Solomon Islands</option>
-  <option value="Somalia">Somalia</option>
-  <option value="South Africa">South Africa</option>
-  <option value="South Korea">South Korea</option>
-  <option value="South Sudan">South Sudan</option>
-  <option value="Spain">Spain</option>
-  <option value="Sri Lanka">Sri Lanka</option>
-  <option value="Sudan">Sudan</option>
-  <option value="Suriname">Suriname</option>
-  <option value="Sweden">Sweden</option>
-  <option value="Switzerland">Switzerland</option>
-  <option value="Syria">Syria</option>
-  <option value="Tajikistan">Tajikistan</option>
-  <option value="Tanzania">Tanzania</option>
-  <option value="Thailand">Thailand</option>
-  <option value="Timor-Leste">Timor-Leste</option>
-  <option value="Togo">Togo</option>
-  <option value="Tonga">Tonga</option>
-  <option value="Trinidad and Tobago">Trinidad and Tobago</option>
-  <option value="Tunisia">Tunisia</option>
-  <option value="Turkey">Turkey</option>
-  <option value="Turkmenistan">Turkmenistan</option>
-  <option value="Tuvalu">Tuvalu</option>
-  <option value="Uganda">Uganda</option>
-  <option value="Ukraine">Ukraine</option>
-  <option value="United Kingdom">United Kingdom</option>
-  <option value="United States of America">United States of America</option>
-  <option value="Uruguay">Uruguay</option>
-  <option value="Uzbekistan">Uzbekistan</option>
-  <option value="Vanuatu">Vanuatu</option>
-  <option value="Vatican City">Vatican City</option>
-  <option value="Venezuela">Venezuela</option>
-  <option value="Vietnam">Vietnam</option>
-  <option value="Yemen">Yemen</option>
-  <option value="Zambia">Zambia</option>
-  <option value="Zimbabwe">Zimbabwe</option>
-</select>
-
-                    </div>
-                </div>
-
-                <!-- Consent Section -->
-                <div class="consent-section">
-                    <h4>
-                        <i class="fas fa-shield-alt"></i> Platform Consent
-                    </h4>
-
-                    <div class="consent-item">
-                        <input 
-                            type="checkbox" 
-                            class="form-check-input me-2" 
-                            name="ageConsent" 
-                            required
-                        >
-                        <label>I am 13 years or older</label>
-                    </div>
-
-                    <div class="consent-item">
-                        <input 
-                            type="checkbox" 
-                            class="form-check-input me-2" 
-                            name="termsConsent" 
-                            required
-                        >
-                        <label>I agree to the Terms of Service</label>
-                    </div>
-
-                    <div class="consent-item">
-                        <input 
-                            type="checkbox" 
-                            class="form-check-input me-2" 
-                            name="privacyConsent" 
-                            required
-                        >
-                        <label>I consent to privacy policy</label>
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <button 
-                    type="submit" 
-                    id="submitBtn" 
-                    class="btn btn-primary w-100 mt-3"
-                    disabled
-                >
-                    <i class="fas fa-paper-plane"></i> Join ChatSphere
-                </button>
-            </form>
-        </div>
-    </div>
-
     <!-- Main Navigation -->
     <nav class="bg-black shadow-sm sticky top-0 z-50">
         <div class="container mx-auto px-4">
@@ -876,26 +389,95 @@
                         <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
                     </div>
 
-                    <button class="p-2 rounded-full bg-gray-800 text-gray-300 hover:bg-gray-700">
-                        <i class="fas fa-bell"></i>
-                    </button>
-
                     <div class="relative">
-                        <button class="flex items-center space-x-2 focus:outline-none">
+                        <button id="notification-btn" class="p-2 rounded-full bg-gray-800 text-gray-300 hover:bg-gray-700 relative">
+                            <i class="fas fa-bell"></i>
+                            <span id="notification-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">3</span>
+                        </button>
+                        <div id="notification-dropdown" class="hidden absolute right-0 mt-2 w-72 bg-gray-900 rounded-md shadow-lg z-50 border border-gray-700">
+                            <div class="p-3 border-b border-gray-700 flex justify-between items-center">
+                                <h3 class="font-medium">Notifications</h3>
+                                <button class="text-xs text-purple-400">Mark all as read</button>
+                            </div>
+                            <div class="max-h-60 overflow-y-auto">
+                                <a href="#" class="block px-4 py-3 hover:bg-gray-800 border-b border-gray-800">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0">
+                                            <div class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs">S</div>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium">New message from SmileX</p>
+                                            <p class="text-xs text-gray-400 mt-1">2 minutes ago</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="block px-4 py-3 hover:bg-gray-800 border-b border-gray-800">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0">
+                                            <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs">T</div>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium">Team SmileX posted an update</p>
+                                            <p class="text-xs text-gray-400 mt-1">15 minutes ago</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="block px-4 py-3 hover:bg-gray-800">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0">
+                                            <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">A</div>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium">Your account was accessed from a new device</p>
+                                            <p class="text-xs text-gray-400 mt-1">1 hour ago</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="p-3 border-t border-gray-700 text-center">
+                                <a href="#" class="text-sm text-purple-400 hover:underline">View all notifications</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative" id="user-dropdown-container">
+                        <button id="user-dropdown-btn" class="flex items-center space-x-2 focus:outline-none">
                             <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold">
                                 <span>U</span>
                             </div>
                             <i class="fas fa-chevron-down text-xs text-gray-400"></i>
                         </button>
+                        <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-gray-900 rounded-md shadow-lg z-50 border border-gray-700">
+                            <div class="py-1">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800">Profile</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800">Settings</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800">Messages</a>
+                                <div class="border-t border-gray-700"></div>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800">Sign out</a>
+                            </div>
+                        </div>
                     </div>
 
-                    <button class="md:hidden p-2 rounded-full bg-gray-800 text-gray-300 hover:bg-gray-700">
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-full bg-gray-800 text-gray-300 hover:bg-gray-700">
                         <i class="fas fa-bars"></i>
                     </button>
                 </div>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-gray-900 border-t border-gray-800">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+            <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-800">Home</a>
+            <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Explore</a>
+            <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Communities</a>
+            <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Notifications</a>
+            <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Messages</a>
+            <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Profile</a>
+            <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Settings</a>
+        </div>
+    </div>
 
     <!-- Main content -->
     <div class="container mx-auto px-4 py-6">
@@ -920,9 +502,27 @@
                                 <span>Team SmileX</span>
                             </a>
                         </li>
-                        
+                        <li>
+                            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-800">
+                                <span class="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white text-xs mr-2">M</span>
+                                <span>Memes</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-800">
+                                <span class="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center text-white text-xs mr-2">G</span>
+                                <span>Gaming</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-800">
+                                <span class="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs mr-2">T</span>
+                                <span>Technology</span>
+                            </a>
+                        </li>
+
                         <div class="mt-6">
-                            <button class="w-full py-2 px-4 bg-gray-800 text-purple-400 rounded-lg font-medium hover:bg-gray-700 flex items-center justify-center">
+                            <button id="create-community-btn" class="w-full py-2 px-4 bg-gray-800 text-purple-400 rounded-lg font-medium hover:bg-gray-700 flex items-center justify-center">
                                 <i class="fas fa-plus mr-2"></i> Create Community
                             </button>
                         </div>
@@ -949,6 +549,24 @@
                                             <span>t/Team SmileX</span>
                                         </div>
                                         <span class="text-xs text-gray-400">+8.2M</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-800">
+                                        <div class="flex items-center">
+                                            <span class="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center text-white text-xs mr-2">M</span>
+                                            <span>m/Memes</span>
+                                        </div>
+                                        <span class="text-xs text-gray-400">+5.7M</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-800">
+                                        <div class="flex items-center">
+                                            <span class="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center text-white text-xs mr-2">G</span>
+                                            <span>g/Gaming</span>
+                                        </div>
+                                        <span class="text-xs text-gray-400">+4.3M</span>
                                     </a>
                                 </li>
                             </ul>
@@ -990,16 +608,16 @@
                 <!-- Post sorting -->
                 <div class="bg-gray-900 rounded-lg shadow-sm mb-6">
                     <div class="p-3 flex items-center space-x-4 overflow-x-auto scrollbar-hide">
-                        <button class="px-3 py-1.5 bg-gray-800 text-purple-400 rounded-full text-sm font-medium whitespace-nowrap">
+                        <button id="sort-hot" class="px-3 py-1.5 bg-gray-800 text-purple-400 rounded-full text-sm font-medium whitespace-nowrap">
                             <i class="fas fa-bolt mr-1"></i> Hot
                         </button>
-                        <button class="px-3 py-1.5 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700 whitespace-nowrap">
+                        <button id="sort-new" class="px-3 py-1.5 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700 whitespace-nowrap">
                             <i class="fas fa-certificate mr-1"></i> New
                         </button>
-                        <button class="px-3 py-1.5 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700 whitespace-nowrap">
+                        <button id="sort-top" class="px-3 py-1.5 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700 whitespace-nowrap">
                             <i class="fas fa-arrow-trend-up mr-1"></i> Top
                         </button>
-                        <button class="px-3 py-1.5 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700 whitespace-nowrap">
+                        <button id="sort-more" class="px-3 py-1.5 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700 whitespace-nowrap">
                             <i class="fas fa-ellipsis mr-1"></i> More
                         </button>
                     </div>
@@ -1200,7 +818,7 @@
 
                 <!-- Load more button -->
                 <div class="mt-6 text-center">
-                    <button class="px-6 py-2 bg-gray-800 text-purple-400 rounded-lg font-medium hover:bg-gray-700">
+                    <button id="load-more-btn" class="px-6 py-2 bg-gray-800 text-purple-400 rounded-lg font-medium hover:bg-gray-700">
                         Load more posts
                     </button>
                 </div>
@@ -1225,6 +843,9 @@
                                 </div>
                             </div>
                             <p class="text-sm text-gray-300 mb-3">The latest in updates and innovation</p>
+                            <button class="w-full py-1 px-3 bg-purple-600 text-white rounded-full text-xs font-medium hover:bg-purple-700">
+                                Join
+                            </button>
                         </div>
 
                         <div class="community-card bg-gray-800 rounded-lg p-3">
@@ -1236,6 +857,9 @@
                                 </div>
                             </div>
                             <p class="text-sm text-gray-300 mb-3">Ask Anything interviews</p>
+                            <button class="w-full py-1 px-3 bg-purple-600 text-white rounded-full text-xs font-medium hover:bg-purple-700">
+                                Join
+                            </button>
                         </div>
 
                         <div class="community-card bg-gray-800 rounded-lg p-3">
@@ -1247,6 +871,9 @@
                                 </div>
                             </div>
                             <p class="text-sm text-gray-300 mb-3">The funniest memes on the internet</p>
+                            <button class="w-full py-1 px-3 bg-purple-600 text-white rounded-full text-xs font-medium hover:bg-purple-700">
+                                Join
+                            </button>
                         </div>
                     </div>
 
@@ -1257,7 +884,7 @@
                             <h4 class="font-bold">SmileX Premium</h4>
                         </div>
                         <p class="text-sm mb-3">Get ad-free browsing, exclusive awards, and support ChatX.</p>
-                        <button class="w-full py-1.5 px-3 bg-white text-purple-600 rounded-full text-sm font-medium hover:bg-gray-100">
+                        <button id="premium-btn" class="w-full py-1.5 px-3 bg-white text-purple-600 rounded-full text-sm font-medium hover:bg-gray-100">
                             TRY PREMIUM
                         </button>
                     </div>
@@ -1370,6 +997,170 @@
         </div>
     </div>
 
+    <!-- Create community modal -->
+    <div id="create-community-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-gray-900 rounded-lg shadow-xl w-full max-w-md max-h-[90vh] flex flex-col">
+            <!-- Modal header -->
+            <div class="p-4 border-b border-gray-800 flex items-center justify-between">
+                <h3 class="text-lg font-bold">Create a community</h3>
+                <button onclick="document.getElementById('create-community-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-300">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal content -->
+            <div class="p-4 flex-1 overflow-y-auto">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Name</label>
+                    <div class="flex">
+                        <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-700 bg-gray-800 text-gray-300 text-sm">
+                            t/
+                        </span>
+                        <input type="text" placeholder="community-name" class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                    <p class="mt-1 text-xs text-gray-400">Community names including capitalization cannot be changed.</p>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Description (optional)</label>
+                    <textarea rows="3" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Community type</label>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <input id="public" name="community-type" type="radio" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-700" checked>
+                            <label for="public" class="ml-2 block text-sm text-gray-300">
+                                <span class="font-medium">Public</span>
+                                <span class="block text-xs text-gray-400">Anyone can view, post, and comment to this community</span>
+                            </label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="restricted" name="community-type" type="radio" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-700">
+                            <label for="restricted" class="ml-2 block text-sm text-gray-300">
+                                <span class="font-medium">Restricted</span>
+                                <span class="block text-xs text-gray-400">Anyone can view this community, but only approved users can post</span>
+                            </label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="private" name="community-type" type="radio" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-700">
+                            <label for="private" class="ml-2 block text-sm text-gray-300">
+                                <span class="font-medium">Private</span>
+                                <span class="block text-xs text-gray-400">Only approved users can view and submit to this community</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Community icon (optional)</label>
+                    <div class="border-2 border-dashed border-gray-700 rounded-lg p-4 text-center">
+                        <i class="fas fa-image text-3xl text-gray-500 mb-2"></i>
+                        <p class="text-gray-400">Drag and drop images or <button class="text-purple-400 font-medium">browse</button></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="p-4 border-t border-gray-800 flex justify-end">
+                <button onclick="document.getElementById('create-community-modal').classList.add('hidden')" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg mr-2 hover:bg-gray-700">
+                    Cancel
+                </button>
+                <button class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">
+                    Create Community
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium modal -->
+    <div id="premium-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-gray-900 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <!-- Modal header -->
+            <div class="p-4 border-b border-gray-800 flex items-center justify-between">
+                <h3 class="text-lg font-bold">SmileX Premium</h3>
+                <button onclick="document.getElementById('premium-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-300">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal content -->
+            <div class="p-4 flex-1 overflow-y-auto">
+                <div class="bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg p-6 text-white mb-6">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-crown text-2xl mr-2"></i>
+                        <h3 class="text-xl font-bold">Try SmileX Premium</h3>
+                    </div>
+                    <p class="mb-4">Get ad-free browsing, exclusive awards, and support SmileX.</p>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>7-day free trial</span>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                        <h4 class="font-bold mb-2">Monthly</h4>
+                        <p class="text-2xl font-bold mb-2">$4.99<span class="text-sm font-normal text-gray-400">/month</span></p>
+                        <p class="text-xs text-gray-400 mb-4">Billed monthly</p>
+                        <button class="w-full py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                            Choose
+                        </button>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4 border-2 border-purple-500 relative">
+                        <div class="absolute -top-2 -right-2 bg-purple-500 text-white text-xs px-2 py-1 rounded-full">POPULAR</div>
+                        <h4 class="font-bold mb-2">Annual</h4>
+                        <p class="text-2xl font-bold mb-2">$49.99<span class="text-sm font-normal text-gray-400">/year</span></p>
+                        <p class="text-xs text-gray-400 mb-4">Save 16% ($0.83/month)</p>
+                        <button class="w-full py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                            Choose
+                        </button>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                        <h4 class="font-bold mb-2">Lifetime</h4>
+                        <p class="text-2xl font-bold mb-2">$99.99</p>
+                        <p class="text-xs text-gray-400 mb-4">One-time payment</p>
+                        <button class="w-full py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                            Choose
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                    <h4 class="font-bold mb-2">What's included in Premium?</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-purple-500 mr-2 mt-1"></i>
+                            <span>Ad-free browsing experience</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-purple-500 mr-2 mt-1"></i>
+                            <span>Exclusive awards to give to posts and comments</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-purple-500 mr-2 mt-1"></i>
+                            <span>Custom app icons and themes</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-purple-500 mr-2 mt-1"></i>
+                            <span>Premium community badge</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-purple-500 mr-2 mt-1"></i>
+                            <span>Early access to new features</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="p-4 border-t border-gray-800 text-center text-xs text-gray-400">
+                <p>By subscribing, you agree to our Terms of Service and Privacy Policy. Your subscription will automatically renew unless canceled at least 24 hours before the end of the current period. You can manage your subscription in your account settings.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Live Chat Toggle Button -->
     <button id="chat-toggle-btn" class="chat-toggle">
         <i class="fas fa-comment-dots"></i>
@@ -1406,82 +1197,14 @@
     </button>
 
     <script>
-        // Advanced loading simulation
-        function simulateLoading() {
-            const loader = document.querySelector('.chat-preloader');
-            
-            setTimeout(() => {
-                loader.style.transition = 'all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
-                loader.style.transform = 'rotateX(0deg) scale(0)';
-                loader.style.opacity = 0;
-
-                // Show onboarding modal after loading
-                document.querySelector('.overlay').classList.add('active');
-                
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                }, 800);
-            }, 3000);
-        }
-
-        // Initialize loading
-        simulateLoading();
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('registrationForm');
-            const submitBtn = document.getElementById('submitBtn');
-            const inputs = form.querySelectorAll('input, select');
-            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
-
-            // Prevent multiple registrations
-            if (localStorage.getItem('userRegistered') === 'true') {
-                document.querySelector('.overlay').style.display = 'none';
-                return;
+        // Font Awesome icons
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load Font Awesome if not already loaded
+            if (!document.querySelector('.fa-font-awesome')) {
+                const faScript = document.createElement('script');
+                faScript.src = 'https://kit.fontawesome.com/a076d05399.js';
+                document.head.appendChild(faScript);
             }
-
-            // Validation function
-            function validateForm() {
-                const allInputsFilled = Array.from(inputs)
-                    .every(input => input.validity.valid);
-                
-                const allCheckboxesChecked = Array.from(checkboxes)
-                    .every(checkbox => checkbox.checked);
-
-                submitBtn.disabled = !(allInputsFilled && allCheckboxesChecked);
-            }
-
-            // Add event listeners
-            inputs.forEach(input => {
-                input.addEventListener('input', validateForm);
-                input.addEventListener('change', validateForm);
-            });
-
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', validateForm);
-            });
-
-            // Form submission
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-
-                const formData = new FormData(form);
-                const userData = Object.fromEntries(formData.entries());
-
-                // Remove consent checkboxes from stored data
-                delete userData['ageConsent'];
-                delete userData['termsConsent'];
-                delete userData['privacyConsent'];
-
-                // Store user data
-                localStorage.setItem('userData', JSON.stringify(userData));
-                localStorage.setItem('userRegistered', 'true');
-
-                // Hide modal
-                document.querySelector('.overlay').classList.remove('active');
-
-                // Notification
-                alert('Welcome to ChatX! Your profile is now complete.');
-            });
         });
 
         // Dark mode toggle
@@ -1501,13 +1224,121 @@
             localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
         });
 
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Notification dropdown
+        const notificationBtn = document.getElementById('notification-btn');
+        const notificationDropdown = document.getElementById('notification-dropdown');
+        const notificationCount = document.getElementById('notification-count');
+
+        // Show notification count
+        notificationCount.classList.remove('hidden');
+
+        notificationBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notificationDropdown.classList.toggle('hidden');
+            
+            // Mark notifications as read
+            notificationCount.classList.add('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!notificationBtn.contains(e.target) && !notificationDropdown.contains(e.target)) {
+                notificationDropdown.classList.add('hidden');
+            }
+        });
+
+        // User dropdown
+        const userDropdownBtn = document.getElementById('user-dropdown-btn');
+        const userDropdown = document.getElementById('user-dropdown');
+
+        userDropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userDropdown.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userDropdownBtn.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.classList.add('hidden');
+            }
+        });
+
+        // Create community modal
+        const createCommunityBtn = document.getElementById('create-community-btn');
+        const createCommunityModal = document.getElementById('create-community-modal');
+
+        createCommunityBtn.addEventListener('click', () => {
+            createCommunityModal.classList.remove('hidden');
+        });
+
+        // Premium modal
+        const premiumBtn = document.getElementById('premium-btn');
+        const premiumModal = document.getElementById('premium-modal');
+
+        premiumBtn.addEventListener('click', () => {
+            premiumModal.classList.remove('hidden');
+        });
+
+        // Post sorting
+        const sortHot = document.getElementById('sort-hot');
+        const sortNew = document.getElementById('sort-new');
+        const sortTop = document.getElementById('sort-top');
+        const sortMore = document.getElementById('sort-more');
+
+        function resetSortButtons() {
+            sortHot.classList.remove('text-purple-400');
+            sortHot.classList.add('text-gray-300');
+            sortNew.classList.remove('text-purple-400');
+            sortNew.classList.add('text-gray-300');
+            sortTop.classList.remove('text-purple-400');
+            sortTop.classList.add('text-gray-300');
+            sortMore.classList.remove('text-purple-400');
+            sortMore.classList.add('text-gray-300');
+        }
+
+        sortHot.addEventListener('click', () => {
+            resetSortButtons();
+            sortHot.classList.remove('text-gray-300');
+            sortHot.classList.add('text-purple-400');
+            // Here you would typically reload posts with hot sorting
+        });
+
+        sortNew.addEventListener('click', () => {
+            resetSortButtons();
+            sortNew.classList.remove('text-gray-300');
+            sortNew.classList.add('text-purple-400');
+            // Here you would typically reload posts with new sorting
+        });
+
+        sortTop.addEventListener('click', () => {
+            resetSortButtons();
+            sortTop.classList.remove('text-gray-300');
+            sortTop.classList.add('text-purple-400');
+            // Here you would typically reload posts with top sorting
+        });
+
+        sortMore.addEventListener('click', () => {
+            resetSortButtons();
+            sortMore.classList.remove('text-gray-300');
+            sortMore.classList.add('text-purple-400');
+            // Here you would typically show more sorting options
+        });
+
         // Sample functionality for upvoting/downvoting
         document.querySelectorAll('.vote-button').forEach(button => {
             button.addEventListener('click', function() {
                 const voteContainer = this.closest('.flex.flex-col.items-center');
                 const countElement = voteContainer.querySelector('span.font-medium');
                 let count = parseInt(countElement.textContent.replace(/[^\d]/g, ''));
-                
+
                 if (this.querySelector('.fa-arrow-up')) {
                     if (this.classList.contains('text-purple-500')) {
                         // Already upvoted - remove vote
@@ -1541,15 +1372,16 @@
                         }
                     }
                 }
-                
+
                 // Format the count (e.g., 1.5k for 1500)
                 countElement.textContent = count >= 1000 ? (count / 1000).toFixed(1) + 'k' : count;
             });
         });
 
         // Simulate loading more posts
-        document.querySelector('button:contains("Load more posts")').addEventListener('click', function() {
-            this.textContent = 'Loading...';
+        document.getElementById('load-more-btn').addEventListener('click', function() {
+            const originalText = this.textContent;
+            this.innerHTML = '<div class="spinner mx-auto h-5 w-5"></div>';
             this.disabled = true;
 
             // Simulate API call delay
@@ -1571,7 +1403,7 @@
                                     <i class="fas fa-arrow-down text-xl"></i>
                                 </button>
                             </div>
-                            
+                                                        
                             <div class="flex-1">
                                 <div class="flex items-center text-xs text-gray-400 mb-2">
                                     <span class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs mr-2">f</span>
@@ -1581,15 +1413,15 @@
                                     <span class="mx-1">•</span>
                                     <span>3 hours ago</span>
                                 </div>
-                                
+                                                                
                                 <h3 class="text-xl font-medium mb-2">My homemade sourdough after 6 months of practice</h3>
-                                
+                                                                
                                 <div class="mb-4">
                                     <img src="https://source.unsplash.com/random/800x600/?bread,sourdough"
                                         alt="Sourdough bread"
                                         class="w-full h-auto rounded-lg object-cover max-h-96">
                                 </div>
-                                
+                                                                
                                 <div class="flex items-center justify-between">
                                     <div class="flex space-x-4">
                                         <button class="flex items-center text-gray-400 hover:text-purple-400">
@@ -1623,7 +1455,7 @@
                         const voteContainer = this.closest('.flex.flex-col.items-center');
                         const countElement = voteContainer.querySelector('span.font-medium');
                         let count = parseInt(countElement.textContent.replace(/[^\d]/g, ''));
-                        
+
                         if (this.querySelector('.fa-arrow-up')) {
                             if (this.classList.contains('text-purple-500')) {
                                 this.classList.remove('text-purple-500');
@@ -1653,15 +1485,30 @@
                                 }
                             }
                         }
-                        
+
                         countElement.textContent = count >= 1000 ? (count / 1000).toFixed(1) + 'k' : count;
                     });
                 });
 
                 // Reset the button
-                this.textContent = 'Load more posts';
+                this.textContent = originalText;
                 this.disabled = false;
-            }, 1000);
+            }, 1500);
+        });
+
+        // Join community buttons
+        document.querySelectorAll('.community-card button').forEach(button => {
+            button.addEventListener('click', function() {
+                const originalText = this.textContent;
+                this.textContent = 'Joining...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    this.textContent = 'Joined';
+                    this.classList.remove('bg-purple-600', 'hover:bg-purple-700');
+                    this.classList.add('bg-gray-700', 'cursor-not-allowed');
+                }, 1000);
+            });
         });
 
         // Live Chat Functionality
@@ -1690,10 +1537,10 @@
             if (messageText) {
                 // Add user message
                 addMessage('You', messageText, 'user');
-                
+
                 // Clear input
                 chatInput.value = '';
-                
+
                 // Simulate bot response after a delay
                 setTimeout(() => {
                     const responses = [
@@ -1704,84 +1551,5 @@
                         "I'm here to help with any questions you have."
                     ];
                     const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                    addMessage('Support Agent', randomResponse, 'bot');
-                }, 1000);
-            }
-        }
-
-        // Add message to chat
-        function addMessage(user, text, type) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message';
-            
-            const userDiv = document.createElement('div');
-            userDiv.className = 'message-user';
-            userDiv.textContent = user;
-            
-            const textDiv = document.createElement('div');
-            textDiv.className = 'message-text';
-            textDiv.textContent = text;
-            
-            const timeDiv = document.createElement('div');
-            timeDiv.className = 'message-time';
-            timeDiv.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            
-            messageDiv.appendChild(userDiv);
-            messageDiv.appendChild(textDiv);
-            messageDiv.appendChild(timeDiv);
-            
-            chatMessages.appendChild(messageDiv);
-            
-            // Scroll to bottom
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        // Send message on button click
-        chatSendBtn.addEventListener('click', sendMessage);
-
-        // Send message on Enter key
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        // Prevent right-click
-        document.addEventListener('contextmenu', event => event.preventDefault());
-    </script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        smile: {
-                            50: '#fff1f2',
-                            100: '#ffe4e6',
-                            200: '#fecdd3',
-                            300: '#fda4af',
-                            400: '#fb7185',
-                            500: '#f43f5e',
-                            600: '#e11d48',
-                            700: '#be123c',
-                            800: '#9f1239',
-                            900: '#881337',
-                        },
-                        dark: {
-                            900: '#0f0f13',
-                            800: '#18181d',
-                            700: '#22222a',
-                            600: '#2d2d37',
-                            500: '#383844',
-                        }
-                    },
-                    fontFamily: {
-                        'orbitron': ['Orbitron', 'sans-serif'],
-                        'sans': ['Orbitron', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-</body>
+                    addMessage('Support Agent', randomResponse
 </html>

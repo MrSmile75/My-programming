@@ -1,1057 +1,771 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- © SMILEX. This code is protected. -->
-    <title> SmileX:Generate Anything....</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="ai.css">
-    
+    <title>Auth System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #00ffff;
-            --secondary-color: #ff00ff;
-            --bg-dark: #0a0a1a;
-            --text-light: #ffffff;
-            --accent-color: #6b48ff;
-            --error-color: #ff4444;
-            --success-color: #00ff87;
+        @keyframes starMove {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(100vw) translateY(-20vh); }
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100dvh;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
-            perspective: 1500px;
-            overflow: hidden;
-            color: var(--text-light);
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        body, html {
-            height: 100%;
-            overflow: hidden;
-            background: black;
-            perspective: 1000px;
-        }
-
-        #wavy-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .wave-particle {
+        
+        .star {
             position: absolute;
+            background-color: white;
             border-radius: 50%;
-            opacity: 0.7;
-            filter: blur(2px);
-            transition: all 2s ease;
-            box-shadow: 
-                0 0 10px rgba(0, 255, 255, 0.5),
-                0 0 20px rgba(255, 0, 255, 0.3);
+            animation: starMove linear infinite;
         }
-
-        @keyframes wavyMotion {
-            0% {
-                transform: 
-                    translateX(0) 
-                    translateY(0) 
-                    rotate(0deg) 
-                    scale(0.8);
-                opacity: 0.4;
-            }
-            50% {
-                transform: 
-                    translateX(50px) 
-                    translateY(20px) 
-                    rotate(180deg) 
-                    scale(1.2);
-                opacity: 0.8;
-            }
-            100% {
-                transform: 
-                    translateX(100px) 
-                    translateY(0) 
-                    rotate(360deg) 
-                    scale(1);
-                opacity: 0.6;
-            }
+        
+        .password-strength-meter {
+            height: 4px;
+            transition: width 0.3s, background-color 0.3s;
         }
-
-        .circuit-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            opacity: 0.2;
+        
+        .login-container, .signup-container {
+            transition: all 0.5s ease;
         }
-
-        .wave-line {
-            position: absolute;
-            background: linear-gradient(
-                to right, 
-                transparent, 
-                rgba(0, 255, 255, 0.7), 
-                transparent
-            );
-            animation: waveLineFlow 5s linear infinite;
-        }
-
-        @keyframes waveLineFlow {
-            0% {
-                transform: 
-                    translateX(-100%) 
-                    translateY(0) 
-                    rotate(0deg);
-                opacity: 0.3;
-            }
-            50% {
-                transform: 
-                    translateX(0) 
-                    translateY(20px) 
-                    rotate(10deg);
-                opacity: 0.6;
-            }
-            100% {
-                transform: 
-                    translateX(100%) 
-                    translateY(0) 
-                    rotate(0deg);
-                opacity: 0.3;
-            }
-        }
-
-        /* Typing Text Container */
-        #dynamic-text-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 9999;
-            pointer-events: none;
-            background: transparent;
-        }
-
-        #typing-text {
-            font-family: 'Arial', sans-serif;
-            font-size: 5rem;
-            font-weight: bold;
-            text-align: center;
-            background: rgb(236, 233, 233);
-            background-size: 400% 400%;
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            padding: 10px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        /* Cursor Animation */
-        .typing-cursor {
-            display: inline-block;
-            margin-left: 5px;
-            width: 10px;
-            height: 50px;
-            background: transparent;
-            animation: 
-                blink 0.7s infinite,
-                cursorGradient 3s ease infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        @keyframes cursorGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes gradientFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes textGlow {
-            0% { 
-                text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                transform: scale(1);
-            }
-            100% { 
-                text-shadow: 0 4px 10px rgba(0,0,0,0.4);
-                transform: scale(1.01);
-            }
-        }
-
-        #welcomeOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            transition: opacity 1s ease;
-            overflow: hidden;
-        }
-
-        #welcomeText {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 4rem;
-            font-weight: 900;
-            text-align: center;
-            background: linear-gradient(
-                45deg, 
-                #405de6, 
-                #5851db, 
-                #833ab4, 
-                #c13584, 
-                #e1306c, 
-                #fd1d1d
-            );
-            background-size: 400% 400%;
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            animation: 
-                gradientFlow 10s ease infinite,
-                textGlow 3s ease-in-out infinite alternate;
-        }
-
-        @keyframes particleAnimation {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .particle {
-            position: absolute;
-            background: linear-gradient(
-                45deg, 
-                #405de6, 
-                #5851db, 
-                #833ab4, 
-                #c13584, 
-                #e1306c, 
-                #fd1d1d
-            );
-            border-radius: 50%;
-            pointer-events: none;
-            animation: particleAnimation 5s linear infinite;
-        }
-
-        .quantum-input-container {
-            width: 100%;
-            max-width: 800px;
-            padding: 20px;
-            position: relative;
-        }
-
-        .input-wrapper {
-            background: transparent;
-            border-radius: 20px;
-            padding: 25px;
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(255,255,255,0.05);
-            box-shadow: 
-                0 25px 45px rgba(0,0,0,0.3),
-                inset 0 0 15px rgba(255,255,255,0.05);
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            transform-style: preserve-3d;
-        }
-
-        .input-wrapper:hover {
-            box-shadow: 
-                0 35px 55px rgba(0,0,0,0.4),
-                inset 0 0 25px rgba(255,255,255,0.1);
-        }
-
-        .quantum-input {
-            width: 100%;
-            padding: 15px 70px 15px 20px;
-            font-size: 18px;
-            background: transparent;
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            color: var(--text-light);
-            outline: none;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 2;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .quantum-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 
-                0 0 15px rgba(0, 255, 255, 0.3),
-                inset 0 0 10px rgba(0, 255, 255, 0.1);
-        }
-
-        .input-actions {
-            position: absolute;
-            right: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 3;
-        }
-
-        .send-button {
-            background: linear-gradient(
-                45deg, 
-                var(--primary-color), 
-                var(--secondary-color)
-            );
-            color: var(--bg-dark);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .send-button:hover {
-            transform: scale(1.05);
-            box-shadow: 
-                0 10px 20px rgba(0,255,255,0.3),
-                0 0 20px rgba(255,0,255,0.2);
-        }
-
-        .notification-area {
-            position: absolute;
-            bottom: -60px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-
-        .notification {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            max-width: 90%;
-            margin: 0 auto;
-            transition: all 0.3s ease;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .notification.error {
-            background-color: rgba(255, 68, 68, 0.2);
-            color: var(--error-color);
-            border: 1px solid var(--error-color);
-        }
-
-        .notification.success {
-            background-color: rgba(0, 255, 135, 0.2);
-            color: var(--success-color);
-            border: 1px solid var(--success-color);
-        }
-
-        .notification.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .emoji-picker {
-            position: absolute;
-            bottom: -70px;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.4s ease;
-            z-index: 10;
-        }
-
-        .input-wrapper:hover .emoji-picker {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .emoji-picker span {
-            font-size: 24px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .emoji-picker span:hover {
-            transform: scale(1.3) rotate(10deg);
-        }
-
-        .char-counter {
-            position: absolute;
-            bottom: -30px;
-            right: 0;
-            font-size: 12px;
-            color: var(--primary-color);
-            opacity: 0.7;
-        }
-
-        .dot-loader {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .dot {
-            width: 10px;
-            height: 10px;
-            margin: 0 5px;
-            background-color: rgb(249, 2, 249);
-            border-radius: 50%;
-            animation: bounce 0.5s ease-in-out infinite alternate;
-        }
-
-        .dot:nth-child(2) { animation-delay: 0.1s; }
-        .dot:nth-child(3) { animation-delay: 0.2s; }
-
-        @keyframes bounce {
-            to { transform: translateY(-10px); }
-        }
-
-        #analysisOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.9);
+        
+        .signup-container {
             display: none;
-            flex-direction: column;
-            padding: 20px;
+        }
+        
+        .container.active .login-container {
+            display: none;
+        }
+        
+        .container.active .signup-container {
+            display: flex;
+        }
+        
+        .device-card {
+            border-radius: 8px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+        
+        .active-device {
+            background-color: #f0fdf4;
+            border-left: 4px solid #10b981;
+        }
+        
+        .inactive-device {
+            background-color: #f8fafc;
+            border-left: 4px solid #94a3b8;
+        }
+        
+        .premium-badge::after {
+            content: "PRO";
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
             color: white;
-            overflow-y: auto;
-            z-index: 1000;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            margin-left: 8px;
+            font-weight: bold;
         }
-
-        .chat-bubble {
-            display: flex;
+        
+        #subscriptionModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 100;
             align-items: center;
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-
-        .profile-pic {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 15px;
-            object-fit: cover;
-            border: 2px solid #ccc;
-        }
-
-        .chat-content {
-            flex-grow: 1;
-        }
-
-        .loader {
-            display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100px;
         }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid purple;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
+        
+        .modal-content {
+            animation: modalFadeIn 0.3s;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .decision-btn {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .no-btn {
-            background-color: #e74c3c;
-        }
-
-        .typing-animation {
-            display: inline-block;
-            overflow: hidden;
-            white-space: nowrap;
-            animation: typing 3s steps(40, end);
-        }
-
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
+        
+        #dashboardContainer {
+            display: none;
         }
     </style>
 </head>
-<body>
-    <div id="wavy-background"></div>
-    <div class="circuit-overlay"></div>
-
-    <div id="welcomeOverlay">
-        <div id="welcomeText">Welcome!</div>
-    </div>
-    <div id="dynamic-text-container">
-        <div id="typing-text"></div>
-    </div>
-    <br>
-    <!-- © SMILEX. This code is protected. -->
-    <div class="quantum-input-container">
-        <div class="input-wrapper">
-            <input 
-                type="text" 
-                class="quantum-input" 
-                id="quantumInput" 
-                placeholder="Type to generate..."
-                maxlength="500"
-            >
-            <div class="input-actions">
-                <button class="send-button" id="analyzeBtn" onclick="transmitMessage()">
-                    <i class="ri-send-plane-fill"></i> Generate
+<body class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
+    <div id="starfield" class="fixed inset-0 overflow-hidden z-0"></div>
+    
+    <div class="container mx-auto max-w-6xl" id="authContainer">
+        <!-- Login Container -->
+        <div class="login-container bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+            <div class="form-section p-8 md:p-12 w-full md:w-1/2">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Login</h2>
+                <form id="loginForm">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Email</label>
+                        <input 
+                            type="email"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                            id="loginEmail"
+                            required
+                        >
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Password</label>
+                        <input 
+                            type="password"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                            id="loginPassword"
+                            required
+                        >
+                    </div>
+                    <div class="mb-6 flex items-center">
+                        <input 
+                            type="checkbox"
+                            class="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
+                            id="rememberMe"
+                        >
+                        <label class="ml-2 block text-sm text-gray-700">Remember me</label>
+                    </div>
+                    <button 
+                        type="submit"
+                        class="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
+                    >
+                        Login
+                    </button>
+                </form>
+            </div>
+            <div class="image-section bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 md:p-12 w-full md:w-1/2 flex flex-col justify-center items-center text-center">
+                <h3 class="text-3xl font-bold mb-4">Welcome Back!</h3>
+                <p class="text-gray-300 mb-8">Login to continue your journey</p>
+                
+                <div id="g_id_onload"
+                    data-client_id=""
+                    data-context="signin"
+                    data-ux_mode="popup"
+                    data-callback="handleCredentialResponse">
+                </div>
+                
+                <div class="g_id_signin" 
+                    data-type="standard"
+                    data-shape="rectangular"
+                    data-theme="outline"
+                    data-text="sign_in_with"
+                    data-size="large">
+                </div>
+                <br><br>
+                
+                <button
+                    class="toggle-btn bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-black transition duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                    onclick="toggleForm()"
+                >
+                    Sign Up
                 </button>
             </div>
-            <!-- © SMILEX. This code is protected. -->
-            <div class="emoji-picker">
-                <span>🚀</span>
-                <span>✨</span>
-                <span>🌈</span>
-                <span>❤️</span>
-                <span>🎉</span>
-                <span>🔥</span>
+        </div>
+        
+        <!-- Signup Container -->
+        <div class="signup-container bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+            <div class="image-section bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 md:p-12 w-full md:w-1/2 flex flex-col justify-center items-center text-center">
+                <h3 class="text-3xl font-bold mb-4">Hello, There!</h3>
+                <p class="text-gray-300 mb-8">Create your account and start your adventure</p>
+                <button
+                    class="toggle-btn bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-black transition duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                    onclick="toggleForm()"
+                >
+                    Login
+                </button>
             </div>
-            <div class="char-counter" id="charCount">0 / 500</div>
-            
-            <div class="notification-area" id="notificationArea">
-                <div class="notification" id="notification"></div>
+            <div class="form-section p-8 md:p-12 w-full md:w-1/2">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Sign Up</h2>
+                <form id="signupForm">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Full Name</label>
+                        <input 
+                            type="text"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                            id="signupName"
+                            required
+                        >
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Email</label>
+                        <input 
+                            type="email"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                            id="signupEmail"
+                            required
+                        >
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Password</label>
+                        <input 
+                            type="password"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                            id="signupPassword"
+                            required
+                        >
+                        <div class="password-strength mt-2">
+                            <div class="password-strength-meter rounded-full"></div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Password must contain at least 8 characters, uppercase, lowercase, numbers, and special characters.</p>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Confirm Password</label>
+                        <input 
+                            type="password"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                            id="confirmPassword"
+                            required
+                        >
+                    </div>
+                    <button 
+                        type="submit"
+                        class="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
+                    >
+                        Sign Up
+                    </button>
+                </form>
             </div>
         </div>
     </div>
-       <div id="analysisOverlay" style="display:none;">
-        <div id="analysisContent"></div>
-    </div>
-
-    <div id="typing-text"></div>
+    
 
     <script>
-        /* © SMILEX - This code is licensed and protected. */
-        class DynamicTypingText {
-            constructor(element, phrases, options = {}) {
-                this.element = element;
-                this.phrases = phrases;
-                this.options = {
-                    typingSpeed: 100,
-                    deletingSpeed: 50,
-                    pauseBetween: 8000,
-                    ...options
-                };
-                this.phraseIndex = 0;
-                this.charIndex = 0;
-                this.isDeleting = false;
-                this.cursorElement = null;
-                this.init();
-            }
-
-            /* © SMILEX - This code is licensed and protected. */
-            init() {
-                this.createCursor();
-                this.type();
-            }
-
-            createCursor() {
-                this.cursorElement = document.createElement('span');
-                this.cursorElement.classList.add('typing-cursor');
-                this.element.parentNode.appendChild(this.cursorElement);
-            }
-
-            /* © SMILEX - This code is licensed and protected. */
-            type() {
-                const currentPhrase = this.phrases[this.phraseIndex];
-                const speed = this.isDeleting ? this.options.deletingSpeed : this.options.typingSpeed;
-
-                if (!this.isDeleting && this.charIndex <= currentPhrase.length) {
-                    this.element.textContent = currentPhrase.substring(0, this.charIndex + 1);
-                    this.charIndex++;
-                } 
-                else if (this.isDeleting && this.charIndex >= 0) {
-                    this.element.textContent = currentPhrase.substring(0, this.charIndex);
-                    this.charIndex--;
-                } 
-                else {
-                    this.isDeleting = !this.isDeleting;
-                    this.phraseIndex = (this.phraseIndex + 1) % this.phrases.length;
-
-                    if (!this.isDeleting) {
-                        setTimeout(() => this.type(), this.options.pauseBetween);
-                        return;
-                    }
-                }
-
-                setTimeout(() => this.type(), speed);
-            }
+        // Form Toggle Function
+        function toggleForm() {
+            const container = document.getElementById('authContainer');
+            container.classList.toggle('active');
         }
 
-        // Initialize the dynamic typing text when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            const typingTextElement = document.getElementById('typing-text');
-            
-            // Array of phrases to type
-            const phrases = [
-                'Hello, there.',
-                'Bring dreams to reality',
-                'By Typing Anything',
+        // Password Strength Checker
+        function checkPasswordStrength(password) {
+            const strengthMeter = document.querySelector('.password-strength-meter');
+            const criteria = [
+                { regex: /.{8,}/, points: 20 },     // Length
+                { regex: /[A-Z]/, points: 20 },     // Uppercase
+                { regex: /[a-z]/, points: 20 },     // Lowercase
+                { regex: /[0-9]/, points: 20 },     // Number
+                { regex: /[^A-Za-z0-9]/, points: 20 } // Special Character
             ];
 
-            /* © SMILEX - This code is licensed and protected. */
-            new DynamicTypingText(typingTextElement, phrases, {
-                typingSpeed: 100,
-                deletingSpeed: 50,
-                pauseBetween: 400,
+            let strength = 0;
+            criteria.forEach(criterion => {
+                if (criterion.regex.test(password)) {
+                    strength += criterion.points;
+                }
             });
+
+            strengthMeter.style.width = `${strength}%`;
+
+            // Color coding
+            if (strength <= 40) strengthMeter.style.backgroundColor = 'red';
+            else if (strength <= 80) strengthMeter.style.backgroundColor = 'orange';
+            else strengthMeter.style.backgroundColor = 'green';
+
+            return strength === 100;
+        }
+
+        // Signup Form Validation
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+
+            // Comprehensive Validation
+            if (!name || !email) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            const isStrongPassword = checkPasswordStrength(password);
+            if (!isStrongPassword) {
+                alert('Password is not strong enough. Include uppercase, lowercase, numbers, and special characters.');
+                return;
+            }
+
+            // Successful Signup Logic
+            alert('Signup Successful!');
+            toggleForm();
         });
 
-        /* © SMILEX - This code is licensed and protected. */
-        class QuantumMessenger {
+        // Login Form Validation
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            if (!email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Simulated Login Logic
+            if (rememberMe) {
+                localStorage.setItem('rememberedEmail', email);
+            }
+
+            // For demo purposes, just show the dashboard
+            showDashboard();
+        });
+
+        // Password Strength Real-time Check
+        document.getElementById('signupPassword').addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+
+        // Check for Remembered Email on Page Load
+        window.addEventListener('load', () => {
+            const rememberedEmail = localStorage.getItem('rememberedEmail');
+            if (rememberedEmail) {
+                document.getElementById('loginEmail').value = rememberedEmail;
+            }
+        });
+
+        class StarBackground {
             constructor() {
-                this.input = document.getElementById('quantumInput');
-                this.charCount = document.getElementById('charCount');
-                this.notificationArea = document.getElementById('notificationArea');
-                this.notification = document.getElementById('notification');
-                
+                this.starfield = document.getElementById('starfield');
+                this.width = window.innerWidth;
+                this.height = window.innerHeight;
+
+                this.createStars();
                 this.setupEventListeners();
             }
 
-            /* © SMILEX - This code is licensed and protected. */
+            createStars() {
+                const starCount = 400;
+
+                for (let i = 0; i < starCount; i++) {
+                    const star = this.createSingleStar();
+                    this.starfield.appendChild(star);
+                }
+            }
+
+            createSingleStar() {
+                const star = document.createElement('div');
+                star.classList.add('star');
+
+                // Random vertical positioning
+                const y = Math.random() * this.height;
+
+                // Random size
+                const size = Math.random() * 2;
+
+                // Random animation duration for varied movement
+                const animationDuration = (Math.random() * 10 + 5) + 's';
+
+                star.style.cssText = `
+                    top: ${y}px;
+                    left: -10px;
+                    width: ${size}px;
+                    height: ${size}px;
+                    animation-duration: ${animationDuration};
+                    opacity: ${Math.random()};
+                `;
+
+                // Remove star when it goes off-screen
+                star.addEventListener('animationend', () => {
+                    this.starfield.removeChild(star);
+                    this.starfield.appendChild(this.createSingleStar());
+                });
+
+                return star;
+            }
+
             setupEventListeners() {
-                this.input.addEventListener('input', () => this.updateCharCount());
-                
-                document.querySelector('.emoji-picker').addEventListener('click', (e) => {
-                    if (e.target.tagName === 'SPAN') {
-                        this.input.value += e.target.textContent;
-                        this.input.focus();
-                        this.updateCharCount();
-                    }
-                });
-            }
-
-            /* © SMILEX - This code is licensed and protected. */
-            updateCharCount() {
-                const currentLength = this.input.value.length;
-                this.charCount.textContent = `${currentLength} / 500`;
-                
-                this.charCount.style.color = currentLength > 500 
-                    ? 'rgba(255,0,0,0.7)' 
-                    : 'var(--primary-color)';
-            }
-
-            /* © SMILEX - This code is licensed and protected. */
-            showNotification(message, type = 'error') {
-                this.notification.textContent = message;
-                this.notification.className = `notification ${type}`;
-                this.notificationArea.style.opacity = '1';
-                
-                setTimeout(() => {
-                    this.notificationArea.style.opacity = '0';
-                }, 3000);
-            }
-
-            /* © SMILEX - This code is licensed and protected. */
-            validateMessage(message) {
-                if (!message) {
-                    this.showNotification('Input Something');
-                    return false;
-                }
-
-                if (message.length > 500) {
-                    this.showNotification('Too Lengthy');
-                    return false;
-                }
-
-                return true;
-            }
-
-            /* © SMILEX - This code is licensed and protected. */
-            transmitMessage() {
-                const message = this.input.value.trim();
-
-                if (!this.validateMessage(message)) return;
-
-                // Simulated message transmission
-                console.log('Transmitting input:', message);
-                
-                this.showNotification('Input transmitting!', 'success');
-                
-                // Reset input
-                this.input.value = '';
-                this.updateCharCount();
-            }
-        }
-
-        /* © SMILEX - This code is licensed and protected. */
-        const quantumMessenger = new QuantumMessenger();
-
-        // Expose transmit method globally
-        function transmitMessage() {
-            quantumMessenger.transmitMessage();
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const welcomeOverlay = document.getElementById('welcomeOverlay');
-            const welcomeText = document.getElementById('welcomeText');
-
-            // Create particle effect
-            function createParticles() {
-                for (let i = 0; i < 50; i++) {
-                    const particle = document.createElement('div');
-                    particle.classList.add('particle');
-                    
-                    particle.style.width = `${Math.random() * 10}px`;
-                    particle.style.height = particle.style.width;
-                    particle.style.left = `${Math.random() * 100}%`;
-                    particle.style.animationDuration = `${5 + Math.random() * 5}s`;
-                    particle.style.opacity = Math.random();
-
-                    welcomeOverlay.appendChild(particle);
-                }
-            }
-
-            /* © SMILEX - This code is licensed and protected. */
-            createParticles();
-
-            // Check if name is stored
-            const storedName = localStorage.getItem('userName');
-
-            if (storedName) {
-                welcomeText.textContent = `Welcome, ${storedName}!`;
-            } else {
-                // Prompt for name if not stored
-                const name = prompt('Please enter your name:');
-                if (name) {
-                    localStorage.setItem('userName', name);
-                    welcomeText.textContent = `Welcome, ${name}!`;
-                }
-            }
-
-            /* © SMILEX - This code is licensed and protected. */
-            // Fade out and remove overlay after 3 seconds
-            setTimeout(() => {
-                welcomeOverlay.style.opacity = '0';
-                setTimeout(() => {
-                    welcomeOverlay.style.display = 'none';
-                }, 1000);
-            }, 3000);
-        });
-
-        class WavyBackground {
-            constructor() {
-                this.background = document.getElementById('wavy-background');
-                this.circuitOverlay = document.querySelector('.circuit-overlay');
-                this.colors = [
-                    'rgba(0, 255, 255, 0.7)',   // Cyan
-                    'rgba(255, 0, 255, 0.7)',   // Magenta
-                    'rgba(0, 255, 0, 0.7)',     // Green
-                    'rgba(255, 165, 0, 0.7)',   // Orange
-                    'rgba(138, 43, 226, 0.7)'   // Purple
-                ];
-
-                this.initializeBackground();
-                this.createWaveLines();
-                this.setupInteractivity();
-            }
-
-            initializeBackground() {
-                // Create wave particles
-                for (let i = 0; i < 200; i++) {
-                    this.createWaveParticle();
-                }
-            }
-
-            createWaveParticle() {
-                const particle = document.createElement('div');
-                particle.classList.add('wave-particle');
-                
-                // Size variation
-                const size = Math.random() * 15 + 3;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-
-                // Position with wavy distribution
-                particle.style.left = `${Math.random() * 120}%`;
-                particle.style.top = `${Math.random() * 100}%`;
-
-                // Color and animation
-                particle.style.background = this.colors[Math.floor(Math.random() * this.colors.length)];
-                particle.style.animation = `wavyMotion ${Math.random() * 5 + 3}s infinite alternate`;
-
-                this.background.appendChild(particle);
-                return particle;
-            }
-
-            createWaveLines() {
-                for (let i = 0; i < 30; i++) {
-                    const line = document.createElement('div');
-                    line.classList.add('wave-line');
-                    
-                    line.style.width = `${Math.random() * 300 + 100}px`;
-                    line.style.height = '2px';
-                    line.style.top = `${Math.random() * 100}%`;
-                    line.style.left = `-100px`;
-                    line.style.animationDuration = `${Math.random() * 5 + 3}s`;
-
-                    this.circuitOverlay.appendChild(line);
-                }
-            }
-
-            setupInteractivity() {
-                window.addEventListener('mousemove', (event) => {
-                    this.handleMouseMove(event);
-                });
-            }
-
-            handleMouseMove(event) {
-                const particles = document.querySelectorAll('.wave-particle');
-                particles.forEach(particle => {
-                    const rect = particle.getBoundingClientRect();
-                    const distanceX = event.clientX - (rect.left + rect.width / 2);
-                    const distanceY = event.clientY - (rect.top + rect.height / 2);
-                    
-                    const maxDistance = 150;
-                    const strength = Math.max(0, maxDistance - Math.sqrt(distanceX**2 + distanceY**2)) / maxDistance;
-                    
-                    particle.style.transform = `
-                        translate(
-                            ${distanceX * strength * 0.2}px, 
-                            ${distanceY * strength * 0.2}px
-                        )
-                        rotate(${distanceX * strength * 0.1}deg)
-                    `;
+                window.addEventListener('resize', () => {
+                    this.width = window.innerWidth;
+                    this.height = window.innerHeight;
                 });
             }
         }
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
-            new WavyBackground();
+            new StarBackground();
         });
 
+        // Simulated database
+        const usersDB = {};
+        const sessionsDB = {};
+        let currentUser = null;
 
-          document.addEventListener('DOMContentLoaded', () => {
-            const analysisOverlay = document.getElementById('analysisOverlay');
-            const analysisContent = document.getElementById('analysisContent');
-            const analyzeBtn = document.getElementById('analyzeBtn');
-            const userInput = document.getElementById('userInput');
+        // DOM Elements
+        const authContainer = document.getElementById('authContainer');
+        const dashboardContainer = document.getElementById('dashboardContainer');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const devicesBtn = document.getElementById('devicesBtn');
+        const emailContent = document.getElementById('emailContent');
+        const devicesContent = document.getElementById('devicesContent');
+        const devicesList = document.getElementById('devicesList');
+        const userEmailDisplay = document.getElementById('userEmailDisplay');
+        const subscriptionModal = document.getElementById('subscriptionModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const upgradeToPremiumBtn = document.getElementById('upgradeToPremiumBtn');
+        const upgradeNoticeBtn = document.getElementById('upgradeNoticeBtn');
+        const subscribeBtn = document.getElementById('subscribeBtn');
 
-            // Check for name on page load
-            checkAndPromptForName();
-
-            analyzeBtn.addEventListener('click', async () => {
-                const userName = localStorage.getItem('userName') || 'User';
-                const text = userInput.value.trim();
-
-                // Show overlay immediately
-                analysisOverlay.style.display = 'flex';
-                analysisContent.innerHTML = '';
-
-                const userBubble = document.createElement('div');
-                userBubble.classList.add('chat-bubble');
-                userBubble.innerHTML = `
-                    <strong>${userName}:</strong>
-                    <p>${text}</p>
-                `;
-                analysisContent.appendChild(userBubble);
-
-                try {
-                    const aiAnalysis = await fetchMeaningAndAnalyze(userName, text);
-                    
-                    const aiBubble = document.createElement('div');
-                    aiBubble.classList.add('chat-bubble');
-                    
-                    aiBubble.innerHTML = `
-                        <strong>AI:</strong>
-                        <br>
-                        <p>${aiAnalysis.meaning}</p>
-                        <div class="decision-buttons">
-                            <button class="decision-btn yes-btn">Yes, Looks Correct</button>
-                            <button class="decision-btn no-btn">No, Revise</button>
-                        </div>
-                    `;
-                    
-                    analysisContent.appendChild(aiBubble);
-
-                    const yesBtn = aiBubble.querySelector('.yes-btn');
-                    const noBtn = aiBubble.querySelector('.no-btn');
-
-                    yesBtn.addEventListener('click', () => {
-                        alert('Great! Proceeding with the current analysis.');
-                    });
-
-                    noBtn.addEventListener('click', () => {
-                        alert('We will help you refine the analysis.');
-                    });
-
-                } catch (error) {
-                    const errorBubble = document.createElement('div');
-                    errorBubble.classList.add('chat-bubble');
-                    errorBubble.innerHTML = `
-                        <strong>Error:</strong>
-                        <p>Unable to process analysis. ${error.message}</p>
-                    `;
-                    analysisContent.appendChild(errorBubble);
-                }
-            });
-
-            async function fetchMeaningAndAnalyze(userName, text) {
-                // Simulated API call 
-                await new Promise(resolve => setTimeout(resolve, 500)); // Short delay for demo
-
-                // Mock meaning extraction and analysis
-                const meanings = {
-                    general: [
-                        "A statement expressing personal thoughts or experiences",
-                        "A descriptive text about a specific topic",
-                        "An exploratory piece of writing"
-                    ],
-                    insights: [
-                        "Reveals potential emotional context",
-                        "Demonstrates critical thinking",
-                        "Shows nuanced understanding"
-                    ]
-                };
-
-                const meaning = meanings.general[Math.floor(Math.random() * meanings.general.length)];
-                const insight = meanings.insights[Math.floor(Math.random() * meanings.insights.length)];
-
-                return {
-                    meaning: `Hello ${userName}! It seems this appears to be ${meaning}. ${insight}. 
-                    The text suggests: "${text.substring(0, 200)}${text.length > 200 ? '...' : ''}"
-                    Would you like me to generate further insights?`
-                };
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is already logged in (from localStorage)
+            const storedUser = localStorage.getItem('currentUser');
+            if (storedUser) {
+                currentUser = JSON.parse(storedUser);
+                showDashboard();
             }
 
-            function checkAndPromptForName() {
-                const storedName = localStorage.getItem('userName');
-                if (!storedName) {
-                    const name = prompt("Please enter your name:");
-                    if (name) {
-                        localStorage.setItem('userName', name);
-                    }
-                }
+            // Generate a device ID for the current browser
+            if (!localStorage.getItem('deviceId')) {
+                localStorage.setItem('deviceId', generateDeviceId());
+            }
+        });
+
+        // Form Toggle
+        function toggleForm() {
+            const loginContainer = document.querySelector('.login-container');
+            const signupContainer = document.querySelector('.signup-container');
+
+            loginContainer.classList.toggle('hidden');
+            signupContainer.classList.toggle('hidden');
+        }
+
+        // Password Strength Checker
+        function checkPasswordStrength(password) {
+            const meter = document.querySelector('.password-strength-meter');
+            let strength = 0;
+
+            // Length check
+            if (password.length >= 8) strength += 1;
+            if (password.length >= 12) strength += 1;
+
+            // Character variety checks
+            if (/[A-Z]/.test(password)) strength += 1;
+            if (/[0-9]/.test(password)) strength += 1;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+
+            // Update meter
+            meter.className = 'password-strength-meter';
+            if (strength <= 2) {
+                meter.classList.add('weak');
+            } else if (strength <= 4) {
+                meter.classList.add('medium');
+            } else {
+                meter.classList.add('strong');
+            }
+        }
+
+        // Signup Form Submission
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
             }
 
-            class DynamicTypingText {
-                constructor(element, phrases, options = {}) {
-                    this.element = element;
-                    this.phrases = phrases;
-                    this.options = {
-                        typingSpeed: 100,
-                        deletingSpeed: 50,
-                        pauseBetween: 8000,
-                        ...options
-                    };
-                    this.phraseIndex = 0;
-                    this.charIndex = 0;
-                    this.isDeleting = false;
-                    this.init();
-                }
+            // Check if user already exists
+            if (usersDB[email]) {
+                alert('An account with this email already exists!');
+                return;
+            }
 
-                init() {
-                    this.type();
-                }
+            // Create new user
+            usersDB[email] = {
+                name,
+                email,
+                password,
+                isPremium: false,
+                createdAt: new Date().toISOString()
+            };
 
-                type() {
-                    const currentPhrase = this.phrases[this.phraseIndex];
-                    const speed = this.isDeleting ? this.options.deletingSpeed : this.options.typingSpeed;
+            // Log the user in
+            loginUser(email, password);
+        });
 
-                    if (!this.isDeleting && this.charIndex <= currentPhrase.length) {
-                        this.element.textContent = currentPhrase.substring(0, this.charIndex + 1);
-                        this.charIndex++;
-                    } else if (this.isDeleting && this.charIndex >= 0) {
-                        this.element.textContent = currentPhrase.substring(0, this.charIndex);
-                        this.charIndex--;
+        // Login Form Submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            loginUser(email, password);
+        });
+
+        // Login Function
+        function loginUser(email, password) {
+            const user = usersDB[email];
+
+            // Check if user exists
+            if (!user) {
+                alert('No account found with this email!');
+                return;
+            }
+
+            // Check password
+            if (user.password !== password) {
+                alert('Incorrect password!');
+                return;
+            }
+
+            // Check if user is already logged in on another device (for free users)
+            if (!user.isPremium && sessionsDB[email]) {
+                const currentSession = sessionsDB[email];
+                const currentDeviceId = localStorage.getItem('deviceId');
+
+                // If trying to login from a different device
+                if (currentSession.deviceId !== currentDeviceId) {
+                    if (confirm('You are already logged in on another device. Logging in here will log you out from the other device. Continue?')) {
+                        // Logout from the other device
+                        currentSession.isActive = false;
                     } else {
-                        this.isDeleting = !this.isDeleting;
-                        this.phraseIndex = (this.phraseIndex + 1) % this.phrases.length;
-
-                        if (!this.isDeleting) {
-                            setTimeout(() => this.type(), this.options.pauseBetween);
-                            return;
-                        }
+                        return;
                     }
-
-                    setTimeout(() => this.type(), speed);
                 }
             }
 
-            const typingTextElement = document.getElementById('typing-text');
-            const phrases = [
-                'Hello, there.',
-                'Bring dreams to reality',
-                'By Typing Anything',
-            ];
+            // Create new session
+            const deviceId = localStorage.getItem('deviceId');
+            const deviceInfo = getDeviceInfo();
 
-            new DynamicTypingText(typingTextElement, phrases, {
-                typingSpeed: 100,
-                deletingSpeed: 50,
-                pauseBetween: 400,
-            });
+            sessionsDB[email] = {
+                email,
+                deviceId,
+                deviceInfo,
+                isActive: true,
+                lastActive: new Date().toISOString()
+            };
+
+            // Set current user
+            currentUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            // Show dashboard
+            showDashboard();
+        }
+
+        // Logout Function
+        logoutBtn.addEventListener('click', () => {
+            if (currentUser && sessionsDB[currentUser.email]) {
+                sessionsDB[currentUser.email].isActive = false;
+            }
+
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+
+            showAuth();
         });
 
-        /* © SMILEX - This code is licensed and protected. */
+        // Show Dashboard
+        function showDashboard() {
+            authContainer.classList.add('hidden');
+            dashboardContainer.classList.remove('hidden');
+
+            // Update user info
+            if (currentUser) {
+                userEmailDisplay.textContent = currentUser.email;
+
+                // Add premium badge if user is premium
+                if (currentUser.isPremium) {
+                    userEmailDisplay.classList.add('premium-badge');
+                } else {
+                    userEmailDisplay.classList.remove('premium-badge');
+                }
+
+                // Load devices
+                loadDevices();
+            }
+        }
+
+        // Show Auth
+        function showAuth() {
+            authContainer.classList.remove('hidden');
+            dashboardContainer.classList.add('hidden');
+
+            // Reset forms
+            loginForm.reset();
+            signupForm.reset();
+        }
+
+        // Devices Management
+        devicesBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            emailContent.classList.add('hidden');
+            devicesContent.classList.remove('hidden');
+        });
+
+        // Load Devices
+        function loadDevices() {
+            if (!currentUser) return;
+
+            devicesList.innerHTML = '';
+
+            const session = sessionsDB[currentUser.email];
+            if (!session) return;
+
+            const deviceItem = createDeviceItem(session, true);
+            devicesList.appendChild(deviceItem);
+
+            // For demo purposes, add some dummy devices
+            if (!currentUser.isPremium) {
+                const dummyDevice = {
+                    deviceInfo: {
+                        os: 'Windows',
+                        browser: 'Chrome',
+                        device: 'Desktop'
+                    },
+                    lastActive: '2023-07-20T10:30:00Z',
+                    isActive: false
+                };
+
+                const dummyItem = createDeviceItem(dummyDevice, false);
+                devicesList.appendChild(dummyItem);
+            }
+        }
+
+        // Create Device Item
+        function createDeviceItem(session, isCurrent) {
+            const deviceItem = document.createElement('div');
+            deviceItem.className = `p-4 device-card ${session.isActive ? 'active-device' : 'inactive-device'}`;
+
+            const deviceIcon = session.deviceInfo.device === 'Mobile' ? 'mobile-alt' : 'desktop';
+
+            deviceItem.innerHTML = `
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 pt-1">
+                        <i class="fas fa-${deviceIcon} text-gray-500 text-xl"></i>
+                    </div>
+                    <div class="ml-3 flex-1">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-900">
+                                ${session.deviceInfo.device} (${session.deviceInfo.os}, ${session.deviceInfo.browser})
+                                ${isCurrent ? '<span class="ml-2 text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Current</span>' : ''}
+                                ${currentUser.isPremium && session.isActive ? '<span class="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Active</span>' : ''}
+                            </p>
+                            ${!isCurrent ? '<button class="text-xs text-red-600 hover:text-red-800">Logout</button>' : ''}
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Last active: ${formatDate(session.lastActive)}</p>
+                        ${!currentUser.isPremium && !isCurrent ? 
+                           '<div class="mt-2 text-xs text-red-600">This device was logged out because you have a free account</div>' : ''}
+                    </div>
+                </div>
+            `;
+
+            return deviceItem;
+        }
+
+        // Subscription Modal
+        upgradeToPremiumBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            subscriptionModal.style.display = 'flex';
+        });
+
+        upgradeNoticeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            subscriptionModal.style.display = 'flex';
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            subscriptionModal.style.display = 'none';
+        });
+
+        subscribeBtn.addEventListener('click', () => {
+            if (!currentUser) return;
+
+            // Upgrade to premium
+            currentUser.isPremium = true;
+            usersDB[currentUser.email].isPremium = true;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            // Close modal
+            subscriptionModal.style.display = 'none';
+
+            // Update UI
+            userEmailDisplay.classList.add('premium-badge');
+            loadDevices();
+
+            // Show success message
+            alert('Congratulations! You are now a premium user. You can now use multiple devices simultaneously.');
+        });
+
+        // Helper Functions
+        function generateDeviceId() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function getDeviceInfo() {
+            const userAgent = navigator.userAgent;
+            let os, browser, device;
+
+            // Detect OS
+            if (userAgent.match(/android/i)) {
+                os = 'Android';
+            } else if (userAgent.match(/iphone|ipad|ipod/i)) {
+                os = 'iOS';
+            } else if (userAgent.match(/macintosh/i)) {
+                os = 'MacOS';
+            } else if (userAgent.match(/windows/i)) {
+                os = 'Windows';
+            } else if (userAgent.match(/linux/i)) {
+                os = 'Linux';
+            } else {
+                os = 'Unknown OS';
+            }
+
+            // Detect Browser
+            if (userAgent.match(/firefox|fxios/i)) {
+                browser = 'Firefox';
+            } else if (userAgent.match(/opr\//i)) {
+                browser = 'Opera';
+            } else if (userAgent.match(/edg/i)) {
+                browser = 'Edge';
+            } else if (userAgent.match(/chrome|chromium|crios/i)) {
+                browser = 'Chrome';
+            } else if (userAgent.match(/safari/i)) {
+                browser = 'Safari';
+            } else {
+                browser = 'Unknown Browser';
+            }
+
+            // Detect Device
+            if (userAgent.match(/mobile/i)) {
+                device = 'Mobile';
+            } else if (userAgent.match(/tablet|ipad|playbook|silk/i)) {
+                device = 'Tablet';
+            } else {
+                device = 'Desktop';
+            }
+
+            return { os, browser, device };
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString();
+        }
     </script>
 </body>
 </html>

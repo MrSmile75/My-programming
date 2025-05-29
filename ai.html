@@ -532,8 +532,9 @@
         .decision-buttons {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 5px;
             margin-top: 15px;
+          
         }
 
         .decision-btn {
@@ -1063,9 +1064,8 @@
                 aiBubble.classList.add('chat-bubble');
                 
                 aiBubble.innerHTML = `
-                    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" class="profile-pic" alt="AI">
                     <div class="chat-content">
-                        <strong>SmileX AI:</strong>
+                        <strong> AI:</strong>
                         <br>
                         <p class="typing-animation">${aiAnalysis.message}</p>
                         
@@ -1078,8 +1078,8 @@
                         </div>
                         
                         <div class="decision-buttons">
-                            <button class="decision-btn yes-btn">Generate More</button>
-                            <button class="decision-btn no-btn">Start Over</button>
+                            <button class="decision-btn yes-btn">Generate</button>
+                            <button class="decision-btn no-btn">No, please</button>
                         </div>
                     </div>
                 `;
@@ -1107,17 +1107,17 @@
 
             // Mock content generation
             const contentTypes = [
-                "Video Script",
-                "Blog Post",
-                "Social Media Post",
-                "Product Description",
-                "Marketing Copy",
-                "Short Story"
+                "Animation",
+                "Realistic video",
+                "3D Model",
+                "Anime"
+                
+              
             ];
 
             // Select 3 random content types
             const selectedOptions = [];
-            while (selectedOptions.length < 3) {
+            while (selectedOptions.length < 4) {
                 const randomIndex = Math.floor(Math.random() * contentTypes.length);
                 if (!selectedOptions.includes(contentTypes[randomIndex])) {
                     selectedOptions.push(contentTypes[randomIndex]);
@@ -1146,9 +1146,8 @@
                     contentBubble.classList.add('chat-bubble');
                     
                     contentBubble.innerHTML = `
-                        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" class="profile-pic" alt="AI">
                         <div class="chat-content">
-                            <strong>SmileX AI:</strong>
+                            <strong>AI:</strong>
                             <br>
                             <p>Here's your ${option} based on your input:</p>
                             <div style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">

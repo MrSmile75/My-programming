@@ -99,7 +99,7 @@
             try {
                 // Using RAWG Video Games Database API
                  /* © SMILEX - This code is licensed and protected. */
-                const apiKey = ''; // Replace with actual key
+                const apiKey = 'e8a2d63c9df84ddbbdbde50f0163b1a1'; // Replace with actual key
                 const url = `https://api.rawg.io/api/games?key=${apiKey}&genres=${this.currentGenre}&page=${this.page}&page_size=12`;
                 
                 const response = await fetch(url);
@@ -250,7 +250,7 @@
             this.showLoadingOverlay();
 
             try {
-                const apiKey = 'YOUR_RAWG_API_KEY'; // Replace with actual key
+                const apiKey = 'e8a2d63c9df84ddbbdbde50f0163b1a1'; // Replace with actual key
                 const url = `https://api.rawg.io/api/games?key=${apiKey}&search=${searchTerm}&page=${this.page}&page_size=12`;
                 
                 const response = await fetch(url);
@@ -271,4 +271,25 @@
     document.addEventListener('DOMContentLoaded', () => {
         new UltimateGameHub();
     });
+
+
+    let totalRequests = 20000; // RAWG's monthly request limit
+let requestsMade = 0;      // How many requests you've made so far
+
+function fetchGameInfo() {
+  if (requestsMade < totalRequests) {
+    fetch("https://api.rawg.io/api/games?key=e8a2d63c9df84ddbbdbde50f0163b1a1")
+      .then(res => res.json())
+      .then(data => {
+        requestsMade++;  // Count this request
+        console.log("Requests left: " + (totalRequests - requestsMade));
+        console.log(data); // Show game data
+      });
+  } else {
+    console.log("You’ve reached your monthly limit.");
+  }
+}
+
+
+
      /* © SMILEX - This code is licensed and protected. */
