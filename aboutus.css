@@ -63,6 +63,7 @@
             align-items: center;
             z-index: var(--z-preloader);
             transition: opacity 0.5s ease, visibility 0.5s ease;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .preloader.hidden {
@@ -89,7 +90,7 @@
         }
 
         .logo-letter {
-            font-family: 'Orbitron', monospace;
+            font-family: 'Orbitron', sans-serif;
             font-size: 3rem;
             font-weight: 900;
             background: var(--primary-gradient);
@@ -155,7 +156,7 @@
         }
 
         .loading-percentage {
-            font-family: 'JetBrains Mono', monospace;
+             font-family: 'Orbitron', sans-serif;
             font-size: 1.2rem;
             font-weight: 700;
             color: var(--text-accent);
@@ -164,6 +165,7 @@
         .loading-text {
             position: relative;
             height: 2rem;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .loading-word {
@@ -257,6 +259,7 @@
                 linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
             background-size: 50px 50px;
             animation: gridMove 20s linear infinite;
+             font-family: 'Orbitron', sans-serif;
         }
 
         @keyframes gridMove {
@@ -270,6 +273,7 @@
             top: 2rem;
             right: 2rem;
             z-index: var(--z-navigation);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .audio-btn {
@@ -283,6 +287,7 @@
             cursor: pointer;
             transition: all var(--transition-medium);
             border: 1px solid var(--border-color);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .audio-btn:hover {
@@ -359,7 +364,7 @@
             position: absolute;
             top: 1rem;
             right: 2rem;
-            font-family: 'JetBrains Mono', monospace;
+             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
             color: var(--text-accent);
             background: var(--bg-glass);
@@ -367,6 +372,7 @@
             padding: 0.5rem 1rem;
             border-radius: var(--border-radius-small);
             border: 1px solid var(--border-color);
+            right: 72%;
         }
 
         .separator {
@@ -387,12 +393,13 @@
             display: flex;
             align-items: center;
             gap: 2rem;
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
+            background:transparent;
+           
             padding: 1rem 2rem;
             border-radius: 50px;
             border: 1px solid var(--border-color);
             box-shadow: 0 10px 30px var(--shadow-color);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .nav-btn {
@@ -408,6 +415,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .nav-btn:hover {
@@ -507,6 +515,7 @@
             transform: translateX(100%);
             transition: all var(--transition-slow) cubic-bezier(0.4, 0, 0.2, 1);
             padding: 2rem;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .content-section.active {
@@ -537,7 +546,7 @@
         }
 
         .section-title {
-            font-family: 'Orbitron', monospace;
+            font-family: 'Orbitron', sans-serif;
             font-size: 3rem;
             font-weight: 900;
             background: var(--primary-gradient);
@@ -574,6 +583,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .hero-background {
@@ -636,7 +646,7 @@
         }
 
         .main-logo {
-            font-family: 'Orbitron', monospace;
+             font-family: 'Orbitron', sans-serif;
             font-size: 5rem;
             font-weight: 900;
             margin-bottom: 1rem;
@@ -650,6 +660,7 @@
             color: transparent;
             display: inline-block;
             animation: logoGlow 3s ease-in-out infinite;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .logo-part.highlight {
@@ -668,6 +679,7 @@
             font-size: 1.5rem;
             color: var(--text-secondary);
             font-weight: 300;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .typewriter-container {
@@ -686,6 +698,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .cursor-blink {
@@ -710,7 +723,7 @@
         }
 
         .stat-number {
-            font-family: 'JetBrains Mono', monospace;
+             font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
             font-weight: 700;
             background: var(--primary-gradient);
@@ -724,6 +737,7 @@
             font-size: 1rem;
             color: var(--text-secondary);
             font-weight: 300;
+             font-family: 'Orbitron', sans-serif;
         }
 
         /* About Section */
@@ -740,6 +754,7 @@
             border: 1px solid var(--border-color);
             margin-bottom: 3rem;
             overflow: hidden;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .card-glow {
@@ -761,6 +776,7 @@
         .card-content {
             position: relative;
             z-index: var(--z-content);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .about-text {
@@ -768,6 +784,7 @@
             line-height: 1.8;
             margin-bottom: 1.5rem;
             color: var(--text-primary);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .highlight-text {
@@ -775,16 +792,19 @@
             padding: 0.2rem 0.5rem;
             border-radius: 5px;
             position: relative;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .highlight-text.commercial {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
             color: #667eea;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .highlight-text.entertainment {
             background: linear-gradient(135deg, rgba(240, 147, 251, 0.2), rgba(245, 87, 108, 0.2));
             color: #f093fb;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .features-grid {
@@ -801,6 +821,7 @@
             text-align: center;
             border: 1px solid var(--border-color);
             transition: all var(--transition-medium);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .feature-item:hover {
@@ -819,16 +840,19 @@
             margin: 0 auto 1rem;
             font-size: 1.5rem;
             color: var(--text-primary);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .feature-item h3 {
             font-size: 1.3rem;
             margin-bottom: 1rem;
             color: var(--text-primary);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .feature-item p {
             color: var(--text-secondary);
+             font-family: 'Orbitron', sans-serif;
         }
 
         /* Social Section */
@@ -852,6 +876,7 @@
             cursor: pointer;
             transition: all var(--transition-medium);
             overflow: hidden;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .social-card:hover {
@@ -916,15 +941,17 @@
             font-size: 1.3rem;
             margin-bottom: 0.5rem;
             color: var(--text-primary);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .social-card p {
             color: var(--text-secondary);
             margin-bottom: 1rem;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .social-stats {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Orbitron', sans-serif;
             font-weight: 700;
             color: var(--text-accent);
             font-size: 0.9rem;
@@ -945,6 +972,7 @@
             opacity: 0;
             transform: scale(0);
             transition: all var(--transition-medium);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .social-card:hover .social-hover {
@@ -973,6 +1001,7 @@
             cursor: pointer;
             transition: all var(--transition-medium);
             overflow: hidden;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .download-card:hover {
@@ -988,6 +1017,7 @@
             height: 100%;
             opacity: 0;
             transition: opacity var(--transition-medium);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .download-card.playstore .download-bg {
@@ -1038,11 +1068,13 @@
             font-size: 1.3rem;
             margin-bottom: 0.5rem;
             color: var(--text-primary);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .download-card p {
             color: var(--text-secondary);
             margin-bottom: 1rem;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .download-info {
@@ -1050,6 +1082,7 @@
             justify-content: space-between;
             align-items: center;
             font-size: 0.9rem;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .rating {
@@ -1059,7 +1092,7 @@
 
         .downloads {
             color: var(--text-secondary);
-            font-family: 'JetBrains Mono', monospace;
+         font-family: 'Orbitron', sans-serif;
         }
 
         .download-hover {
@@ -1103,6 +1136,7 @@
             border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .feature-bg {
@@ -1159,6 +1193,7 @@
             line-height: 1.8;
             color: var(--text-primary);
             margin-bottom: 2rem;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .warning-banner {
@@ -1237,6 +1272,7 @@
             font-size: 1.2rem;
             line-height: 1.8;
             color: var(--text-primary);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .role-highlight {
@@ -1281,6 +1317,7 @@
             transition: all var(--transition-medium);
             position: relative;
             overflow: hidden;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .value-card:hover {
@@ -1340,6 +1377,7 @@
             margin-bottom: 1.5rem;
             position: relative;
             z-index: var(--z-content);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .value-progress {
@@ -1390,7 +1428,7 @@
         }
 
         .motto-text {
-            font-family: 'Orbitron', monospace;
+            font-family: 'Orbitron', sans-serif;
             font-size: 4rem;
             font-weight: 900;
             line-height: 1.2;
@@ -1405,6 +1443,7 @@
             color: transparent;
             margin: 0 1rem;
             animation: mottoFloat 4s ease-in-out infinite;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .motto-word:nth-child(1) { animation-delay: 0s; }
@@ -1428,6 +1467,7 @@
         .motto-footer p {
             font-size: 1.2rem;
             color: var(--text-secondary);
+             font-family: 'Orbitron', sans-serif;
         }
 
         .contact-link {
@@ -1496,6 +1536,7 @@
             color: var(--text-secondary);
             writing-mode: vertical-rl;
             text-orientation: mixed;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .scroll-arrow {
@@ -1652,10 +1693,12 @@
             
             .main-logo {
                 font-size: 2.5rem;
+                 font-family: 'Orbitron', sans-serif;
             }
             
             .section-title {
                 font-size: 1.8rem;
+                 font-family: 'Orbitron', sans-serif;
             }
             
             .motto-text {

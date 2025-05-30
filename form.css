@@ -20,7 +20,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+             font-family: 'Orbitron', sans-serif;
             background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a2e 50%, #16213e 100%);
             color: var(--text-primary);
             min-height: 100vh;
@@ -204,6 +204,7 @@
 
         .option-button {
             background: var(--card-bg);
+             font-family: 'Orbitron', sans-serif;
             backdrop-filter: blur(10px);
             border: 2px solid var(--border-color);
             border-radius: 16px;
@@ -277,6 +278,7 @@
             position: relative;
             overflow: hidden;
             min-width: 120px;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .nav-button:disabled {
@@ -363,6 +365,7 @@
             transform: translateY(50px);
             transition: all 0.6s ease;
             display: none;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .results.show {

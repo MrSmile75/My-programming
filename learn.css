@@ -23,7 +23,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+             font-family: 'Orbitron', sans-serif;
             background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a2e 50%, var(--dark-blue) 100%);
             color: var(--text-primary);
             overflow-x: hidden;
@@ -395,6 +395,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .subscribe-btn::before {

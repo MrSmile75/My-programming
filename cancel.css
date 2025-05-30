@@ -17,7 +17,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+             font-family: 'Orbitron', sans-serif;
             background: var(--primary-gradient);
             min-height: 100vh;
             overflow-x: hidden;
@@ -85,6 +85,7 @@
             text-align: center;
             margin-bottom: 4rem;
             position: relative;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .header::before {
@@ -122,7 +123,7 @@
         }
 
         .header h1 {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 900;
             margin-bottom: 1rem;
@@ -147,6 +148,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 1.5rem;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .header p {
@@ -156,6 +158,7 @@
             margin: 0 auto;
             line-height: 1.7;
             opacity: 0.9;
+             font-family: 'Orbitron', sans-serif;
         }
 
         /* Billing Toggle */
@@ -186,6 +189,7 @@
             position: relative;
             z-index: 2;
             font-size: 1.1rem;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .toggle-option.active {
@@ -234,6 +238,7 @@
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
             transform-style: preserve-3d;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .pricing-card::before {
@@ -301,6 +306,7 @@
         .plan-header {
             text-align: center;
             margin-bottom: 2.5rem;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .plan-icon {
@@ -324,7 +330,7 @@
         }
 
         .plan-name {
-            font-family: 'Space Grotesk', sans-serif;
+     font-family: 'Orbitron', sans-serif;
             font-size: 2.2rem;
             font-weight: 800;
             color: white;
@@ -336,6 +342,7 @@
             color: rgba(255, 255, 255, 0.8);
             font-size: 1rem;
             font-weight: 500;
+             font-family: 'Orbitron', sans-serif;
         }
 
         /* Pricing */
@@ -351,10 +358,11 @@
             justify-content: center;
             gap: 0.5rem;
             margin-bottom: 1rem;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .price-amount {
-            font-family: 'Space Grotesk', sans-serif;
+             font-family: 'Orbitron', sans-serif;
             font-size: 4rem;
             font-weight: 900;
             color: white;
@@ -365,12 +373,14 @@
         .price-currency {
             font-size: 2rem;
             vertical-align: top;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .price-period {
             color: rgba(255, 255, 255, 0.7);
             font-size: 1.1rem;
             font-weight: 500;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .original-price {
@@ -378,6 +388,7 @@
             color: rgba(255, 255, 255, 0.5);
             font-size: 1.3rem;
             margin-left: 0.5rem;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .savings-badge {
@@ -394,11 +405,13 @@
         /* Features */
         .plan-features {
             margin-bottom: 3rem;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .plan-features ul {
             list-style: none;
             space-y: 1rem;
+       
         }
 
         .plan-features li {
@@ -407,6 +420,7 @@
             align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .plan-features li:hover {
@@ -452,6 +466,7 @@
             overflow: hidden;
             text-transform: uppercase;
             letter-spacing: 1px;
+             font-family: 'Orbitron', sans-serif;
         }
 
         .plan-cta::before {
