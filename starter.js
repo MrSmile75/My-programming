@@ -1,94 +1,146 @@
-class AdvancedPreloader {
-    constructor() {
-        this.initCursor();
-        this.initPreloader();
-    }
-
-    /* © SMILEX - This code is licensed and protected. */
-
-
-    initCursor() {
+    // Custom Cursor
         const cursor = document.getElementById('cursor');
+        const interactiveElements = document.querySelectorAll('a, button, .feature-card');
+
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = `${e.clientX}px`;
-            cursor.style.top = `${e.clientY}px`;
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
         });
-    }
 
-    initPreloader() {
-        const logos = [
-            document.getElementById('S'),
-            document.getElementById('M'),
-            document.getElementById('I'),
-            document.getElementById('L'),
-            document.getElementById('E')
-        ];
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // Preloader Animation
+        let progress = 0;
         const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
         const preloader = document.getElementById('preloader');
-        const mainContent = document.getElementById('main-content');
 
-        let currentIndex = 0;
-
-        const animateLogo = () => {
-            // Remove active class from all logos
-            logos.forEach(logo => logo.classList.remove('active'));
-            
-            // Add active class to current logo
-            logos[currentIndex].classList.add('active');
-            
-            // Update progress bar
-            progressBar.style.width = `${((currentIndex + 1) / logos.length) * 100}%`;
-
-            // Move to next logo
-            currentIndex = (currentIndex + 1) % logos.length;
-
-            // If we've gone through all logos, transition to main content
-            if (currentIndex === 0) {
+        const progressInterval = setInterval(() => {
+            progress += Math.random() * 3;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(progressInterval);
                 setTimeout(() => {
-                    preloader.style.opacity = 0;
+                    preloader.style.opacity = '0';
                     setTimeout(() => {
                         preloader.style.display = 'none';
-                        mainContent.style.display = 'block';
-                        this.animateMainContent();
+                        initMainAnimations();
                     }, 500);
                 }, 1000);
-            } else {
-                // Continue animating logos with a longer delay
-                setTimeout(animateLogo, 2000);
             }
-        };
+            progressBar.style.width = progress + '%';
+            progressText.textContent = Math.floor(progress) + '%';
+        }, 100);
 
-            /* © SMILEX - This code is licensed and protected. */
+        // Background Particles
+        function createParticles() {
+            const bgAnimation = document.getElementById('bgAnimation');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'floating-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                bgAnimation.appendChild(particle);
+            }
+        }
 
-        // Start the logo animation
-        animateLogo();
-    }
+        // Main Animations
+        function initMainAnimations() {
+            const heroTitle = document.querySelector('.hero-title');
+            const heroSubtitle = document.querySelector('.hero-subtitle');
+            const ctaContainer = document.querySelector('.cta-container');
 
-    animateMainContent() {
-        const h1 = document.querySelector('.content-wrapper h1');
-        const p = document.querySelector('.content-wrapper p');
-        const ctaButton = document.querySelector('.cta-button');
+            setTimeout(() => heroTitle.classList.add('fade-in-up'), 200);
+            setTimeout(() => heroSubtitle.classList.add('fade-in-up'), 600);
+            setTimeout(() => ctaContainer.classList.add('fade-in-up'), 1000);
 
-        setTimeout(() => {
-            h1.style.opacity = 1;
-            h1.style.transform = 'translateY(0)';
-        }, 300);
+            createParticles();
+            setupScrollAnimations();
+        }
 
-        setTimeout(() => {
-            p.style.opacity = 1;
-            p.style.transform = 'translateY(0)';
-        }, 600);
+        // Scroll Animations
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
 
-        setTimeout(() => {
-            ctaButton.style.opacity = 1;
-            ctaButton.style.transform = 'translateY(0)';
-        }, 900);
-    }
-}
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in-up');
+                        
+                        // Animate stats numbers
+                        if (entry.target.classList.contains('stat-item')) {
+                            animateCounter(entry.target.querySelector('.stat-number'));
+                        }
+                    }
+                });
+            }, observerOptions);
 
-// Initialize preloader when DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new AdvancedPreloader();
-});
+            document.querySelectorAll('.feature-card, .stat-item').forEach(el => {
+                observer.observe(el);
+            });
+        }
 
-    /* © SMILEX - This code is licensed and protected. */
+        // Counter Animation
+        function animateCounter(element) {
+            const target = parseInt(element.dataset.target);
+            if (!target) return;
+
+            let current = 0;
+            const increment = target / 60;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                    element.textContent = target.toLocaleString() + (target === 99 ? '%' : '+');
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString() + (target === 99 ? '%' : '+');
+                }
+            }, 50);
+        }
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Parallax Effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const particles = document.querySelectorAll('.floating-particle');
+            
+            particles.forEach((particle, index) => {
+                const speed = (index % 3 + 1) * 0.5;
+                particle.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Disable right-click context menu
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                document.body.classList.add('keyboard-navigation');
+            }
+        });
+
+        document.addEventListener('mousedown', () => {
+            document.body.classList.remove('keyboard-navigation');
+        });
