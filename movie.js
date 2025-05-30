@@ -396,4 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
    
            // Initialize the App
            const cinemaVerse = new CinemaVerseApp();
+
+
+           
             /* © SMILEX - This code is licensed and protected. */

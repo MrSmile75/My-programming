@@ -191,7 +191,7 @@
 
         fetchGameDescription(game) {
             // In a real-world scenario, you'd fetch detailed description from an additional API call
-            return "Detailed game description would be loaded here. This is a placeholder description for the game.";
+            return "Detailed game description would be loaded here.";
         }
 
         playGame() {
