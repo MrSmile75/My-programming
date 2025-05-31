@@ -45,7 +45,7 @@
             font-family: 'Poppins', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            overflow: hidden;
+            overflow: auto;
             height: 100vh;
             line-height: 1.6;
         }
@@ -57,7 +57,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--dark-gradient);
+            background:black;
             display: flex;
             justify-content: center;
             align-items: center;
