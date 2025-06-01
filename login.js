@@ -532,3 +532,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+ // Prevent right-click context menu (optional security measure)
+        document.addEventListener('contextmenu', e => e.preventDefault());

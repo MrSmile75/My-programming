@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmileX Premium - Upgrade Your Experience</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="mpremium.css">
+  
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="movie.html" class="logo">
+                <i class="fas fa-film"></i> SMILEX
+            </a>
+            <div class="header-controls">
+                <a href="watch.html" class="control-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Movie
+                </a>
+                <a href="movie.html" class="control-btn">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <i class="fas fa-crown"></i>
+                        SmileX Premium
+                    </h1>
+                    <p class="hero-subtitle">Unlock the Ultimate Movie Experience</p>
+                    <p class="hero-description">
+                        Get access to 4K Ultra HD movies, premium downloads, ad-free streaming, 
+                        and exclusive content. Join millions of movie lovers worldwide.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Pricing Section -->
+            <section class="pricing-section">
+                <h2 class="section-title">Choose Your Plan</h2>
+                     <h2 class="section-title">ONCE YOU PURCHASE THIS, YOU SUCCESSFULLY UNLOCK PREMIUM EVEN ON OTHER SITES</h2>
+                
+                <div class="pricing-grid">
+                    <!-- Monthly Plan -->
+                    <div class="pricing-card">
+                        <h3 class="pricing-title">BEGINNER</h3>
+                        <div class="pricing-price">$19.99</div>
+                        <div class="pricing-period">per month</div>
+                        <ul class="pricing-features">
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Regular Badge</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>No Ads</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Rare Premium boaster</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>6hrs customer support</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Well designed premium package</span>
+                            </li>
+                        </ul>
+                        <button class="pricing-button secondary" onclick="premiumPage.selectPlan('monthly')">
+                            <i class="fas fa-credit-card"></i>
+                            Choose Beginner
+                        </button>
+                    </div>
+
+                    <!-- Annual Plan (Featured) -->
+                    <div class="pricing-card featured">
+                        <div class="pricing-badge">PRO</div>
+                        <h3 class="pricing-title">Annual</h3>
+                        <div class="pricing-price">$46.99</div>
+                        <div class="pricing-period">per year (Save 17%)</div>
+                        <ul class="pricing-features">
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Epic badge </span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>No Ads</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Epic premium boaster</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Automatic clear storage</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>18hrs customer support</span>
+                            </li>
+                                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Customize premium package</span>
+                            </li>
+                                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Disable pop ups</span>
+                            </li>
+                        </ul>
+                        <button class="pricing-button primary" onclick="premiumPage.selectPlan('annual')">
+                            <i class="fas fa-crown"></i>
+                            Choose Pro
+                        </button>
+                    </div>
+
+                    <!-- Lifetime Plan -->
+                    <div class="pricing-card">
+                        <h3 class="pricing-title">LEGEND</h3>
+                        <div class="pricing-price">$99.99</div>
+                        <div class="pricing-period">one-time payment</div>
+                        <ul class="pricing-features">
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Diamond badge</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>No ads</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>ULtimate premium boaster</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>24/7 priority support</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Exclusive premium package</span>
+                            </li>
+                                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Disable pop ups</span>
+                            </li>
+                                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Early access to new features</span>
+                            </li>
+                                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>+ more features</span>
+                            </li>
+                        </ul>
+                        <button class="pricing-button secondary" onclick="premiumPage.selectPlan('lifetime')">
+                            <i class="fas fa-infinity"></i>
+                            Choose Legend
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features-section">
+                <h2 class="section-title">Movie Premium Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3 class="feature-title">4K Ultra HD</h3>
+                        <p class="feature-description">
+                            Experience movies in stunning 4K resolution with HDR support for the ultimate visual experience.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <h3 class="feature-title">Premium Downloads</h3>
+                        <p class="feature-description">
+                            Download movies in the highest quality available, including 4K and 7.1 surround sound.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-ad"></i>
+                        </div>
+                        <h3 class="feature-title">Ad-Free Streaming</h3>
+                        <p class="feature-description">
+                            Enjoy uninterrupted movie watching without any advertisements or commercial breaks.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-devices"></i>
+                        </div>
+                        <h3 class="feature-title">Multi-Device Access</h3>
+                        <p class="feature-description">
+                            Stream on up to 5 devices simultaneously across all your favorite platforms.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="feature-title">Exclusive Content</h3>
+                        <p class="feature-description">
+                            Access premium-only movies, director's cuts, and behind-the-scenes content.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3 class="feature-title">Priority Support</h3>
+                        <p class="feature-description">
+                            Get 24/7 priority customer support with dedicated premium assistance.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Payment Section -->
+            <section class="payment-section" id="payment-section" style="display: none;">
+                <h2 class="section-title">Complete Your Subscription</h2>
+                <form class="payment-form" id="payment-form">
+                    <div class="form-group">
+                        <label class="form-label">Selected Plan</label>
+                        <div id="selected-plan" style="padding: 15px; background: rgba(255, 215, 0, 0.1); border-radius: 8px; color: var(--premium-color); font-weight: bold;"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Payment Method</label>
+                        <div class="payment-methods-grid">
+                            <!-- Credit/Debit Cards -->
+                            <div class="payment-category">
+                                <h4 class="payment-category-title">Credit & Debit Cards</h4>
+                                <div class="payment-methods">
+                                    <div class="payment-method active" onclick="premiumPage.selectPaymentMethod('visa', this)" data-fee="0">
+                                        <i class="fab fa-cc-visa"></i>
+                                        <div>Visa</div>
+                                        <small>No fees</small>
+                                    </div>
+                                    <div class="payment-method" onclick="premiumPage.selectPaymentMethod('mastercard', this)" data-fee="0">
+                                        <i class="fab fa-cc-mastercard"></i>
+                                        <div>Mastercard</div>
+                                        <small>No fees</small>
+                                    </div>
+                                    <div class="payment-method" onclick="premiumPage.selectPaymentMethod('amex', this)" data-fee="2.9">
+                                        <i class="fab fa-cc-amex"></i>
+                                        <div>Amex</div>
+                                        <small>2.9% fee</small>
+                                    </div>
+                                </div>
+
+                                <!-- Digital Wallets -->
+                                <div class="payment-category">
+                                    <h4 class="payment-category-title">Digital Wallets</h4>
+                                    <div class="payment-methods">
+                                        <div class="payment-method" onclick="premiumPage.selectPaymentMethod('paypal', this)" data-fee="0">
+                                            <i class="fab fa-paypal"></i>
+                                            <div>PayPal</div>
+                                            <small>No fees</small>
+                                        </div>
+                                        <div class="payment-method" onclick="premiumPage.selectPaymentMethod('applepay', this)" data-fee="0">
+                                            <i class="fab fa-apple-pay"></i>
+                                            <div>Apple Pay</div>
+                                            <small>No fees</small>
+                                        </div>
+                                        <div class="payment-method" onclick="premiumPage.selectPaymentMethod('googlepay', this)" data-fee="0">
+                                            <i class="fab fa-google-pay"></i>
+                                            <div>Google Pay</div>
+                                            <small>No fees</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- African Payment Methods -->
+                                <div class="payment-category">
+                                    <h4 class="payment-category-title">African Payment Solutions</h4>
+                                    <div class="payment-methods">
+                                        <div class="payment-method" onclick="premiumPage.selectPaymentMethod('zeepay', this)" data-fee="1.5">
+                                            <i class="fas fa-mobile-alt"></i>
+                                            <div>ZeePay</div>
+                                            <small>1.5% fee</small>
+                                        </div>
+                                        <div class="payment-method" onclick="premiumPage.selectPaymentMethod('mpesa', this)" data-fee="1.0">
+                                            <i class="fas fa-phone"></i>
+                                            <div>M-Pesa</div>
+                                            <small>1.0% fee</small>
+                                        </div>
+                                        <div class="payment-method" onclick="premiumPage.selectPaymentMethod('mtn', this)" data-fee="1.2">
+                                            <i class="fas fa-sim-card"></i>
+                                            <div>MTN Mobile</div>
+                                            <small>1.2% fee</small>
+                                        </div>
+                                        <div class="payment-method" onclick="premiumPage.selectPaymentMethod('airtel', this)" data-fee="1.2">
+                                            <i class="fas fa-signal"></i>
+                                            <div>Airtel Money</div>
+                                            <small>1.2% fee</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Cryptocurrency -->
+                                <div class="payment-category">
+                                    <h4 class="payment-category-title">Cryptocurrency</h4>
+                                    <div class="payment-methods">
+                                        <div class="payment-method" onclick="premiumPage.selectPaymentMethod('bitcoin', this)" data-fee="0">
+                                            <i class="fab fa-bitcoin"></i>
+                                            <div>Bitcoin</div>
+                                            <small>No fees</small>
+                                        </div>
+                                        <div class="payment-method" onclick="premiumPage.selectPaymentMethod('ethereum', this)" data-fee="0">
+                                            <i class="fab fa-ethereum"></i>
+                                            <div>Ethereum</div>
+                                            <small>No fees</small>
+                                        </div>
+                                        <div class="payment-method" onclick="premiumPage.selectPaymentMethod('usdt', this)" data-fee="0">
+                                            <i class="fas fa-coins"></i>
+                                            <div>USDT</div>
+                                            <small>No fees</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bank Transfer -->
+                                <div class="payment-category">
+                                    <h4 class="payment-category-title">Bank Transfer</h4>
+                                    <div class="payment-methods">
+                                        <div class="payment-method" onclick="premiumPage.selectPaymentMethod('banktransfer', this)" data-fee="0">
+                                            <i class="fas fa-university"></i>
+                                            <div>Bank Transfer</div>
+                                            <small>No fees</small>
+                                        </div>
+                                        <div class="payment-method" onclick="premiumPage.selectPaymentMethod('wise', this)" data-fee="0.5">
+                                            <i class="fas fa-exchange-alt"></i>
+                                            <div>Wise Transfer</div>
+                                            <small>0.5% fee</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Details Forms -->
+                        <div id="payment-details">
+                            <!-- Credit Card Form -->
+                            <div id="card-details" class="payment-form-section">
+                                <div class="form-group">
+                                    <label class="form-label">Cardholder Name</label>
+                                    <input type="text" class="form-input" id="cardholder-name" placeholder="John Doe" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Card Number</label>
+                                    <input type="text" class="form-input" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                                    <div class="card-icons">
+                                        <i class="fab fa-cc-visa"></i>
+                                        <i class="fab fa-cc-mastercard"></i>
+                                        <i class="fab fa-cc-amex"></i>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Expiry Date</label>
+                                        <input type="text" class="form-input" id="expiry-date" placeholder="MM/YY" maxlength="5" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">CVV</label>
+                                        <input type="text" class="form-input" id="cvv" placeholder="123" maxlength="4" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mobile Money Form -->
+                            <div id="mobile-money-details" class="payment-form-section" style="display: none;">
+                                <div class="form-group">
+                                    <label class="form-label">Mobile Number</label>
+                                    <input type="tel" class="form-input" id="mobile-number" placeholder="+233 XX XXX XXXX" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Network Provider</label>
+                                    <select class="form-input" id="network-provider" required>
+                                        <option value="">Select Network</option>
+                                        <option value="mtn">MTN</option>
+                                        <option value="vodafone">Vodafone</option>
+                                        <option value="airtel">AirtelTigo</option>
+                                        <option value="glo">Glo</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Crypto Form -->
+                            <div id="crypto-details" class="payment-form-section" style="display: none;">
+                                <div class="crypto-info">
+                                    <div class="crypto-address">
+                                        <label class="form-label">Send Payment To:</label>
+                                        <div class="address-container">
+                                            <input type="text" class="form-input" id="crypto-address" readonly>
+                                            <button type="button" class="copy-btn" onclick="premiumPage.copyAddress()">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="crypto-amount">
+                                        <label class="form-label">Amount:</label>
+                                        <div class="amount-display" id="crypto-amount"></div>
+                                    </div>
+                                    <div class="qr-code" id="qr-code"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Transaction Hash (after payment)</label>
+                                    <input type="text" class="form-input" id="tx-hash" placeholder="Enter transaction hash for verification">
+                                </div>
+                            </div>
+
+                            <!-- Bank Transfer Form -->
+                            <div id="bank-details" class="payment-form-section" style="display: none;">
+                                <div class="bank-info">
+                                    <h4>Bank Account Details</h4>
+                                    <div class="bank-details-grid">
+                                        <div class="bank-detail">
+                                            <strong>Bank Name:</strong> First National Bank
+                                        </div>
+                                        <div class="bank-detail">
+                                            <strong>Account Name:</strong> CinemaVerse Ltd
+                                        </div>
+                                        <div class="bank-detail">
+                                            <strong>Account Number:</strong> 1234567890
+                                        </div>
+                                        <div class="bank-detail">
+                                            <strong>Routing Number:</strong> 021000021
+                                        </div>
+                                        <div class="bank-detail">
+                                            <strong>SWIFT Code:</strong> FNBCUS33
+                                        </div>
+                                        <div class="bank-detail">
+                                            <strong>Reference:</strong> <span id="payment-reference"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Upload Payment Receipt</label>
+                                    <input type="file" class="form-input" id="receipt-upload" accept="image/*,.pdf">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Billing Information -->
+                        <div class="billing-section">
+                            <h4 class="section-subtitle">Billing Information</h4>
+                            <div class="form-group">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-input" id="email" placeholder="your@email.com" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-input" id="first-name" placeholder="John" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-input" id="last-name" placeholder="Doe" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Country</label>
+                                <select class="form-input" id="country" required>
+                                    <option value="">Select Country</option>
+                                    <option value="GH">Ghana</option>
+                                    <option value="NG">Nigeria</option>
+                                    <option value="KE">Kenya</option>
+                                    <option value="ZA">South Africa</option>
+                                    <option value="US">United States</option>
+                                    <option value="GB">United Kingdom</option>
+                                    <option value="CA">Canada</option>
+                                    <option value="AU">Australia</option>
+                                    <option value="DE">Germany</option>
+                                    <option value="FR">France</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Order Summary -->
+                        <div class="order-summary">
+                            <h4 class="section-subtitle">Order Summary</h4>
+                            <div class="summary-row">
+                                <span>Subscription:</span>
+                                <span id="summary-plan">-</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Processing Fee:</span>
+                                <span id="summary-fee">$0.00</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total:</span>
+                                <span id="summary-total">$0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Security Notice -->
+                        <div class="security-notice">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <strong>Secure Payment</strong>
+                                <p>Your payment information is encrypted and secure. We never store your payment details.</p>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="pricing-button primary" style="margin-top: 20px;">
+                            <i class="fas fa-lock"></i>
+                            Complete Secure Payment
+                        </button>
+                    </form>
+                </section>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="modal-title">Welcome to Premium!</h2>
+            <p class="modal-description">
+                Your subscription has been activated successfully. You now have access to all premium features including 4K downloads, ad-free streaming, and exclusive content.
+            </p>
+            <button class="pricing-button primary" onclick="premiumPage.goToMovie()">
+                <i class="fas fa-play"></i>
+                Start Watching
+            </button>
+        </div>
+    </div>
+
+    <script src="mpremium.js">
+       
+    </script>
+</body>
+</html>

@@ -653,7 +653,7 @@
 
             initializeProperties() {
                 // Using NewsAPI.org - Free tier allows 1000 requests per day
-                this.apiKey = 'YOUR_API_KEY_HERE'; // Replace with your NewsAPI key
+                this.apiKey = 'dcb071f269784ec280990d91a82ecc23'; // Replace with your NewsAPI key
                 this.baseUrl = 'https://newsapi.org/v2';
                 
                 // Fallback to free news sources
@@ -930,7 +930,7 @@
             async fetchNews(endpoint, params) {
                 try {
                     // Try NewsAPI first
-                    if (this.apiKey && this.apiKey !== 'YOUR_API_KEY_HERE') {
+                    if (this.apiKey && this.apiKey !== 'dcb071f269784ec280990d91a82ecc23') {
                         const url = new URL(`${this.baseUrl}/${endpoint}`);
                         Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
                         url.searchParams.append('apiKey', this.apiKey);

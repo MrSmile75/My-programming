@@ -27,6 +27,11 @@
             overflow-x: hidden;
         }
 
+
+        input{
+                font-family: 'Orbitron', sans-serif;
+        }
+
         /* Preloader Styles */
         #preloader {
             position: fixed;
