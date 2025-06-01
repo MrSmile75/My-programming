@@ -850,3 +850,6 @@ document.head.appendChild(style);
 const storyPlatform = new UnlimitedStoryPlatform();
 
 console.log("Enhanced Story Platform initialized with exact search and full descriptions");
+
+  // Prevent right-click (optional)
+        document.addEventListener('contextmenu', e => e.preventDefault());
