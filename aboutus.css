@@ -159,7 +159,7 @@
              font-family: 'Orbitron', sans-serif;
             font-size: 1.2rem;
             font-weight: 700;
-            color: var(--text-accent);
+            color: transparent;
         }
 
         .loading-text {
@@ -176,7 +176,7 @@
             opacity: 0;
             transition: opacity 0.5s ease;
             font-weight: 600;
-            color: var(--text-secondary);
+            color: transparent;
         }
 
         .loading-word.active {

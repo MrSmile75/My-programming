@@ -15,7 +15,7 @@
         // Create Star Field
         function createStarField() {
             const starField = document.getElementById('starField');
-            const starCount = 200;
+            const starCount = 800;
 
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');

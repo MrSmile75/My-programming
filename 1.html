@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SmileX: Multiverse Interface</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <style>
+        :root {
+            --primary-color: #00f5d4;
+            --secondary-color: #8c1eff;
+            --background-color: #0a0a1a;
+            --text-color: #e0e0ff;
+            --glow-color: rgba(0, 245, 212, 0.4);
+            --bg-primary: #0f1020;
+            --bg-secondary: #1a1a2e;
+            --color-accent: #4a6cf7;
+            --color-text-primary: #e6e6e6;
+            --color-text-secondary: #a0a0a0;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) var(--background-color);
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: radial-gradient(ellipse at bottom, var(--background-color) 0%, #090913 100%);
+            color: var(--text-color);
+            overflow-x: hidden;
+            perspective: 1000px;
+        }
+
+        /* Map Styles */
+        #map {
+            height: 80vh;
+            width: 100%;
+            position: relative;
+            left: 0;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes particle-flow {
+            0% { 
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            100% { 
+                transform: translateY(100vh) rotate(360deg) scale(0.5);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.1); }
+        }
+
+        @keyframes particle-float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(180deg); }
+            100% { transform: translateY(0) rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Navigation Bar */
+        .navigation {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 16, 32, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(74, 108, 247, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+        }
+
+        /* Logo Design */
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            animation: pulse 2s infinite;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            background: linear-gradient(45deg, var(--primary-color), #7b68ee);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .link {
+            color: white;
+            text-decoration: none;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .link:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            position: relative;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            transition: all var(--transition-speed) ease;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary-color);
+            transition: width var(--transition-speed) ease;
+        }
+
+        .nav-link:hover {
+            color: var(--color-text-primary);
+            transform: translateY(-3px);
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: white;
+            font-weight: 600;
+        }
+
+        .nav-link.active::before {
+            width: 100%;
+            background: var(--color-accent);
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-contact {
+            padding: 8px 20px;
+            background: transparent;
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all var(--transition-speed) ease;
+            border: 2px solid transparent;
+        }
+
+        .btn-contact:hover {
+            background: transparent;
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+            transform: translateY(-3px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .menu-bar {
+            width: 25px;
+            height: 3px;
+            background-color: var(--color-text-primary);
+            margin: 4px 0;
+            transition: 0.4s;
+        }
+
+        /* Dynamic Text */
+        .dynamic-text-container {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .dynamic-text {
+            position: relative;
+            display: inline-block;
+            transition: all 0.5s ease;
+            opacity: 1;
+        }
+
+        .dynamic-text.fade-out {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .cursor {
+            display: inline-block;
+            margin-left: 5px;
+            width: 10px;
+            height: 40px;
+            background-color: #007bff;
+            animation: blink 0.7s infinite;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-section {
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 20;
+            max-width: 900px;
+            transform: translateZ(50px);
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px var(--glow-color);
+        }
+
+        .main-button {
+            display: inline-flex;
+            padding: 15px 50px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--background-color);
+            text-decoration: none;
+            border-radius: 100px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            font-weight: bold;
+            letter-spacing: 2px;
+            box-shadow: 0 0 40px var(--glow-color);
+        }
+
+        .main-button:hover {
+            box-shadow: 0 4px 80px var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* Canvas */
+        #main-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Carousel */
+        .main-carousel {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .carousel-wrapper {
+            width: 100%;
+            max-width: 1600px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s ease;
+            transform: translateZ(-1000px) rotateY(45deg) scale(0.8);
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateZ(0) rotateY(0) scale(1);
+            z-index: 10;
+        }
+
+        .slide-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.6);
+            transition: transform 0.8s ease;
+        }
+
+        .slide-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(106, 17, 203, 0.3), rgba(37, 117, 252, 0.3));
+        }
+
+        .particle-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: particle-float 5s infinite;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            max-width: 800px;
+            padding: 40px;
+            transform: translateZ(100px);
+            transition: all 0.8s ease;
+        }
+
+        .slide-title {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .slide-description {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .slide-cta {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.8s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-cta:hover {
+            transform: scale(1.1) translateZ(50px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Indicators */
+        .main-indicators {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 30;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.8s ease;
+        }
+
+        .indicator.active {
+            width: 30px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 20px;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(0,245,212,0.1), transparent 70%);
+            transform: rotate(-45deg);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10,10,26,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+        }
+
+        .modal-content {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Review Slider */
+        .review-slider-container {
+            position: relative;
+            bottom: 30px;
+            right: 30px;
+            width: 950px;
+            max-width: 95vw;
+            z-index: 10000;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .review-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1), 0 10px 15px -3px rgba(0,0,0,0.05);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .review-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(16,185,129,0.1));
+            opacity: 0.5;
+            z-index: -1;
+            filter: blur(80px);
+        }
+
+        .reviewer-profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .reviewer-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-color);
+            box-shadow: 0 10px 20px rgba(59,130,246,0.2);
+            margin-right: 20px;
+            transition: transform 0.4s ease;
+        }
+
+        .reviewer-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reviewer-name {
+            font-weight: 700;
+            font-size: 22px;
+            color: #1f2937;
+        }
+
+        .reviewer-role {
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        .stars-container {
+            display: flex;
+            margin: 15px 0;
+        }
+
+        .star {
+            font-size: 26px;
+            margin-right: 5px;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255,215,0,0.3);
+        }
+
+        .review-text {
+            color: #4b5563;
+            font-size: 17px;
+            line-height: 1.7;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            width: 0;
+            transition: width 10s linear;
+        }
+
+        .review-card.fade-out {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .review-card.fade-in {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Assistant Trigger */
+        #assistant-trigger {
+            position: fixed;
+            bottom: 30px;
+            right: 50px;
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            border: 4px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 20px 50px rgba(37,117,252,0.3);
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 1000;
+            animation: bounce 2s infinite;
+        }
+
+        #assistant-trigger:hover {
+            transform: scale(1.15) rotate(360deg);
+            box-shadow: 0 30px 60px rgba(37,117,252,0.5);
+        }
+
+        #assistant-trigger .icon {
+            font-size: 20px;
+            color: white;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            animation: pulse 2.5s infinite;
+        }
+
+        /* Chat Widget */
+        #chat-widget {
+            position: fixed;
+            bottom: 150px;
+            right: 50px;
+            width: 350px;
+            height: 300px;
+            background: rgba(15,14,23,0.9);
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: none;
+            z-index: 1001;
+            transform-origin: bottom right;
+            animation: slideIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .chat-header {
+            background: rgba(37,117,252,0.2);
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .chat-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        .chat-header .close-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-header .close-btn:hover {
+            transform: rotate(180deg) scale(1.2);
+        }
+
+        .chat-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .chat-content p {
+            color: var(--color-text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .chat-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 13px;
+            border: none;
+            border-radius: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .signup-btn {
+            background: rgba(255,255,255,0.1);
+            color: var(--color-text-primary);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .chat-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.6s ease;
+        }
+
+        .chat-btn:hover::before {
+            left: 100%;
+        }
+
+        .chat-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-icon {
+            font-size: 16px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: transparent;
+            color: white;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-column {
+            flex: 1 1 220px;
+            margin: 15px;
+            min-width: 200px;
+            color: white;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 2px;
+            background: var(--primary-color);
+            margin-top: 5px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .newsletter {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .newsletter h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .newsletter p {
+            font-size: 14px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .newsletter form {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .newsletter input[type="text"],
+        .newsletter input[type="email"] {
+            padding: 10px 15px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            min-width: 220px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .newsletter input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .newsletter button {
+            padding: 10px 25px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .social-icons {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
+            display: inline-flex;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 18px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.2);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #aaa;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(15, 16, 32, 0.95);
+                padding: 20px;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-contact {
+                width: 100%;
+                text-align: center;
+            }
+
+            .dynamic-text-container {
+                font-size: 2rem;
+            }
+
+            .slide-title {
+                font-size: 2.5rem;
+            }
+
+            .slide-description {
+                font-size: 1rem;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .footer-column {
+                margin: 10px 0;
+            }
+
+            #map {
+                height: 60vh;
+            }
+
+            .review-slider-container {
+                width: 95%;
+                right: 2.5%;
+            }
+
+            #chat-widget {
+                width: 90%;
+                right: 5%;
+            }
+
+            #assistant-trigger {
+                width: 70px;
+                height: 70px;
+                right: 20px;
+                bottom: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .slide-title {
+                font-size: 2rem;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+
+    <nav class="navigation">
+        <div class="nav-container">
+            <a href="aboutus.html" class="logo">
+                SMILE
+                <div class="logo-icon">X</div>
+            </a>
+
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="service.html" class="link">Contact us</a>
+                <a href="login.html" class="link">@email</a>
+            </div>
+
+            <div class="dynamic-text-container">
+                <span id="dynamic-text" class="dynamic-text">Hi,</span>
+                <span class="cursor"></span>
+            </div>
+
+            <div class="nav-buttons">
+                <a href="cancel.html" class="btn-contact">Get Premium</a>
+            </div>
+
+            <div class="mobile-menu-toggle">
+                <div class="menu-bar"></div>
+                <div class="menu-bar"></div>
+                <div class="menu-bar"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Assistant Trigger -->
+    <div id="assistant-trigger" onclick="toggleChat()">
+        <span class="icon">?</span>
+    </div>
+
+    <!-- Chat Widget -->
+    <div id="chat-widget">
+        <div class="chat-header">
+            <h2>
+                <span>🌐</span>
+                Menu Box
+            </h2>
+            <button class="close-btn" onclick="toggleChat()">
+                ✕
+            </button>
+        </div>
+
+        <div class="chat-content">
+            <p>HELLO..</p>
+            <p>Choose your access path:</p>
+
+            <div class="chat-actions">
+                <button class="chat-btn login-btn" onclick="handleLoginSignup()">
+                    <span class="btn-icon">🔐</span>
+                    Login or Signup
+                </button>
+                
+                <button class="chat-btn signup-btn" onclick="unlockPremiumOffer()">
+                    <span class="btn-icon">🚀</span>
+                    Unlock premium offer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="main-canvas"></canvas>
+    
+    <div class="main-container">
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">WELCOME</h1>
+                <p class="text-xl text-gray-300 my-4">
+                    Explore the infinite realms of possibility, 
+                    where you get good experience.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="categories.html" class="main-button" id="exploreButton">
+                        Begin Exploration
+                    </a>
+                    <a href="learn.html" class="main-button bg-transparent border-2 border-primary text-primary" id="learnMoreButton">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="main-carousel" id="mainCarousel">
+            <div class="carousel-wrapper" id="carouselWrapper">
+                <!-- Slides will be dynamically inserted -->
+            </div>
+            
+            <div class="main-indicators" id="mainIndicators">
+                <!-- Indicators will be dynamically inserted -->
+            </div>
+        </div>
+
+        <br><br>
+
+        <div id="reviewSlider" class="review-slider-container">
+            <div class="review-card" id="reviewCard">
+                <div class="review-overlay"></div>
+                <div class="progress-bar" id="progressBar"></div>
+                
+                <div class="reviewer-profile">
+                    <img id="reviewerImage" class="reviewer-image" src="/placeholder.svg" alt="Reviewer">
+                    <div class="reviewer-info">
+                        <span id="reviewerName" class="reviewer-name"></span>
+                        <span id="reviewerRole" class="reviewer-role"></span>
+                    </div>
+                </div>
+
+                <div id="starsContainer" class="stars-container"></div>
+                
+                <p id="reviewText" class="review-text"></p>
+            </div>
+        </div>
+
+        <br><br>
+        <div id="map"></div>
+
+        <section class="feature-grid">
+            <div class="feature-card" data-modal="modal1">
+                <h3 class="text-2xl font-bold mb-4">Exploration</h3>
+                <p>Explore by having lots of fun and gaming activities and more</p>
+            </div>
+            <div class="feature-card" data-modal="modal2">
+                <h3 class="text-2xl font-bold mb-4">Learning</h3>
+                <p>Adaptive intelligence meets personalized growth</p>
+            </div>
+            <div class="feature-card" data-modal="modal3">
+                <h3 class="text-2xl font-bold mb-4">E-commerce</h3>
+                <p>Buy products with its affordable discount</p>
+            </div>
+            <div class="feature-card" data-modal="modal4">
+                <h3 class="text-2xl font-bold mb-4">Socialization</h3>
+                <p>Chat, research, explore with ai</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h2 class="text-3xl font-bold mb-4">Exploration</h2>
+            <p class="mb-4">Proceed to explore more site ahead of you</p>
+            <button class="close-modal main-button">Close</button>
+        </div>
+    </div>
+
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <h2 class="text-3xl font-bold mb-4">Learning</h2>
+            <p class="mb-4">Adaptive intelligence that evolves with your potential</p>
+            <button class="close-modal main-button">Close</button>
+        </div>
+    </div>
+
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <h2 class="text-3xl font-bold mb-4">E-commerce</h2>
+            <p class="mb-4">Explore with the best deal and offers</p>
+            <button class="close-modal main-button">Close</button>
+        </div>
+    </div>
+
+    <div id="modal4" class="modal">
+        <div class="modal-content">
+            <h2 class="text-3xl font-bold mb-4">Socialization</h2>
+            <p class="mb-4">Connect and learn more to Socialize</p>
+            <button class="close-modal main-button">Close</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="newsletter">
+            <h2>Join Our Newsletter</h2>
+            <p>Be the first to receive our latest updates and offers.</p>
+            <form onsubmit="return validateNewsletter(event)">
+                <input type="text" placeholder="Your Name" id="name">
+                <input type="email" placeholder="Your Email" id="email">
+                <button type="submit">Subscribe</button>
+            </form>
+            <p id="error-message" style="color: red; margin-top: 10px;"></p>
+        </div>
+
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>OUR TEAM</h3>
+                <ul>
+                    <li><a href="aboutus.html">About us</a></li>
+                    <li><a href="service.html">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="login.html">LOGIN_SIGNUP FORM</a></li>
+                    <li><a href="cancel.html">PREMIUM</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Explore</h3>
+                <ul>
+                    <li><a href="education1.html">Knowledge Sphere</a></li>
+                    <li><a href="game1.html">Gaming Realms</a></li>
+                    <li><a href="movie.html">Cinema</a></li>
+                    <li><a href="e-commerce.html">Marketplace</a></li>
+                    <li><a href="chat.html">Chat</a></li>
+                    <li><a href="news.html">News Feed</a></li>
+                    <li><a href="ai1.html">AI Generator</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">LOADING...</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="social-icons">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook"><i class='bx bxl-facebook-circle'></i></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram"><i class='bx bxl-instagram'></i></a>
+            <a href="https://www.x.com" target="_blank" title="Twitter"><i class='bx bxl-twitter'></i></a>
+            <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+            <a href="https://www.youtube.com" target="_blank" title="YouTube"><i class='bx bxl-youtube'></i></a>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; 2026 SmileX. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const navLinksContainer = document.querySelector('.nav-links');
+
+            // Active Link Handling
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                });
+            });
+
+            // Mobile Menu Toggle
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', () => {
+                    navLinksContainer.classList.toggle('active');
+                    mobileMenuToggle.classList.toggle('open');
+                });
+            }
+
+            // Smooth Scrolling
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+
+        // Carousel Class
+        class MainCarousel {
+            constructor(options) {
+                this.container = document.getElementById(options.containerId);
+                this.wrapper = document.getElementById('carouselWrapper');
+                this.indicatorsContainer = document.getElementById('mainIndicators');
+                this.slides = options.slides;
+                this.currentIndex = 0;
+                this.autoplayInterval = options.autoplayInterval || 5000;
+
+                this.init();
+            }
+
+            init() {
+                this.renderCarousel();
+                this.setupEventListeners();
+                this.createParticleEffects();
+                this.startAutoplay();
+            }
+
+            renderCarousel() {
+                this.wrapper.innerHTML = '';
+                this.indicatorsContainer.innerHTML = '';
+
+                this.slides.forEach((slide, index) => {
+                    // Create Slide
+                    const slideElement = document.createElement('div');
+                    slideElement.classList.add('carousel-slide');
+                    slideElement.dataset.redirectUrl = slide.redirectUrl;
+
+                    // Background
+                    const backgroundElement = document.createElement('div');
+                    backgroundElement.classList.add('slide-background');
+                    backgroundElement.style.backgroundImage = `url(${slide.backgroundImage})`;
+
+                    // Particle Layer
+                    const particleLayer = document.createElement('div');
+                    particleLayer.classList.add('particle-layer');
+
+                    // Content
+                    const contentElement = document.createElement('div');
+                    contentElement.classList.add('slide-content');
+
+                    const titleElement = document.createElement('h2');
+                    titleElement.classList.add('slide-title');
+                    titleElement.textContent = slide.title;
+
+                    const descriptionElement = document.createElement('p');
+                    descriptionElement.classList.add('slide-description');
+                    descriptionElement.textContent = slide.description;
+
+                    const ctaElement = document.createElement('a');
+                    ctaElement.classList.add('slide-cta');
+                    ctaElement.textContent = slide.ctaText || 'Explore';
+                    ctaElement.href = slide.redirectUrl;
+
+                    // Assemble
+                    contentElement.appendChild(titleElement);
+                    contentElement.appendChild(descriptionElement);
+                    contentElement.appendChild(ctaElement);
+
+                    slideElement.appendChild(backgroundElement);
+                    slideElement.appendChild(particleLayer);
+                    slideElement.appendChild(contentElement);
+
+                    this.wrapper.appendChild(slideElement);
+
+                    // Indicator
+                    const indicator = document.createElement('div');
+                    indicator.classList.add('indicator');
+                    indicator.addEventListener('click', () => this.goToSlide(index));
+
+                    this.indicatorsContainer.appendChild(indicator);
+                });
+
+                // Set initial active slide
+                this.wrapper.children[0].classList.add('active');
+                this.indicatorsContainer.children[0].classList.add('active');
+            }
+
+            setupEventListeners() {
+                this.wrapper.addEventListener('click', (event) => {
+                    const slideElement = event.target.closest('.carousel-slide');
+                    if (slideElement) {
+                        const redirectUrl = slideElement.dataset.redirectUrl;
+                        if (redirectUrl) {
+                            window.location.href = redirectUrl;
+                        }
+                    }
+                });
+            }
+
+            createParticleEffects() {
+                const particleLayers = document.querySelectorAll('.particle-layer');
+                particleLayers.forEach(layer => {
+                    for (let i = 0; i < 20; i++) {
+                        const particle = document.createElement('div');
+                        particle.classList.add('particle');
+                        particle.style.width = `${Math.random() * 10}px`;
+                        particle.style.height = particle.style.width;
+                        particle.style.left = `${Math.random() * 100}%`;
+                        particle.style.top = `${Math.random() * 100}%`;
+                        layer.appendChild(particle);
+                    }
+                });
+            }
+
+            goToSlide(index) {
+                // Remove active states
+                this.wrapper.querySelector('.carousel-slide.active')?.classList.remove('active');
+                this.indicatorsContainer.querySelector('.indicator.active')?.classList.remove('active');
+
+                // Set new active states
+                this.wrapper.children[index].classList.add('active');
+                this.indicatorsContainer.children[index].classList.add('active');
+
+                this.currentIndex = index;
+            }
+
+            startAutoplay() {
+                this.autoplayTimer = setInterval(() => {
+                    const nextIndex = (this.currentIndex + 1) % this.slides.length;
+                    this.goToSlide(nextIndex);
+                }, this.autoplayInterval);
+            }
+        }
+
+        // Slide Configuration
+        const slides = [
+            {
+                backgroundImage: '',
+                title: 'Ultimate Exploration',
+                description: 'Dive into immersive digital experiences',
+                redirectUrl: 'game1.html',
+                ctaText: 'Begin Journey'
+            },
+            {
+                backgroundImage: '',
+                title: 'Online Course',
+                description: 'Designed for educational purposes which helps an individual to learn and grow',
+                redirectUrl: 'education1.html',
+                ctaText: 'Explore Now'
+            },
+            {
+                backgroundImage: '',
+                title: 'Movie Hub',
+                description: 'Experience a world of movie',
+                redirectUrl: 'movie.html',
+                ctaText: 'Watch Now'
+            },
+            {
+                backgroundImage: '',
+                title: 'Sales and Discounts',
+                description: 'Purchase a products with best deals and offers',
+                redirectUrl: 'e-commerce.html',
+                ctaText: 'Begin Purchase'
+            },
+            {
+                backgroundImage: '',
+                title: 'AI',
+                description: 'Bring your dreams to life just by generating anything',
+                redirectUrl: 'ai1.html',
+                ctaText: 'Generate Now'
+            },
+            {
+                backgroundImage: '',
+                title: 'News Feed',
+                description: 'Get updated to news across the globe',
+                redirectUrl: 'news.html',
+                ctaText: 'Get Updated'
+            },
+            {
+                backgroundImage: '',
+                title: 'Chat',
+                description: 'Meet friends both local and internationally',
+                redirectUrl: 'chat.html',
+                ctaText: 'Socialize'
+            }
+        ];
+
+        // Initialize Carousel
+        document.addEventListener('DOMContentLoaded', () => {
+            new MainCarousel({
+                containerId: 'mainCarousel',
+                slides: slides,
+                autoplayInterval: 2000
+            });
+        });
+
+        // Newsletter validation
+        function validateNewsletter(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const errorMessage = document.getElementById('error-message');
+
+            if (!name || !email) {
+                errorMessage.textContent = 'Please provide a valid name and email.';
+                return false;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                errorMessage.textContent = 'Please enter a valid email address.';
+                return false;
+            }
+
+            errorMessage.textContent = '';
+            alert('Thank you for subscribing!');
+            return true;
+        }
+
+        // Canvas Animation Class
+        class CanvasAnimation {
+            constructor() {
+                this.canvas = document.getElementById('main-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.connections = [];
+                this.setup();
+            }
+
+            setup() {
+                this.resize();
+                this.createParticleNetwork();
+                this.animate();
+                this.setupEventListeners();
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            createParticleNetwork() {
+                const particleCount = 150;
+                for (let i = 0; i < particleCount; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        radius: Math.random() * 3,
+                        speedX: (Math.random() - 0.5) * 2,
+                        speedY: (Math.random() - 0.5) * 2,
+                        color: `rgba(0, 245, 212, ${Math.random() * 0.5})`
+                    });
+                }
+            }
+
+            drawParticleNetwork() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw particles
+                this.particles.forEach(particle => {
+                    this.ctx.beginPath();
+                    this.ctx.arc(
+                        particle.x, 
+                        particle.y, 
+                        particle.radius, 
+                        0, 
+                        Math.PI * 2
+                    );
+                    this.ctx.fillStyle = particle.color;
+                    this.ctx.fill();
+                    
+                    // Update particle position
+                    particle.x += particle.speedX;
+                    particle.y += particle.speedY;
+                    
+                    // Wrap around screen
+                    if (particle.x < 0) particle.x = this.canvas.width;
+                    if (particle.x > this.canvas.width) particle.x = 0;
+                    if (particle.y < 0) particle.y = this.canvas.height;
+                    if (particle.y > this.canvas.height) particle.y = 0;
+                });
+
+                // Draw connections between nearby particles
+                this.drawConnections();
+            }
+
+            drawConnections() {
+                const connectionDistance = 100;
+                
+                for (let i = 0; i < this.particles.length; i++) {
+                    for (let j = i + 1; j < this.particles.length; j++) {
+                        const p1 = this.particles[i];
+                        const p2 = this.particles[j];
+                        
+                        const distance = Math.sqrt(
+                            Math.pow(p1.x - p2.x, 2) + 
+                            Math.pow(p1.y - p2.y, 2)
+                        );
+                        
+                        if (distance < connectionDistance) {
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(p1.x, p1.y);
+                            this.ctx.lineTo(p2.x, p2.y);
+                            this.ctx.strokeStyle = `rgba(0, 245, 212, ${1 - distance / connectionDistance})`;
+                            this.ctx.lineWidth = 1;
+                            this.ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            animate() {
+                this.drawParticleNetwork();
+                requestAnimationFrame(() => this.animate());
+            }
+
+            setupEventListeners() {
+                window.addEventListener('resize', () => this.resize());
+            }
+        }
+
+        // Interactions Class
+        class MainInteractions {
+            constructor() {
+                this.initModalInteractions();
+                this.initButtonInteractions();
+                this.initCardInteractions();
+            }
+
+            initModalInteractions() {
+                const featureCards = document.querySelectorAll('.feature-card');
+                const modals = document.querySelectorAll('.modal');
+                const closeButtons = document.querySelectorAll('.close-modal');
+
+                featureCards.forEach(card => {
+                    card.addEventListener('click', () => {
+                        const modalId = card.getAttribute('data-modal');
+                        const modal = document.getElementById(modalId);
+                        if (modal) {
+                            modal.style.display = 'flex';
+                        }
+                    });
+                });
+
+                closeButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const modal = button.closest('.modal');
+                        if (modal) {
+                            modal.style.display = 'none';
+                        }
+                    });
+                });
+
+                modals.forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            initButtonInteractions() {
+                const buttons = document.querySelectorAll('.main-button');
+                
+                buttons.forEach(button => {
+                    button.addEventListener('mouseenter', (e) => {
+                        e.target.style.transform = 'scale(1.05)';
+                    });
+
+                    button.addEventListener('mouseleave', (e) => {
+                        e.target.style.transform = 'scale(1)';
+                    });
+                });
+            }
+
+            initCardInteractions() {
+                const featureCards = document.querySelectorAll('.feature-card');
+
+                featureCards.forEach(card => {
+                    card.addEventListener('mousemove', (e) => {
+                        const { clientX, clientY } = e;
+                        const { left, top } = card.getBoundingClientRect();
+                        
+                        const centerX = left + card.offsetWidth / 2;
+                        const centerY = top + card.offsetHeight / 2;
+
+                        const angleX = (clientY - centerY) / 20;
+                        const angleY = -(clientX - centerX) / 20;
+
+                        card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) translateZ(40px)`;
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        card.style.transform = 'rotateX(0) rotateY(0) translateZ(0)';
+                    });
+                });
+            }
+        }
+
+        // Reviews data
+        const reviews = [
+            {
+                name: "Emma Thompson",
+                role: "Chief Marketing Officer",
+                image: "https://randomuser.me/api/portraits/women/44.jpg",
+                stars: 5,
+                comment: "An extraordinary platform that revolutionizes how we approach digital experiences. Truly remarkable!"
+            },
+            {
+                name: "David Rodriguez",
+                role: "Tech Educator",
+                image: "https://randomuser.me/api/portraits/men/85.jpg",
+                stars: 5,
+                comment: "Cutting-edge design meets unparalleled functionality. This website sets a new benchmark in digital excellence."
+            },
+            {
+                name: "Sophia Lee",
+                role: "Product Strategy Director",
+                image: "https://randomuser.me/api/portraits/women/67.jpg",
+                stars: 5,
+                comment: "A interactive-changing solution that seamlessly blends user experience with innovative technology."
+            },
+            {
+                name: "Mark Peterson",
+                role: "Executive Officer",
+                image: "https://randomuser.me/api/portraits/men/44.jpg",
+                stars: 5,
+                comment: "Everyone need this explore on this website"
+            },
+            {
+                name: "Philip Wales",
+                role: "Software Engineer",
+                image: "https://randomuser.me/api/portraits/men/43.jpg",
+                stars: 5,
+                comment: "I recommend anyone to try this website and know more about it"
+            },
+            {
+                name: "Mr.Smile",
+                role: "Web and App Developer",
+                image: "https://randomuser.me/api/portraits/men/32.jpg",
+                stars: 5,
+                comment: "I recommend everyone to explore through my website"
+            },
+            {
+                name: "Philip Wales",
+                role: "Tech trainer",
+                image: "https://randomuser.me/api/portraits/men/23.jpg",
+                stars: 5,
+                comment: "Try it, and thank me later"
+            },
+            {
+                name: "Helena Boison",
+                role: "Sales Producer",
+                image: "https://randomuser.me/api/portraits/women/33.jpg",
+                stars: 5,
+                comment: "Good luck on exploring through this page"
+            }
+        ];
+
+        // Review Slider Class
+        class ReviewSlider {
+            constructor(reviews) {
+                this.reviews = reviews;
+                this.currentIndex = 0;
+                this.reviewCard = document.getElementById('reviewCard');
+                this.progressBar = document.getElementById('progressBar');
+                this.reviewerImage = document.getElementById('reviewerImage');
+                this.reviewerName = document.getElementById('reviewerName');
+                this.reviewerRole = document.getElementById('reviewerRole');
+                this.starsContainer = document.getElementById('starsContainer');
+                this.reviewText = document.getElementById('reviewText');
+
+                this.autoAdvanceInterval = null;
+                this.initializeSlider();
+            }
+
+            initializeSlider() {
+                this.displayReview(this.currentIndex);
+                this.startAutoAdvance();
+            }
+
+            displayReview(index) {
+                const review = this.reviews[index];
+
+                // Fade out effect
+                this.reviewCard.classList.add('fade-out');
+
+                setTimeout(() => {
+                    // Update content
+                    this.reviewerImage.src = review.image;
+                    this.reviewerName.textContent = review.name;
+                    this.reviewerRole.textContent = review.role;
+                    this.reviewText.textContent = review.comment;
+
+                    // Render stars
+                    this.renderStars(review.stars);
+
+                    // Fade in effect
+                    this.reviewCard.classList.remove('fade-out');
+                    this.reviewCard.classList.add('fade-in');
+
+                    // Reset progress bar
+                    this.startProgressBar();
+                }, 300);
+            }
+
+            renderStars(count) {
+                this.starsContainer.innerHTML = '';
+                
+                for (let i = 0; i < 5; i++) {
+                    const star = document.createElement('span');
+                    star.classList.add('star');
+                    star.textContent = '★';
+                    star.style.color = i < count ? '#ffd700' : '#e0e0e0';
+                    this.starsContainer.appendChild(star);
+                }
+            }
+
+            startProgressBar() {
+                this.progressBar.style.width = '0%';
+                
+                // Use requestAnimationFrame for smoother animation
+                const startTime = performance.now();
+                const duration = 10000; // 10 seconds
+
+                const animate = (currentTime) => {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    this.progressBar.style.width = `${progress * 100}%`;
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        this.advanceReview();
+                    }
+                };
+
+                requestAnimationFrame(animate);
+            }
+
+            advanceReview() {
+                this.currentIndex = (this.currentIndex + 1) % this.reviews.length;
+                this.displayReview(this.currentIndex);
+            }
+
+            startAutoAdvance() {
+                // Automatically advance every 10 seconds
+                this.autoAdvanceInterval = setInterval(() => {
+                    this.advanceReview();
+                }, 10000);
+            }
+
+            stopAutoAdvance() {
+                if (this.autoAdvanceInterval) {
+                    clearInterval(this.autoAdvanceInterval);
+                }
+            }
+        }
+
+    
+function toggleQuantumChat() {
+    const chatWidget = document.getElementById('quantum-chat-widget');
+    const quantumTrigger = document.getElementById('quantum-assistant-trigger');
+    
+    if (chatWidget.style.display === 'block') {
+        chatWidget.style.display = 'none';
+        quantumTrigger.innerHTML = '<span class="quantum-icon">?</span>';
+    } else {
+        chatWidget.style.display = 'block';
+        quantumTrigger.innerHTML = '<span class="quantum-icon">✕</span>';
+    }
+}
+
+        function handleLoginSignup() {
+            window.location.href = 'login.html';
+        }
+
+        function unlockPremiumOffer() {
+            window.location.href = 'cancel.html';
+        }
+
+        function initAssistant() {
+            if (!localStorage.getItem('supportVisited')) {
+                setTimeout(toggleChat, 4000);
+                localStorage.setItem('supportVisited', 'true');
+            }
+        }
+
+        // Dynamic Text Animation
+        class DynamicTextAnimator {
+            constructor(element, texts, options = {}) {
+                this.element = element;
+                this.texts = texts;
+                this.options = {
+                    duration: options.duration || 3000,
+                    typingSpeed: options.typingSpeed || 300,
+                    deletingSpeed: options.deletingSpeed || 100
+                };
+                this.currentIndex = 0;
+                this.isDeleting = false;
+                this.displayText = '';
+            }
+
+            animate() {
+                const currentText = this.texts[this.currentIndex];
+                
+                // Typing and deleting logic
+                if (!this.isDeleting && this.displayText.length < currentText.length) {
+                    this.displayText += currentText.charAt(this.displayText.length);
+                } else if (this.isDeleting && this.displayText.length > 0) {
+                    this.displayText = this.displayText.slice(0, -1);
+                } else {
+                    this.isDeleting = !this.isDeleting;
+                    
+                    if (!this.isDeleting) {
+                        this.currentIndex = 
+                            (this.currentIndex + 1) % this.texts.length;
+                    }
+                }
+
+                // Update element text
+                this.element.textContent = this.displayText;
+
+                // Set typing/deleting speed
+                const speed = this.isDeleting ? 
+                    this.options.deletingSpeed : 
+                    this.options.typingSpeed;
+
+                // Schedule next animation frame
+                setTimeout(() => this.animate(), speed);
+            }
+
+            start() {
+                this.animate();
+            }
+        }
+
+        // Initialize the dynamic text animator
+        document.addEventListener('DOMContentLoaded', () => {
+            const dynamicTextElement = document.getElementById('dynamic-text');
+            const textOptions = [
+                'Entertain', 
+                'Enjoy', 
+                'Have fun', 
+                'Explore',
+                'And,',  
+                'Remember to', 
+                'Support us',
+                'We are available',
+                '24/7', 
+                'If you',
+                'Have a problem',
+                'Kindly', 
+                'Contact us',
+                'For more info',
+                'Read our ',
+                'About us', 
+                'Thank you', 
+                'Have a ',
+                'Good day'
+            ];
+
+            const animator = new DynamicTextAnimator(
+                dynamicTextElement, 
+                textOptions
+            );
+            animator.start();
+        });
+
+        // Initialize the map and set the default view
+        const map = L.map('map').setView([51.505, -0.09], 13); // default position is London
+
+     // Add tile layer (open street maps)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+attribution: '&copy; <a href="https://www.openstreetmap.org/copyright"></a>'
+}).addTo(map);
+
+
+        // Try to get the user's location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                // Center the map to the user's location
+                map.setView([lat, lon], 13);
+
+                // Add a marker at the user's location
+                L.marker([lat, lon]).addTo(map)
+                    .bindPopup("You are here!")
+                    .openPopup();
+            }, function() {
+                alert("Geolocation failed. Showing default location.");
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+
+        // Initialize everything when the page loads
+        window.addEventListener('load', () => {
+            new CanvasAnimation();
+            new MainInteractions();
+            new ReviewSlider(reviews);
+            initAssistant();
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'q') {
+                toggleChat();
+            }
+        });
+
+        // Disable right-click context menu
+        document.addEventListener('contextmenu', event => event.preventDefault());
+    </script>
+</body>
+</html>

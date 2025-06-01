@@ -11,7 +11,6 @@
             "Hi there!",
             "Welcome to SmileX",
             "Making Life Easier",
-            "Innovation at its Best",
             "Keep The Smile"
         ];
         let typewriterIndex = 0;
@@ -268,7 +267,7 @@
             
             // Show welcome notification
             setTimeout(() => {
-                notificationSystem.show('Welcome to SmileX Experience!', 'success');
+                notificationSystem.show('Welcome to Our Page, Explore!', 'Good luck');
             }, 1000);
         }
 
