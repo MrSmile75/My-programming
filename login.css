@@ -22,6 +22,10 @@
         scroll-behavior: smooth;
     }
 
+    input{
+         font-family: 'Orbitron', sans-serif;
+    }
+
     body {
           font-family: 'Orbitron', sans-serif;
         background: linear-gradient(135deg, #000000, #1a1a2e);
@@ -185,6 +189,10 @@
         height: 4px;
         background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
         border-radius: 2px;
+    }
+
+    ::placeholder{
+         font-family: 'Orbitron', sans-serif;
     }
 
     .image-section h3 {

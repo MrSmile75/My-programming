@@ -423,10 +423,10 @@
                             <p class="story-description">${this.truncateText(story.description, 150)}</p>
                             <div class="story-actions">
                                 <button class="action-btn preview-btn" onclick="storyPlatform.previewStory('${story.id}')">
-                                    <i class="fas fa-eye"></i> Preview
+                                    <i class="fas fa-eye"></i> Hint
                                 </button>
                                 <button class="action-btn read-btn" onclick="storyPlatform.readStory('${story.id}')">
-                                    <i class="fas fa-book-open"></i> Read
+                                    <i class="fas fa-book-open"></i> Preview
                                 </button>
                             </div>
                         </div>
