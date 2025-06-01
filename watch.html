@@ -919,7 +919,7 @@
                 const movie = this.movieData;
                 
                 document.getElementById('movie-title').textContent = movie.title;
-                document.title = `${movie.title} - CinemaVerse`;
+                document.title = `${movie.title} - SMILEX Movie Player`;
 
                 document.getElementById('movie-rating').textContent = movie.vote_average ? `${movie.vote_average.toFixed(1)}/10` : 'N/A';
                 document.getElementById('movie-year').textContent = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
@@ -1118,10 +1118,8 @@
             generateStreamUrl() {
                 // Real full-length movie URLs (these are actual full movies available for free)
                 const movieStreams = {
-                    1: "https://t",
-                    2: "https://archive.org/download/ElephantsDream/ed_hd.mp4", 
-                    3: "https://archive.org/download/SintelMovie/Sintel.mp4",
-                    4: "https://archive.org/download/TearsOfSteel/TearsOfSteel.mp4"
+                    1: "https://api.themoviedb.org"
+                  
                 };
                 
                 return movieStreams[this.currentServer] || movieStreams[1];
@@ -1132,7 +1130,7 @@
                 
                 if (quality === 'premium' && !this.isPremium) {
                     // Redirect to premium subscription page
-                    window.location.href = '';
+                    window.location.href = 'mpremium.html';
                     return;
                 }
                 
