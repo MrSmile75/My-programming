@@ -385,6 +385,7 @@
             background: linear-gradient(135deg, #000000, #1a1a2e, #000000);
             min-height: 100vh;
             padding: 50px 0;
+            z-index: 10000;
         }
 
         .premium-card {
