@@ -3,101 +3,950 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <!-- © SMILEX. This code is protected. -->
-    <title>SmileX Movie Hub - Ultimate Movie Streaming Platform</title>
+    <title>CinemaVerse - Advanced Movie Streaming Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href="https://vjs.zencdn.net/7.20.3/video-js.min.css" rel="stylesheet">
-     <!-- © SMILEX. This code is protected. -->
-     <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
-     <link rel="stylesheet" href="movie.css">
-     
-     
+    
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #1a1a1a;
+            --accent-color: #e50914;
+            --accent-hover: #f40612;
+            --text-color: #ffffff;
+            --text-secondary: #b3b3b3;
+            --overlay-bg: rgba(0,0,0,0.9);
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --error-color: #dc3545;
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-bg) 0%, #1a1a2e 100%);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Preloader Styles */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #000000, #1a1a2e, #16213e);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .loader-container {
+            text-align: center;
+            perspective: 1000px;
+        }
+
+        .loader {
+            width: 120px;
+            height: 120px;
+            border: 4px solid transparent;
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .loader::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 4px solid transparent;
+            border-top: 4px solid #ff6b6b;
+            border-radius: 50%;
+            animation: spin 2s linear infinite reverse;
+        }
+
+        .loader-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px auto;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), #ff6b6b);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .loading-status {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .fade-out {
+            opacity: 0;
+            transform: scale(1.1);
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(229, 9, 20, 0.2);
+            transition: var(--transition);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 30px rgba(229, 9, 20, 0.8);
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(229, 9, 20, 0.3);
+            border-radius: 25px;
+            padding: 12px 50px 12px 20px;
+            color: var(--text-color);
+            font-size: 16px;
+            width: 350px;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.3);
+            transform: scale(1.02);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Error Handling Styles */
+        .error-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay-bg);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+        }
+
+        .error-content {
+            background: var(--secondary-bg);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            max-width: 500px;
+            border: 2px solid var(--error-color);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .error-icon {
+            font-size: 60px;
+            color: var(--error-color);
+            margin-bottom: 20px;
+        }
+
+        .error-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--error-color);
+        }
+
+        .error-message {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .retry-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .retry-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(229, 9, 20, 0.3);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-top: 80px;
+            padding: 20px 5%;
+            min-height: calc(100vh - 80px);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(45deg, var(--accent-color), #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Movie Grid Styles */
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .movie-card {
+            background: var(--secondary-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            position: relative;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--accent-color);
+            box-shadow: 0 20px 40px rgba(229, 9, 20, 0.2);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .movie-card:hover .movie-poster {
+            transform: scale(1.05);
+        }
+
+        .movie-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 20px;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+
+        .movie-card:hover .movie-overlay {
+            transform: translateY(0);
+        }
+
+        .movie-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .movie-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .movie-rating {
+            background: var(--accent-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .movie-year {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .movie-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .preview-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .preview-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .watch-btn {
+            background: var(--accent-color);
+            color: white;
+            border: 1px solid var(--accent-color);
+        }
+
+        .watch-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4);
+        }
+
+        /* Loading States */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            flex-direction: column;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(229, 9, 20, 0.3);
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        /* Cache Status Indicator */
+        .cache-indicator {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            background: var(--success-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: var(--transition);
+        }
+
+        .cache-indicator.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .cache-indicator.warning {
+            background: var(--warning-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .search-input {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .movie-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .main-content {
+                margin-top: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .movie-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--primary-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(229, 9, 20, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(229, 9, 20, 0);
+            }
+        }
+    </style>
 </head>
-
 <body>
- 
-
-
+    <!-- Preloader -->
     <div id="preloader">
         <div class="loader-container">
-            <div class="loader">
-                <div class="loader-text">LOADING</div>
+            <div class="loader"></div>
+            <div class="loader-text">CINEMAVERSE</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
             </div>
-            <div class="progress-wrapper">
-                <div class="progress-bar"></div>
-            </div>
-            <div class="loading-details">Initializing Movie Experience...</div>
+            <div class="loading-status" id="loading-status">Initializing...</div>
         </div>
     </div>
-     <!-- © SMILEX. This code is protected. -->
 
+    <!-- Error Overlay -->
     <div id="error-overlay" class="error-overlay">
-        <h2>Loading Error</h2>
-        <p id="error-message">Something went wrong. Please refresh.</p>
-        <button class="retryBtn1"  id="retry-btn">Retry</button>
+        <div class="error-content">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2 class="error-title">Oops! Something went wrong</h2>
+            <p class="error-message" id="error-message">
+                We're having trouble connecting to our servers. Please check your internet connection and try again.
+            </p>
+            <button class="retry-btn" id="retry-btn">
+                <i class="fas fa-redo"></i> Try Again
+            </button>
+        </div>
     </div>
 
-    <div id="main-content" style="display:none;">
-        <!-- main website content -->
-          <!-- © SMILEX. This code is protected. -->
+    <!-- Cache Status Indicator -->
+    <div id="cache-indicator" class="cache-indicator">
+        <i class="fas fa-check"></i> Data cached successfully
     </div>
-    
 
     <!-- Navigation -->
-      <!-- © SMILEX. This code is protected. -->
-    <nav id="navbar">
-        <div class="logo">MOVIE HUB</div>
-        
-     <div class="search-container">
-            <input type="text" id="search-input" placeholder="Search movies..." i class="fas fa-search"></i> 
-            
+    <nav class="navbar">
+        <div class="logo" onclick="location.reload()">
+            <i class="fas fa-film"></i> CINEMAVERSE
         </div>
-             
-           
-            
+        <div class="search-container">
+            <input type="text" class="search-input" id="search-input" placeholder="Search for movies...">
+            <button class="search-btn" id="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
         </div>
     </nav>
 
-
-
-    <!-- Loader -->
-      <!-- © SMILEX. This code is protected. -->
-    <div class="loader" id="loader"></div>
-
-    <!-- Movie Grid -->
-    <div id="movie-grid"></div>
-
-    <div class="movie-slider-container">
-        <h1 style="text-align: center; color: #e50914;">+</h1>
-        <div id="loadingIndicator" class="loading">Loading movies...</div>
-        <div id="movieContainer" class="movie-container"></div>
-        <div class="slider-controls">
-            <button class="slider-btn" onclick="fetchMovies('previous')"><p>Previous Page</p></button>
-            <button class="slider-btn" onclick="fetchMovies('next')"><p>Next Page<p></button>
+    <!-- Main Content -->
+    <div class="main-content" id="main-content" style="display: none;">
+        <h1 class="section-title">Trending Movies</h1>
+        <div class="movie-grid" id="movie-grid">
+            <!-- Movies will be loaded here -->
+        </div>
+        
+        <div class="loading-container" id="loading-container" style="display: none;">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading amazing movies...</div>
         </div>
     </div>
 
+    <script>
+        class CinemaVerseApp {
+            constructor() {
+                // Configuration
+                this.API_KEY = '48ea0449a84effd8baed92d45fa6175f'; // Replace with your actual API key
+                this.BASE_URL = 'https://api.themoviedb.org/3';
+                this.IMG_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+                this.CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
+                this.REQUEST_DELAY = 1000; // 1 second between requests
+                
+                // State management
+                this.cache = new Map();
+                this.lastRequestTime = 0;
+                this.isLoading = false;
+                this.currentPage = 1;
+                
+                // Initialize app
+                this.init();
+            }
 
-    <!-- Movie Player Modal -->
-      <!-- © SMILEX. This code is protected. -->
-    <div id="movie-player-modal">
-        <iframe 
-            id="movie-player" 
-            src="" 
-            frameborder="0" 
-            allowfullscreen
-        ></iframe>
-    </div>
-    <script src="movie.js">
-        
+            async init() {
+                try {
+                    await this.showPreloader();
+                    this.setupEventListeners();
+                    await this.loadTrendingMovies();
+                    this.hidePreloader();
+                    this.showCacheStatus('Data loaded successfully', 'success');
+                } catch (error) {
+                    this.handleError(error, 'Failed to initialize the application');
+                }
+            }
+
+            showPreloader() {
+                return new Promise((resolve) => {
+                    const progressFill = document.getElementById('progress-fill');
+                    const loadingStatus = document.getElementById('loading-status');
+                    
+                    const steps = [
+                        { progress: 20, status: 'Connecting to servers...' },
+                        { progress: 40, status: 'Loading movie database...' },
+                        { progress: 60, status: 'Preparing recommendations...' },
+                        { progress: 80, status: 'Optimizing experience...' },
+                        { progress: 100, status: 'Ready to stream!' }
+                    ];
+
+                    let currentStep = 0;
+                    const updateProgress = () => {
+                        if (currentStep < steps.length) {
+                            const step = steps[currentStep];
+                            progressFill.style.width = `${step.progress}%`;
+                            loadingStatus.textContent = step.status;
+                            currentStep++;
+                            setTimeout(updateProgress, 800);
+                        } else {
+                            setTimeout(resolve, 500);
+                        }
+                    };
+
+                    updateProgress();
+                });
+            }
+
+            hidePreloader() {
+                const preloader = document.getElementById('preloader');
+                const mainContent = document.getElementById('main-content');
+                
+                preloader.classList.add('fade-out');
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    mainContent.classList.add('fade-in');
+                }, 800);
+            }
+
+            setupEventListeners() {
+                const searchInput = document.getElementById('search-input');
+                const searchBtn = document.getElementById('search-btn');
+                const retryBtn = document.getElementById('retry-btn');
+
+                // Search functionality
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.searchMovies();
+                    }
+                });
+
+                searchBtn.addEventListener('click', () => {
+                    this.searchMovies();
+                });
+
+                // Retry functionality
+                retryBtn.addEventListener('click', () => {
+                    this.hideError();
+                    this.init();
+                });
+
+                // Infinite scroll (optional)
+                window.addEventListener('scroll', () => {
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
+                        this.loadMoreMovies();
+                    }
+                });
+            }
+
+            async makeAPIRequest(endpoint, useCache = true) {
+                // Rate limiting
+                const now = Date.now();
+                const timeSinceLastRequest = now - this.lastRequestTime;
+                if (timeSinceLastRequest < this.REQUEST_DELAY) {
+                    await new Promise(resolve => setTimeout(resolve, this.REQUEST_DELAY - timeSinceLastRequest));
+                }
+
+                // Check cache first
+                if (useCache && this.cache.has(endpoint)) {
+                    const cached = this.cache.get(endpoint);
+                    if (now - cached.timestamp < this.CACHE_DURATION) {
+                        this.showCacheStatus('Using cached data', 'success');
+                        return cached.data;
+                    }
+                }
+
+                try {
+                    this.lastRequestTime = Date.now();
+                    const response = await fetch(`${this.BASE_URL}${endpoint}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    
+                    // Cache the response
+                    this.cache.set(endpoint, {
+                        data: data,
+                        timestamp: now
+                    });
+
+                    this.showCacheStatus('Data cached successfully', 'success');
+                    return data;
+
+                } catch (error) {
+                    // Try to use stale cache data if available
+                    if (this.cache.has(endpoint)) {
+                        this.showCacheStatus('Using offline data', 'warning');
+                        return this.cache.get(endpoint).data;
+                    }
+                    throw error;
+                }
+            }
+
+            async loadTrendingMovies() {
+                if (this.isLoading) return;
+                
+                this.isLoading = true;
+                this.showLoading();
+
+                try {
+                    const data = await this.makeAPIRequest(`/trending/movie/week?api_key=${this.API_KEY}&page=${this.currentPage}`);
+                    this.renderMovies(data.results);
+                } catch (error) {
+                    this.handleError(error, 'Failed to load trending movies. Please try again later.');
+                } finally {
+                    this.isLoading = false;
+                    this.hideLoading();
+                }
+            }
+
+            async searchMovies() {
+                const query = document.getElementById('search-input').value.trim();
+                if (!query) return;
+
+                if (this.isLoading) return;
+                
+                this.isLoading = true;
+                this.showLoading();
+                this.clearMovies();
+
+                try {
+                    const data = await this.makeAPIRequest(`/search/movie?api_key=${this.API_KEY}&query=${encodeURIComponent(query)}`);
+                    
+                    if (data.results.length === 0) {
+                        this.showNoResults();
+                    } else {
+                        this.renderMovies(data.results);
+                    }
+                } catch (error) {
+                    this.handleError(error, 'Failed to search movies. Please check your connection and try again.');
+                } finally {
+                    this.isLoading = false;
+                    this.hideLoading();
+                }
+            }
+
+            async loadMoreMovies() {
+                if (this.isLoading) return;
+                
+                this.currentPage++;
+                await this.loadTrendingMovies();
+            }
+
+            renderMovies(movies) {
+                const movieGrid = document.getElementById('movie-grid');
+                
+                movies.forEach(movie => {
+                    if (!movie.poster_path) return; // Skip movies without posters
+                    
+                    const movieCard = this.createMovieCard(movie);
+                    movieGrid.appendChild(movieCard);
+                });
+            }
+
+            createMovieCard(movie) {
+                const movieCard = document.createElement('div');
+                movieCard.className = 'movie-card fade-in';
+                
+                const releaseYear = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
+                const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
+                
+                movieCard.innerHTML = `
+                    <img src="${this.IMG_BASE_URL}${movie.poster_path}" 
+                         alt="${movie.title}" 
+                         class="movie-poster"
+                         loading="lazy">
+                    <div class="movie-overlay">
+                        <h3 class="movie-title">${movie.title}</h3>
+                        <div class="movie-info">
+                            <span class="movie-rating">★ ${rating}</span>
+                            <span class="movie-year">${releaseYear}</span>
+                        </div>
+                        <div class="movie-actions">
+                            <button class="action-btn preview-btn" onclick="cinemaApp.previewMovie(${movie.id})">
+                                <i class="fas fa-play"></i> Preview
+                            </button>
+                            <button class="action-btn watch-btn" onclick="cinemaApp.watchFullMovie(${movie.id}, '${movie.title.replace(/'/g, "\\'")}')">
+                                <i class="fas fa-film"></i> Watch Full
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                return movieCard;
+            }
+
+            async previewMovie(movieId) {
+                try {
+                    const data = await this.makeAPIRequest(`/movie/${movieId}/videos?api_key=${this.API_KEY}`);
+                    const trailer = data.results.find(video => 
+                        video.site === 'YouTube' && 
+                        (video.type === 'Trailer' || video.type === 'Teaser')
+                    );
+
+                    if (trailer) {
+                        // Open YouTube trailer in a new tab
+                        window.open(`https://www.youtube.com/watch?v=${trailer.key}`, '_blank');
+                    } else {
+                        this.showNotification('No trailer available for this movie', 'warning');
+                    }
+                } catch (error) {
+                    this.showNotification('Failed to load movie trailer', 'error');
+                }
+            }
+
+            watchFullMovie(movieId, movieTitle) {
+                // Create a URL for the full movie page
+                const movieUrl = `movie-player.html?id=${movieId}&title=${encodeURIComponent(movieTitle)}`;
+                
+                // Store movie data in localStorage for the next page
+                localStorage.setItem('selectedMovie', JSON.stringify({
+                    id: movieId,
+                    title: movieTitle,
+                    timestamp: Date.now()
+                }));
+
+                // Redirect to the movie player page
+                window.location.href = movieUrl;
+            }
+
+            showLoading() {
+                document.getElementById('loading-container').style.display = 'flex';
+            }
+
+            hideLoading() {
+                document.getElementById('loading-container').style.display = 'none';
+            }
+
+            clearMovies() {
+                document.getElementById('movie-grid').innerHTML = '';
+                this.currentPage = 1;
+            }
+
+            showNoResults() {
+                const movieGrid = document.getElementById('movie-grid');
+                movieGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 50px;">
+                        <i class="fas fa-search" style="font-size: 60px; color: var(--text-secondary); margin-bottom: 20px;"></i>
+                        <h3 style="color: var(--text-secondary); margin-bottom: 10px;">No movies found</h3>
+                        <p style="color: var(--text-secondary);">Try searching with different keywords</p>
+                    </div>
+                `;
+            }
+
+            handleError(error, message) {
+                console.error('CinemaVerse Error:', error);
+                this.showError(message);
+                this.hideLoading();
+            }
+
+            showError(message) {
+                document.getElementById('error-message').textContent = message;
+                document.getElementById('error-overlay').style.display = 'flex';
+            }
+
+            hideError() {
+                document.getElementById('error-overlay').style.display = 'none';
+            }
+
+            showCacheStatus(message, type = 'success') {
+                const indicator = document.getElementById('cache-indicator');
+                indicator.textContent = message;
+                indicator.className = `cache-indicator ${type}`;
+                indicator.classList.add('show');
+                
+                setTimeout(() => {
+                    indicator.classList.remove('show');
+                }, 3000);
+            }
+
+            showNotification(message, type = 'info') {
+                // Create a temporary notification
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    right: 20px;
+                    background: ${type === 'error' ? 'var(--error-color)' : type === 'warning' ? 'var(--warning-color)' : 'var(--success-color)'};
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: var(--border-radius);
+                    z-index: 10000;
+                    animation: slideIn 0.3s ease;
+                `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.remove();
+                }, 4000);
+            }
+        }
+
+        // Initialize the application
+        const cinemaApp = new CinemaVerseApp();
+
+        // Prevent right-click context menu (optional security measure)
+        document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
- <!-- © SMILEX. This code is protected. -->
-<script>
-    document.addEventListener('contextmenu', event => event.preventDefault());
-  </script>
-  
 </body>
 </html>
