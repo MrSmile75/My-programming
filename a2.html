@@ -3,206 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- © SMILEX. This code is protected. -->
-    <title>ABOUT US - SMILEX</title>
-   
+    <title>SmileX - Premium Subscription Plans</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-content">
-            <div class="loading-logo">SMILE<span>X</span></div>
-            <div class="loading-bar">
-                <div class="loading-progress"></div>
-            </div>
-            <p>Loading Experience...</p>
-        </div>
-    </div>
-
-    <!-- Navigation Controls -->
-    <div class="nav-controls">
-        <button class="nav-btn" id="prevBtn" onclick="previousSection()">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <div class="section-indicator" id="sectionIndicator"></div>
-        <button class="nav-btn" id="nextBtn" onclick="nextSection()">
-            <i class="fas fa-chevron-right"></i>
-        </button>
-    </div>
-
-    <!-- Progress Bar -->
-    <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
-    </div>
-
-    <!-- Main Container -->
-    <div class="main-container" id="mainContainer">
-        
-        <!-- Section 1: Header/Welcome -->
-        <section class="content-section active" data-section="0">
-            <header class="header" id="quantumHeader">
-                <div class="header-particles" id="particleContainer"></div>
-                <div class="logo">
-                    <h2>
-                        <span class="logo-text">SMILE<b>X</b></span>
-                    </h2>
-                </div>
-            </header>
-            
-            <div class="welcome-content">
-                <div class="dynamic-text-container">
-                    <span id="dynamic-text" class="dynamic-text">Hi,</span>
-                    <span class="cursor"></span>
-                </div>
-                <div class="welcome-subtitle">
-                    
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 2: About SmileX -->
-        <section class="content-section" data-section="1">
-            <div class="section-content">
-                <h2 class="section-title">About SmileX</h2>
-                <div class="content-card">
-                    <p>SmileX is used worldwide both locally and internationally for <b><u>commercial</u></b> and <b><u>entertainment</u></b> purposes, designed by SmileX Inc to make life easy.</p>
-                    <p>We are always available to assist people and we make sure to keep your smile always. Contact us if you encounter any problem, and we promise to make SmileX the best for you.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Social Media -->
-        <section class="content-section" data-section="2">
-            <div class="section-content">
-                <h2 class="section-title">Connect With Us</h2>
-                <div class="social-section">
-                    <div class="particle-bg" id="particleContainer2"></div>
-                    <div class="social-content">
-                        <p class="social-description">Follow us on our social media platforms to get information and stay updated.</p>
-                        <div class="social-logo-grid">
-                            <div class="social-logo facebook" onclick="openSocialLink('facebook')">
-                                <i class="fab fa-facebook-f"></i>
-                                <span>Facebook</span>
-                            </div>
-                            <div class="social-logo twitter" onclick="openSocialLink('twitter')">
-                                <i class="fab fa-twitter"></i>
-                                <span>Twitter</span>
-                            </div>
-                            <div class="social-logo instagram" onclick="openSocialLink('instagram')">
-                                <i class="fab fa-instagram"></i>
-                                <span>Instagram</span>
-                            </div>
-                            <div class="social-logo linkedin" onclick="openSocialLink('linkedin')">
-                                <i class="fab fa-linkedin-in"></i>
-                                <span>LinkedIn</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 4: Download Links -->
-        <section class="content-section" data-section="3">
-            <div class="section-content">
-                <h2 class="section-title">Download SmileX</h2>
-                <div class="app-section">
-                    <div class="particle-bg" id="particleContainer3"></div>
-                    <div class="app-content">
-                        <p class="app-description">Select carefully according to your device!</p>
-                        <div class="app-logo-grid">
-                            <div class="app-logo play-store" onclick="openLink('playstore')">
-                                <i class="fab fa-google-play"></i>
-                                <span>Play Store</span>
-                            </div>
-                            <div class="app-logo app-store" onclick="openLink('appstore')">
-                                <i class="fab fa-app-store"></i>
-                                <span>App Store</span>
-                            </div>
-                            <div class="app-logo windows" onclick="openLink('windows')">
-                                <i class="fab fa-windows"></i>
-                                <span>Windows</span>
-                            </div>
-                            <div class="app-logo apple" onclick="openLink('apple')">
-                                <i class="fab fa-apple"></i>
-                                <span>macOS</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 5: What's New -->
-        <section class="content-section" data-section="4">
-            <div class="section-content">
-                <h2 class="section-title">What's New in SmileX</h2>
-                <div class="content-card">
-                    <div class="feature-highlight">
-                        <i class="fas fa-gift"></i>
-                        <h3>Free Support Codes</h3>
-                        <p>SmileX gives free support codes to anyone to unlock secret prizes and more, depending on the achievement an opponent aims. By this, the opponent gives clear details and records before claiming the prize.</p>
-                        <div class="warning-note">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <span>Avoid spamming and sending of wrong details</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 6: Company Info -->
-        <section class="content-section" data-section="5">
-            <div class="section-content">
-                <h2 class="section-title">Our Team</h2>
-                <div class="content-card">
-                    <div class="team-info">
-                        <p>SmileX comprises of the <b>CEO</b>, <b>Co-executives</b>, and <b>other various workers</b> who have brought up an idea of designing SmileX for everyone, both the young and old.</p>
-                        
-                        <div class="values-grid">
-                            <div class="value-item">
-                                <i class="fas fa-balance-scale"></i>
-                                <h4>Fairness & Equality</h4>
-                                <p>We ensure fairness and equality in all our operations</p>
-                            </div>
-                            <div class="value-item">
-                                <i class="fas fa-award"></i>
-                                <h4>Good Deeds Rewarded</h4>
-                                <p>We award good deeds and encourage positive participation</p>
-                            </div>
-                            <div class="value-item">
-                                <i class="fas fa-shield-alt"></i>
-                                <h4>Zero Tolerance</h4>
-                                <p>We ban any acts of crime either by law or society</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 7: Motto -->
-        <section class="content-section" data-section="6">
-            <div class="section-content">
-                <div class="motto-section">
-                    <div class="motto-content">
-                        <h2 class="motto-title">Our Motto</h2>
-                        <div class="motto-text">
-                            <span class="motto-main">KEEP THE SMILE</span>
-                        </div>
-                        <div class="contact-final">
-                            <p>If you have any problem or question, <a href="service.html">contact us immediately</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </div>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --accent-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --dark-gradient: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-light: rgba(255, 255, 255, 0.9);
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -210,771 +29,2496 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: #000;
-            color: #fff;
-            overflow: hidden;
-            height: 100vh;
-        }
-
-        /* Loading Screen */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #000, #1a1a2e, #16213e);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-
-        .loading-content {
-            text-align: center;
-        }
-
-        .loading-logo {
-            font-family: 'Orbitron', monospace;
-            font-size: 3rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 2rem;
-        }
-
-        .loading-logo span {
-            color: #fd1d1d;
-        }
-
-        .loading-bar {
-            width: 300px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            overflow: hidden;
-            margin: 0 auto 1rem;
-        }
-
-        .loading-progress {
-            height: 100%;
-            background: linear-gradient(90deg, #405de6, #fd1d1d);
-            width: 0%;
-            animation: loadingProgress 3s ease-in-out forwards;
-        }
-
-        @keyframes loadingProgress {
-            to { width: 100%; }
-        }
-
-        /* Navigation Controls */
-        .nav-controls {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px 25px;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-        }
-
-        .nav-btn {
-            background: linear-gradient(45deg, #405de6, #fd1d1d);
-            border: none;
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .nav-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(64, 93, 230, 0.5);
-        }
-
-        .nav-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .section-indicator {
-            display: flex;
-            gap: 10px;
-        }
-
-        .indicator-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .indicator-dot.active {
-            background: linear-gradient(45deg, #405de6, #fd1d1d);
-            transform: scale(1.2);
-        }
-
-        /* Progress Bar */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            z-index: 1000;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #405de6, #fd1d1d);
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        /* Main Container */
-        .main-container {
-            height: 100vh;
+            font-family: 'Orbitron', sans-serif;
+            background: black;
+            min-height: 100vh;
+            overflow-x: hidden;
             position: relative;
         }
 
-        .content-section {
-            position: absolute;
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transform: translateX(100%);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 2rem;
+            background: black;
+            animation: backgroundShift 20s ease-in-out infinite;
+            z-index: -1;
         }
 
-        .content-section.active {
-            opacity: 1;
-            transform: translateX(0);
+        @keyframes backgroundShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
         }
 
-        .content-section.prev {
-            transform: translateX(-100%);
-        }
-
-        /* Header Styles */
-        .header {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .header-particles {
-            position: absolute;
+        /* Floating particles */
+        .particles {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-        }
-
-        .logo {
-            z-index: 10;
-        }
-
-        .logo-text {
-            font-family: 'Orbitron', monospace;
-            font-size: 4rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 30px rgba(64, 93, 230, 0.5);
-        }
-
-        .logo-text b {
-            color: #fd1d1d;
-            text-shadow: 0 0 20px #fd1d1d;
-        }
-
-        /* Dynamic Text */
-        .dynamic-text-container {
-            font-size: 3rem;
-            font-weight: 600;
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        .dynamic-text {
-            background: linear-gradient(45deg, #405de6, #fd1d1d);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 3px;
-            height: 3rem;
-            background: #fd1d1d;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        /* Section Content */
-        .section-content {
-            max-width: 1200px;
-            width: 100%;
-            text-align: center;
-            animation: fadeInUp 0.8s ease forwards;
-        }
-
-        .section-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            background: linear-gradient(45deg, #405de6, #fd1d1d);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .content-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin: 1rem 0;
-        }
-
-        .content-card p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 1rem;
-        }
-
-        /* Social Media Styles */
-        .social-logo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .social-logo {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .social-logo:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(64, 93, 230, 0.3);
-        }
-
-        .social-logo i {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .social-logo.facebook:hover { box-shadow: 0 20px 40px rgba(24, 119, 242, 0.3); }
-        .social-logo.twitter:hover { box-shadow: 0 20px 40px rgba(29, 161, 242, 0.3); }
-        .social-logo.instagram:hover { box-shadow: 0 20px 40px rgba(225, 48, 108, 0.3); }
-        .social-logo.linkedin:hover { box-shadow: 0 20px 40px rgba(10, 102, 194, 0.3); }
-
-        /* App Download Styles */
-        .app-logo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .app-logo {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .app-logo:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(64, 93, 230, 0.3);
-        }
-
-        .app-logo i {
-            font-size: 2rem;
-        }
-
-        /* Feature Highlight */
-        .feature-highlight {
-            text-align: center;
-        }
-
-        .feature-highlight i {
-            font-size: 3rem;
-            color: #fd1d1d;
-            margin-bottom: 1rem;
-        }
-
-        .feature-highlight h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #405de6;
-        }
-
-        .warning-note {
-            background: rgba(255, 68, 68, 0.1);
-            border: 1px solid rgba(255, 68, 68, 0.3);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-top: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .warning-note i {
-            color: #ff4444;
-        }
-
-        /* Values Grid */
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .value-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .value-item i {
-            font-size: 2rem;
-            color: #405de6;
-            margin-bottom: 1rem;
-        }
-
-        .value-item h4 {
-            margin-bottom: 0.5rem;
-            color: #fd1d1d;
-        }
-
-        /* Motto Section */
-        .motto-section {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .motto-content {
-            text-align: center;
-        }
-
-        .motto-title {
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            color: #405de6;
-        }
-
-        .motto-main {
-            font-family: 'Orbitron', monospace;
-            font-size: 4rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: block;
-            margin-bottom: 2rem;
-            text-shadow: 0 0 30px rgba(64, 93, 230, 0.5);
-        }
-
-        .contact-final {
-            margin-top: 2rem;
-        }
-
-        .contact-final a {
-            color: #405de6;
-            text-decoration: none;
-            border-bottom: 2px solid #405de6;
-            transition: all 0.3s ease;
-        }
-
-        .contact-final a:hover {
-            color: #fd1d1d;
-            border-bottom-color: #fd1d1d;
-        }
-
-        /* Particles */
-        .particle-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
+            z-index: 1;
         }
 
         .particle {
             position: absolute;
             width: 4px;
             height: 4px;
-            background: #405de6;
+            background: gold;
             border-radius: 50%;
-            animation: float 6s infinite linear;
+            animation: float 15s infinite linear;
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            font-family: 'Orbitron', sans-serif;
+            color: gold;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            margin-bottom: 2rem;
+            color: gold;
+            font-size: 0.9rem;
+            font-weight: 500;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, white, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+            to { text-shadow: 0 0 40px rgba(255, 255, 255, 0.8); }
+        }
+
+        .header .subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 700;
+            background: gold;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: white;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+            opacity: 0.9;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Billing Toggle */
+        .billing-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 4rem;
+        }
+
+        .toggle-wrapper {
+            background: black;
+            border-radius: 60px;
+            padding: 6px;
+            display: flex;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .toggle-option {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-light);
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
+            font-size: 1.1rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .toggle-option.active {
+            background: transparent;
+            color: gold;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transform: scale(1.02);
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: -12px;
+            right: -8px;
+            background: gold;
+            color: black;
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            animation: bounce 2s infinite;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+
+        /* Pricing Grid */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+            perspective: 1000px;
+        }
+
+        .pricing-card {
+            background: black;
+            backdrop-filter: blur(20px);
+            border: 1px solid gold;
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            transform-style: preserve-3d;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--secondary-gradient);
+            border-radius: 24px 24px 0 0;
+        }
+
+        .pricing-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-15px) rotateX(5deg);
+        }
+
+        .pricing-card:hover::after {
+            opacity: 1;
+        }
+
+        .pricing-card.recommended {
+            transform: scale(1.08) translateY(-10px);
+            background: black;
+            border: 2px solid gold;
+            box-shadow: 0 20px 40px gold;
+            color: gold !important;
+            box-shadow: 0 0 15px gold;
+        }
+
+        .pricing-card.recommended::before {
+            background: var(--accent-gradient);
+            height: 8px;
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-gradient);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 0 0 20px 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(250, 112, 154, 0.4);
+        }
+
+        /* Plan Header */
+        .plan-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .plan-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: gold;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: black;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .plan-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .plan-description {
+            color: gold;
+            font-size: 1rem;
+            font-weight: 500;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Pricing */
+        .plan-price {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .price-container {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .price-amount {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: white;
+            line-height: 1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .price-currency {
+            font-size: 2rem;
+            vertical-align: top;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .price-period {
+            color: gold;
+            font-size: 1.1rem;
+            font-weight: 500;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.3rem;
+            margin-left: 0.5rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .savings-badge {
+            display: inline-block;
+            background: gold;
+            color: black;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* Features */
+        .plan-features {
+            margin-bottom: 3rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .plan-features ul {
+            list-style: none;
+        }
+
+        .plan-features li {
+            padding: 1rem 0;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .plan-features li:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+            padding-left: 1rem;
+            margin: 0 -1rem;
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        .plan-features i {
+            color: gold;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .plan-features span {
+            color: white;
+            font-weight: 500;
+        }
+
+        /* CTA Button */
+        .plan-cta {
+            display: block;
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: var(--secondary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .plan-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: gold;
+            transition: left 0.5s;
+        }
+
+        .plan-cta:hover::before {
+            left: 100%;
+        }
+
+        .plan-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.4);
+        }
+
+        /* Payment Modal */
+        .payment-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .payment-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .payment-content {
+            background: black;
+            border: 2px solid gold;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 700px;
+            width: 95%;
+            max-height: 95vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(50px);
                 opacity: 0;
             }
-            10% {
+            to {
+                transform: translateY(0);
                 opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
             }
         }
 
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: gold;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.2);
+            color: white;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: gold;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: white;
+            font-size: 1rem;
+        }
+
+        /* Payment Methods */
+        .payment-methods-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: gold;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .payment-methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .payment-method {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 11px;
+        }
+
+        .payment-method:hover {
+            border-color: gold;
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .payment-method.active {
+            border-color: gold;
+            background: rgba(255, 215, 0, 0.3);
+            color: gold;
+        }
+
+        .payment-method i {
+            font-size: 20px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .payment-method-name {
+            font-size: 10px;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .payment-method-fee {
+            font-size: 8px;
+            opacity: 0.8;
+        }
+
+        /* Payment Forms */
+        .payment-form {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .payment-form.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            color: gold;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: gold;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* Network/Provider Selection */
+        .network-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .network-option {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 11px;
+        }
+
+        .network-option.active {
+            border-color: gold;
+            background: rgba(255, 215, 0, 0.3);
+            color: gold;
+        }
+
+        .network-option i {
+            font-size: 16px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        /* Crypto Payment */
+        .crypto-info {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .crypto-address {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 11px;
+            word-break: break-all;
+            margin: 10px 0;
+            color: gold;
+        }
+
+        .copy-btn {
+            background: gold;
+            color: black;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .copy-btn:hover {
+            background: white;
+            transform: scale(1.05);
+        }
+
+        .qr-placeholder {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 12px;
+            margin: 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        /* Bank Details */
+        .bank-details {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .bank-details h4 {
+            color: gold;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .bank-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .bank-info-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: white;
+        }
+
+        .bank-info-item strong {
+            color: gold;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .summary-row.total {
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+            padding-top: 10px;
+            font-weight: bold;
+            color: gold;
+            font-size: 16px;
+        }
+
+        /* Submit Button */
+        .submit-payment {
+            width: 100%;
+            background: linear-gradient(45deg, gold, #ffed4e);
+            color: black;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .submit-payment:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .submit-payment:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Payment Processing Modal */
+        .processing-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .processing-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .processing-content {
+            background: black;
+            border: 2px solid gold;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .processing-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 215, 0, 0.3);
+            border-top: 4px solid gold;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .processing-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: gold;
+            margin-bottom: 1rem;
+        }
+
+        .processing-message {
+            color: white;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .processing-steps {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .processing-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .processing-step.completed {
+            color: var(--success-color);
+        }
+
+        .processing-step.current {
+            color: gold;
+        }
+
+        .processing-step i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        /* Success Modal */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .success-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .success-content {
+            background: black;
+            border: 2px solid gold;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: var(--success-color);
+            margin-bottom: 1rem;
+        }
+
+        .success-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: gold;
+            margin-bottom: 1rem;
+        }
+
+        .success-message {
+            color: white;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .success-details {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .success-details h4 {
+            color: gold;
+            margin-bottom: 10px;
+        }
+
+        .success-details p {
+            color: white;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background: gold;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-top: 4rem;
+        }
+
+        .faq-section h3 {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: black;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+            margin: 0 -1.5rem;
+        }
+
+        .faq-question {
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: black;
+            transition: color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: black;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            margin-top: 1.5rem;
+            color: black;
+            line-height: 1.7;
+            font-size: 1.1rem;
+            display: none;
+            animation: fadeInDown 0.3s ease;
+        }
+
+        .faq-answer.active {
+            display: block;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .pricing-card.recommended {
+                transform: none;
+            }
+            
+            .header h1 {
+                font-size: 3rem;
+            }
+            
+            .price-amount {
+                font-size: 3rem;
+            }
+
+            .toggle-option {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .payment-methods-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .form-row, .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .network-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bank-info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading and Animation States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+            filter: blur(1px);
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
+            from { 
+                opacity: 0; 
                 transform: translateY(30px);
             }
-            to {
-                opacity: 1;
+            to { 
+                opacity: 1; 
                 transform: translateY(0);
             }
         }
 
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .logo-text {
-                font-size: 2.5rem;
-            }
-            
-            .dynamic-text-container {
-                font-size: 2rem;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .motto-main {
-                font-size: 2.5rem;
-            }
-            
-            .social-logo-grid,
-            .app-logo-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .values-grid {
-                grid-template-columns: 1fr;
-            }
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: gold;
+            color: black;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            z-index: 3000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: var(--error-color);
+            color: white;
+        }
+
+        .notification.success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .notification.warning {
+            background: var(--warning-color);
+            color: black;
+        }
+
+        /* Account Details Section */
+        .account-details {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .account-details h4 {
+            color: gold;
+            margin-bottom: 15px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .account-info {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .account-number {
+            font-family: monospace;
+            font-size: 18px;
+            color: gold;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .account-name {
+            color: white;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .payment-instructions {
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid gold;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .payment-instructions h5 {
+            color: gold;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .payment-instructions ol {
+            color: white;
+            font-size: 13px;
+            line-height: 1.6;
+            padding-left: 20px;
+        }
+
+        .payment-instructions li {
+            margin-bottom: 5px;
         }
     </style>
+</head>
+<body>
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <div class="header scroll-reveal">
+            <div class="badge">
+                <i class="fas fa-sparkles"></i>
+                <span>SmileX Golden Offer</span>
+            </div>
+            <h1>SMILEX</h1>
+            <div class="subtitle">SMILEX GOLDEN SUBSCRIPTION DEALS</div>
+            <p>Unlock powerful features YOU needs. Enjoyable, scalable, and designed for every user with premium benefits at unbeatable prices.</p>
+        </div>
+
+        <div class="billing-toggle scroll-reveal">
+            <div class="toggle-wrapper">
+                <div class="toggle-option active" data-billing="monthly">
+                    Monthly
+                </div>
+                <div class="toggle-option" data-billing="yearly">
+                    Yearly
+                    <span class="discount-badge">20%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="pricing-grid">
+            <!-- Starter Plan -->
+            <div class="pricing-card scroll-reveal" data-plan="starter">
+                <div class="plan-header">
+                    <div class="plan-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h2 class="plan-name">Starter</h2>
+                    <p class="plan-description">Perfect for individuals getting started</p>
+                </div>
+                <div class="plan-price">
+                    <div class="price-container">
+                        <span class="price-amount">
+                            <span class="price-currency">$</span>
+                            <span class="monthly-price">9.99</span>
+                            <span class="yearly-price" style="display: none;">7.99</span>
+                        </span>
+                        <span class="price-period">/month</span>
+                        <span class="original-price yearly-original" style="display: none;">$9.99</span>
+                    </div>
+                    <div class="savings-badge yearly-savings" style="display: none;">Save $24/year</div>
+                </div>
+                <div class="plan-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i><span>Regular premium badge</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>No Ads</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>Custom premium boosters</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>6-hour customer support</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>Well designed premium package</span></li>
+                    </ul>
+                </div>
+                <button class="plan-cta" onclick="smileXPayment.openPaymentModal('starter')">
+                    <i class="fas fa-rocket"></i> Get Starter Plan
+                </button>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="pricing-card recommended scroll-reveal" data-plan="pro">
+                <div class="recommended-badge">Most Popular</div>
+                <div class="plan-header">
+                    <div class="plan-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h2 class="plan-name">Pro</h2>
+                    <p class="plan-description">Best for professionals and teams</p>
+                </div>
+                <div class="plan-price">
+                    <div class="price-container">
+                        <span class="price-amount">
+                            <span class="price-currency">$</span>
+                            <span class="monthly-price">19.99</span>
+                            <span class="yearly-price" style="display: none;">15.99</span>
+                        </span>
+                        <span class="price-period">/month</span>
+                        <span class="original-price yearly-original" style="display: none;">$19.99</span>
+                    </div>
+                    <div class="savings-badge yearly-savings" style="display: none;">Save $48/year</div>
+                </div>
+                <div class="plan-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i><span>Epic premium badge</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>No Ads</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>Epic premium boosters</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>Auto-clear storage</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>18-hour customer support</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>Customize premium package</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>Disable pop ups</span></li>
+                    </ul>
+                </div>
+                <button class="plan-cta" onclick="smileXPayment.openPaymentModal('pro')">
+                    <i class="fas fa-crown"></i> Get Pro Plan
+                </button>
+            </div>
+
+            <!-- Legend Plan -->
+            <div class="pricing-card scroll-reveal" data-plan="legend">
+                <div class="plan-header">
+                    <div class="plan-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h2 class="plan-name">Legend</h2>
+                    <p class="plan-description">Unlock Ultimate packages</p>
+                </div>
+                <div class="plan-price">
+                    <div class="price-container">
+                        <span class="price-amount">
+                            <span class="price-currency">$</span>
+                            <span class="monthly-price">39.99</span>
+                            <span class="yearly-price" style="display: none;">31.99</span>
+                        </span>
+                        <span class="price-period">/month</span>
+                        <span class="original-price yearly-original" style="display: none;">$39.99</span>
+                    </div>
+                    <div class="savings-badge yearly-savings" style="display: none;">Save $96/year</div>
+                </div>
+                <div class="plan-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i><span>Diamond premium badge</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>Zero advertisements</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>Ultimate premium boosters</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>24/7 priority support</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>Exclusive premium package</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>Disable popups</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>Early access to new features</span></li>
+                        <li><i class="fas fa-check-circle"></i><span>+ more features</span></li>
+                    </ul>
+                </div>
+                <button class="plan-cta" onclick="smileXPayment.openPaymentModal('legend')">
+                    <i class="fas fa-gem"></i> Get Legend Plan
+                </button>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section scroll-reveal">
+            <h3>Frequently Asked Questions</h3>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How secure are the payments?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    All payments are processed through secure, encrypted channels. We verify each transaction before activating premium features. Your payment information is never stored on our servers.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How long does payment verification take?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Credit card and digital wallet payments are verified instantly. Mobile money and bank transfers may take 5-30 minutes. Cryptocurrency payments are verified within 1-3 confirmations.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Can I upgrade or downgrade my plan?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Yes! You can upgrade or downgrade your plan at any time. Changes will be prorated and reflected in your next billing cycle.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What happens if my payment fails?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    If a payment fails, you'll receive an error message with instructions. You can try a different payment method or contact our support team for assistance.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="payment-content">
+            <button class="modal-close" onclick="smileXPayment.closePaymentModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Subscribe to Starter Plan</h2>
+                <p class="modal-subtitle">Complete your payment to activate premium features</p>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-methods-section">
+                <h3 class="section-title">Choose Payment Method</h3>
+                <div class="payment-methods-grid">
+                    <!-- Credit/Debit Cards -->
+                    <div class="payment-method active" data-method="card" onclick="smileXPayment.selectPaymentMethod('card', this)">
+                        <i class="fas fa-credit-card"></i>
+                        <div class="payment-method-name">Credit Card</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <!-- Mobile Money Ghana -->
+                    <div class="payment-method" data-method="mtn" onclick="smileXPayment.selectPaymentMethod('mtn', this)">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div class="payment-method-name">MTN MoMo</div>
+                        <div class="payment-method-fee">1.5% fee</div>
+                    </div>
+                    
+                    <div class="payment-method" data-method="vodafone" onclick="smileXPayment.selectPaymentMethod('vodafone', this)">
+                        <i class="fas fa-signal"></i>
+                        <div class="payment-method-name">Vodafone Cash</div>
+                        <div class="payment-method-fee">1.5% fee</div>
+                    </div>
+                    
+                    <div class="payment-method" data-method="airteltigo" onclick="smileXPayment.selectPaymentMethod('airteltigo', this)">
+                        <i class="fas fa-phone"></i>
+                        <div class="payment-method-name">AirtelTigo</div>
+                        <div class="payment-method-fee">1.5% fee</div>
+                    </div>
+                    
+                    <!-- PayPal -->
+                    <div class="payment-method" data-method="paypal" onclick="smileXPayment.selectPaymentMethod('paypal', this)">
+                        <i class="fab fa-paypal"></i>
+                        <div class="payment-method-name">PayPal</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <!-- Digital Wallets -->
+                    <div class="payment-method" data-method="applepay" onclick="smileXPayment.selectPaymentMethod('applepay', this)">
+                        <i class="fab fa-apple-pay"></i>
+                        <div class="payment-method-name">Apple Pay</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <div class="payment-method" data-method="googlepay" onclick="smileXPayment.selectPaymentMethod('googlepay', this)">
+                        <i class="fab fa-google-pay"></i>
+                        <div class="payment-method-name">Google Pay</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <!-- Cryptocurrency -->
+                    <div class="payment-method" data-method="bitcoin" onclick="smileXPayment.selectPaymentMethod('bitcoin', this)">
+                        <i class="fab fa-bitcoin"></i>
+                        <div class="payment-method-name">Bitcoin</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <div class="payment-method" data-method="ethereum" onclick="smileXPayment.selectPaymentMethod('ethereum', this)">
+                        <i class="fab fa-ethereum"></i>
+                        <div class="payment-method-name">Ethereum</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <div class="payment-method" data-method="usdt" onclick="smileXPayment.selectPaymentMethod('usdt', this)">
+                        <i class="fas fa-coins"></i>
+                        <div class="payment-method-name">USDT</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <!-- Bank Transfer -->
+                    <div class="payment-method" data-method="bank" onclick="smileXPayment.selectPaymentMethod('bank', this)">
+                        <i class="fas fa-university"></i>
+                        <div class="payment-method-name">Bank Transfer</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <!-- Other African Mobile Money -->
+                    <div class="payment-method" data-method="mpesa" onclick="smileXPayment.selectPaymentMethod('mpesa', this)">
+                        <i class="fas fa-mobile"></i>
+                        <div class="payment-method-name">M-Pesa</div>
+                        <div class="payment-method-fee">1.0% fee</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Forms -->
+            <div id="paymentForms">
+                <!-- Credit Card Form -->
+                <div class="payment-form active" id="cardForm">
+                    <div class="form-group">
+                        <label class="form-label">Cardholder Name</label>
+                        <input type="text" class="form-input" id="cardName" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Card Number</label>
+                        <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Expiry Date</label>
+                            <input type="text" class="form-input" id="cardExpiry" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">CVV</label>
+                            <input type="text" class="form-input" id="cardCvv" placeholder="123" maxlength="3" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Billing Address</label>
+                        <input type="text" class="form-input" id="cardAddress" placeholder="123 Main Street" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-input" id="cardCity" placeholder="Accra" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Postal Code</label>
+                            <input type="text" class="form-input" id="cardPostal" placeholder="00233" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MTN Mobile Money Form -->
+                <div class="payment-form" id="mtnForm">
+                    <div class="account-details">
+                        <h4><i class="fas fa-mobile-alt"></i> Send Payment to MTN Mobile Money</h4>
+                        <div class="account-info">
+                            <div class="account-number">0244-123-456</div>
+                            <div class="account-name">SmileX Technologies</div>
+                        </div>
+                        <div class="payment-instructions">
+                            <h5>Payment Instructions:</h5>
+                            <ol>
+                                <li>Dial *170# on your MTN phone</li>
+                                <li>Select option 1 (Send Money)</li>
+                                <li>Enter recipient number: <strong>0244-123-456</strong></li>
+                                <li>Enter amount: <strong>$<span class="payment-amount">9.99</span></strong></li>
+                                <li>Enter reference: <strong><span class="payment-reference">SMX-12345</span></strong></li>
+                                <li>Confirm with your PIN</li>
+                                <li>Enter transaction ID below after payment</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your MTN Number</label>
+                        <input type="tel" class="form-input" id="mtnNumber" placeholder="+233 24 XXX XXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction ID (after payment)</label>
+                        <input type="text" class="form-input" id="mtnTxId" placeholder="MP123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Account Holder Name</label>
+                        <input type="text" class="form-input" id="mtnName" placeholder="Your full name" required>
+                    </div>
+                </div>
+
+                <!-- Vodafone Cash Form -->
+                <div class="payment-form" id="vodafoneForm">
+                    <div class="account-details">
+                        <h4><i class="fas fa-signal"></i> Send Payment to Vodafone Cash</h4>
+                        <div class="account-info">
+                            <div class="account-number">0203-987-654</div>
+                            <div class="account-name">SmileX Technologies</div>
+                        </div>
+                        <div class="payment-instructions">
+                            <h5>Payment Instructions:</h5>
+                            <ol>
+                                <li>Dial *110# on your Vodafone phone</li>
+                                <li>Select option 1 (Send Money)</li>
+                                <li>Enter recipient number: <strong>0203-987-654</strong></li>
+                                <li>Enter amount: <strong>$<span class="payment-amount">9.99</span></strong></li>
+                                <li>Enter reference: <strong><span class="payment-reference">SMX-12345</span></strong></li>
+                                <li>Confirm with your PIN</li>
+                                <li>Enter transaction ID below after payment</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your Vodafone Number</label>
+                        <input type="tel" class="form-input" id="vodafoneNumber" placeholder="+233 20 XXX XXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction ID (after payment)</label>
+                        <input type="text" class="form-input" id="vodafoneTxId" placeholder="VC123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Account Holder Name</label>
+                        <input type="text" class="form-input" id="vodafoneName" placeholder="Your full name" required>
+                    </div>
+                </div>
+
+                <!-- AirtelTigo Form -->
+                <div class="payment-form" id="airteltigoForm">
+                    <div class="account-details">
+                        <h4><i class="fas fa-phone"></i> Send Payment to AirtelTigo Money</h4>
+                        <div class="account-info">
+                            <div class="account-number">0277-555-888</div>
+                            <div class="account-name">SmileX Technologies</div>
+                        </div>
+                        <div class="payment-instructions">
+                            <h5>Payment Instructions:</h5>
+                            <ol>
+                                <li>Dial *110# on your AirtelTigo phone</li>
+                                <li>Select option 1 (Send Money)</li>
+                                <li>Enter recipient number: <strong>0277-555-888</strong></li>
+                                <li>Enter amount: <strong>$<span class="payment-amount">9.99</span></strong></li>
+                                <li>Enter reference: <strong><span class="payment-reference">SMX-12345</span></strong></li>
+                                <li>Confirm with your PIN</li>
+                                <li>Enter transaction ID below after payment</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your AirtelTigo Number</label>
+                        <input type="tel" class="form-input" id="airteltigoNumber" placeholder="+233 27 XXX XXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction ID (after payment)</label>
+                        <input type="text" class="form-input" id="airteltigoTxId" placeholder="AT123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Account Holder Name</label>
+                        <input type="text" class="form-input" id="airteltigoName" placeholder="Your full name" required>
+                    </div>
+                </div>
+
+                <!-- PayPal Form -->
+                <div class="payment-form" id="paypalForm">
+                    <div class="account-details">
+                        <h4><i class="fab fa-paypal"></i> PayPal Payment</h4>
+                        <div class="payment-instructions">
+                            <h5>Payment Instructions:</h5>
+                            <ol>
+                                <li>Send payment to: <strong>payments@smilex.com</strong></li>
+                                <li>Amount: <strong>$<span class="payment-amount">9.99</span></strong></li>
+                                <li>Reference: <strong><span class="payment-reference">SMX-12345</span></strong></li>
+                                <li>Select "Friends & Family" to avoid fees</li>
+                                <li>Enter transaction ID below after payment</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your PayPal Email</label>
+                        <input type="email" class="form-input" id="paypalEmail" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">PayPal Transaction ID</label>
+                        <input type="text" class="form-input" id="paypalTxId" placeholder="PP123456789" required>
+                    </div>
+                </div>
+
+                <!-- Apple Pay Form -->
+                <div class="payment-form" id="applepayForm">
+                    <div style="text-align: center; padding: 40px; color: gold;">
+                        <i class="fab fa-apple-pay" style="font-size: 4rem; margin-bottom: 20px;"></i>
+                        <h3 style="margin-bottom: 15px;">Apple Pay</h3>
+                        <p>Use Touch ID or Face ID to complete your payment securely with Apple Pay.</p>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label class="form-label">Apple ID Email</label>
+                            <input type="email" class="form-input" id="appleEmail" placeholder="your@icloud.com" required>
+                        </div>
+                        <button style="background: black; color: white; border: 2px solid gold; padding: 15px 30px; border-radius: 25px; margin-top: 20px; cursor: pointer;">
+                            <i class="fab fa-apple"></i> Pay with Apple Pay
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Google Pay Form -->
+                <div class="payment-form" id="googlepayForm">
+                    <div style="text-align: center; padding: 40px; color: gold;">
+                        <i class="fab fa-google-pay" style="font-size: 4rem; margin-bottom: 20px;"></i>
+                        <h3 style="margin-bottom: 15px;">Google Pay</h3>
+                        <p>Complete your payment securely with Google Pay.</p>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label class="form-label">Google Account Email</label>
+                            <input type="email" class="form-input" id="googleEmail" placeholder="your@gmail.com" required>
+                        </div>
+                        <button style="background: black; color: white; border: 2px solid gold; padding: 15px 30px; border-radius: 25px; margin-top: 20px; cursor: pointer;">
+                            <i class="fab fa-google"></i> Pay with Google Pay
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bitcoin Form -->
+                <div class="payment-form" id="bitcoinForm">
+                    <div class="crypto-info">
+                        <h4 style="color: gold; margin-bottom: 10px;"><i class="fab fa-bitcoin"></i> Bitcoin Payment</h4>
+                        <p style="color: white; margin-bottom: 15px;">Send Bitcoin to the address below:</p>
+                        <div class="crypto-address" id="bitcoinAddress">1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</div>
+                        <button class="copy-btn" onclick="smileXPayment.copyToClipboard('bitcoinAddress')">
+                            <i class="fas fa-copy"></i> Copy Address
+                        </button>
+                        <div class="qr-placeholder">Bitcoin QR Code</div>
+                        <p style="color: gold; font-size: 14px;">Amount: <span id="bitcoinAmount">0.00023 BTC</span></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your Bitcoin Wallet Address</label>
+                        <input type="text" class="form-input" id="bitcoinWallet" placeholder="Your Bitcoin wallet address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction Hash (after payment)</label>
+                        <input type="text" class="form-input" id="bitcoinTxHash" placeholder="Enter transaction hash for verification" required>
+                    </div>
+                </div>
+
+                <!-- Ethereum Form -->
+                <div class="payment-form" id="ethereumForm">
+                    <div class="crypto-info">
+                        <h4 style="color: gold; margin-bottom: 10px;"><i class="fab fa-ethereum"></i> Ethereum Payment</h4>
+                        <p style="color: white; margin-bottom: 15px;">Send Ethereum to the address below:</p>
+                        <div class="crypto-address" id="ethereumAddress">0x742d35Cc6634C0532925a3b8D4C9db96590c4C5d</div>
+                        <button class="copy-btn" onclick="smileXPayment.copyToClipboard('ethereumAddress')">
+                            <i class="fas fa-copy"></i> Copy Address
+                        </button>
+                        <div class="qr-placeholder">Ethereum QR Code</div>
+                        <p style="color: gold; font-size: 14px;">Amount: <span id="ethereumAmount">0.0041 ETH</span></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your Ethereum Wallet Address</label>
+                        <input type="text" class="form-input" id="ethereumWallet" placeholder="Your Ethereum wallet address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction Hash (after payment)</label>
+                        <input type="text" class="form-input" id="ethereumTxHash" placeholder="Enter transaction hash for verification" required>
+                    </div>
+                </div>
+
+                <!-- USDT Form -->
+                <div class="payment-form" id="usdtForm">
+                    <div class="crypto-info">
+                        <h4 style="color: gold; margin-bottom: 10px;"><i class="fas fa-coins"></i> USDT Payment</h4>
+                        <p style="color: white; margin-bottom: 15px;">Send USDT to the address below:</p>
+                        <div class="crypto-address" id="usdtAddress">TQn9Y2khEsLJW1ChVWFMSMeRDow5BNZP3v</div>
+                        <button class="copy-btn" onclick="smileXPayment.copyToClipboard('usdtAddress')">
+                            <i class="fas fa-copy"></i> Copy Address
+                        </button>
+                        <div class="qr-placeholder">USDT QR Code</div>
+                        <p style="color: gold; font-size: 14px;">Amount: <span id="usdtAmount">9.99 USDT</span></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your USDT Wallet Address</label>
+                        <input type="text" class="form-input" id="usdtWallet" placeholder="Your USDT wallet address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction Hash (after payment)</label>
+                        <input type="text" class="form-input" id="usdtTxHash" placeholder="Enter transaction hash for verification" required>
+                    </div>
+                </div>
+
+                <!-- Bank Transfer Form -->
+                <div class="payment-form" id="bankForm">
+                    <div class="bank-details">
+                        <h4><i class="fas fa-university"></i> Bank Transfer Details</h4>
+                        <div class="bank-info-grid">
+                            <div class="bank-info-item">
+                                <strong>Bank Name:</strong> SmileX Financial Bank
+                            </div>
+                            <div class="bank-info-item">
+                                <strong>Account Name:</strong> SmileX Technologies Ltd
+                            </div>
+                            <div class="bank-info-item">
+                                <strong>Account Number:</strong> 1234567890123
+                            </div>
+                            <div class="bank-info-item">
+                                <strong>Routing Number:</strong> 021000021
+                            </div>
+                            <div class="bank-info-item">
+                                <strong>SWIFT Code:</strong> SMXBUS33XXX
+                            </div>
+                            <div class="bank-info-item">
+                                <strong>Reference:</strong> <span id="bankReference">SMX-12345678</span>
+                            </div>
+                        </div>
+                        <div class="payment-instructions">
+                            <h5>Payment Instructions:</h5>
+                            <ol>
+                                <li>Transfer the exact amount to the account above</li>
+                                <li>Use the reference number in your transfer description</li>
+                                <li>Upload your payment receipt below</li>
+                                <li>We'll verify and activate your subscription within 24 hours</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your Bank Account Number</label>
+                        <input type="text" class="form-input" id="bankAccount" placeholder="Your account number" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your Bank Name</label>
+                        <input type="text" class="form-input" id="bankName" placeholder="Your bank name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Upload Payment Receipt</label>
+                        <input type="file" class="form-input" id="bankReceipt" accept="image/*,.pdf" required>
+                    </div>
+                </div>
+
+                <!-- M-Pesa Form -->
+                <div class="payment-form" id="mpesaForm">
+                    <div class="account-details">
+                        <h4><i class="fas fa-mobile"></i> Send Payment to M-Pesa</h4>
+                        <div class="account-info">
+                            <div class="account-number">+254-700-123456</div>
+                            <div class="account-name">SmileX Technologies</div>
+                        </div>
+                        <div class="payment-instructions">
+                            <h5>Payment Instructions:</h5>
+                            <ol>
+                                <li>Go to M-Pesa menu on your phone</li>
+                                <li>Select "Send Money"</li>
+                                <li>Enter recipient number: <strong>+254-700-123456</strong></li>
+                                <li>Enter amount: <strong>$<span class="payment-amount">9.99</span></strong></li>
+                                <li>Enter reference: <strong><span class="payment-reference">SMX-12345</span></strong></li>
+                                <li>Confirm with your PIN</li>
+                                <li>Enter transaction ID below after payment</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your M-Pesa Number</label>
+                        <input type="tel" class="form-input" id="mpesaNumber" placeholder="+254 7XX XXX XXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">M-Pesa Transaction ID</label>
+                        <input type="text" class="form-input" id="mpesaTxId" placeholder="MP123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Account Holder Name</label>
+                        <input type="text" class="form-input" id="mpesaName" placeholder="Your full name" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h4 style="color: gold; margin-bottom: 15px;"><i class="fas fa-receipt"></i> Order Summary</h4>
+                <div class="summary-row">
+                    <span>Plan:</span>
+                    <span id="summaryPlan">Starter Plan</span>
+                </div>
+                <div class="summary-row">
+                    <span>Billing:</span>
+                    <span id="summaryBilling">Monthly</span>
+                </div>
+                <div class="summary-row">
+                    <span>Processing Fee:</span>
+                    <span id="summaryFee">$0.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total Amount:</span>
+                    <span id="summaryTotal">$9.99</span>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button class="submit-payment" onclick="smileXPayment.processPayment()">
+                <i class="fas fa-lock"></i> Complete Secure Payment
+            </button>
+        </div>
+    </div>
+
+    <!-- Payment Processing Modal -->
+    <div class="processing-modal" id="processingModal">
+        <div class="processing-content">
+            <div class="processing-spinner"></div>
+            <h2 class="processing-title">Processing Payment</h2>
+            <p class="processing-message">Please wait while we verify your payment...</p>
+            <div class="processing-steps">
+                <div class="processing-step completed" id="step1">
+                    <i class="fas fa-check"></i>
+                    <span>Payment details received</span>
+                </div>
+                <div class="processing-step current" id="step2">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Verifying transaction</span>
+                </div>
+                <div class="processing-step" id="step3">
+                    <i class="fas fa-clock"></i>
+                    <span>Activating premium features</span>
+                </div>
+                <div class="processing-step" id="step4">
+                    <i class="fas fa-clock"></i>
+                    <span>Sending confirmation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="success-title">Payment Successful!</h2>
+            <p class="success-message">
+                Welcome to SmileX Premium! Your subscription has been activated and you now have access to all premium features.
+            </p>
+            <div class="success-details">
+                <h4>Subscription Details:</h4>
+                <p><strong>Plan:</strong> <span id="successPlan">Starter Plan</span></p>
+                <p><strong>Billing:</strong> <span id="successBilling">Monthly</span></p>
+                <p><strong>Amount Paid:</strong> <span id="successAmount">$9.99</span></p>
+                <p><strong>Transaction ID:</strong> <span id="successTxId">SMX-123456789</span></p>
+                <p><strong>Activated:</strong> <span id="successDate">January 1, 2024</span></p>
+            </div>
+            <button class="submit-payment" onclick="smileXPayment.closeSuccessModal()">
+                <i class="fas fa-rocket"></i> Start Using Premium
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
 
     <script>
-        let currentSection = 0;
-        const totalSections = 7;
-        let isAnimating = false;
-
-        // Dynamic text animation
-        const texts = [
-            "Hi,",
-            "Welcome to SmileX",
-            "Making Life Easier",
-            "Keep The Smile"
-        ];
-        let textIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-
-        function typeWriter() {
-            const dynamicText = document.getElementById('dynamic-text');
-            const currentText = texts[textIndex];
-            
-            if (isDeleting) {
-                dynamicText.textContent = currentText.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                dynamicText.textContent = currentText.substring(0, charIndex + 1);
-                charIndex++;
+        class SmileXPayment {
+            constructor() {
+                this.selectedPlan = null;
+                this.selectedPaymentMethod = 'card';
+                this.isYearly = false;
+                this.planPrices = {
+                    starter: { monthly: 9.99, yearly: 7.99 },
+                    pro: { monthly: 19.99, yearly: 15.99 },
+                    legend: { monthly: 39.99, yearly: 31.99 }
+                };
+                this.paymentFees = {
+                    card: 0,
+                    mtn: 1.5,
+                    vodafone: 1.5,
+                    airteltigo: 1.5,
+                    paypal: 0,
+                    applepay: 0,
+                    googlepay: 0,
+                    bitcoin: 0,
+                    ethereum: 0,
+                    usdt: 0,
+                    bank: 0,
+                    mpesa: 1.0
+                };
+                this.cryptoAddresses = {
+                    bitcoin: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+                    ethereum: '0x742d35Cc6634C0532925a3b8D4C9db96590c4C5d',
+                    usdt: 'TQn9Y2khEsLJW1ChVWFMSMeRDow5BNZP3v'
+                };
+                this.paymentReference = this.generateReference();
+                this.init();
             }
-            
-            let typeSpeed = isDeleting ? 50 : 100;
-            
-            if (!isDeleting && charIndex === currentText.length) {
-                typeSpeed = 2000;
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                textIndex = (textIndex + 1) % texts.length;
+
+            init() {
+                this.setupBillingToggle();
+                this.setupFAQ();
+                this.setupScrollReveal();
+                this.setupCardEffects();
+                this.createParticles();
+                this.setupFormFormatting();
+                this.updatePaymentReferences();
             }
-            
-            setTimeout(typeWriter, typeSpeed);
-        }
 
-        // Particle system
-        function createParticles(containerId) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                container.appendChild(particle);
+            generateReference() {
+                return 'SMX-' + Date.now().toString().slice(-8);
             }
-        }
 
-        // Navigation functions
-        function nextSection() {
-            if (isAnimating || currentSection >= totalSections - 1) return;
-            
-            isAnimating = true;
-            const current = document.querySelector(`[data-section="${currentSection}"]`);
-            const next = document.querySelector(`[data-section="${currentSection + 1}"]`);
-            
-            current.classList.remove('active');
-            current.classList.add('prev');
-            
-            setTimeout(() => {
-                next.classList.add('active');
-                currentSection++;
-                updateNavigation();
-                isAnimating = false;
-            }, 100);
-        }
-
-        function previousSection() {
-            if (isAnimating || currentSection <= 0) return;
-            
-            isAnimating = true;
-            const current = document.querySelector(`[data-section="${currentSection}"]`);
-            const prev = document.querySelector(`[data-section="${currentSection - 1}"]`);
-            
-            current.classList.remove('active');
-            
-            setTimeout(() => {
-                prev.classList.remove('prev');
-                prev.classList.add('active');
-                currentSection--;
-                updateNavigation();
-                isAnimating = false;
-            }, 100);
-        }
-
-        function goToSection(sectionIndex) {
-            if (isAnimating || sectionIndex === currentSection) return;
-            
-            isAnimating = true;
-            const current = document.querySelector(`[data-section="${currentSection}"]`);
-            const target = document.querySelector(`[data-section="${sectionIndex}"]`);
-            
-            current.classList.remove('active');
-            if (sectionIndex < currentSection) {
-                current.classList.add('prev');
-                target.classList.remove('prev');
-            }
-            
-            setTimeout(() => {
-                target.classList.add('active');
-                currentSection = sectionIndex;
-                updateNavigation();
-                isAnimating = false;
-            }, 100);
-        }
-
-        function updateNavigation() {
-            // Update progress bar
-            const progressFill = document.getElementById('progressFill');
-            const progress = ((currentSection + 1) / totalSections) * 100;
-            progressFill.style.width = progress + '%';
-            
-            // Update navigation buttons
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            
-            prevBtn.disabled = currentSection === 0;
-            nextBtn.disabled = currentSection === totalSections - 1;
-            
-            // Update section indicators
-            updateSectionIndicators();
-        }
-
-        function updateSectionIndicators() {
-            const indicator = document.getElementById('sectionIndicator');
-            indicator.innerHTML = '';
-            
-            for (let i = 0; i < totalSections; i++) {
-                const dot = document.createElement('div');
-                dot.className = `indicator-dot ${i === currentSection ? 'active' : ''}`;
-                dot.onclick = () => goToSection(i);
-                indicator.appendChild(dot);
-            }
-        }
-
-        // Social media links
-        function openSocialLink(platform) {
-            const links = {
-                facebook: 'https://facebook.com/smilex',
-                twitter: 'https://twitter.com/smilex',
-                instagram: 'https://instagram.com/smilex',
-                linkedin: 'https://linkedin.com/company/smilex'
-            };
-            
-            if (links[platform]) {
-                window.open(links[platform], '_blank');
-            }
-        }
-
-        // Download links
-        function openLink(platform) {
-            const links = {
-                playstore: 'https://play.google.com/store/apps/details?id=com.smilex',
-                appstore: 'https://apps.apple.com/app/smilex',
-                windows: 'https://microsoft.com/store/apps/smilex',
-                apple: 'https://apps.apple.com/app/smilex'
-            };
-            
-            if (links[platform]) {
-                window.open(links[platform], '_blank');
-            }
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            switch(e.key) {
-                case 'ArrowRight':
-                case ' ':
-                    e.preventDefault();
-                    nextSection();
-                    break;
-                case 'ArrowLeft':
-                    e.preventDefault();
-                    previousSection();
-                    break;
-                case 'Home':
-                    e.preventDefault();
-                    goToSection(0);
-                    break;
-                case 'End':
-                    e.preventDefault();
-                    goToSection(totalSections - 1);
-                    break;
-            }
-        });
-
-        // Touch/swipe support
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        document.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        document.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
-            
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0) {
-                    nextSection(); // Swipe left - next section
-                } else {
-                    previousSection(); // Swipe right - previous section
+            updatePaymentReferences() {
+                document.querySelectorAll('.payment-reference').forEach(el => {
+                    el.textContent = this.paymentReference;
+                });
+                const bankRef = document.getElementById('bankReference');
+                if (bankRef) {
+                    bankRef.textContent = this.paymentReference;
                 }
             }
+
+            createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                const particleCount = 50;
+
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 15 + 's';
+                    particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                    particlesContainer.appendChild(particle);
+                }
+            }
+
+            setupBillingToggle() {
+                const toggleOptions = document.querySelectorAll('.toggle-option');
+                toggleOptions.forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        const billing = e.target.dataset.billing;
+                        this.isYearly = billing === 'yearly';
+                        
+                        toggleOptions.forEach(opt => opt.classList.remove('active'));
+                        e.target.classList.add('active');
+
+                        this.updatePricingDisplay();
+                    });
+                });
+            }
+
+            updatePricingDisplay() {
+                document.querySelectorAll('.pricing-card').forEach(card => {
+                    card.classList.add('loading');
+                });
+
+                setTimeout(() => {
+                    if (this.isYearly) {
+                        document.querySelectorAll('.monthly-price').forEach(el => el.style.display = 'none');
+                        document.querySelectorAll('.yearly-price').forEach(el => el.style.display = 'inline');
+                        document.querySelectorAll('.yearly-original').forEach(el => el.style.display = 'inline');
+                        document.querySelectorAll('.yearly-savings').forEach(el => el.style.display = 'block');
+                    } else {
+                        document.querySelectorAll('.monthly-price').forEach(el => el.style.display = 'inline');
+                        document.querySelectorAll('.yearly-price').forEach(el => el.style.display = 'none');
+                        document.querySelectorAll('.yearly-original').forEach(el => el.style.display = 'none');
+                        document.querySelectorAll('.yearly-savings').forEach(el => el.style.display = 'none');
+                    }
+
+                    document.querySelectorAll('.pricing-card').forEach(card => {
+                        card.classList.remove('loading');
+                    });
+                }, 300);
+            }
+
+            setupFAQ() {
+                document.querySelectorAll('.faq-question').forEach(question => {
+                    question.addEventListener('click', () => {
+                        const answer = question.nextElementSibling;
+                        const isActive = question.classList.contains('active');
+
+                        // Close all other FAQs
+                        document.querySelectorAll('.faq-question').forEach(q => {
+                            q.classList.remove('active');
+                            q.nextElementSibling.classList.remove('active');
+                        });
+
+                        // Toggle current FAQ
+                        if (!isActive) {
+                            question.classList.add('active');
+                            answer.classList.add('active');
+                        }
+                    });
+                });
+            }
+
+            setupScrollReveal() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                document.querySelectorAll('.scroll-reveal').forEach(el => {
+                    observer.observe(el);
+                });
+            }
+
+            setupCardEffects() {
+                document.querySelectorAll('.pricing-card').forEach((card, index) => {
+                    card.style.animationDelay = `${index * 0.2}s`;
+                    card.classList.add('fade-in');
+                });
+            }
+
+            setupFormFormatting() {
+                // Card number formatting
+                document.addEventListener('input', (e) => {
+                    if (e.target.id === 'cardNumber') {
+                        let value = e.target.value.replace(/\s/g, '');
+                        let formattedValue = value.replace(/(.{4})/g, '$1 ').trim();
+                        e.target.value = formattedValue;
+                    }
+                    
+                    // Expiry date formatting
+                    if (e.target.id === 'cardExpiry') {
+                        let value = e.target.value.replace(/\D/g, '');
+                        if (value.length >= 2) {
+                            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                        }
+                        e.target.value = value;
+                    }
+
+                    // Mobile number formatting
+                    if (e.target.type === 'tel') {
+                        let value = e.target.value.replace(/\D/g, '');
+                        if (e.target.id.includes('mtn') && !value.startsWith('233')) {
+                            value = '233' + value;
+                        }
+                        if (e.target.id.includes('vodafone') && !value.startsWith('233')) {
+                            value = '233' + value;
+                        }
+                        if (e.target.id.includes('airteltigo') && !value.startsWith('233')) {
+                            value = '233' + value;
+                        }
+                        if (e.target.id.includes('mpesa') && !value.startsWith('254')) {
+                            value = '254' + value;
+                        }
+                        e.target.value = '+' + value;
+                    }
+                });
+            }
+
+            openPaymentModal(plan) {
+                this.selectedPlan = plan;
+                const modal = document.getElementById('paymentModal');
+                const title = document.getElementById('modalTitle');
+                
+                const planNames = {
+                    starter: 'Starter Plan',
+                    pro: 'Pro Plan',
+                    legend: 'Legend Plan'
+                };
+
+                title.textContent = `Subscribe to ${planNames[plan]}`;
+                this.updateOrderSummary();
+                this.updatePaymentAmounts();
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            closePaymentModal() {
+                const modal = document.getElementById('paymentModal');
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+
+            selectPaymentMethod(method, element) {
+                this.selectedPaymentMethod = method;
+                
+                // Update active payment method
+                document.querySelectorAll('.payment-method').forEach(el => {
+                    el.classList.remove('active');
+                });
+                element.classList.add('active');
+
+                // Show appropriate payment form
+                document.querySelectorAll('.payment-form').forEach(form => {
+                    form.classList.remove('active');
+                });
+                document.getElementById(method + 'Form').classList.add('active');
+
+                this.updateOrderSummary();
+                this.updateCryptoAmounts();
+            }
+
+            getCurrentPrice() {
+                const billing = this.isYearly ? 'yearly' : 'monthly';
+                return this.planPrices[this.selectedPlan][billing];
+            }
+
+            updateOrderSummary() {
+                if (!this.selectedPlan) return;
+
+                const basePrice = this.getCurrentPrice();
+                const fee = (basePrice * this.paymentFees[this.selectedPaymentMethod] / 100);
+                const total = basePrice + fee;
+
+                const planNames = {
+                    starter: 'Starter Plan',
+                    pro: 'Pro Plan', 
+                    legend: 'Legend Plan'
+                };
+
+                document.getElementById('summaryPlan').textContent = planNames[this.selectedPlan];
+                document.getElementById('summaryBilling').textContent = this.isYearly ? 'Yearly' : 'Monthly';
+                document.getElementById('summaryFee').textContent = `$${fee.toFixed(2)}`;
+                document.getElementById('summaryTotal').textContent = `$${total.toFixed(2)}`;
+            }
+
+            updatePaymentAmounts() {
+                const amount = this.getCurrentPrice();
+                document.querySelectorAll('.payment-amount').forEach(el => {
+                    el.textContent = amount.toFixed(2);
+                });
+            }
+
+            updateCryptoAmounts() {
+                const baseAmount = this.getCurrentPrice();
+                const rates = {
+                    bitcoin: 0.000023,
+                    ethereum: 0.00041,
+                    usdt: 1.0
+                };
+
+                Object.keys(rates).forEach(crypto => {
+                    const amount = (baseAmount * rates[crypto]).toFixed(6);
+                    const amountEl = document.getElementById(crypto + 'Amount');
+                    if (amountEl) {
+                        amountEl.textContent = `${amount} ${crypto.toUpperCase()}`;
+                    }
+                });
+            }
+
+            copyToClipboard(elementId) {
+                const element = document.getElementById(elementId);
+                const text = element.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    this.showNotification('Address copied to clipboard!', 'success');
+                }).catch(() => {
+                    this.showNotification('Failed to copy address', 'error');
+                });
+            }
+
+            processPayment() {
+                const submitBtn = document.querySelector('.submit-payment');
+                const originalText = submitBtn.innerHTML;
+                
+                // Validate form
+                if (!this.validatePaymentForm()) {
+                    return;
+                }
+
+                // Show processing modal
+                this.showProcessingModal();
+                this.closePaymentModal();
+
+                // Collect payment data
+                const paymentData = this.collectPaymentData();
+
+                // Simulate payment processing with realistic steps
+                this.simulatePaymentProcessing(paymentData)
+                    .then((result) => {
+                        this.hideProcessingModal();
+                        
+                        if (result.success) {
+                            // Store subscription data
+                            localStorage.setItem('smileXPremium', 'true');
+                            localStorage.setItem('smileXPlan', this.selectedPlan);
+                            localStorage.setItem('smileXBilling', this.isYearly ? 'yearly' : 'monthly');
+                            localStorage.setItem('smileXActivated', new Date().toISOString());
+                            localStorage.setItem('smileXTransactionId', result.transactionId);
+
+                            this.showSuccessModal(result);
+                            this.showNotification('Payment successful! Premium activated!', 'success');
+                        } else {
+                            this.showNotification('Payment verification failed. Please check your details and try again.', 'error');
+                        }
+                    })
+                    .catch((error) => {
+                        this.hideProcessingModal();
+                        console.error('Payment error:', error);
+                        this.showNotification('Payment processing error. Please try again.', 'error');
+                    });
+            }
+
+            validatePaymentForm() {
+                const activeForm = document.querySelector('.payment-form.active');
+                const requiredFields = activeForm.querySelectorAll('input[required]');
+                
+                for (let field of requiredFields) {
+                    if (!field.value.trim()) {
+                        this.showNotification(`Please fill in ${field.previousElementSibling.textContent}`, 'warning');
+                        field.focus();
+                        return false;
+                    }
+                }
+
+                // Additional validation for specific payment methods
+                if (this.selectedPaymentMethod === 'card') {
+                    const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                    if (cardNumber.length < 13 || cardNumber.length > 19) {
+                        this.showNotification('Please enter a valid card number', 'warning');
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            collectPaymentData() {
+                const data = {
+                    plan: this.selectedPlan,
+                    billing: this.isYearly ? 'yearly' : 'monthly',
+                    paymentMethod: this.selectedPaymentMethod,
+                    amount: this.getCurrentPrice(),
+                    fee: (this.getCurrentPrice() * this.paymentFees[this.selectedPaymentMethod] / 100),
+                    reference: this.paymentReference,
+                    timestamp: new Date().toISOString()
+                };
+
+                // Add method-specific data
+                const activeForm = document.querySelector('.payment-form.active');
+                const formData = new FormData();
+                
+                activeForm.querySelectorAll('input').forEach(input => {
+                    if (input.value) {
+                        formData.append(input.id, input.value);
+                        data[input.id] = input.value;
+                    }
+                });
+
+                return data;
+            }
+
+            showProcessingModal() {
+                const modal = document.getElementById('processingModal');
+                modal.classList.add('active');
+            }
+
+            hideProcessingModal() {
+                const modal = document.getElementById('processingModal');
+                modal.classList.remove('active');
+            }
+
+            async simulatePaymentProcessing(paymentData) {
+                const steps = [
+                    { id: 'step1', text: 'Payment details received', delay: 500 },
+                    { id: 'step2', text: 'Verifying transaction', delay: 2000 },
+                    { id: 'step3', text: 'Activating premium features', delay: 1500 },
+                    { id: 'step4', text: 'Sending confirmation', delay: 1000 }
+                ];
+
+                for (let i = 0; i < steps.length; i++) {
+                    const step = steps[i];
+                    await new Promise(resolve => setTimeout(resolve, step.delay));
+                    
+                    // Update step status
+                    const stepEl = document.getElementById(step.id);
+                    stepEl.classList.remove('current');
+                    stepEl.classList.add('completed');
+                    stepEl.querySelector('i').className = 'fas fa-check';
+                    
+                    // Set next step as current
+                    if (i < steps.length - 1) {
+                        const nextStep = document.getElementById(steps[i + 1].id);
+                        nextStep.classList.add('current');
+                        nextStep.querySelector('i').className = 'fas fa-spinner fa-spin';
+                    }
+                }
+
+                // Simulate payment verification based on method
+                const successRates = {
+                    card: 0.95,
+                    mtn: 0.90,
+                    vodafone: 0.90,
+                    airteltigo: 0.90,
+                    paypal: 0.95,
+                    applepay: 0.98,
+                    googlepay: 0.98,
+                    bitcoin: 0.85,
+                    ethereum: 0.85,
+                    usdt: 0.90,
+                    bank: 0.80,
+                    mpesa: 0.90
+                };
+
+                const successRate = successRates[paymentData.paymentMethod] || 0.90;
+                const success = Math.random() < successRate;
+
+                return {
+                    success,
+                    transactionId: 'SMX-' + Date.now(),
+                    paymentData,
+                    verificationTime: new Date().toISOString()
+                };
+            }
+
+            showSuccessModal(result) {
+                const modal = document.getElementById('successModal');
+                const planNames = {
+                    starter: 'Starter Plan',
+                    pro: 'Pro Plan',
+                    legend: 'Legend Plan'
+                };
+
+                document.getElementById('successPlan').textContent = planNames[this.selectedPlan];
+                document.getElementById('successBilling').textContent = this.isYearly ? 'Yearly' : 'Monthly';
+                document.getElementById('successAmount').textContent = `$${this.getCurrentPrice().toFixed(2)}`;
+                document.getElementById('successTxId').textContent = result.transactionId;
+                document.getElementById('successDate').textContent = new Date().toLocaleDateString();
+
+                modal.classList.add('active');
+            }
+
+            closeSuccessModal() {
+                const modal = document.getElementById('successModal');
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                
+                // Update CTA buttons to show current subscription
+                this.updateSubscriptionStatus();
+            }
+
+            updateSubscriptionStatus() {
+                const plan = this.selectedPlan;
+                
+                document.querySelectorAll('.plan-cta').forEach(btn => {
+                    const card = btn.closest('.pricing-card');
+                    const cardPlan = card.dataset.plan;
+                    
+                    if (cardPlan === plan) {
+                        btn.innerHTML = '<i class="fas fa-check"></i> Current Plan';
+                        btn.style.background = 'gold';
+                        btn.style.color = 'black';
+                        btn.onclick = null;
+                    } else {
+                        btn.innerHTML = '<i class="fas fa-arrow-up"></i> Upgrade';
+                    }
+                });
+            }
+
+            showNotification(message, type = 'success') {
+                const notification = document.getElementById('notification');
+                notification.textContent = message;
+                notification.className = `notification ${type} show`;
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            // Hide loading screen
-            setTimeout(() => {
-                document.getElementById('loadingScreen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('loadingScreen').style.display = 'none';
-                }, 500);
-            }, 3000);
-            
-            // Start typewriter effect
-            setTimeout(() => {
-                typeWriter();
-            }, 3500);
-            
-            // Create particles
-            createParticles('particleContainer');
-            createParticles('particleContainer2');
-            createParticles('particleContainer3');
-            
-            // Initialize navigation
-            updateNavigation();
-        });
+        // Initialize SmileX Payment System
+        const smileXPayment = new SmileXPayment();
 
-        // Disable right-click
-        document.addEventListener('contextmenu', event => event.preventDefault());
+        // Prevent right-click context menu
+        document.addEventListener('contextmenu', e => e.preventDefault());
+
+        // Smooth scrolling
+        document.documentElement.style.scrollBehavior = 'smooth';
+
+        // Check if user already has premium
+        if (localStorage.getItem('smileXPremium') === 'true') {
+            const plan = localStorage.getItem('smileXPlan');
+            const billing = localStorage.getItem('smileXBilling');
+            
+            // Update CTA buttons to show current subscription
+            document.querySelectorAll('.plan-cta').forEach(btn => {
+                const card = btn.closest('.pricing-card');
+                const cardPlan = card.dataset.plan;
+                
+                if (cardPlan === plan) {
+                    btn.innerHTML = '<i class="fas fa-check"></i> Current Plan';
+                    btn.style.background = 'gold';
+                    btn.style.color = 'black';
+                    btn.onclick = null;
+                } else {
+                    btn.innerHTML = '<i class="fas fa-arrow-up"></i> Upgrade';
+                }
+            });
+
+            // Show premium status in header
+            const badge = document.querySelector('.badge span');
+            badge.textContent = `Premium ${plan.charAt(0).toUpperCase() + plan.slice(1)} Member`;
+        }
     </script>
 </body>
 </html>

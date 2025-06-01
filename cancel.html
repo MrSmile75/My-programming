@@ -4,14 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmileX - Premium Subscription Plans</title>
-        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="cancel.css">
-
-</head>
-<style>
-      :root {
+    <style>
+        :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             --accent-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
@@ -21,6 +17,9 @@
             --text-primary: #2d3748;
             --text-secondary: #4a5568;
             --text-light: rgba(255, 255, 255, 0.9);
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
         }
 
         * {
@@ -30,7 +29,7 @@
         }
 
         body {
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             background: black;
             min-height: 100vh;
             overflow-x: hidden;
@@ -45,8 +44,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-              black;
+            background: black;
             animation: backgroundShift 20s ease-in-out infinite;
             z-index: -1;
         }
@@ -96,8 +94,8 @@
             text-align: center;
             margin-bottom: 4rem;
             position: relative;
-             font-family: 'Orbitron', sans-serif;
-             color: gold;
+            font-family: 'Orbitron', sans-serif;
+            color: gold;
         }
 
         .header::before {
@@ -160,7 +158,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 1.5rem;
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .header p {
@@ -170,7 +168,7 @@
             margin: 0 auto;
             line-height: 1.7;
             opacity: 0.9;
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         /* Billing Toggle */
@@ -199,7 +197,7 @@
             position: relative;
             z-index: 2;
             font-size: 1.1rem;
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .toggle-option.active {
@@ -248,7 +246,7 @@
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
             transform-style: preserve-3d;
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .pricing-card::before {
@@ -276,8 +274,7 @@
         }
 
         .pricing-card:hover {
-            transform: scale(2);
-           
+            transform: translateY(-15px) rotateX(5deg);
         }
 
         .pricing-card:hover::after {
@@ -318,7 +315,7 @@
         .plan-header {
             text-align: center;
             margin-bottom: 2.5rem;
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .plan-icon {
@@ -342,7 +339,7 @@
         }
 
         .plan-name {
-     font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: 2.2rem;
             font-weight: 800;
             color: white;
@@ -351,10 +348,10 @@
         }
 
         .plan-description {
-            color:gold;
+            color: gold;
             font-size: 1rem;
             font-weight: 500;
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         /* Pricing */
@@ -370,11 +367,11 @@
             justify-content: center;
             gap: 0.5rem;
             margin-bottom: 1rem;
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .price-amount {
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: 4rem;
             font-weight: 900;
             color: white;
@@ -385,14 +382,14 @@
         .price-currency {
             font-size: 2rem;
             vertical-align: top;
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .price-period {
             color: gold;
             font-size: 1.1rem;
             font-weight: 500;
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .original-price {
@@ -400,7 +397,7 @@
             color: rgba(255, 255, 255, 0.5);
             font-size: 1.3rem;
             margin-left: 0.5rem;
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .savings-badge {
@@ -417,13 +414,11 @@
         /* Features */
         .plan-features {
             margin-bottom: 3rem;
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .plan-features ul {
             list-style: none;
-            space-y: 1rem;
-       
         }
 
         .plan-features li {
@@ -432,15 +427,14 @@
             align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .plan-features li:hover {
-            background:black;
+            background: rgba(255, 215, 0, 0.1);
             border-radius: 8px;
             padding-left: 1rem;
             margin: 0 -1rem;
-            color: black;
         }
 
         .plan-features li:last-child {
@@ -479,7 +473,7 @@
             overflow: hidden;
             text-transform: uppercase;
             letter-spacing: 1px;
-             font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .plan-cta::before {
@@ -502,20 +496,535 @@
             box-shadow: 0 15px 35px rgba(79, 172, 254, 0.4);
         }
 
-        .plan-cta.coming-soon {
+        /* Payment Modal */
+        .payment-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .payment-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .payment-content {
             background: black;
-            color:gold;
+            border: 2px solid gold;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 700px;
+            width: 95%;
+            max-height: 95vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: gold;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.2);
+            color: white;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: gold;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: white;
+            font-size: 1rem;
+        }
+
+        /* Payment Methods */
+        .payment-methods-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: gold;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .payment-methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .payment-method {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 11px;
+        }
+
+        .payment-method:hover {
+            border-color: gold;
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .payment-method.active {
+            border-color: gold;
+            background: rgba(255, 215, 0, 0.3);
+            color: gold;
+        }
+
+        .payment-method i {
+            font-size: 20px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .payment-method-name {
+            font-size: 10px;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .payment-method-fee {
+            font-size: 8px;
+            opacity: 0.8;
+        }
+
+        /* Payment Forms */
+        .payment-form {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .payment-form.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            color: gold;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: gold;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* Network/Provider Selection */
+        .network-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .network-option {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 11px;
+        }
+
+        .network-option.active {
+            border-color: gold;
+            background: rgba(255, 215, 0, 0.3);
+            color: gold;
+        }
+
+        .network-option i {
+            font-size: 16px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        /* Crypto Payment */
+        .crypto-info {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .crypto-address {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 11px;
+            word-break: break-all;
+            margin: 10px 0;
+            color: gold;
+        }
+
+        .copy-btn {
+            background: gold;
+            color: black;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .copy-btn:hover {
+            background: white;
+            transform: scale(1.05);
+        }
+
+        .qr-placeholder {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 12px;
+            margin: 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        /* Bank Details */
+        .bank-details {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .bank-details h4 {
+            color: gold;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .bank-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .bank-info-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: white;
+        }
+
+        .bank-info-item strong {
+            color: gold;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .summary-row.total {
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+            padding-top: 10px;
+            font-weight: bold;
+            color: gold;
+            font-size: 16px;
+        }
+
+        /* Submit Button */
+        .submit-payment {
+            width: 100%;
+            background: linear-gradient(45deg, gold, #ffed4e);
+            color: black;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .submit-payment:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .submit-payment:disabled {
+            opacity: 0.6;
             cursor: not-allowed;
         }
 
-        .plan-cta.coming-soon:hover {
-            transform: none;
-            box-shadow: none;
+        /* Payment Processing Modal */
+        .processing-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .processing-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .processing-content {
+            background: black;
+            border: 2px solid gold;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .processing-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 215, 0, 0.3);
+            border-top: 4px solid gold;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .processing-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: gold;
+            margin-bottom: 1rem;
+        }
+
+        .processing-message {
+            color: white;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .processing-steps {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .processing-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .processing-step.completed {
+            color: var(--success-color);
+        }
+
+        .processing-step.current {
+            color: gold;
+        }
+
+        .processing-step i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        /* Success Modal */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .success-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .success-content {
+            background: black;
+            border: 2px solid gold;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: var(--success-color);
+            margin-bottom: 1rem;
+        }
+
+        .success-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: gold;
+            margin-bottom: 1rem;
+        }
+
+        .success-message {
+            color: white;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .success-details {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .success-details h4 {
+            color: gold;
+            margin-bottom: 10px;
+        }
+
+        .success-details p {
+            color: white;
+            margin-bottom: 5px;
+            font-size: 14px;
         }
 
         /* FAQ Section */
         .faq-section {
-            background:gold;
+            background: gold;
             backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
@@ -525,7 +1034,7 @@
 
         .faq-section h3 {
             text-align: center;
-           font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
             font-weight: 800;
             margin-bottom: 3rem;
@@ -534,13 +1043,13 @@
         }
 
         .faq-item {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             padding: 2rem 0;
             transition: all 0.3s ease;
         }
 
         .faq-item:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.05);
             border-radius: 12px;
             padding-left: 1.5rem;
             padding-right: 1.5rem;
@@ -559,7 +1068,7 @@
         }
 
         .faq-question:hover {
-            color:black;
+            color: black;
         }
 
         .faq-question i {
@@ -615,6 +1124,22 @@
             .container {
                 padding: 1rem;
             }
+
+            .payment-methods-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .form-row, .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .network-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bank-info-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Loading and Animation States */
@@ -650,7 +1175,105 @@
             opacity: 1;
             transform: translateY(0);
         }
-</style>
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: gold;
+            color: black;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            z-index: 3000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: var(--error-color);
+            color: white;
+        }
+
+        .notification.success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .notification.warning {
+            background: var(--warning-color);
+            color: black;
+        }
+
+        /* Account Details Section */
+        .account-details {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .account-details h4 {
+            color: gold;
+            margin-bottom: 15px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .account-info {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .account-number {
+            font-family: monospace;
+            font-size: 18px;
+            color: gold;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .account-name {
+            color: white;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .payment-instructions {
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid gold;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .payment-instructions h5 {
+            color: gold;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .payment-instructions ol {
+            color: white;
+            font-size: 13px;
+            line-height: 1.6;
+            padding-left: 20px;
+        }
+
+        .payment-instructions li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
 <body>
     <!-- Floating Particles -->
     <div class="particles" id="particles"></div>
@@ -673,14 +1296,14 @@
                 </div>
                 <div class="toggle-option" data-billing="yearly">
                     Yearly
-                    <span class="discount-badge">%</span>
+                    <span class="discount-badge">20%</span>
                 </div>
             </div>
         </div>
 
         <div class="pricing-grid">
             <!-- Starter Plan -->
-            <div class="pricing-card scroll-reveal">
+            <div class="pricing-card scroll-reveal" data-plan="starter">
                 <div class="plan-header">
                     <div class="plan-icon">
                         <i class="fas fa-rocket"></i>
@@ -692,13 +1315,13 @@
                     <div class="price-container">
                         <span class="price-amount">
                             <span class="price-currency">$</span>
-                            <span class="monthly-price"></span>
-                            <span class="yearly-price" style="display: none;"></span>
+                            <span class="monthly-price">9.99</span>
+                            <span class="yearly-price" style="display: none;">7.99</span>
                         </span>
                         <span class="price-period">/month</span>
-                        <span class="original-price yearly-original" style="display: none;">$</span>
+                        <span class="original-price yearly-original" style="display: none;">$9.99</span>
                     </div>
-                    <div class="savings-badge yearly-savings" style="display: none;">/year</div>
+                    <div class="savings-badge yearly-savings" style="display: none;">Save $24/year</div>
                 </div>
                 <div class="plan-features">
                     <ul>
@@ -706,15 +1329,16 @@
                         <li><i class="fas fa-check-circle"></i><span>No Ads</span></li>
                         <li><i class="fas fa-check-circle"></i><span>Custom premium boosters</span></li>
                         <li><i class="fas fa-check-circle"></i><span>6-hour customer support</span></li>
-             
                         <li><i class="fas fa-check-circle"></i><span>Well designed premium package</span></li>
                     </ul>
                 </div>
-                <button class="plan-cta coming-soon">Coming Soon</button>
+                <button class="plan-cta" onclick="smileXPayment.openPaymentModal('starter')">
+                    <i class="fas fa-rocket"></i> Get Starter Plan
+                </button>
             </div>
 
             <!-- Pro Plan -->
-            <div class="pricing-card recommended scroll-reveal">
+            <div class="pricing-card recommended scroll-reveal" data-plan="pro">
                 <div class="recommended-badge">Most Popular</div>
                 <div class="plan-header">
                     <div class="plan-icon">
@@ -727,13 +1351,13 @@
                     <div class="price-container">
                         <span class="price-amount">
                             <span class="price-currency">$</span>
-                            <span class="monthly-price"></span>
-                            <span class="yearly-price" style="display: none;"></span>
+                            <span class="monthly-price">19.99</span>
+                            <span class="yearly-price" style="display: none;">15.99</span>
                         </span>
                         <span class="price-period">/month</span>
-                        <span class="original-price yearly-original" style="display: none;">$</span>
+                        <span class="original-price yearly-original" style="display: none;">$19.99</span>
                     </div>
-                    <div class="savings-badge yearly-savings" style="display: none;">/year</div>
+                    <div class="savings-badge yearly-savings" style="display: none;">Save $48/year</div>
                 </div>
                 <div class="plan-features">
                     <ul>
@@ -742,34 +1366,35 @@
                         <li><i class="fas fa-check-circle"></i><span>Epic premium boosters</span></li>
                         <li><i class="fas fa-check-circle"></i><span>Auto-clear storage</span></li>
                         <li><i class="fas fa-check-circle"></i><span>18-hour customer support</span></li>
-
                         <li><i class="fas fa-check-circle"></i><span>Customize premium package</span></li>
                         <li><i class="fas fa-check-circle"></i><span>Disable pop ups</span></li>
                     </ul>
                 </div>
-                <button class="plan-cta coming-soon">Coming Soon</button>
+                <button class="plan-cta" onclick="smileXPayment.openPaymentModal('pro')">
+                    <i class="fas fa-crown"></i> Get Pro Plan
+                </button>
             </div>
 
             <!-- Legend Plan -->
-            <div class="pricing-card scroll-reveal">
+            <div class="pricing-card scroll-reveal" data-plan="legend">
                 <div class="plan-header">
                     <div class="plan-icon">
                         <i class="fas fa-crown"></i>
                     </div>
                     <h2 class="plan-name">Legend</h2>
-                    <p class="plan-description">Unlock Ultimate packages </p>
+                    <p class="plan-description">Unlock Ultimate packages</p>
                 </div>
                 <div class="plan-price">
                     <div class="price-container">
                         <span class="price-amount">
                             <span class="price-currency">$</span>
-                            <span class="monthly-price"></span>
-                            <span class="yearly-price" style="display: none;"></span>
+                            <span class="monthly-price">39.99</span>
+                            <span class="yearly-price" style="display: none;">31.99</span>
                         </span>
                         <span class="price-period">/month</span>
-                        <span class="original-price yearly-original" style="display: none;">$</span>
+                        <span class="original-price yearly-original" style="display: none;">$39.99</span>
                     </div>
-                    <div class="savings-badge yearly-savings" style="display: none;">/year</div>
+                    <div class="savings-badge yearly-savings" style="display: none;">Save $96/year</div>
                 </div>
                 <div class="plan-features">
                     <ul>
@@ -777,14 +1402,15 @@
                         <li><i class="fas fa-check-circle"></i><span>Zero advertisements</span></li>
                         <li><i class="fas fa-check-circle"></i><span>Ultimate premium boosters</span></li>
                         <li><i class="fas fa-check-circle"></i><span>24/7 priority support</span></li>
-         
                         <li><i class="fas fa-check-circle"></i><span>Exclusive premium package</span></li>
                         <li><i class="fas fa-check-circle"></i><span>Disable popups</span></li>
                         <li><i class="fas fa-check-circle"></i><span>Early access to new features</span></li>
                         <li><i class="fas fa-check-circle"></i><span>+ more features</span></li>
                     </ul>
                 </div>
-                <button class="plan-cta coming-soon">Coming Soon</button>
+                <button class="plan-cta" onclick="smileXPayment.openPaymentModal('legend')">
+                    <i class="fas fa-gem"></i> Get Legend Plan
+                </button>
             </div>
         </div>
 
@@ -793,190 +1419,1106 @@
             <h3>Frequently Asked Questions</h3>
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>When will these premium plans be available?</span>
+                    <span>How secure are the payments?</span>
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    We're working hard to launch these premium plans sooner. Early access will be available to our beta users, and we'll notify all subscribers when the plans go live.
+                    All payments are processed through secure, encrypted channels. We verify each transaction before activating premium features. Your payment information is never stored on our servers.
                 </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>Can I switch between plans anytime?</span>
+                    <span>How long does payment verification take?</span>
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    You'll be able to upgrade or downgrade your plan at any time. Changes will be prorated and reflected in your next billing cycle with no additional fees.
+                    Credit card and digital wallet payments are verified instantly. Mobile money and bank transfers may take 5-30 minutes. Cryptocurrency payments are verified within 1-3 confirmations.
                 </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>Is there a free trial available?</span>
+                    <span>Can I upgrade or downgrade my plan?</span>
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    Not Yet! We're planning to offer a 7-day free trial for all premium plans so you can experience the full benefits before committing,but we are not recommending it now due to some reasons.
+                    Yes! You can upgrade or downgrade your plan at any time. Changes will be prorated and reflected in your next billing cycle.
                 </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>What payment methods do you accept?</span>
+                    <span>What happens if my payment fails?</span>
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    We'll accept all major credit cards, PayPal, and various digital payment methods. All transactions are secured with industry-standard encryption.
+                    If a payment fails, you'll receive an error message with instructions. You can try a different payment method or contact our support team for assistance.
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="cancel.js">
-             // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
+    <!-- Payment Modal -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="payment-content">
+            <button class="modal-close" onclick="smileXPayment.closePaymentModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Subscribe to Starter Plan</h2>
+                <p class="modal-subtitle">Complete your payment to activate premium features</p>
+            </div>
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                particlesContainer.appendChild(particle);
+            <!-- Payment Methods -->
+            <div class="payment-methods-section">
+                <h3 class="section-title">Choose Payment Method</h3>
+                <div class="payment-methods-grid">
+                    <!-- Credit/Debit Cards -->
+                    <div class="payment-method active" data-method="card" onclick="smileXPayment.selectPaymentMethod('card', this)">
+                        <i class="fas fa-credit-card"></i>
+                        <div class="payment-method-name">Credit Card</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <!-- Mobile Money Ghana -->
+                    <div class="payment-method" data-method="mtn" onclick="smileXPayment.selectPaymentMethod('mtn', this)">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div class="payment-method-name">MTN MoMo</div>
+                        <div class="payment-method-fee">1.5% fee</div>
+                    </div>
+                    
+                    <div class="payment-method" data-method="vodafone" onclick="smileXPayment.selectPaymentMethod('vodafone', this)">
+                        <i class="fas fa-signal"></i>
+                        <div class="payment-method-name">Vodafone Cash</div>
+                        <div class="payment-method-fee">1.5% fee</div>
+                    </div>
+                    
+                    <div class="payment-method" data-method="airteltigo" onclick="smileXPayment.selectPaymentMethod('airteltigo', this)">
+                        <i class="fas fa-phone"></i>
+                        <div class="payment-method-name">AirtelTigo</div>
+                        <div class="payment-method-fee">1.5% fee</div>
+                    </div>
+                    
+                    <!-- PayPal -->
+                    <div class="payment-method" data-method="paypal" onclick="smileXPayment.selectPaymentMethod('paypal', this)">
+                        <i class="fab fa-paypal"></i>
+                        <div class="payment-method-name">PayPal</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <!-- Digital Wallets -->
+                    <div class="payment-method" data-method="applepay" onclick="smileXPayment.selectPaymentMethod('applepay', this)">
+                        <i class="fab fa-apple-pay"></i>
+                        <div class="payment-method-name">Apple Pay</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <div class="payment-method" data-method="googlepay" onclick="smileXPayment.selectPaymentMethod('googlepay', this)">
+                        <i class="fab fa-google-pay"></i>
+                        <div class="payment-method-name">Google Pay</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <!-- Cryptocurrency -->
+                    <div class="payment-method" data-method="bitcoin" onclick="smileXPayment.selectPaymentMethod('bitcoin', this)">
+                        <i class="fab fa-bitcoin"></i>
+                        <div class="payment-method-name">Bitcoin</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <div class="payment-method" data-method="ethereum" onclick="smileXPayment.selectPaymentMethod('ethereum', this)">
+                        <i class="fab fa-ethereum"></i>
+                        <div class="payment-method-name">Ethereum</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <div class="payment-method" data-method="usdt" onclick="smileXPayment.selectPaymentMethod('usdt', this)">
+                        <i class="fas fa-coins"></i>
+                        <div class="payment-method-name">USDT</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <!-- Bank Transfer -->
+                    <div class="payment-method" data-method="bank" onclick="smileXPayment.selectPaymentMethod('bank', this)">
+                        <i class="fas fa-university"></i>
+                        <div class="payment-method-name">Bank Transfer</div>
+                        <div class="payment-method-fee">No fees</div>
+                    </div>
+                    
+                    <!-- Other African Mobile Money -->
+                    <div class="payment-method" data-method="mpesa" onclick="smileXPayment.selectPaymentMethod('mpesa', this)">
+                        <i class="fas fa-mobile"></i>
+                        <div class="payment-method-name">M-Pesa</div>
+                        <div class="payment-method-fee">1.0% fee</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Forms -->
+            <div id="paymentForms">
+                <!-- Credit Card Form -->
+                <div class="payment-form active" id="cardForm">
+                    <div class="form-group">
+                        <label class="form-label">Cardholder Name</label>
+                        <input type="text" class="form-input" id="cardName" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Card Number</label>
+                        <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Expiry Date</label>
+                            <input type="text" class="form-input" id="cardExpiry" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">CVV</label>
+                            <input type="text" class="form-input" id="cardCvv" placeholder="123" maxlength="3" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Billing Address</label>
+                        <input type="text" class="form-input" id="cardAddress" placeholder="123 Main Street" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-input" id="cardCity" placeholder="Accra" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Postal Code</label>
+                            <input type="text" class="form-input" id="cardPostal" placeholder="00233" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MTN Mobile Money Form -->
+                <div class="payment-form" id="mtnForm">
+                    <div class="account-details">
+                        <h4><i class="fas fa-mobile-alt"></i> Send Payment to MTN Mobile Money</h4>
+                        <div class="account-info">
+                            <div class="account-number">0244-123-456</div>
+                            <div class="account-name">SmileX Technologies</div>
+                        </div>
+                        <div class="payment-instructions">
+                            <h5>Payment Instructions:</h5>
+                            <ol>
+                                <li>Dial *170# on your MTN phone</li>
+                                <li>Select option 1 (Send Money)</li>
+                                <li>Enter recipient number: <strong>0244-123-456</strong></li>
+                                <li>Enter amount: <strong>$<span class="payment-amount">9.99</span></strong></li>
+                                <li>Enter reference: <strong><span class="payment-reference">SMX-12345</span></strong></li>
+                                <li>Confirm with your PIN</li>
+                                <li>Enter transaction ID below after payment</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your MTN Number</label>
+                        <input type="tel" class="form-input" id="mtnNumber" placeholder="+233 24 XXX XXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction ID (after payment)</label>
+                        <input type="text" class="form-input" id="mtnTxId" placeholder="MP123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Account Holder Name</label>
+                        <input type="text" class="form-input" id="mtnName" placeholder="Your full name" required>
+                    </div>
+                </div>
+
+                <!-- Vodafone Cash Form -->
+                <div class="payment-form" id="vodafoneForm">
+                    <div class="account-details">
+                        <h4><i class="fas fa-signal"></i> Send Payment to Vodafone Cash</h4>
+                        <div class="account-info">
+                            <div class="account-number">0203-987-654</div>
+                            <div class="account-name">SmileX Technologies</div>
+                        </div>
+                        <div class="payment-instructions">
+                            <h5>Payment Instructions:</h5>
+                            <ol>
+                                <li>Dial *110# on your Vodafone phone</li>
+                                <li>Select option 1 (Send Money)</li>
+                                <li>Enter recipient number: <strong>0203-987-654</strong></li>
+                                <li>Enter amount: <strong>$<span class="payment-amount">9.99</span></strong></li>
+                                <li>Enter reference: <strong><span class="payment-reference">SMX-12345</span></strong></li>
+                                <li>Confirm with your PIN</li>
+                                <li>Enter transaction ID below after payment</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your Vodafone Number</label>
+                        <input type="tel" class="form-input" id="vodafoneNumber" placeholder="+233 20 XXX XXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction ID (after payment)</label>
+                        <input type="text" class="form-input" id="vodafoneTxId" placeholder="VC123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Account Holder Name</label>
+                        <input type="text" class="form-input" id="vodafoneName" placeholder="Your full name" required>
+                    </div>
+                </div>
+
+                <!-- AirtelTigo Form -->
+                <div class="payment-form" id="airteltigoForm">
+                    <div class="account-details">
+                        <h4><i class="fas fa-phone"></i> Send Payment to AirtelTigo Money</h4>
+                        <div class="account-info">
+                            <div class="account-number">0277-555-888</div>
+                            <div class="account-name">SmileX Technologies</div>
+                        </div>
+                        <div class="payment-instructions">
+                            <h5>Payment Instructions:</h5>
+                            <ol>
+                                <li>Dial *110# on your AirtelTigo phone</li>
+                                <li>Select option 1 (Send Money)</li>
+                                <li>Enter recipient number: <strong>0277-555-888</strong></li>
+                                <li>Enter amount: <strong>$<span class="payment-amount">9.99</span></strong></li>
+                                <li>Enter reference: <strong><span class="payment-reference">SMX-12345</span></strong></li>
+                                <li>Confirm with your PIN</li>
+                                <li>Enter transaction ID below after payment</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your AirtelTigo Number</label>
+                        <input type="tel" class="form-input" id="airteltigoNumber" placeholder="+233 27 XXX XXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction ID (after payment)</label>
+                        <input type="text" class="form-input" id="airteltigoTxId" placeholder="AT123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Account Holder Name</label>
+                        <input type="text" class="form-input" id="airteltigoName" placeholder="Your full name" required>
+                    </div>
+                </div>
+
+                <!-- PayPal Form -->
+                <div class="payment-form" id="paypalForm">
+                    <div class="account-details">
+                        <h4><i class="fab fa-paypal"></i> PayPal Payment</h4>
+                        <div class="payment-instructions">
+                            <h5>Payment Instructions:</h5>
+                            <ol>
+                                <li>Send payment to: <strong>payments@smilex.com</strong></li>
+                                <li>Amount: <strong>$<span class="payment-amount">9.99</span></strong></li>
+                                <li>Reference: <strong><span class="payment-reference">SMX-12345</span></strong></li>
+                                <li>Select "Friends & Family" to avoid fees</li>
+                                <li>Enter transaction ID below after payment</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your PayPal Email</label>
+                        <input type="email" class="form-input" id="paypalEmail" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">PayPal Transaction ID</label>
+                        <input type="text" class="form-input" id="paypalTxId" placeholder="PP123456789" required>
+                    </div>
+                </div>
+
+                <!-- Apple Pay Form -->
+                <div class="payment-form" id="applepayForm">
+                    <div style="text-align: center; padding: 40px; color: gold;">
+                        <i class="fab fa-apple-pay" style="font-size: 4rem; margin-bottom: 20px;"></i>
+                        <h3 style="margin-bottom: 15px;">Apple Pay</h3>
+                        <p>Use Touch ID or Face ID to complete your payment securely with Apple Pay.</p>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label class="form-label">Apple ID Email</label>
+                            <input type="email" class="form-input" id="appleEmail" placeholder="your@icloud.com" required>
+                        </div>
+                        <button style="background: black; color: white; border: 2px solid gold; padding: 15px 30px; border-radius: 25px; margin-top: 20px; cursor: pointer;">
+                            <i class="fab fa-apple"></i> Pay with Apple Pay
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Google Pay Form -->
+                <div class="payment-form" id="googlepayForm">
+                    <div style="text-align: center; padding: 40px; color: gold;">
+                        <i class="fab fa-google-pay" style="font-size: 4rem; margin-bottom: 20px;"></i>
+                        <h3 style="margin-bottom: 15px;">Google Pay</h3>
+                        <p>Complete your payment securely with Google Pay.</p>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label class="form-label">Google Account Email</label>
+                            <input type="email" class="form-input" id="googleEmail" placeholder="your@gmail.com" required>
+                        </div>
+                        <button style="background: black; color: white; border: 2px solid gold; padding: 15px 30px; border-radius: 25px; margin-top: 20px; cursor: pointer;">
+                            <i class="fab fa-google"></i> Pay with Google Pay
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bitcoin Form -->
+                <div class="payment-form" id="bitcoinForm">
+                    <div class="crypto-info">
+                        <h4 style="color: gold; margin-bottom: 10px;"><i class="fab fa-bitcoin"></i> Bitcoin Payment</h4>
+                        <p style="color: white; margin-bottom: 15px;">Send Bitcoin to the address below:</p>
+                        <div class="crypto-address" id="bitcoinAddress">1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</div>
+                        <button class="copy-btn" onclick="smileXPayment.copyToClipboard('bitcoinAddress')">
+                            <i class="fas fa-copy"></i> Copy Address
+                        </button>
+                        <div class="qr-placeholder">Bitcoin QR Code</div>
+                        <p style="color: gold; font-size: 14px;">Amount: <span id="bitcoinAmount">0.00023 BTC</span></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your Bitcoin Wallet Address</label>
+                        <input type="text" class="form-input" id="bitcoinWallet" placeholder="Your Bitcoin wallet address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction Hash (after payment)</label>
+                        <input type="text" class="form-input" id="bitcoinTxHash" placeholder="Enter transaction hash for verification" required>
+                    </div>
+                </div>
+
+                <!-- Ethereum Form -->
+                <div class="payment-form" id="ethereumForm">
+                    <div class="crypto-info">
+                        <h4 style="color: gold; margin-bottom: 10px;"><i class="fab fa-ethereum"></i> Ethereum Payment</h4>
+                        <p style="color: white; margin-bottom: 15px;">Send Ethereum to the address below:</p>
+                        <div class="crypto-address" id="ethereumAddress">0x742d35Cc6634C0532925a3b8D4C9db96590c4C5d</div>
+                        <button class="copy-btn" onclick="smileXPayment.copyToClipboard('ethereumAddress')">
+                            <i class="fas fa-copy"></i> Copy Address
+                        </button>
+                        <div class="qr-placeholder">Ethereum QR Code</div>
+                        <p style="color: gold; font-size: 14px;">Amount: <span id="ethereumAmount">0.0041 ETH</span></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your Ethereum Wallet Address</label>
+                        <input type="text" class="form-input" id="ethereumWallet" placeholder="Your Ethereum wallet address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction Hash (after payment)</label>
+                        <input type="text" class="form-input" id="ethereumTxHash" placeholder="Enter transaction hash for verification" required>
+                    </div>
+                </div>
+
+                <!-- USDT Form -->
+                <div class="payment-form" id="usdtForm">
+                    <div class="crypto-info">
+                        <h4 style="color: gold; margin-bottom: 10px;"><i class="fas fa-coins"></i> USDT Payment</h4>
+                        <p style="color: white; margin-bottom: 15px;">Send USDT to the address below:</p>
+                        <div class="crypto-address" id="usdtAddress">TQn9Y2khEsLJW1ChVWFMSMeRDow5BNZP3v</div>
+                        <button class="copy-btn" onclick="smileXPayment.copyToClipboard('usdtAddress')">
+                            <i class="fas fa-copy"></i> Copy Address
+                        </button>
+                        <div class="qr-placeholder">USDT QR Code</div>
+                        <p style="color: gold; font-size: 14px;">Amount: <span id="usdtAmount">9.99 USDT</span></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your USDT Wallet Address</label>
+                        <input type="text" class="form-input" id="usdtWallet" placeholder="Your USDT wallet address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction Hash (after payment)</label>
+                        <input type="text" class="form-input" id="usdtTxHash" placeholder="Enter transaction hash for verification" required>
+                    </div>
+                </div>
+
+                <!-- Bank Transfer Form -->
+                <div class="payment-form" id="bankForm">
+                    <div class="bank-details">
+                        <h4><i class="fas fa-university"></i> Bank Transfer Details</h4>
+                        <div class="bank-info-grid">
+                            <div class="bank-info-item">
+                                <strong>Bank Name:</strong> SmileX Financial Bank
+                            </div>
+                            <div class="bank-info-item">
+                                <strong>Account Name:</strong> SmileX Technologies Ltd
+                            </div>
+                            <div class="bank-info-item">
+                                <strong>Account Number:</strong> 1234567890123
+                            </div>
+                            <div class="bank-info-item">
+                                <strong>Routing Number:</strong> 021000021
+                            </div>
+                            <div class="bank-info-item">
+                                <strong>SWIFT Code:</strong> SMXBUS33XXX
+                            </div>
+                            <div class="bank-info-item">
+                                <strong>Reference:</strong> <span id="bankReference">SMX-12345678</span>
+                            </div>
+                        </div>
+                        <div class="payment-instructions">
+                            <h5>Payment Instructions:</h5>
+                            <ol>
+                                <li>Transfer the exact amount to the account above</li>
+                                <li>Use the reference number in your transfer description</li>
+                                <li>Upload your payment receipt below</li>
+                                <li>We'll verify and activate your subscription within 24 hours</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your Bank Account Number</label>
+                        <input type="text" class="form-input" id="bankAccount" placeholder="Your account number" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your Bank Name</label>
+                        <input type="text" class="form-input" id="bankName" placeholder="Your bank name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Upload Payment Receipt</label>
+                        <input type="file" class="form-input" id="bankReceipt" accept="image/*,.pdf" required>
+                    </div>
+                </div>
+
+                <!-- M-Pesa Form -->
+                <div class="payment-form" id="mpesaForm">
+                    <div class="account-details">
+                        <h4><i class="fas fa-mobile"></i> Send Payment to M-Pesa</h4>
+                        <div class="account-info">
+                            <div class="account-number">+254-700-123456</div>
+                            <div class="account-name">SmileX Technologies</div>
+                        </div>
+                        <div class="payment-instructions">
+                            <h5>Payment Instructions:</h5>
+                            <ol>
+                                <li>Go to M-Pesa menu on your phone</li>
+                                <li>Select "Send Money"</li>
+                                <li>Enter recipient number: <strong>+254-700-123456</strong></li>
+                                <li>Enter amount: <strong>$<span class="payment-amount">9.99</span></strong></li>
+                                <li>Enter reference: <strong><span class="payment-reference">SMX-12345</span></strong></li>
+                                <li>Confirm with your PIN</li>
+                                <li>Enter transaction ID below after payment</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your M-Pesa Number</label>
+                        <input type="tel" class="form-input" id="mpesaNumber" placeholder="+254 7XX XXX XXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">M-Pesa Transaction ID</label>
+                        <input type="text" class="form-input" id="mpesaTxId" placeholder="MP123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Account Holder Name</label>
+                        <input type="text" class="form-input" id="mpesaName" placeholder="Your full name" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h4 style="color: gold; margin-bottom: 15px;"><i class="fas fa-receipt"></i> Order Summary</h4>
+                <div class="summary-row">
+                    <span>Plan:</span>
+                    <span id="summaryPlan">Starter Plan</span>
+                </div>
+                <div class="summary-row">
+                    <span>Billing:</span>
+                    <span id="summaryBilling">Monthly</span>
+                </div>
+                <div class="summary-row">
+                    <span>Processing Fee:</span>
+                    <span id="summaryFee">$0.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total Amount:</span>
+                    <span id="summaryTotal">$9.99</span>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button class="submit-payment" onclick="smileXPayment.processPayment()">
+                <i class="fas fa-lock"></i> Complete Secure Payment
+            </button>
+        </div>
+    </div>
+
+    <!-- Payment Processing Modal -->
+    <div class="processing-modal" id="processingModal">
+        <div class="processing-content">
+            <div class="processing-spinner"></div>
+            <h2 class="processing-title">Processing Payment</h2>
+            <p class="processing-message">Please wait while we verify your payment...</p>
+            <div class="processing-steps">
+                <div class="processing-step completed" id="step1">
+                    <i class="fas fa-check"></i>
+                    <span>Payment details received</span>
+                </div>
+                <div class="processing-step current" id="step2">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Verifying transaction</span>
+                </div>
+                <div class="processing-step" id="step3">
+                    <i class="fas fa-clock"></i>
+                    <span>Activating premium features</span>
+                </div>
+                <div class="processing-step" id="step4">
+                    <i class="fas fa-clock"></i>
+                    <span>Sending confirmation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="success-title">Payment Successful!</h2>
+            <p class="success-message">
+                Welcome to SmileX Premium! Your subscription has been activated and you now have access to all premium features.
+            </p>
+            <div class="success-details">
+                <h4>Subscription Details:</h4>
+                <p><strong>Plan:</strong> <span id="successPlan">Starter Plan</span></p>
+                <p><strong>Billing:</strong> <span id="successBilling">Monthly</span></p>
+                <p><strong>Amount Paid:</strong> <span id="successAmount">$9.99</span></p>
+                <p><strong>Transaction ID:</strong> <span id="successTxId">SMX-123456789</span></p>
+                <p><strong>Activated:</strong> <span id="successDate">January 1, 2024</span></p>
+            </div>
+            <button class="submit-payment" onclick="smileXPayment.closeSuccessModal()">
+                <i class="fas fa-rocket"></i> Start Using Premium
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        class SmileXPayment {
+            constructor() {
+                this.selectedPlan = null;
+                this.selectedPaymentMethod = 'card';
+                this.isYearly = false;
+                this.planPrices = {
+                    starter: { monthly: 9.99, yearly: 7.99 },
+                    pro: { monthly: 19.99, yearly: 15.99 },
+                    legend: { monthly: 39.99, yearly: 31.99 }
+                };
+                this.paymentFees = {
+                    card: 0,
+                    mtn: 1.5,
+                    vodafone: 1.5,
+                    airteltigo: 1.5,
+                    paypal: 0,
+                    applepay: 0,
+                    googlepay: 0,
+                    bitcoin: 0,
+                    ethereum: 0,
+                    usdt: 0,
+                    bank: 0,
+                    mpesa: 1.0
+                };
+                this.cryptoAddresses = {
+                    bitcoin: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+                    ethereum: '0x742d35Cc6634C0532925a3b8D4C9db96590c4C5d',
+                    usdt: 'TQn9Y2khEsLJW1ChVWFMSMeRDow5BNZP3v'
+                };
+                this.paymentReference = this.generateReference();
+                this.init();
+            }
+
+            init() {
+                this.setupBillingToggle();
+                this.setupFAQ();
+                this.setupScrollReveal();
+                this.setupCardEffects();
+                this.createParticles();
+                this.setupFormFormatting();
+                this.updatePaymentReferences();
+            }
+
+            generateReference() {
+                return 'SMX-' + Date.now().toString().slice(-8);
+            }
+
+            updatePaymentReferences() {
+                document.querySelectorAll('.payment-reference').forEach(el => {
+                    el.textContent = this.paymentReference;
+                });
+                const bankRef = document.getElementById('bankReference');
+                if (bankRef) {
+                    bankRef.textContent = this.paymentReference;
+                }
+            }
+
+            createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                const particleCount = 50;
+
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 15 + 's';
+                    particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                    particlesContainer.appendChild(particle);
+                }
+            }
+
+            setupBillingToggle() {
+                const toggleOptions = document.querySelectorAll('.toggle-option');
+                toggleOptions.forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        const billing = e.target.dataset.billing;
+                        this.isYearly = billing === 'yearly';
+                        
+                        toggleOptions.forEach(opt => opt.classList.remove('active'));
+                        e.target.classList.add('active');
+
+                        this.updatePricingDisplay();
+                    });
+                });
+            }
+
+            updatePricingDisplay() {
+                document.querySelectorAll('.pricing-card').forEach(card => {
+                    card.classList.add('loading');
+                });
+
+                setTimeout(() => {
+                    if (this.isYearly) {
+                        document.querySelectorAll('.monthly-price').forEach(el => el.style.display = 'none');
+                        document.querySelectorAll('.yearly-price').forEach(el => el.style.display = 'inline');
+                        document.querySelectorAll('.yearly-original').forEach(el => el.style.display = 'inline');
+                        document.querySelectorAll('.yearly-savings').forEach(el => el.style.display = 'block');
+                    } else {
+                        document.querySelectorAll('.monthly-price').forEach(el => el.style.display = 'inline');
+                        document.querySelectorAll('.yearly-price').forEach(el => el.style.display = 'none');
+                        document.querySelectorAll('.yearly-original').forEach(el => el.style.display = 'none');
+                        document.querySelectorAll('.yearly-savings').forEach(el => el.style.display = 'none');
+                    }
+
+                    document.querySelectorAll('.pricing-card').forEach(card => {
+                        card.classList.remove('loading');
+                    });
+                }, 300);
+            }
+
+            setupFAQ() {
+                document.querySelectorAll('.faq-question').forEach(question => {
+                    question.addEventListener('click', () => {
+                        const answer = question.nextElementSibling;
+                        const isActive = question.classList.contains('active');
+
+                        // Close all other FAQs
+                        document.querySelectorAll('.faq-question').forEach(q => {
+                            q.classList.remove('active');
+                            q.nextElementSibling.classList.remove('active');
+                        });
+
+                        // Toggle current FAQ
+                        if (!isActive) {
+                            question.classList.add('active');
+                            answer.classList.add('active');
+                        }
+                    });
+                });
+            }
+
+            setupScrollReveal() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                document.querySelectorAll('.scroll-reveal').forEach(el => {
+                    observer.observe(el);
+                });
+            }
+
+            setupCardEffects() {
+                document.querySelectorAll('.pricing-card').forEach((card, index) => {
+                    card.style.animationDelay = `${index * 0.2}s`;
+                    card.classList.add('fade-in');
+                });
+            }
+
+            setupFormFormatting() {
+                // Card number formatting
+                document.addEventListener('input', (e) => {
+                    if (e.target.id === 'cardNumber') {
+                        let value = e.target.value.replace(/\s/g, '');
+                        let formattedValue = value.replace(/(.{4})/g, '$1 ').trim();
+                        e.target.value = formattedValue;
+                    }
+                    
+                    // Expiry date formatting
+                    if (e.target.id === 'cardExpiry') {
+                        let value = e.target.value.replace(/\D/g, '');
+                        if (value.length >= 2) {
+                            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                        }
+                        e.target.value = value;
+                    }
+
+                    // Mobile number formatting
+                    if (e.target.type === 'tel') {
+                        let value = e.target.value.replace(/\D/g, '');
+                        if (e.target.id.includes('mtn') && !value.startsWith('233')) {
+                            value = '233' + value;
+                        }
+                        if (e.target.id.includes('vodafone') && !value.startsWith('233')) {
+                            value = '233' + value;
+                        }
+                        if (e.target.id.includes('airteltigo') && !value.startsWith('233')) {
+                            value = '233' + value;
+                        }
+                        if (e.target.id.includes('mpesa') && !value.startsWith('254')) {
+                            value = '254' + value;
+                        }
+                        e.target.value = '+' + value;
+                    }
+                });
+            }
+
+            openPaymentModal(plan) {
+                this.selectedPlan = plan;
+                const modal = document.getElementById('paymentModal');
+                const title = document.getElementById('modalTitle');
+                
+                const planNames = {
+                    starter: 'Starter Plan',
+                    pro: 'Pro Plan',
+                    legend: 'Legend Plan'
+                };
+
+                title.textContent = `Subscribe to ${planNames[plan]}`;
+                this.updateOrderSummary();
+                this.updatePaymentAmounts();
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            closePaymentModal() {
+                const modal = document.getElementById('paymentModal');
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+
+            selectPaymentMethod(method, element) {
+                this.selectedPaymentMethod = method;
+                
+                // Update active payment method
+                document.querySelectorAll('.payment-method').forEach(el => {
+                    el.classList.remove('active');
+                });
+                element.classList.add('active');
+
+                // Show appropriate payment form
+                document.querySelectorAll('.payment-form').forEach(form => {
+                    form.classList.remove('active');
+                });
+                document.getElementById(method + 'Form').classList.add('active');
+
+                this.updateOrderSummary();
+                this.updateCryptoAmounts();
+            }
+
+            getCurrentPrice() {
+                const billing = this.isYearly ? 'yearly' : 'monthly';
+                return this.planPrices[this.selectedPlan][billing];
+            }
+
+            updateOrderSummary() {
+                if (!this.selectedPlan) return;
+
+                const basePrice = this.getCurrentPrice();
+                const fee = (basePrice * this.paymentFees[this.selectedPaymentMethod] / 100);
+                const total = basePrice + fee;
+
+                const planNames = {
+                    starter: 'Starter Plan',
+                    pro: 'Pro Plan', 
+                    legend: 'Legend Plan'
+                };
+
+                document.getElementById('summaryPlan').textContent = planNames[this.selectedPlan];
+                document.getElementById('summaryBilling').textContent = this.isYearly ? 'Yearly' : 'Monthly';
+                document.getElementById('summaryFee').textContent = `$${fee.toFixed(2)}`;
+                document.getElementById('summaryTotal').textContent = `$${total.toFixed(2)}`;
+            }
+
+            updatePaymentAmounts() {
+                const amount = this.getCurrentPrice();
+                document.querySelectorAll('.payment-amount').forEach(el => {
+                    el.textContent = amount.toFixed(2);
+                });
+            }
+
+            updateCryptoAmounts() {
+                const baseAmount = this.getCurrentPrice();
+                const rates = {
+                    bitcoin: 0.000023,
+                    ethereum: 0.00041,
+                    usdt: 1.0
+                };
+
+                Object.keys(rates).forEach(crypto => {
+                    const amount = (baseAmount * rates[crypto]).toFixed(6);
+                    const amountEl = document.getElementById(crypto + 'Amount');
+                    if (amountEl) {
+                        amountEl.textContent = `${amount} ${crypto.toUpperCase()}`;
+                    }
+                });
+            }
+
+            copyToClipboard(elementId) {
+                const element = document.getElementById(elementId);
+                const text = element.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    this.showNotification('Address copied to clipboard!', 'success');
+                }).catch(() => {
+                    this.showNotification('Failed to copy address', 'error');
+                });
+            }
+
+            processPayment() {
+                const submitBtn = document.querySelector('.submit-payment');
+                const originalText = submitBtn.innerHTML;
+                
+                // Validate form
+                if (!this.validatePaymentForm()) {
+                    return;
+                }
+
+                // Show processing modal
+                this.showProcessingModal();
+                this.closePaymentModal();
+
+                // Collect payment data
+                const paymentData = this.collectPaymentData();
+
+                // Simulate payment processing with realistic steps
+                this.simulatePaymentProcessing(paymentData)
+                    .then((result) => {
+                        this.hideProcessingModal();
+                        
+                        if (result.success) {
+                            // Store subscription data
+                            localStorage.setItem('smileXPremium', 'true');
+                            localStorage.setItem('smileXPlan', this.selectedPlan);
+                            localStorage.setItem('smileXBilling', this.isYearly ? 'yearly' : 'monthly');
+                            localStorage.setItem('smileXActivated', new Date().toISOString());
+                            localStorage.setItem('smileXTransactionId', result.transactionId);
+
+                            this.showSuccessModal(result);
+                            this.showNotification('Payment successful! Premium activated!', 'success');
+                        } else {
+                            this.showNotification('Payment verification failed. Please check your details and try again.', 'error');
+                        }
+                    })
+                    .catch((error) => {
+                        this.hideProcessingModal();
+                        console.error('Payment error:', error);
+                        this.showNotification('Payment processing error. Please try again.', 'error');
+                    });
+            }
+
+            validatePaymentForm() {
+                const activeForm = document.querySelector('.payment-form.active');
+                const requiredFields = activeForm.querySelectorAll('input[required]');
+                
+                for (let field of requiredFields) {
+                    if (!field.value.trim()) {
+                        this.showNotification(`Please fill in ${field.previousElementSibling.textContent}`, 'warning');
+                        field.focus();
+                        return false;
+                    }
+                }
+
+                // Additional validation for specific payment methods
+                if (this.selectedPaymentMethod === 'card') {
+                    const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                    if (cardNumber.length < 13 || cardNumber.length > 19) {
+                        this.showNotification('Please enter a valid card number', 'warning');
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            collectPaymentData() {
+                const data = {
+                    plan: this.selectedPlan,
+                    billing: this.isYearly ? 'yearly' : 'monthly',
+                    paymentMethod: this.selectedPaymentMethod,
+                    amount: this.getCurrentPrice(),
+                    fee: (this.getCurrentPrice() * this.paymentFees[this.selectedPaymentMethod] / 100),
+                    reference: this.paymentReference,
+                    timestamp: new Date().toISOString()
+                };
+
+                // Add method-specific data
+                const activeForm = document.querySelector('.payment-form.active');
+                const formData = new FormData();
+                
+                activeForm.querySelectorAll('input').forEach(input => {
+                    if (input.value) {
+                        formData.append(input.id, input.value);
+                        data[input.id] = input.value;
+                    }
+                });
+
+                return data;
+            }
+
+            showProcessingModal() {
+                const modal = document.getElementById('processingModal');
+                modal.classList.add('active');
+            }
+
+            hideProcessingModal() {
+                const modal = document.getElementById('processingModal');
+                modal.classList.remove('active');
+            }
+
+            async simulatePaymentProcessing(paymentData) {
+                const steps = [
+                    { id: 'step1', text: 'Payment details received', delay: 500 },
+                    { id: 'step2', text: 'Verifying transaction', delay: 2000 },
+                    { id: 'step3', text: 'Activating premium features', delay: 1500 },
+                    { id: 'step4', text: 'Sending confirmation', delay: 1000 }
+                ];
+
+                for (let i = 0; i < steps.length; i++) {
+                    const step = steps[i];
+                    await new Promise(resolve => setTimeout(resolve, step.delay));
+                    
+                    // Update step status
+                    const stepEl = document.getElementById(step.id);
+                    stepEl.classList.remove('current');
+                    stepEl.classList.add('completed');
+                    stepEl.querySelector('i').className = 'fas fa-check';
+                    
+                    // Set next step as current
+                    if (i < steps.length - 1) {
+                        const nextStep = document.getElementById(steps[i + 1].id);
+                        nextStep.classList.add('current');
+                        nextStep.querySelector('i').className = 'fas fa-spinner fa-spin';
+                    }
+                }
+
+                // Simulate payment verification based on method
+                const successRates = {
+                    card: 0.95,
+                    mtn: 0.90,
+                    vodafone: 0.90,
+                    airteltigo: 0.90,
+                    paypal: 0.95,
+                    applepay: 0.98,
+                    googlepay: 0.98,
+                    bitcoin: 0.85,
+                    ethereum: 0.85,
+                    usdt: 0.90,
+                    bank: 0.80,
+                    mpesa: 0.90
+                };
+
+                const successRate = successRates[paymentData.paymentMethod] || 0.90;
+                const success = Math.random() < successRate;
+
+                return {
+                    success,
+                    transactionId: 'SMX-' + Date.now(),
+                    paymentData,
+                    verificationTime: new Date().toISOString()
+                };
+            }
+
+            showSuccessModal(result) {
+                const modal = document.getElementById('successModal');
+                const planNames = {
+                    starter: 'Starter Plan',
+                    pro: 'Pro Plan',
+                    legend: 'Legend Plan'
+                };
+
+                document.getElementById('successPlan').textContent = planNames[this.selectedPlan];
+                document.getElementById('successBilling').textContent = this.isYearly ? 'Yearly' : 'Monthly';
+                document.getElementById('successAmount').textContent = `$${this.getCurrentPrice().toFixed(2)}`;
+                document.getElementById('successTxId').textContent = result.transactionId;
+                document.getElementById('successDate').textContent = new Date().toLocaleDateString();
+
+                modal.classList.add('active');
+            }
+
+            closeSuccessModal() {
+                const modal = document.getElementById('successModal');
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                
+                // Update CTA buttons to show current subscription
+                this.updateSubscriptionStatus();
+            }
+
+            updateSubscriptionStatus() {
+                const plan = this.selectedPlan;
+                
+                document.querySelectorAll('.plan-cta').forEach(btn => {
+                    const card = btn.closest('.pricing-card');
+                    const cardPlan = card.dataset.plan;
+                    
+                    if (cardPlan === plan) {
+                        btn.innerHTML = '<i class="fas fa-check"></i> Current Plan';
+                        btn.style.background = 'gold';
+                        btn.style.color = 'black';
+                        btn.onclick = null;
+                    } else {
+                        btn.innerHTML = '<i class="fas fa-arrow-up"></i> Upgrade';
+                    }
+                });
+            }
+
+            showNotification(message, type = 'success') {
+                const notification = document.getElementById('notification');
+                notification.textContent = message;
+                notification.className = `notification ${type} show`;
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
             }
         }
 
-        // Billing toggle functionality
-        function initBillingToggle() {
-            const toggleOptions = document.querySelectorAll('.toggle-option');
-            const monthlyPrices = document.querySelectorAll('.monthly-price');
-            const yearlyPrices = document.querySelectorAll('.yearly-price');
-            const yearlyOriginals = document.querySelectorAll('.yearly-original');
-            const yearlySavings = document.querySelectorAll('.yearly-savings');
+        // Initialize SmileX Payment System
+        const smileXPayment = new SmileXPayment();
 
-            toggleOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    const billing = this.dataset.billing;
-                    
-                    // Update active state
-                    toggleOptions.forEach(opt => opt.classList.remove('active'));
-                    this.classList.add('active');
+        // Prevent right-click context menu
+        document.addEventListener('contextmenu', e => e.preventDefault());
 
-                    // Add loading effect
-                    document.querySelectorAll('.pricing-card').forEach(card => {
-                        card.classList.add('loading');
-                    });
-
-                    setTimeout(() => {
-                        // Update pricing display
-                        if (billing === 'yearly') {
-                            monthlyPrices.forEach(price => price.style.display = 'none');
-                            yearlyPrices.forEach(price => price.style.display = 'inline');
-                            yearlyOriginals.forEach(original => original.style.display = 'inline');
-                            yearlySavings.forEach(savings => savings.style.display = 'block');
-                        } else {
-                            monthlyPrices.forEach(price => price.style.display = 'inline');
-                            yearlyPrices.forEach(price => price.style.display = 'none');
-                            yearlyOriginals.forEach(original => original.style.display = 'none');
-                            yearlySavings.forEach(savings => savings.style.display = 'none');
-                        }
-
-                        // Remove loading effect
-                        document.querySelectorAll('.pricing-card').forEach(card => {
-                            card.classList.remove('loading');
-                        });
-                    }, 300);
-                });
-            });
-        }
-
-        // FAQ functionality
-        function initFAQ() {
-            const faqQuestions = document.querySelectorAll('.faq-question');
-            faqQuestions.forEach(question => {
-                question.addEventListener('click', function() {
-                    const answer = this.nextElementSibling;
-                    const icon = this.querySelector('i');
-                    
-                    // Close other open FAQs
-                    faqQuestions.forEach(otherQuestion => {
-                        if (otherQuestion !== this) {
-                            const otherAnswer = otherQuestion.nextElementSibling;
-                            const otherIcon = otherQuestion.querySelector('i');
-                            otherAnswer.classList.remove('active');
-                            otherQuestion.classList.remove('active');
-                        }
-                    });
-                    
-                    // Toggle current FAQ
-                    answer.classList.toggle('active');
-                    this.classList.toggle('active');
-                });
-            });
-        }
-
-        // Scroll reveal animation
-        function initScrollReveal() {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('revealed');
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.scroll-reveal').forEach(el => {
-                observer.observe(el);
-            });
-        }
-
-        // Enhanced card hover effects
-        function initCardEffects() {
-            document.querySelectorAll('.pricing-card').forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    if (this.classList.contains('recommended')) {
-                        this.style.transform = 'scale(1.08) translateY(-20px) rotateX(5deg)';
-                    } else {
-                        this.style.transform = 'translateY(-15px) rotateX(5deg)';
-                    }
-                });
-
-                card.addEventListener('mouseleave', function() {
-                    if (this.classList.contains('recommended')) {
-                        this.style.transform = 'scale(1.08) translateY(-10px)';
-                    } else {
-                        this.style.transform = 'translateY(0)';
-                    }
-                });
-            });
-        }
-
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
-            initBillingToggle();
-            initFAQ();
-            initScrollReveal();
-            initCardEffects();
-
-            // Disable right-click context menu
-            document.addEventListener('contextmenu', event => event.preventDefault());
-
-            // Add stagger animation to pricing cards
-            document.querySelectorAll('.pricing-card').forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.2}s`;
-                card.classList.add('fade-in');
-            });
-        });
-
-        // Smooth scrolling for better UX
+        // Smooth scrolling
         document.documentElement.style.scrollBehavior = 'smooth';
-   
+
+        // Check if user already has premium
+        if (localStorage.getItem('smileXPremium') === 'true') {
+            const plan = localStorage.getItem('smileXPlan');
+            const billing = localStorage.getItem('smileXBilling');
+            
+            // Update CTA buttons to show current subscription
+            document.querySelectorAll('.plan-cta').forEach(btn => {
+                const card = btn.closest('.pricing-card');
+                const cardPlan = card.dataset.plan;
+                
+                if (cardPlan === plan) {
+                    btn.innerHTML = '<i class="fas fa-check"></i> Current Plan';
+                    btn.style.background = 'gold';
+                    btn.style.color = 'black';
+                    btn.onclick = null;
+                } else {
+                    btn.innerHTML = '<i class="fas fa-arrow-up"></i> Upgrade';
+                }
+            });
+
+            // Show premium status in header
+            const badge = document.querySelector('.badge span');
+            badge.textContent = `Premium ${plan.charAt(0).toUpperCase() + plan.slice(1)} Member`;
+        }
     </script>
 </body>
 </html>
