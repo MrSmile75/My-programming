@@ -1,2038 +1,2249 @@
-<!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>SmileX: Multiverse Interface</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmileX - Live Social Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+
+  <style>
+      :root {
+          --primary-color: #6a11cb;
+          --secondary-color: #2575fc;
+          --background-color: #f4f7f6;
+          --text-color: #333;
+          --accent-color: #00b4db;
+      }
+
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          scrollbar-width: thick;
+          scrollbar-color: auto;
+      }
+
+      body {
+          font-family: 'Orbitron', sans-serif;
+          background: black;
+          color: white;
+      }
+
+      .chat-preloader {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: black;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 10000;
+          pointer-events: none;
+          font-family: 'Orbitron', sans-serif;
+      }
+
+      .loader-container {
+          background: transparent;
+          pointer-events: none;
+          text-align: center;
+      }
+
+      .chat-bubble-wrapper {
+          position: relative;
+          width: 200px;
+          height: 200px;
+          margin: 0 auto 20px;
+      }
+
+      .chat-bubble {
+          position: absolute;
+          width: 150px;
+          height: 150px;
+          background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+          border-radius: 50% 50% 50% 10%;
+          box-shadow: 
+              0 15px 30px rgba(0,0,0,0.2),
+              inset 0 -5px 15px rgba(255,255,255,0.1);
+          animation: 
+              float 3s ease-in-out infinite,
+              pulse 2s ease-in-out infinite alternate;
+          transform-origin: center;
+      }
+
+      .chat-bubble::before {
+          content: '';
+          position: absolute;
+          bottom: -30px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 100px;
+          height: 50px;
+          background: rgba(255,255,255,0.2);
+          border-radius: 50%;
+          filter: blur(10px);
+      }
+
+      .loading-text {
+          font-size: 24px;
+          font-weight: 600;
+          color: white;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin-bottom: 20px;
+      }
+
+      .progress-container {
+          width: 350px;
+          height: 15px;
+          background: rgba(255,255,255,0.1);
+          border-radius: 20px;
+          overflow: hidden;
+          margin: 0 auto 20px;
+      }
+
+      .progress-bar {
+          width: 0;
+          height: 100%;
+          background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+          border-radius: 20px;
+          animation: progress 2s ease-in-out infinite;
+      }
+
+      .dots {
+          display: flex;
+          gap: 10px;
+          justify-content: center;
+      }
+
+      .dot {
+          width: 15px;
+          height: 15px;
+          background: var(--primary-color);
+          border-radius: 50%;
+          animation: dot-pulse 1.5s ease-in-out infinite;
+      }
+
+      .dot:nth-child(2) { animation-delay: 0.3s; }
+      .dot:nth-child(3) { animation-delay: 0.6s; }
+
+      @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-20px); }
+      }
+
+      @keyframes pulse {
+          0% { transform: scale(0.95); }
+          100% { transform: scale(1.05); }
+      }
+
+      @keyframes progress {
+          0% { width: 0; }
+          50% { width: 100%; }
+          100% { width: 0; }
+      }
+
+      @keyframes dot-pulse {
+          0%, 100% { transform: scale(1); opacity: 0.7; }
+          50% { transform: scale(1.2); opacity: 1; }
+      }
+
+      .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.8);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 9999;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .onboarding-container {
+          position: relative;
+          max-width: 700px;
+          width: 90%;
+          max-height: 80vh;
+          margin: 0 auto;
+          background: white;
+          color: black;
+          border-radius: 15px;
+          overflow-y: auto;
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          padding: 40px;
+          transform: scale(0.7);
+          opacity: 0;
+          transition: all 0.3s ease;
+          font-family: 'Orbitron', sans-serif;
+      }
+
+      .overlay.active {
+          opacity: 1;
+          visibility: visible;
+      }
+
+      .overlay.active .onboarding-container {
+          transform: scale(1);
+          opacity: 1;
+      }
+
+      .onboarding-header {
+          background: var(--primary-color);
+          color: white;
+          text-align: center;
+          padding: 20px;
+          margin: -40px -40px 20px -40px;
+          border-radius: 15px 15px 0 0;
+      }
+
+      .form-control, .form-select {
+          width: 100%;
+          padding: 12px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          margin-bottom: 15px;
+          font-family: 'Orbitron', sans-serif;
+      }
+
+      .consent-section {
+          background-color: #f4f6f7;
+          border-radius: 10px;
+          padding: 15px;
+          margin-top: 20px;
+      }
+
+      .consent-item {
+          display: flex;
+          align-items: center;
+          margin-bottom: 10px;
+      }
+
+      .consent-item input {
+          margin-right: 10px;
+      }
+
+      #submitBtn {
+          background: linear-gradient(135deg, #00ff88, #00cc6a);
+          border: none;
+          color: white;
+          padding: 12px 24px;
+          border-radius: 25px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          width: 100%;
+      }
+
+      #submitBtn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+      }
+
+      #submitBtn:disabled {
+          background: #ccc;
+          cursor: not-allowed;
+          transform: none;
+          box-shadow: none;
+      }
+
+      .post-card {
+          transition: all 0.3s ease;
+      }
+
+      .post-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .vote-button {
+          transition: all 0.2s ease;
+          cursor: pointer;
+      }
+
+      .vote-button:hover {
+          transform: scale(1.1);
+      }
+
+      .vote-button.voted-up {
+          color: #8b5cf6 !important;
+      }
+
+      .vote-button.voted-down {
+          color: #3b82f6 !important;
+      }
+
+      .fade-in {
+          animation: fadeIn 0.5s ease-out;
+      }
+
+      @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+      }
+
+      .chat-container {
+          position: fixed;
+          bottom: 80px;
+          right: 20px;
+          width: 350px;
+          max-height: 500px;
+          background: #1a1a1a;
+          border-radius: 12px;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+          display: flex;
+          flex-direction: column;
+          z-index: 1000;
+          transform: translateY(20px);
+          opacity: 0;
+          transition: all 0.3s ease;
+          border: 1px solid #333;
+      }
+
+      .chat-container.active {
+          transform: translateY(0);
+          opacity: 1;
+      }
+
+      .chat-header {
+          padding: 15px;
+          background: linear-gradient(135deg, #6a11cb, #2575fc);
+          color: white;
+          border-top-left-radius: 12px;
+          border-top-right-radius: 12px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+
+      .chat-close {
+          background: none;
+          border: none;
+          color: white;
+          font-size: 18px;
+          cursor: pointer;
+      }
+
+      .chat-messages {
+          flex: 1;
+          padding: 15px;
+          overflow-y: auto;
+          background: #1a1a1a;
+          max-height: 300px;
+      }
+
+      .message {
+          margin-bottom: 15px;
+          display: flex;
+          flex-direction: column;
+      }
+
+      .message-user {
+          font-weight: 600;
+          font-size: 12px;
+          color: #8b5cf6;
+          margin-bottom: 5px;
+      }
+
+      .message-text {
+          background: #2d2d37;
+          padding: 10px 15px;
+          border-radius: 18px;
+          font-size: 14px;
+          max-width: 80%;
+          word-wrap: break-word;
+          color: white;
+      }
+
+      .message-time {
+          font-size: 10px;
+          color: #777;
+          margin-top: 5px;
+          align-self: flex-end;
+      }
+
+      .chat-input-container {
+          padding: 15px;
+          background: #22222a;
+          border-bottom-left-radius: 12px;
+          border-bottom-right-radius: 12px;
+          display: flex;
+          align-items: center;
+      }
+
+      .chat-input {
+          flex: 1;
+          padding: 10px 15px;
+          border-radius: 20px;
+          border: none;
+          background: #383844;
+          color: white;
+          font-family: 'Orbitron', sans-serif;
+          font-size: 14px;
+          outline: none;
+      }
+
+      .chat-send {
+          background: linear-gradient(135deg, #6a11cb, #2575fc);
+          border: none;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          margin-left: 10px;
+          color: white;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+      }
+
+      .chat-send:hover {
+          transform: scale(1.05);
+      }
+
+      .chat-toggle {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          width: 60px;
+          height: 60px;
+          background: linear-gradient(135deg, #6a11cb, #2575fc);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 24px;
+          cursor: pointer;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+          z-index: 1000;
+          transition: all 0.3s ease;
+          border: none;
+      }
+
+      .chat-toggle:hover {
+          transform: scale(1.1);
+      }
+
+      .chat-toggle.active {
+          transform: rotate(180deg);
+      }
+
+      .notification {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: linear-gradient(135deg, #00ff88, #00cc6a);
+          color: white;
+          padding: 15px 20px;
+          border-radius: 8px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+          z-index: 10001;
+          transform: translateX(400px);
+          transition: transform 0.3s ease;
+      }
+
+      .notification.show {
+          transform: translateX(0);
+      }
+
+      .gradient-text {
+          background: linear-gradient(90deg, #f43f5e 0%, #8b5cf6 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+      }
+
+      ::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+          background: #1a1a1a;
+      }
+
+      ::-webkit-scrollbar-thumb {
+          background: #6a11cb;
+          border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+          background: #2575fc;
+      }
+
+      .badge {
+          display: inline-flex;
+          align-items: center;
+          padding: 0.15rem 0.5rem;
+          border-radius: 9999px;
+          font-size: 0.75rem;
+          font-weight: 500;
+      }
+
+      .badge-private {
+          background-color: #f97316;
+          color: white;
+      }
+
+      .badge-public {
+          background-color: #10b981;
+          color: white;
+      }
+
+      .community-card {
+          transition: all 0.3s ease;
+      }
+
+      .community-card:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.2);
+      }
+
+      .tab-button {
+          padding: 0.75rem 1rem;
+          border-radius: 0.5rem;
+          font-weight: 500;
+          transition: all 0.2s ease;
+      }
+
+      .tab-button.active {
+          background-color: #6a11cb;
+          color: white;
+      }
+
+      .tab-button:not(.active):hover {
+          background-color: rgba(106, 17, 203, 0.1);
+      }
+
+      @media (max-width: 640px) {
+          .chat-container {
+              width: 90%;
+              right: 5%;
+              bottom: 100px;
+              max-height: 60vh;
+          }
+          
+          .onboarding-container {
+              width: 95%;
+              padding: 20px;
+              max-height: 90vh;
+          }
+      }
+  </style>
 </head>
+
 <body>
-    <style>
-        :root {
-            --primary-color: #00f5d4;
-            --secondary-color: #8c1eff;
-            --background-color: #0a0a1a;
-            --text-color: #e0e0ff;
-            --glow-color: rgba(0, 245, 212, 0.4);
-            --bg-primary: #0f1020;
-            --bg-secondary: #1a1a2e;
-            --color-accent: #4a6cf7;
-            --color-text-primary: #e6e6e6;
-            --color-text-secondary: #a0a0a0;
-            --transition-speed: 0.3s;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary-color) var(--background-color);
-        }
-
-        body {
-            font-family: 'Orbitron', sans-serif;
-            background: radial-gradient(ellipse at bottom, var(--background-color) 0%, #090913 100%);
-            color: var(--text-color);
-            overflow-x: hidden;
-            perspective: 1000px;
-        }
-
-        /* Map Styles */
-        #map {
-            height: 80vh;
-            width: 100%;
-            position: relative;
-            left: 0;
-        }
-
-        /* Animations */
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes particle-flow {
-            0% { 
-                transform: translateY(0) rotate(0deg) scale(1);
-            }
-            100% { 
-                transform: translateY(100vh) rotate(360deg) scale(0.5);
-            }
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-20px) scale(1.1); }
-        }
-
-        @keyframes particle-float {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(180deg); }
-            100% { transform: translateY(0) rotate(360deg); }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Navigation Bar */
-        .navigation {
-            position: sticky;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            background: rgba(15, 16, 32, 0.8);
-            backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid rgba(74, 108, 247, 0.1);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px 20px;
-        }
-
-        /* Logo Design */
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-decoration: none;
-            animation: pulse 2s infinite;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-            background: linear-gradient(45deg, var(--primary-color), #7b68ee);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .link {
-            color: white;
-            text-decoration: none;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .link:hover {
-            color: var(--primary-color);
-            transform: translateY(-2px);
-        }
-
-        /* Navigation Links */
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .nav-link {
-            position: relative;
-            text-decoration: none;
-            color: var(--primary-color);
-            font-weight: 500;
-            transition: all var(--transition-speed) ease;
-            padding: 5px 10px;
-            border-radius: 8px;
-        }
-
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: var(--primary-color);
-            transition: width var(--transition-speed) ease;
-        }
-
-        .nav-link:hover {
-            color: var(--color-text-primary);
-            transform: translateY(-3px);
-        }
-
-        .nav-link:hover::before {
-            width: 100%;
-        }
-
-        .nav-link.active {
-            color: white;
-            font-weight: 600;
-        }
-
-        .nav-link.active::before {
-            width: 100%;
-            background: var(--color-accent);
-        }
-
-        /* Navigation Buttons */
-        .nav-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn-contact {
-            padding: 8px 20px;
-            background: transparent;
-            color: white;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all var(--transition-speed) ease;
-            border: 2px solid transparent;
-        }
-
-        .btn-contact:hover {
-            background: transparent;
-            border-color: var(--color-accent);
-            color: var(--color-accent);
-            transform: translateY(-3px);
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .menu-bar {
-            width: 25px;
-            height: 3px;
-            background-color: var(--color-text-primary);
-            margin: 4px 0;
-            transition: 0.4s;
-        }
-
-        /* Dynamic Text */
-        .dynamic-text-container {
-            text-align: center;
-            font-size: 3rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .dynamic-text {
-            position: relative;
-            display: inline-block;
-            transition: all 0.5s ease;
-            opacity: 1;
-        }
-
-        .dynamic-text.fade-out {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .cursor {
-            display: inline-block;
-            margin-left: 5px;
-            width: 10px;
-            height: 40px;
-            background-color: #007bff;
-            animation: blink 0.7s infinite;
-        }
-
-        /* Main Container */
-        .main-container {
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 10;
-        }
-
-        .hero-section {
-            display: flex;
-            align-items: center;
-            min-height: 100vh;
-            position: relative;
-            transform-style: preserve-3d;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 20;
-            max-width: 900px;
-            transform: translateZ(50px);
-        }
-
-        .hero-title {
-            font-size: 5rem;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px var(--glow-color);
-        }
-
-        .main-button {
-            display: inline-flex;
-            padding: 15px 50px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: var(--background-color);
-            text-decoration: none;
-            border-radius: 100px;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            font-weight: bold;
-            letter-spacing: 2px;
-            box-shadow: 0 0 40px var(--glow-color);
-        }
-
-        .main-button:hover {
-            box-shadow: 0 4px 80px var(--primary-color);
-            transform: scale(1.05);
-        }
-
-        /* Canvas */
-        #main-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        /* Carousel */
-        .main-carousel {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .carousel-wrapper {
-            width: 100%;
-            max-width: 1600px;
-            position: relative;
-            transform-style: preserve-3d;
-        }
-
-        .carousel-slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.8s ease;
-            transform: translateZ(-1000px) rotateY(45deg) scale(0.8);
-        }
-
-        .carousel-slide.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateZ(0) rotateY(0) scale(1);
-            z-index: 10;
-        }
-
-        .slide-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            filter: brightness(0.6);
-            transition: transform 0.8s ease;
-        }
-
-        .slide-background::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(106, 17, 203, 0.3), rgba(37, 117, 252, 0.3));
-        }
-
-        .particle-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            animation: particle-float 5s infinite;
-        }
-
-        .slide-content {
-            position: relative;
-            z-index: 20;
-            text-align: center;
-            max-width: 800px;
-            padding: 40px;
-            transform: translateZ(100px);
-            transition: all 0.8s ease;
-        }
-
-        .slide-title {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .slide-description {
-            font-size: 1.4rem;
-            margin-bottom: 30px;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .slide-cta {
-            display: inline-block;
-            padding: 15px 40px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            transition: all 0.8s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .slide-cta:hover {
-            transform: scale(1.1) translateZ(50px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-        }
-
-        /* Indicators */
-        .main-indicators {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            z-index: 30;
-        }
-
-        .indicator {
-            width: 10px;
-            height: 10px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.8s ease;
-        }
-
-        .indicator.active {
-            width: 30px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border-radius: 20px;
-        }
-
-        /* Feature Grid */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .feature-card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.4s ease;
-            transform-style: preserve-3d;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(0,245,212,0.1), transparent 70%);
-            transform: rotate(-45deg);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10,10,26,0.9);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(20px);
-        }
-
-        .modal-content {
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 3rem;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        /* Review Slider */
-        .review-slider-container {
-            position: relative;
-            bottom: 30px;
-            right: 30px;
-            width: 950px;
-            max-width: 95vw;
-            z-index: 10000;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .review-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1), 0 10px 15px -3px rgba(0,0,0,0.05);
-            padding: 30px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
-        }
-
-        .review-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(16,185,129,0.1));
-            opacity: 0.5;
-            z-index: -1;
-            filter: blur(80px);
-        }
-
-        .reviewer-profile {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .reviewer-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--primary-color);
-            box-shadow: 0 10px 20px rgba(59,130,246,0.2);
-            margin-right: 20px;
-            transition: transform 0.4s ease;
-        }
-
-        .reviewer-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .reviewer-name {
-            font-weight: 700;
-            font-size: 22px;
-            color: #1f2937;
-        }
-
-        .reviewer-role {
-            color: #6b7280;
-            font-size: 16px;
-        }
-
-        .stars-container {
-            display: flex;
-            margin: 15px 0;
-        }
-
-        .star {
-            font-size: 26px;
-            margin-right: 5px;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255,215,0,0.3);
-        }
-
-        .review-text {
-            color: #4b5563;
-            font-size: 17px;
-            line-height: 1.7;
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-
-        .progress-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 5px;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            width: 0;
-            transition: width 10s linear;
-        }
-
-        .review-card.fade-out {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-
-        .review-card.fade-in {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* Assistant Trigger */
-        #assistant-trigger {
-            position: fixed;
-            bottom: 30px;
-            right: 50px;
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            border-radius: 50%;
-            border: 4px solid rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 20px 50px rgba(37,117,252,0.3);
-            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            z-index: 1000;
-            animation: bounce 2s infinite;
-        }
-
-        #assistant-trigger:hover {
-            transform: scale(1.15) rotate(360deg);
-            box-shadow: 0 30px 60px rgba(37,117,252,0.5);
-        }
-
-        #assistant-trigger .icon {
-            font-size: 20px;
-            color: white;
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
-            animation: pulse 2.5s infinite;
-        }
-
-        /* Chat Widget */
-        #chat-widget {
-            position: fixed;
-            bottom: 150px;
-            right: 50px;
-            width: 350px;
-            height: 300px;
-            background: rgba(15,14,23,0.9);
-            border-radius: 25px;
-            backdrop-filter: blur(15px);
-            border: 2px solid rgba(255,255,255,0.1);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-            display: none;
-            z-index: 1001;
-            transform-origin: bottom right;
-            animation: slideIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-
-        .chat-header {
-            background: rgba(37,117,252,0.2);
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .chat-header h2 {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-weight: 700;
-            color: var(--color-text-primary);
-        }
-
-        .chat-header .close-btn {
-            background: none;
-            border: none;
-            color: var(--primary-color);
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .chat-header .close-btn:hover {
-            transform: rotate(180deg) scale(1.2);
-        }
-
-        .chat-content {
-            padding: 20px;
-            text-align: center;
-        }
-
-        .chat-content p {
-            color: var(--color-text-secondary);
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        .chat-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .chat-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 13px;
-            border: none;
-            border-radius: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.5s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .login-btn {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: white;
-        }
-
-        .signup-btn {
-            background: rgba(255,255,255,0.1);
-            color: var(--color-text-primary);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .chat-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: all 0.6s ease;
-        }
-
-        .chat-btn:hover::before {
-            left: 100%;
-        }
-
-        .chat-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-        }
-
-        .btn-icon {
-            font-size: 16px;
-        }
-
-        /* Footer */
-        footer {
-            background-color: transparent;
-            color: white;
-            padding: 40px 20px;
-            position: relative;
-            z-index: 10;
-            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .footer-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-column {
-            flex: 1 1 220px;
-            margin: 15px;
-            min-width: 200px;
-            color: white;
-        }
-
-        .footer-column h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .footer-column h3::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 2px;
-            background: var(--primary-color);
-            margin-top: 5px;
-        }
-
-        .footer-column ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .footer-column ul li {
-            margin-bottom: 10px;
-        }
-
-        .footer-column ul li a {
-            text-decoration: none;
-            color: white;
-            font-size: 14px;
-            transition: color 0.3s ease;
-        }
-
-        .footer-column ul li a:hover {
-            color: var(--primary-color);
-        }
-
-        .newsletter {
-            text-align: center;
-            margin: 40px 0;
-        }
-
-        .newsletter h2 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-        }
-
-        .newsletter p {
-            font-size: 14px;
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .newsletter form {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .newsletter input[type="text"],
-        .newsletter input[type="email"] {
-            padding: 10px 15px;
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 25px;
-            font-size: 14px;
-            outline: none;
-            min-width: 220px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-
-        .newsletter input::placeholder {
-            color: rgba(255,255,255,0.7);
-        }
-
-        .newsletter button {
-            padding: 10px 25px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 14px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .newsletter button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .social-icons {
-            text-align: center;
-            margin: 30px 0;
-        }
-
-        .social-icons a {
-            margin: 0 10px;
-            display: inline-flex;
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-color);
-            font-size: 18px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .social-icons a:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: scale(1.2);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 14px;
-            color: #aaa;
-            border-top: 1px solid #333;
-            padding-top: 20px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: rgba(15, 16, 32, 0.95);
-                padding: 20px;
-            }
-
-            .mobile-menu-toggle {
-                display: block;
-            }
-
-            .nav-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .btn-contact {
-                width: 100%;
-                text-align: center;
-            }
-
-            .dynamic-text-container {
-                font-size: 2rem;
-            }
-
-            .slide-title {
-                font-size: 2.5rem;
-            }
-
-            .slide-description {
-                font-size: 1rem;
-            }
-
-            .hero-title {
-                font-size: 3rem;
-            }
-
-            .footer-container {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .footer-column {
-                margin: 10px 0;
-            }
-
-            #map {
-                height: 60vh;
-            }
-
-            .review-slider-container {
-                width: 95%;
-                right: 2.5%;
-            }
-
-            #chat-widget {
-                width: 90%;
-                right: 5%;
-            }
-
-            #assistant-trigger {
-                width: 70px;
-                height: 70px;
-                right: 20px;
-                bottom: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .slide-title {
-                font-size: 2rem;
-            }
-
-            .main-container {
-                padding: 1rem;
-            }
-
-            .feature-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-        }
-    </style>
-
-    <nav class="navigation">
-        <div class="nav-container">
-            <a href="aboutus.html" class="logo">
-                SMILE
-                <div class="logo-icon">X</div>
-            </a>
-
-            <div class="nav-links">
-                <a href="#home" class="nav-link active">Home</a>
-                <a href="service.html" class="link">Contact us</a>
-                <a href="login.html" class="link">@email</a>
-            </div>
-
-            <div class="dynamic-text-container">
-                <span id="dynamic-text" class="dynamic-text">Hi,</span>
-                <span class="cursor"></span>
-            </div>
-
-            <div class="nav-buttons">
-                <a href="cancel.html" class="btn-contact">Get Premium</a>
-            </div>
-
-            <div class="mobile-menu-toggle">
-                <div class="menu-bar"></div>
-                <div class="menu-bar"></div>
-                <div class="menu-bar"></div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Assistant Trigger -->
-    <div id="assistant-trigger" onclick="toggleChat()">
-        <span class="icon">?</span>
-    </div>
-
-    <!-- Chat Widget -->
-    <div id="chat-widget">
-        <div class="chat-header">
-            <h2>
-                <span>🌐</span>
-                Menu Box
-            </h2>
-            <button class="close-btn" onclick="toggleChat()">
-                ✕
-            </button>
-        </div>
-
-        <div class="chat-content">
-            <p>HELLO..</p>
-            <p>Choose your access path:</p>
-
-            <div class="chat-actions">
-                <button class="chat-btn login-btn" onclick="handleLoginSignup()">
-                    <span class="btn-icon">🔐</span>
-                    Login or Signup
-                </button>
-                
-                <button class="chat-btn signup-btn" onclick="unlockPremiumOffer()">
-                    <span class="btn-icon">🚀</span>
-                    Unlock premium offer
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <canvas id="main-canvas"></canvas>
-    
-    <div class="main-container">
-        <section class="hero-section">
-            <div class="hero-content">
-                <h1 class="hero-title">WELCOME</h1>
-                <p class="text-xl text-gray-300 my-4">
-                    Explore the infinite realms of possibility, 
-                    where you get good experience.
-                </p>
-                <div class="flex space-x-4">
-                    <a href="categories.html" class="main-button" id="exploreButton">
-                        Begin Exploration
-                    </a>
-                    <a href="learn.html" class="main-button bg-transparent border-2 border-primary text-primary" id="learnMoreButton">
-                        Learn More
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <div class="main-carousel" id="mainCarousel">
-            <div class="carousel-wrapper" id="carouselWrapper">
-                <!-- Slides will be dynamically inserted -->
-            </div>
-            
-            <div class="main-indicators" id="mainIndicators">
-                <!-- Indicators will be dynamically inserted -->
-            </div>
-        </div>
-
-        <br><br>
-
-        <div id="reviewSlider" class="review-slider-container">
-            <div class="review-card" id="reviewCard">
-                <div class="review-overlay"></div>
-                <div class="progress-bar" id="progressBar"></div>
-                
-                <div class="reviewer-profile">
-                    <img id="reviewerImage" class="reviewer-image" src="/placeholder.svg" alt="Reviewer">
-                    <div class="reviewer-info">
-                        <span id="reviewerName" class="reviewer-name"></span>
-                        <span id="reviewerRole" class="reviewer-role"></span>
-                    </div>
-                </div>
-
-                <div id="starsContainer" class="stars-container"></div>
-                
-                <p id="reviewText" class="review-text"></p>
-            </div>
-        </div>
-
-        <br><br>
-        <div id="map"></div>
-
-        <section class="feature-grid">
-            <div class="feature-card" data-modal="modal1">
-                <h3 class="text-2xl font-bold mb-4">Exploration</h3>
-                <p>Explore by having lots of fun and gaming activities and more</p>
-            </div>
-            <div class="feature-card" data-modal="modal2">
-                <h3 class="text-2xl font-bold mb-4">Learning</h3>
-                <p>Adaptive intelligence meets personalized growth</p>
-            </div>
-            <div class="feature-card" data-modal="modal3">
-                <h3 class="text-2xl font-bold mb-4">E-commerce</h3>
-                <p>Buy products with its affordable discount</p>
-            </div>
-            <div class="feature-card" data-modal="modal4">
-                <h3 class="text-2xl font-bold mb-4">Socialization</h3>
-                <p>Chat, research, explore with ai</p>
-            </div>
-        </section>
-    </div>
-
-    <!-- Modals -->
-    <div id="modal1" class="modal">
-        <div class="modal-content">
-            <h2 class="text-3xl font-bold mb-4">Exploration</h2>
-            <p class="mb-4">Proceed to explore more site ahead of you</p>
-            <button class="close-modal main-button">Close</button>
-        </div>
-    </div>
-
-    <div id="modal2" class="modal">
-        <div class="modal-content">
-            <h2 class="text-3xl font-bold mb-4">Learning</h2>
-            <p class="mb-4">Adaptive intelligence that evolves with your potential</p>
-            <button class="close-modal main-button">Close</button>
-        </div>
-    </div>
-
-    <div id="modal3" class="modal">
-        <div class="modal-content">
-            <h2 class="text-3xl font-bold mb-4">E-commerce</h2>
-            <p class="mb-4">Explore with the best deal and offers</p>
-            <button class="close-modal main-button">Close</button>
-        </div>
-    </div>
-
-    <div id="modal4" class="modal">
-        <div class="modal-content">
-            <h2 class="text-3xl font-bold mb-4">Socialization</h2>
-            <p class="mb-4">Connect and learn more to Socialize</p>
-            <button class="close-modal main-button">Close</button>
-        </div>
-    </div>
-
-    <footer>
-        <div class="newsletter">
-            <h2>Join Our Newsletter</h2>
-            <p>Be the first to receive our latest updates and offers.</p>
-            <form onsubmit="return validateNewsletter(event)">
-                <input type="text" placeholder="Your Name" id="name">
-                <input type="email" placeholder="Your Email" id="email">
-                <button type="submit">Subscribe</button>
-            </form>
-            <p id="error-message" style="color: red; margin-top: 10px;"></p>
-        </div>
-
-        <div class="footer-container">
-            <div class="footer-column">
-                <h3>OUR TEAM</h3>
-                <ul>
-                    <li><a href="aboutus.html">About us</a></li>
-                    <li><a href="service.html">Contact Us</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h3>Resources</h3>
-                <ul>
-                    <li><a href="login.html">LOGIN_SIGNUP FORM</a></li>
-                    <li><a href="cancel.html">PREMIUM</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h3>Explore</h3>
-                <ul>
-                    <li><a href="education1.html">Knowledge Sphere</a></li>
-                    <li><a href="game1.html">Gaming Realms</a></li>
-                    <li><a href="movie.html">Cinema</a></li>
-                    <li><a href="e-commerce.html">Marketplace</a></li>
-                    <li><a href="chat.html">Chat</a></li>
-                    <li><a href="news.html">News Feed</a></li>
-                    <li><a href="ai1.html">AI Generator</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h3>Legal</h3>
-                <ul>
-                    <li><a href="#">LOADING...</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="social-icons">
-            <a href="https://www.facebook.com" target="_blank" title="Facebook"><i class='bx bxl-facebook-circle'></i></a>
-            <a href="https://www.instagram.com" target="_blank" title="Instagram"><i class='bx bxl-instagram'></i></a>
-            <a href="https://www.x.com" target="_blank" title="Twitter"><i class='bx bxl-twitter'></i></a>
-            <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
-            <a href="https://www.youtube.com" target="_blank" title="YouTube"><i class='bx bxl-youtube'></i></a>
-        </div>
-
-        <div class="footer-bottom">
-            &copy; 2026 SmileX. All rights reserved.
-        </div>
-    </footer>
-
-    <script>
-        // Navigation functionality
-        document.addEventListener('DOMContentLoaded', () => {
-            const navLinks = document.querySelectorAll('.nav-link');
-            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-            const navLinksContainer = document.querySelector('.nav-links');
-
-            // Active Link Handling
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                });
-            });
-
-            // Mobile Menu Toggle
-            if (mobileMenuToggle) {
-                mobileMenuToggle.addEventListener('click', () => {
-                    navLinksContainer.classList.toggle('active');
-                    mobileMenuToggle.classList.toggle('open');
-                });
-            }
-
-            // Smooth Scrolling
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = link.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        });
-
-        // Carousel Class
-        class MainCarousel {
-            constructor(options) {
-                this.container = document.getElementById(options.containerId);
-                this.wrapper = document.getElementById('carouselWrapper');
-                this.indicatorsContainer = document.getElementById('mainIndicators');
-                this.slides = options.slides;
-                this.currentIndex = 0;
-                this.autoplayInterval = options.autoplayInterval || 5000;
-
-                this.init();
-            }
-
-            init() {
-                this.renderCarousel();
-                this.setupEventListeners();
-                this.createParticleEffects();
-                this.startAutoplay();
-            }
-
-            renderCarousel() {
-                this.wrapper.innerHTML = '';
-                this.indicatorsContainer.innerHTML = '';
-
-                this.slides.forEach((slide, index) => {
-                    // Create Slide
-                    const slideElement = document.createElement('div');
-                    slideElement.classList.add('carousel-slide');
-                    slideElement.dataset.redirectUrl = slide.redirectUrl;
-
-                    // Background
-                    const backgroundElement = document.createElement('div');
-                    backgroundElement.classList.add('slide-background');
-                    backgroundElement.style.backgroundImage = `url(${slide.backgroundImage})`;
-
-                    // Particle Layer
-                    const particleLayer = document.createElement('div');
-                    particleLayer.classList.add('particle-layer');
-
-                    // Content
-                    const contentElement = document.createElement('div');
-                    contentElement.classList.add('slide-content');
-
-                    const titleElement = document.createElement('h2');
-                    titleElement.classList.add('slide-title');
-                    titleElement.textContent = slide.title;
-
-                    const descriptionElement = document.createElement('p');
-                    descriptionElement.classList.add('slide-description');
-                    descriptionElement.textContent = slide.description;
-
-                    const ctaElement = document.createElement('a');
-                    ctaElement.classList.add('slide-cta');
-                    ctaElement.textContent = slide.ctaText || 'Explore';
-                    ctaElement.href = slide.redirectUrl;
-
-                    // Assemble
-                    contentElement.appendChild(titleElement);
-                    contentElement.appendChild(descriptionElement);
-                    contentElement.appendChild(ctaElement);
-
-                    slideElement.appendChild(backgroundElement);
-                    slideElement.appendChild(particleLayer);
-                    slideElement.appendChild(contentElement);
-
-                    this.wrapper.appendChild(slideElement);
-
-                    // Indicator
-                    const indicator = document.createElement('div');
-                    indicator.classList.add('indicator');
-                    indicator.addEventListener('click', () => this.goToSlide(index));
-
-                    this.indicatorsContainer.appendChild(indicator);
-                });
-
-                // Set initial active slide
-                this.wrapper.children[0].classList.add('active');
-                this.indicatorsContainer.children[0].classList.add('active');
-            }
-
-            setupEventListeners() {
-                this.wrapper.addEventListener('click', (event) => {
-                    const slideElement = event.target.closest('.carousel-slide');
-                    if (slideElement) {
-                        const redirectUrl = slideElement.dataset.redirectUrl;
-                        if (redirectUrl) {
-                            window.location.href = redirectUrl;
-                        }
-                    }
-                });
-            }
-
-            createParticleEffects() {
-                const particleLayers = document.querySelectorAll('.particle-layer');
-                particleLayers.forEach(layer => {
-                    for (let i = 0; i < 20; i++) {
-                        const particle = document.createElement('div');
-                        particle.classList.add('particle');
-                        particle.style.width = `${Math.random() * 10}px`;
-                        particle.style.height = particle.style.width;
-                        particle.style.left = `${Math.random() * 100}%`;
-                        particle.style.top = `${Math.random() * 100}%`;
-                        layer.appendChild(particle);
-                    }
-                });
-            }
-
-            goToSlide(index) {
-                // Remove active states
-                this.wrapper.querySelector('.carousel-slide.active')?.classList.remove('active');
-                this.indicatorsContainer.querySelector('.indicator.active')?.classList.remove('active');
-
-                // Set new active states
-                this.wrapper.children[index].classList.add('active');
-                this.indicatorsContainer.children[index].classList.add('active');
-
-                this.currentIndex = index;
-            }
-
-            startAutoplay() {
-                this.autoplayTimer = setInterval(() => {
-                    const nextIndex = (this.currentIndex + 1) % this.slides.length;
-                    this.goToSlide(nextIndex);
-                }, this.autoplayInterval);
-            }
-        }
-
-        // Slide Configuration
-        const slides = [
-            {
-                backgroundImage: '',
-                title: 'Ultimate Exploration',
-                description: 'Dive into immersive digital experiences',
-                redirectUrl: 'game1.html',
-                ctaText: 'Begin Journey'
-            },
-            {
-                backgroundImage: '',
-                title: 'Online Course',
-                description: 'Designed for educational purposes which helps an individual to learn and grow',
-                redirectUrl: 'education1.html',
-                ctaText: 'Explore Now'
-            },
-            {
-                backgroundImage: '',
-                title: 'Movie Hub',
-                description: 'Experience a world of movie',
-                redirectUrl: 'movie.html',
-                ctaText: 'Watch Now'
-            },
-            {
-                backgroundImage: '',
-                title: 'Sales and Discounts',
-                description: 'Purchase a products with best deals and offers',
-                redirectUrl: 'e-commerce.html',
-                ctaText: 'Begin Purchase'
-            },
-            {
-                backgroundImage: '',
-                title: 'AI',
-                description: 'Bring your dreams to life just by generating anything',
-                redirectUrl: 'ai1.html',
-                ctaText: 'Generate Now'
-            },
-            {
-                backgroundImage: '',
-                title: 'News Feed',
-                description: 'Get updated to news across the globe',
-                redirectUrl: 'news.html',
-                ctaText: 'Get Updated'
-            },
-            {
-                backgroundImage: '',
-                title: 'Chat',
-                description: 'Meet friends both local and internationally',
-                redirectUrl: 'chat.html',
-                ctaText: 'Socialize'
-            }
-        ];
-
-        // Initialize Carousel
-        document.addEventListener('DOMContentLoaded', () => {
-            new MainCarousel({
-                containerId: 'mainCarousel',
-                slides: slides,
-                autoplayInterval: 2000
-            });
-        });
-
-        // Newsletter validation
-        function validateNewsletter(event) {
-            event.preventDefault();
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const errorMessage = document.getElementById('error-message');
-
-            if (!name || !email) {
-                errorMessage.textContent = 'Please provide a valid name and email.';
-                return false;
-            }
-
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                errorMessage.textContent = 'Please enter a valid email address.';
-                return false;
-            }
-
-            errorMessage.textContent = '';
-            alert('Thank you for subscribing!');
-            return true;
-        }
-
-        // Canvas Animation Class
-        class CanvasAnimation {
-            constructor() {
-                this.canvas = document.getElementById('main-canvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.particles = [];
-                this.connections = [];
-                this.setup();
-            }
-
-            setup() {
-                this.resize();
-                this.createParticleNetwork();
-                this.animate();
-                this.setupEventListeners();
-            }
-
-            resize() {
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
-            }
-
-            createParticleNetwork() {
-                const particleCount = 150;
-                for (let i = 0; i < particleCount; i++) {
-                    this.particles.push({
-                        x: Math.random() * this.canvas.width,
-                        y: Math.random() * this.canvas.height,
-                        radius: Math.random() * 3,
-                        speedX: (Math.random() - 0.5) * 2,
-                        speedY: (Math.random() - 0.5) * 2,
-                        color: `rgba(0, 245, 212, ${Math.random() * 0.5})`
-                    });
-                }
-            }
-
-            drawParticleNetwork() {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                
-                // Draw particles
-                this.particles.forEach(particle => {
-                    this.ctx.beginPath();
-                    this.ctx.arc(
-                        particle.x, 
-                        particle.y, 
-                        particle.radius, 
-                        0, 
-                        Math.PI * 2
-                    );
-                    this.ctx.fillStyle = particle.color;
-                    this.ctx.fill();
-                    
-                    // Update particle position
-                    particle.x += particle.speedX;
-                    particle.y += particle.speedY;
-                    
-                    // Wrap around screen
-                    if (particle.x < 0) particle.x = this.canvas.width;
-                    if (particle.x > this.canvas.width) particle.x = 0;
-                    if (particle.y < 0) particle.y = this.canvas.height;
-                    if (particle.y > this.canvas.height) particle.y = 0;
-                });
-
-                // Draw connections between nearby particles
-                this.drawConnections();
-            }
-
-            drawConnections() {
-                const connectionDistance = 100;
-                
-                for (let i = 0; i < this.particles.length; i++) {
-                    for (let j = i + 1; j < this.particles.length; j++) {
-                        const p1 = this.particles[i];
-                        const p2 = this.particles[j];
-                        
-                        const distance = Math.sqrt(
-                            Math.pow(p1.x - p2.x, 2) + 
-                            Math.pow(p1.y - p2.y, 2)
-                        );
-                        
-                        if (distance < connectionDistance) {
-                            this.ctx.beginPath();
-                            this.ctx.moveTo(p1.x, p1.y);
-                            this.ctx.lineTo(p2.x, p2.y);
-                            this.ctx.strokeStyle = `rgba(0, 245, 212, ${1 - distance / connectionDistance})`;
-                            this.ctx.lineWidth = 1;
-                            this.ctx.stroke();
-                        }
-                    }
-                }
-            }
-
-            animate() {
-                this.drawParticleNetwork();
-                requestAnimationFrame(() => this.animate());
-            }
-
-            setupEventListeners() {
-                window.addEventListener('resize', () => this.resize());
-            }
-        }
-
-        // Interactions Class
-        class MainInteractions {
-            constructor() {
-                this.initModalInteractions();
-                this.initButtonInteractions();
-                this.initCardInteractions();
-            }
-
-            initModalInteractions() {
-                const featureCards = document.querySelectorAll('.feature-card');
-                const modals = document.querySelectorAll('.modal');
-                const closeButtons = document.querySelectorAll('.close-modal');
-
-                featureCards.forEach(card => {
-                    card.addEventListener('click', () => {
-                        const modalId = card.getAttribute('data-modal');
-                        const modal = document.getElementById(modalId);
-                        if (modal) {
-                            modal.style.display = 'flex';
-                        }
-                    });
-                });
-
-                closeButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const modal = button.closest('.modal');
-                        if (modal) {
-                            modal.style.display = 'none';
-                        }
-                    });
-                });
-
-                modals.forEach(modal => {
-                    modal.addEventListener('click', (e) => {
-                        if (e.target === modal) {
-                            modal.style.display = 'none';
-                        }
-                    });
-                });
-            }
-
-            initButtonInteractions() {
-                const buttons = document.querySelectorAll('.main-button');
-                
-                buttons.forEach(button => {
-                    button.addEventListener('mouseenter', (e) => {
-                        e.target.style.transform = 'scale(1.05)';
-                    });
-
-                    button.addEventListener('mouseleave', (e) => {
-                        e.target.style.transform = 'scale(1)';
-                    });
-                });
-            }
-
-            initCardInteractions() {
-                const featureCards = document.querySelectorAll('.feature-card');
-
-                featureCards.forEach(card => {
-                    card.addEventListener('mousemove', (e) => {
-                        const { clientX, clientY } = e;
-                        const { left, top } = card.getBoundingClientRect();
-                        
-                        const centerX = left + card.offsetWidth / 2;
-                        const centerY = top + card.offsetHeight / 2;
-
-                        const angleX = (clientY - centerY) / 20;
-                        const angleY = -(clientX - centerX) / 20;
-
-                        card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) translateZ(40px)`;
-                    });
-
-                    card.addEventListener('mouseleave', () => {
-                        card.style.transform = 'rotateX(0) rotateY(0) translateZ(0)';
-                    });
-                });
-            }
-        }
-
-        // Reviews data
-        const reviews = [
-            {
-                name: "Emma Thompson",
-                role: "Chief Marketing Officer",
-                image: "https://randomuser.me/api/portraits/women/44.jpg",
-                stars: 5,
-                comment: "An extraordinary platform that revolutionizes how we approach digital experiences. Truly remarkable!"
-            },
-            {
-                name: "David Rodriguez",
-                role: "Tech Educator",
-                image: "https://randomuser.me/api/portraits/men/85.jpg",
-                stars: 5,
-                comment: "Cutting-edge design meets unparalleled functionality. This website sets a new benchmark in digital excellence."
-            },
-            {
-                name: "Sophia Lee",
-                role: "Product Strategy Director",
-                image: "https://randomuser.me/api/portraits/women/67.jpg",
-                stars: 5,
-                comment: "A interactive-changing solution that seamlessly blends user experience with innovative technology."
-            },
-            {
-                name: "Mark Peterson",
-                role: "Executive Officer",
-                image: "https://randomuser.me/api/portraits/men/44.jpg",
-                stars: 5,
-                comment: "Everyone need this explore on this website"
-            },
-            {
-                name: "Philip Wales",
-                role: "Software Engineer",
-                image: "https://randomuser.me/api/portraits/men/43.jpg",
-                stars: 5,
-                comment: "I recommend anyone to try this website and know more about it"
-            },
-            {
-                name: "Mr.Smile",
-                role: "Web and App Developer",
-                image: "https://randomuser.me/api/portraits/men/32.jpg",
-                stars: 5,
-                comment: "I recommend everyone to explore through my website"
-            },
-            {
-                name: "Philip Wales",
-                role: "Tech trainer",
-                image: "https://randomuser.me/api/portraits/men/23.jpg",
-                stars: 5,
-                comment: "Try it, and thank me later"
-            },
-            {
-                name: "Helena Boison",
-                role: "Sales Producer",
-                image: "https://randomuser.me/api/portraits/women/33.jpg",
-                stars: 5,
-                comment: "Good luck on exploring through this page"
-            }
-        ];
-
-        // Review Slider Class
-        class ReviewSlider {
-            constructor(reviews) {
-                this.reviews = reviews;
-                this.currentIndex = 0;
-                this.reviewCard = document.getElementById('reviewCard');
-                this.progressBar = document.getElementById('progressBar');
-                this.reviewerImage = document.getElementById('reviewerImage');
-                this.reviewerName = document.getElementById('reviewerName');
-                this.reviewerRole = document.getElementById('reviewerRole');
-                this.starsContainer = document.getElementById('starsContainer');
-                this.reviewText = document.getElementById('reviewText');
-
-                this.autoAdvanceInterval = null;
-                this.initializeSlider();
-            }
-
-            initializeSlider() {
-                this.displayReview(this.currentIndex);
-                this.startAutoAdvance();
-            }
-
-            displayReview(index) {
-                const review = this.reviews[index];
-
-                // Fade out effect
-                this.reviewCard.classList.add('fade-out');
-
-                setTimeout(() => {
-                    // Update content
-                    this.reviewerImage.src = review.image;
-                    this.reviewerName.textContent = review.name;
-                    this.reviewerRole.textContent = review.role;
-                    this.reviewText.textContent = review.comment;
-
-                    // Render stars
-                    this.renderStars(review.stars);
-
-                    // Fade in effect
-                    this.reviewCard.classList.remove('fade-out');
-                    this.reviewCard.classList.add('fade-in');
-
-                    // Reset progress bar
-                    this.startProgressBar();
-                }, 300);
-            }
-
-            renderStars(count) {
-                this.starsContainer.innerHTML = '';
-                
-                for (let i = 0; i < 5; i++) {
-                    const star = document.createElement('span');
-                    star.classList.add('star');
-                    star.textContent = '★';
-                    star.style.color = i < count ? '#ffd700' : '#e0e0e0';
-                    this.starsContainer.appendChild(star);
-                }
-            }
-
-            startProgressBar() {
-                this.progressBar.style.width = '0%';
-                
-                // Use requestAnimationFrame for smoother animation
-                const startTime = performance.now();
-                const duration = 10000; // 10 seconds
-
-                const animate = (currentTime) => {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    
-                    this.progressBar.style.width = `${progress * 100}%`;
-
-                    if (progress < 1) {
-                        requestAnimationFrame(animate);
-                    } else {
-                        this.advanceReview();
-                    }
-                };
-
-                requestAnimationFrame(animate);
-            }
-
-            advanceReview() {
-                this.currentIndex = (this.currentIndex + 1) % this.reviews.length;
-                this.displayReview(this.currentIndex);
-            }
-
-            startAutoAdvance() {
-                // Automatically advance every 10 seconds
-                this.autoAdvanceInterval = setInterval(() => {
-                    this.advanceReview();
-                }, 10000);
-            }
-
-            stopAutoAdvance() {
-                if (this.autoAdvanceInterval) {
-                    clearInterval(this.autoAdvanceInterval);
-                }
-            }
-        }
-
-    
-function toggleQuantumChat() {
-    const chatWidget = document.getElementById('quantum-chat-widget');
-    const quantumTrigger = document.getElementById('quantum-assistant-trigger');
-    
-    if (chatWidget.style.display === 'block') {
-        chatWidget.style.display = 'none';
-        quantumTrigger.innerHTML = '<span class="quantum-icon">?</span>';
-    } else {
-        chatWidget.style.display = 'block';
-        quantumTrigger.innerHTML = '<span class="quantum-icon">✕</span>';
-    }
-}
-
-        function handleLoginSignup() {
-            window.location.href = 'login.html';
-        }
-
-        function unlockPremiumOffer() {
-            window.location.href = 'cancel.html';
-        }
-
-        function initAssistant() {
-            if (!localStorage.getItem('supportVisited')) {
-                setTimeout(toggleChat, 4000);
-                localStorage.setItem('supportVisited', 'true');
-            }
-        }
-
-        // Dynamic Text Animation
-        class DynamicTextAnimator {
-            constructor(element, texts, options = {}) {
-                this.element = element;
-                this.texts = texts;
-                this.options = {
-                    duration: options.duration || 3000,
-                    typingSpeed: options.typingSpeed || 300,
-                    deletingSpeed: options.deletingSpeed || 100
-                };
-                this.currentIndex = 0;
-                this.isDeleting = false;
-                this.displayText = '';
-            }
-
-            animate() {
-                const currentText = this.texts[this.currentIndex];
-                
-                // Typing and deleting logic
-                if (!this.isDeleting && this.displayText.length < currentText.length) {
-                    this.displayText += currentText.charAt(this.displayText.length);
-                } else if (this.isDeleting && this.displayText.length > 0) {
-                    this.displayText = this.displayText.slice(0, -1);
-                } else {
-                    this.isDeleting = !this.isDeleting;
-                    
-                    if (!this.isDeleting) {
-                        this.currentIndex = 
-                            (this.currentIndex + 1) % this.texts.length;
-                    }
-                }
-
-                // Update element text
-                this.element.textContent = this.displayText;
-
-                // Set typing/deleting speed
-                const speed = this.isDeleting ? 
-                    this.options.deletingSpeed : 
-                    this.options.typingSpeed;
-
-                // Schedule next animation frame
-                setTimeout(() => this.animate(), speed);
-            }
-
-            start() {
-                this.animate();
-            }
-        }
-
-        // Initialize the dynamic text animator
-        document.addEventListener('DOMContentLoaded', () => {
-            const dynamicTextElement = document.getElementById('dynamic-text');
-            const textOptions = [
-                'Entertain', 
-                'Enjoy', 
-                'Have fun', 
-                'Explore',
-                'And,',  
-                'Remember to', 
-                'Support us',
-                'We are available',
-                '24/7', 
-                'If you',
-                'Have a problem',
-                'Kindly', 
-                'Contact us',
-                'For more info',
-                'Read our ',
-                'About us', 
-                'Thank you', 
-                'Have a ',
-                'Good day'
-            ];
-
-            const animator = new DynamicTextAnimator(
-                dynamicTextElement, 
-                textOptions
-            );
-            animator.start();
-        });
-
-        // Initialize the map and set the default view
-        const map = L.map('map').setView([51.505, -0.09], 13); // default position is London
-
-     // Add tile layer (open street maps)
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-attribution: '&copy; <a href="https://www.openstreetmap.org/copyright"></a>'
-}).addTo(map);
-
-
-        // Try to get the user's location
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-
-                // Center the map to the user's location
-                map.setView([lat, lon], 13);
-
-                // Add a marker at the user's location
-                L.marker([lat, lon]).addTo(map)
-                    .bindPopup("You are here!")
-                    .openPopup();
-            }, function() {
-                alert("Geolocation failed. Showing default location.");
-            });
-        } else {
-            alert("Geolocation is not supported by this browser.");
-        }
-
-        // Initialize everything when the page loads
-        window.addEventListener('load', () => {
-            new CanvasAnimation();
-            new MainInteractions();
-            new ReviewSlider(reviews);
-            initAssistant();
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(event) {
-            if (event.ctrlKey && event.key === 'q') {
-                toggleChat();
-            }
-        });
-
-        // Disable right-click context menu
-        document.addEventListener('contextmenu', event => event.preventDefault());
-    </script>
+
+
+  <!-- Onboarding Modal -->
+  <div class="overlay" id="onboardingOverlay">
+      <div class="onboarding-container">
+          <div class="onboarding-header">
+              <h2><i class="fas fa-user-circle"></i> Welcome to SmileX</h2>
+              <p>Complete your profile to join our community</p>
+          </div>
+
+          <form id="registrationForm">
+              <div>
+                  <label><i class="fas fa-user"></i> Full Name</label>
+                  <input type="text" class="form-control" name="fullName" placeholder="Enter your full name" required>
+              </div>
+
+              <div>
+                  <label><i class="fas fa-envelope"></i> Email Address</label>
+                  <input type="email" class="form-control" name="email" placeholder="your.email@example.com" required>
+              </div>
+
+              <div style="display: flex; gap: 15px;">
+                  <div style="flex: 1;">
+                      <label><i class="fas fa-venus-mars"></i> Gender</label>
+                      <select class="form-select" name="gender" required>
+                          <option value="">Select Gender</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="other">Other</option>
+                      </select>
+                  </div>
+                  <div style="flex: 1;">
+                      <label><i class="fas fa-globe"></i> Country</label>
+                      <select class="form-select" name="country" required>
+                          <option value="">Select Country</option>
+                          <option value="US">United States</option>
+                          <option value="UK">United Kingdom</option>
+                          <option value="CA">Canada</option>
+                          <option value="AU">Australia</option>
+                          <option value="DE">Germany</option>
+                          <option value="FR">France</option>
+                          <option value="JP">Japan</option>
+                          <option value="IN">India</option>
+                          <option value="BR">Brazil</option>
+                          <option value="Other">Other</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="consent-section">
+                  <h4><i class="fas fa-shield-alt"></i> Platform Consent</h4>
+                  <div class="consent-item">
+                      <input type="checkbox" name="ageConsent" required>
+                      <label>I am 13 years or older</label>
+                  </div>
+                  <div class="consent-item">
+                      <input type="checkbox" name="termsConsent" required>
+                      <label>I agree to the Terms of Service</label>
+                  </div>
+                  <div class="consent-item">
+                      <input type="checkbox" name="privacyConsent" required>
+                      <label>I consent to privacy policy</label>
+                  </div>
+              </div>
+
+              <button type="submit" id="submitBtn" disabled>
+                  <i class="fas fa-paper-plane"></i> Join SmileX
+              </button>
+          </form>
+      </div>
+  </div>
+
+  <!-- Main Navigation -->
+  <nav class="bg-black shadow-sm sticky top-0 z-50">
+      <div class="container mx-auto px-4">
+          <div class="flex items-center justify-between h-16">
+              <div class="flex items-center space-x-8">
+                  <div class="flex items-center">
+                      <i class="fas fa-smile-beam text-2xl text-purple-500 mr-2"></i>
+                      <span class="text-xl font-bold gradient-text">SmileX</span>
+                  </div>
+              </div>
+
+              <div class="flex items-center space-x-4">
+                  <div class="relative hidden md:block">
+                      <input type="text" id="searchInput" placeholder="Search Communities..."
+                          class="w-64 pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                      <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                      <div id="searchResults" class="absolute left-0 right-0 mt-1 py-2 bg-gray-800 rounded-lg shadow-lg z-50 hidden"></div>
+                  </div>
+
+                  <button class="p-2 rounded-full bg-gray-800 text-gray-300 hover:bg-gray-700" id="notificationBtn">
+                      <i class="fas fa-bell"></i>
+                      <span class="notification-badge hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                  </button>
+
+                  <div class="relative">
+                      <button class="flex items-center space-x-2 focus:outline-none" id="userMenuBtn">
+                          <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold">
+                              <span id="userInitial">U</span>
+                          </div>
+                          <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </nav>
+
+  <!-- Main content -->
+  <div class="container mx-auto px-4 py-6">
+      <div class="flex flex-col lg:flex-row gap-6">
+          <!-- Left sidebar -->
+          <div class="lg:w-1/5 hidden lg:block">
+              <div class="bg-gray-900 rounded-lg shadow-sm p-4 sticky top-24">
+                  <h3 class="font-bold text-lg mb-4 flex items-center">
+                      <i class="fas fa-users mr-2 text-purple-500"></i>
+                      My Communities
+                  </h3>
+                  <ul class="space-y-2" id="communitiesList"></ul>
+                  
+                  <button class="w-full py-2 px-4 bg-gray-800 text-purple-400 rounded-lg font-medium hover:bg-gray-700 flex items-center justify-center mt-4" id="createCommunityBtn">
+                      <i class="fas fa-plus mr-2"></i> Create Community
+                  </button>
+
+                  <div class="mt-6">
+                      <h3 class="font-bold text-lg mb-4 flex items-center">
+                          <i class="fas fa-compass mr-2 text-purple-500"></i>
+                          Explore
+                      </h3>
+                      <button class="w-full py-2 px-4 bg-gray-800 text-purple-400 rounded-lg font-medium hover:bg-gray-700 flex items-center justify-center" id="browseCommunityBtn">
+                          <i class="fas fa-globe mr-2"></i> Browse Communities
+                      </button>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Main feed -->
+          <div class="lg:w-3/5">
+              <!-- Create post card -->
+              <div class="bg-gray-900 rounded-lg shadow-sm mb-6 post-card">
+                  <div class="p-4">
+                      <div class="flex items-center space-x-3">
+                          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold">
+                              <span id="createPostUserInitial">U</span>
+                          </div>
+                          <input type="text" placeholder="Create a post..." id="createPostInput"
+                              class="flex-1 px-4 py-2 bg-gray-800 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent cursor-pointer">
+                      </div>
+                      <div class="flex justify-between mt-3">
+                          <button class="flex-1 py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300 flex items-center justify-center" data-post-type="image">
+                              <i class="far fa-image text-lg mr-2"></i> Image
+                          </button>
+                          <button class="flex-1 py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300 flex items-center justify-center" data-post-type="link">
+                              <i class="fas fa-link text-lg mr-2"></i> Link
+                          </button>
+                          <button class="flex-1 py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300 flex items-center justify-center" data-post-type="text">
+                              <i class="far fa-file-alt text-lg mr-2"></i> Text
+                          </button>
+                          <button class="flex-1 py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300 flex items-center justify-center" data-post-type="poll">
+                              <i class="fas fa-poll text-lg mr-2"></i> Poll
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Post sorting -->
+              <div class="bg-gray-900 rounded-lg shadow-sm mb-6">
+                  <div class="p-3 flex items-center space-x-4 overflow-x-auto">
+                      <button class="px-3 py-1.5 bg-purple-600 text-white rounded-full text-sm font-medium" data-sort="hot">
+                          <i class="fas fa-bolt mr-1"></i> Hot
+                      </button>
+                      <button class="px-3 py-1.5 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700" data-sort="new">
+                          <i class="fas fa-certificate mr-1"></i> New
+                      </button>
+                      <button class="px-3 py-1.5 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700" data-sort="top">
+                          <i class="fas fa-arrow-trend-up mr-1"></i> Top
+                      </button>
+                  </div>
+              </div>
+
+              <!-- Community filter toggle -->
+              <div class="bg-gray-900 rounded-lg shadow-sm mb-6 p-3">
+                  <div class="flex items-center justify-between">
+                      <div class="flex items-center space-x-2">
+                          <span class="text-sm font-medium">Viewing:</span>
+                          <select id="feedFilter" class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-1 text-sm">
+                              <option value="all">All Posts</option>
+                              <option value="general">General Feed</option>
+                              <option value="mycommunities">My Communities</option>
+                          </select>
+                      </div>
+                      <div class="flex items-center">
+                          <span class="text-xs text-gray-400">Filter by:</span>
+                          <button id="communityFilterBtn" class="ml-2 text-purple-400 hover:text-purple-300 text-sm">
+                              <i class="fas fa-filter mr-1"></i> Communities
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Posts feed -->
+              <div id="posts-feed" class="space-y-4">
+                  <!-- Posts will be dynamically loaded here -->
+              </div>
+
+              <!-- Load more button -->
+              <div class="mt-6 text-center">
+                  <button class="px-6 py-2 bg-gray-800 text-purple-400 rounded-lg font-medium hover:bg-gray-700" id="loadMoreBtn">
+                      Load more posts
+                  </button>
+              </div>
+          </div>
+
+          <!-- Right sidebar -->
+          <div class="lg:w-1/5 hidden lg:block">
+              <div class="bg-gray-900 rounded-lg shadow-sm p-4 sticky top-24">
+                  <h3 class="font-bold text-lg mb-4 flex items-center">
+                      <i class="fas fa-compass mr-2 text-purple-500"></i>
+                      Discover
+                  </h3>
+
+                  <div class="space-y-4" id="recommendedCommunities">
+                      <!-- Recommended communities will be loaded here -->
+                  </div>
+
+                  <!-- Premium ad -->
+                  <div class="mt-6 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg p-4 text-white">
+                      <div class="flex items-center mb-2">
+                          <i class="fas fa-crown text-xl mr-2"></i>
+                          <h4 class="font-bold">SmileX Premium</h4>
+                      </div>
+                      <p class="text-sm mb-3">Get ad-free browsing, exclusive awards, and support SmileX.</p>
+                      <button class="w-full py-1.5 px-3 bg-white text-purple-600 rounded-full text-sm font-medium hover:bg-gray-100" id="premiumBtn">
+                          TRY PREMIUM
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Create Post Modal -->
+  <div id="create-post-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div class="bg-gray-900 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+          <div class="p-4 border-b border-gray-800 flex items-center justify-between">
+              <h3 class="text-lg font-bold">Create a post</h3>
+              <button id="closeCreatePostModal" class="text-gray-400 hover:text-gray-300">
+                  <i class="fas fa-times"></i>
+              </button>
+          </div>
+
+          <div class="p-4 flex-1 overflow-y-auto">
+              <form id="createPostForm">
+                  <div class="mb-4">
+                      <label class="block text-sm font-medium text-gray-300 mb-1">Post visibility</label>
+                      <select class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2" name="visibility" id="postVisibility" required>
+                          <option value="general">General (visible to everyone)</option>
+                          <option value="community">Community (visible to members)</option>
+                      </select>
+                  </div>
+
+                  <div class="mb-4" id="postCommunityContainer" style="display: none;">
+                      <label class="block text-sm font-medium text-gray-300 mb-1">Choose a community</label>
+                      <select class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2" name="community" id="postCommunity">
+                          <option value="">Select a community</option>
+                          <!-- Community options will be loaded here -->
+                      </select>
+                  </div>
+
+                  <div class="mb-4">
+                      <input type="text" name="title" placeholder="Title" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2" required>
+                  </div>
+
+                  <div class="mb-4">
+                      <textarea name="content" placeholder="What are your thoughts?" rows="6" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2"></textarea>
+                  </div>
+
+                  <div class="flex justify-end">
+                      <button type="button" id="cancelCreatePost" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg mr-2 hover:bg-gray-700">
+                          Cancel
+                      </button>
+                      <button type="submit" class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">
+                          Post
+                      </button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+
+  <!-- Create Community Modal -->
+  <div id="create-community-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div class="bg-gray-900 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+          <div class="p-4 border-b border-gray-800 flex items-center justify-between">
+              <h3 class="text-lg font-bold">Create a Community</h3>
+              <button id="closeCreateCommunityModal" class="text-gray-400 hover:text-gray-300">
+                  <i class="fas fa-times"></i>
+              </button>
+          </div>
+
+          <div class="p-4 flex-1 overflow-y-auto">
+              <form id="createCommunityForm">
+                  <div class="mb-4">
+                      <label class="block text-sm font-medium text-gray-300 mb-1">Community Name</label>
+                      <input type="text" name="name" placeholder="Enter community name" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2" required>
+                      <p class="text-xs text-gray-400 mt-1">Community names can't contain spaces. Use 3-21 characters.</p>
+                  </div>
+
+                  <div class="mb-4">
+                      <label class="block text-sm font-medium text-gray-300 mb-1">Display Name</label>
+                      <input type="text" name="displayName" placeholder="Enter display name" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2" required>
+                  </div>
+
+                  <div class="mb-4">
+                      <label class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                      <textarea name="description" placeholder="What's your community about?" rows="4" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2"></textarea>
+                  </div>
+
+                  <div class="mb-4">
+                      <label class="block text-sm font-medium text-gray-300 mb-1">Community Type</label>
+                      <div class="flex space-x-4">
+                          <div class="flex items-center">
+                              <input type="radio" id="typePublic" name="type" value="public" checked class="mr-2">
+                              <label for="typePublic" class="text-sm">Public</label>
+                          </div>
+                          <div class="flex items-center">
+                              <input type="radio" id="typePrivate" name="type" value="private" class="mr-2">
+                              <label for="typePrivate" class="text-sm">Private</label>
+                          </div>
+                      </div>
+                      <p class="text-xs text-gray-400 mt-1">Private communities require members to be approved by moderators.</p>
+                  </div>
+
+                  <div class="mb-4">
+                      <label class="block text-sm font-medium text-gray-300 mb-1">Community Topics (optional)</label>
+                      <input type="text" name="topics" placeholder="Enter topics separated by commas" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2">
+                  </div>
+
+                  <div class="flex justify-end">
+                      <button type="button" id="cancelCreateCommunity" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg mr-2 hover:bg-gray-700">
+                          Cancel
+                      </button>
+                      <button type="submit" class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">
+                          Create Community
+                      </button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+
+  <!-- Community Browse Modal -->
+  <div id="browse-communities-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div class="bg-gray-900 rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+          <div class="p-4 border-b border-gray-800 flex items-center justify-between">
+              <h3 class="text-lg font-bold">Browse Communities</h3>
+              <button id="closeBrowseCommunitiesModal" class="text-gray-400 hover:text-gray-300">
+                  <i class="fas fa-times"></i>
+              </button>
+          </div>
+
+          <div class="p-4 border-b border-gray-800">
+              <div class="flex items-center">
+                  <div class="relative flex-1">
+                      <input type="text" id="communitySearchInput" placeholder="Search for communities..." class="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+                      <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                  </div>
+                  <div class="flex ml-4 space-x-2">
+                      <button class="tab-button active" data-tab="all">All</button>
+                      <button class="tab-button" data-tab="public">Public</button>
+                      <button class="tab-button" data-tab="private">Private</button>
+                  </div>
+              </div>
+          </div>
+
+          <div class="p-4 flex-1 overflow-y-auto">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="communitiesBrowseList">
+                  <!-- Communities will be loaded here -->
+              </div>
+              <div id="noCommunitiesMessage" class="text-center py-8 hidden">
+                  <i class="fas fa-users text-4xl text-gray-500 mb-2"></i>
+                  <p class="text-gray-400">No communities found</p>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Community Detail Modal -->
+  <div id="community-detail-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div class="bg-gray-900 rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col">
+          <div id="communityDetailHeader" class="p-6 border-b border-gray-800 relative">
+              <!-- Community header content will be loaded here -->
+          </div>
+
+          <div class="p-4 flex-1 overflow-y-auto">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div class="md:col-span-2">
+                      <h3 class="text-lg font-medium mb-3">About this Community</h3>
+                      <div id="communityDetailDescription" class="text-gray-300 mb-6"></div>
+                      
+                      <h3 class="text-lg font-medium mb-3">Recent Posts</h3>
+                      <div id="communityPosts" class="space-y-4">
+                          <!-- Community posts will be loaded here -->
+                      </div>
+                  </div>
+                  <div>
+                      <div class="bg-gray-800 p-4 rounded-lg mb-4">
+                          <h4 class="font-medium mb-2">Community Info</h4>
+                          <div class="space-y-2 text-sm">
+                              <div class="flex justify-between">
+                                  <span class="text-gray-400">Created</span>
+                                  <span id="communityCreationDate"></span>
+                              </div>
+                              <div class="flex justify-between">
+                                  <span class="text-gray-400">Members</span>
+                                  <span id="communityMemberCount"></span>
+                              </div>
+                              <div class="flex justify-between">
+                                  <span class="text-gray-400">Type</span>
+                                  <span id="communityType"></span>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="bg-gray-800 p-4 rounded-lg">
+                          <h4 class="font-medium mb-2">Topics</h4>
+                          <div id="communityTopics" class="flex flex-wrap gap-2">
+                              <!-- Topics will be loaded here -->
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="p-4 border-t border-gray-800 flex justify-between">
+              <button id="closeCommunityDetailModal" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700">
+                  Close
+              </button>
+              <div>
+                  <button id="joinLeaveButton" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                      Join
+                  </button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Live Chat Toggle Button -->
+  <button id="chat-toggle-btn" class="chat-toggle">
+      <i class="fas fa-comment-dots"></i>
+  </button>
+
+  <!-- Live Chat Container -->
+  <div id="chat-container" class="chat-container">
+      <div class="chat-header">
+          <h3>Live Chat Support</h3>
+          <button id="chat-close-btn" class="chat-close">
+              <i class="fas fa-times"></i>
+          </button>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+          <div class="message">
+              <div class="message-user">Support Agent</div>
+              <div class="message-text">Hello! How can we help you today?</div>
+              <div class="message-time">Just now</div>
+          </div>
+      </div>
+      <div class="chat-input-container">
+          <input type="text" id="chat-input" class="chat-input" placeholder="Type your message...">
+          <button id="chat-send-btn" class="chat-send">
+              <i class="fas fa-paper-plane"></i>
+          </button>
+      </div>
+  </div>
+
+  <!-- Mobile bottom navigation -->
+  <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-900 shadow-lg border-t border-gray-800 z-50">
+      <div class="flex justify-around items-center h-16">
+          <a href="#" class="flex flex-col items-center justify-center text-purple-400">
+              <i class="fas fa-home text-xl"></i>
+              <span class="text-xs mt-1">Home</span>
+          </a>
+          <a href="#" class="flex flex-col items-center justify-center text-gray-400" id="mobileBrowseBtn">
+              <i class="fas fa-compass text-xl"></i>
+              <span class="text-xs mt-1">Explore</span>
+          </a>
+          <a href="#" class="flex flex-col items-center justify-center text-gray-400" id="mobileCreatePost">
+              <i class="fas fa-plus-circle text-xl"></i>
+              <span class="text-xs mt-1">Create</span>
+          </a>
+          <a href="#" class="flex flex-col items-center justify-center text-gray-400">
+              <i class="fas fa-bell text-xl"></i>
+              <span class="text-xs mt-1">Notifications</span>
+          </a>
+          <a href="#" class="flex flex-col items-center justify-center text-gray-400" id="mobileCreateCommunity">
+              <i class="fas fa-users text-xl"></i>
+              <span class="text-xs mt-1">Community</span>
+          </a>
+      </div>
+  </div>
+
+  <script>
+      // Global variables
+      let currentUser = null;
+      let posts = [];
+      let communities = [];
+      let currentSort = 'hot';
+      let currentFeedFilter = 'all';
+      let currentCommunityTab = 'all';
+      let currentCommunity = null;
+      let userMemberships = [];
+
+      // Initialize the application
+      document.addEventListener('DOMContentLoaded', function() {
+          initializeApp();
+      });
+
+      function initializeApp() {
+          // Check if user is already registered
+          const userData = localStorage.getItem('userData');
+          const isRegistered = localStorage.getItem('userRegistered');
+
+          if (userData && isRegistered === 'true') {
+              currentUser = JSON.parse(userData);
+              hideOnboarding();
+              loadUserInterface();
+          } else {
+              showOnboarding();
+          }
+
+          // Initialize event listeners
+          initializeEventListeners();
+          
+          // Load initial data
+          loadInitialPosts();
+          loadInitialCommunities();
+          loadUserMemberships();
+          updateCommunityLists();
+          
+          // Start preloader
+          startPreloader();
+      }
+
+      function startPreloader() {
+          setTimeout(() => {
+              const preloader = document.getElementById('preloader');
+              preloader.style.transition = 'all 0.8s ease';
+              preloader.style.opacity = '0';
+              preloader.style.transform = 'scale(0.8)';
+              
+              setTimeout(() => {
+                  preloader.style.display = 'none';
+                  
+                  // Show onboarding if user not registered
+                  if (!currentUser) {
+                      showOnboarding();
+                  }
+              }, 800);
+          }, 3000);
+      }
+
+      function showOnboarding() {
+          document.getElementById('onboardingOverlay').classList.add('active');
+      }
+
+      function hideOnboarding() {
+          document.getElementById('onboardingOverlay').classList.remove('active');
+      }
+
+      function loadUserInterface() {
+          if (currentUser) {
+              const initial = currentUser.fullName.charAt(0).toUpperCase();
+              document.getElementById('userInitial').textContent = initial;
+              document.getElementById('createPostUserInitial').textContent = initial;
+          }
+      }
+
+      function initializeEventListeners() {
+          // Registration form
+          const registrationForm = document.getElementById('registrationForm');
+          const submitBtn = document.getElementById('submitBtn');
+          const inputs = registrationForm.querySelectorAll('input, select');
+          const checkboxes = registrationForm.querySelectorAll('input[type="checkbox"]');
+
+          // Form validation
+          function validateForm() {
+              const allInputsFilled = Array.from(inputs).filter(input => input.type !== 'checkbox').every(input => input.value.trim() !== '');
+              const allCheckboxesChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+              submitBtn.disabled = !(allInputsFilled && allCheckboxesChecked);
+          }
+
+          inputs.forEach(input => {
+              input.addEventListener('input', validateForm);
+              input.addEventListener('change', validateForm);
+          });
+
+          checkboxes.forEach(checkbox => {
+              checkbox.addEventListener('change', validateForm);
+          });
+
+          // Form submission
+          registrationForm.addEventListener('submit', function(e) {
+              e.preventDefault();
+              const formData = new FormData(this);
+              const userData = Object.fromEntries(formData.entries());
+              
+              // Remove consent checkboxes from stored data
+              delete userData.ageConsent;
+              delete userData.termsConsent;
+              delete userData.privacyConsent;
+
+              currentUser = userData;
+              localStorage.setItem('userData', JSON.stringify(userData));
+              localStorage.setItem('userRegistered', 'true');
+
+              hideOnboarding();
+              loadUserInterface();
+              showNotification('Welcome to SmileX! Your profile is now complete.');
+          });
+
+          // Create post functionality
+          document.getElementById('createPostInput').addEventListener('click', () => {
+              openCreatePostModal();
+          });
+
+          document.getElementById('mobileCreatePost').addEventListener('click', (e) => {
+              e.preventDefault();
+              openCreatePostModal();
+          });
+
+          document.getElementById('closeCreatePostModal').addEventListener('click', () => {
+              document.getElementById('create-post-modal').classList.add('hidden');
+          });
+
+          document.getElementById('cancelCreatePost').addEventListener('click', () => {
+              document.getElementById('create-post-modal').classList.add('hidden');
+          });
+
+          // Post visibility change
+          document.getElementById('postVisibility').addEventListener('change', function() {
+              const communityContainer = document.getElementById('postCommunityContainer');
+              if (this.value === 'community') {
+                  communityContainer.style.display = 'block';
+                  populateUserCommunities('postCommunity');
+              } else {
+                  communityContainer.style.display = 'none';
+              }
+          });
+
+          // Create post form submission
+          document.getElementById('createPostForm').addEventListener('submit', function(e) {
+              e.preventDefault();
+              const formData = new FormData(this);
+              const postData = Object.fromEntries(formData.entries());
+              
+              createNewPost(postData);
+              this.reset();
+              document.getElementById('create-post-modal').classList.add('hidden');
+              showNotification('Post created successfully!');
+          });
+
+          // Post type buttons
+          document.querySelectorAll('[data-post-type]').forEach(btn => {
+              btn.addEventListener('click', () => {
+                  openCreatePostModal();
+              });
+          });
+
+          // Sort buttons
+          document.querySelectorAll('[data-sort]').forEach(btn => {
+              btn.addEventListener('click', function() {
+                  // Update active state
+                  document.querySelectorAll('[data-sort]').forEach(b => {
+                      b.className = 'px-3 py-1.5 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700';
+                  });
+                  this.className = 'px-3 py-1.5 bg-purple-600 text-white rounded-full text-sm font-medium';
+                  
+                  currentSort = this.dataset.sort;
+                  sortAndDisplayPosts();
+              });
+          });
+
+          // Feed filter change
+          document.getElementById('feedFilter').addEventListener('change', function() {
+              currentFeedFilter = this.value;
+              filterAndDisplayPosts();
+          });
+
+          // Load more posts
+          document.getElementById('loadMoreBtn').addEventListener('click', loadMorePosts);
+
+          // Create community
+          document.getElementById('createCommunityBtn').addEventListener('click', () => {
+              document.getElementById('create-community-modal').classList.remove('hidden');
+          });
+
+          document.getElementById('mobileCreateCommunity').addEventListener('click', (e) => {
+              e.preventDefault();
+              document.getElementById('create-community-modal').classList.remove('hidden');
+          });
+
+          document.getElementById('closeCreateCommunityModal').addEventListener('click', () => {
+              document.getElementById('create-community-modal').classList.add('hidden');
+          });
+
+          document.getElementById('cancelCreateCommunity').addEventListener('click', () => {
+              document.getElementById('create-community-modal').classList.add('hidden');
+          });
+
+          // Create community form submission
+          document.getElementById('createCommunityForm').addEventListener('submit', function(e) {
+              e.preventDefault();
+              const formData = new FormData(this);
+              const communityData = Object.fromEntries(formData.entries());
+              
+              createNewCommunity(communityData);
+              this.reset();
+              document.getElementById('create-community-modal').classList.add('hidden');
+          });
+
+          // Browse communities
+          document.getElementById('browseCommunityBtn').addEventListener('click', () => {
+              openBrowseCommunitiesModal();
+          });
+
+          document.getElementById('mobileBrowseBtn').addEventListener('click', (e) => {
+              e.preventDefault();
+              openBrowseCommunitiesModal();
+          });
+
+          document.getElementById('closeBrowseCommunitiesModal').addEventListener('click', () => {
+              document.getElementById('browse-communities-modal').classList.add('hidden');
+          });
+
+          // Browse communities tabs
+          document.querySelectorAll('.tab-button').forEach(btn => {
+              btn.addEventListener('click', function() {
+                  document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                  this.classList.add('active');
+                  currentCommunityTab = this.dataset.tab;
+                  filterBrowseCommunities();
+              });
+          });
+
+          // Community search
+          document.getElementById('communitySearchInput').addEventListener('input', function() {
+              filterBrowseCommunities();
+          });
+
+          // Close community detail modal
+          document.getElementById('closeCommunityDetailModal').addEventListener('click', () => {
+              document.getElementById('community-detail-modal').classList.add('hidden');
+          });
+
+          // Join/Leave community button
+          document.getElementById('joinLeaveButton').addEventListener('click', function() {
+              if (!currentCommunity) return;
+              
+              const isMember = userMemberships.includes(currentCommunity.id);
+              if (isMember) {
+                  leaveCommunity(currentCommunity.id);
+              } else {
+                  joinCommunity(currentCommunity.id);
+              }
+              
+              updateJoinLeaveButton();
+              updateCommunityLists();
+          });
+
+          // Chat functionality
+          const chatToggleBtn = document.getElementById('chat-toggle-btn');
+          const chatCloseBtn = document.getElementById('chat-close-btn');
+          const chatContainer = document.getElementById('chat-container');
+          const chatInput = document.getElementById('chat-input');
+          const chatSendBtn = document.getElementById('chat-send-btn');
+
+          chatToggleBtn.addEventListener('click', () => {
+              chatContainer.classList.toggle('active');
+              chatToggleBtn.classList.toggle('active');
+          });
+
+          chatCloseBtn.addEventListener('click', () => {
+              chatContainer.classList.remove('active');
+              chatToggleBtn.classList.remove('active');
+          });
+
+          chatSendBtn.addEventListener('click', sendChatMessage);
+          chatInput.addEventListener('keypress', (e) => {
+              if (e.key === 'Enter') {
+                  sendChatMessage();
+              }
+          });
+
+          // Search functionality
+          const searchInput = document.getElementById('searchInput');
+          const searchResults = document.getElementById('searchResults');
+          
+          searchInput.addEventListener('input', function(e) {
+              const query = e.target.value.toLowerCase();
+              if (query.length > 1) {
+                  const results = communities.filter(c => 
+                      c.name.toLowerCase().includes(query) || 
+                      c.displayName.toLowerCase().includes(query) ||
+                      (c.description && c.description.toLowerCase().includes(query))
+                  );
+                  
+                  if (results.length > 0) {
+                      searchResults.innerHTML = results.map(community => `
+                          <div class="px-3 py-2 hover:bg-gray-700 cursor-pointer" onclick="viewCommunityDetails('${community.id}')">
+                              <div class="flex items-center">
+                                  <span class="w-6 h-6 rounded-full ${getCommunityColor(community.name)} flex items-center justify-center text-white text-xs mr-2">
+                                      ${community.name.charAt(0)}
+                                  </span>
+                                  <span>${community.displayName}</span>
+                                  <span class="ml-2 badge ${community.type === 'private' ? 'badge-private' : 'badge-public'}">
+                                      ${community.type}
+                                  </span>
+                              </div>
+                          </div>
+                      `).join('');
+                      searchResults.classList.remove('hidden');
+                  } else {
+                      searchResults.innerHTML = `<div class="px-3 py-2 text-gray-400">No communities found</div>`;
+                      searchResults.classList.remove('hidden');
+                  }
+              } else {
+                  searchResults.classList.add('hidden');
+              }
+          });
+          
+          // Hide search results when clicking outside
+          document.addEventListener('click', function(e) {
+              if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                  searchResults.classList.add('hidden');
+              }
+          });
+
+          // Premium button
+          document.getElementById('premiumBtn').addEventListener('click', () => {
+              showNotification('Premium features coming soon!');
+          });
+
+          // Notification button
+          document.getElementById('notificationBtn').addEventListener('click', () => {
+              showNotification('No new notifications');
+          });
+      }
+
+      // Initialize community-related data
+      function loadInitialCommunities() {
+          // Check if communities exist in localStorage
+          const storedCommunities = localStorage.getItem('communities');
+          if (storedCommunities) {
+              communities = JSON.parse(storedCommunities);
+          } else {
+              // Create default communities
+              communities = [
+                  {
+                      id: 'c1',
+                      name: 'SmileX',
+                      displayName: 'SmileX Official',
+                      description: 'The official community for SmileX platform updates and announcements.',
+                      type: 'public',
+                      createdBy: 'system',
+                      createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                      memberCount: 15420,
+                      topics: ['news', 'updates', 'announcements']
+                  },
+                  {
+                      id: 'c2',
+                      name: 'Gaming',
+                      displayName: 'Gaming Zone',
+                      description: 'A community for all gamers to share their experiences, tips, and discuss the latest releases.',
+                      type: 'public',
+                      createdBy: 'system',
+                      createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+                      memberCount: 8763,
+                      topics: ['games', 'esports', 'console', 'pc']
+                  },
+                  {
+                      id: 'c3',
+                      name: 'TechTalks',
+                      displayName: 'Tech Talks',
+                      description: 'Discuss the latest in technology, programming, and AI developments.',
+                      type: 'public',
+                      createdBy: 'system',
+                      createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+                      memberCount: 6214,
+                      topics: ['technology', 'programming', 'ai', 'gadgets']
+                  },
+                  {
+                      id: 'c4',
+                      name: 'ArtistsLounge',
+                      displayName: 'Artists Lounge',
+                      description: 'A private community for artists to share their work and get feedback.',
+                      type: 'private',
+                      createdBy: 'system',
+                      createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                      memberCount: 842,
+                      topics: ['art', 'drawing', 'design', 'critiques']
+                  }
+              ];
+              
+              // Save to localStorage
+              localStorage.setItem('communities', JSON.stringify(communities));
+          }
+
+          displayRecommendedCommunities();
+      }
+
+      function loadUserMemberships() {
+          // Check if user memberships exist in localStorage
+          const memberships = localStorage.getItem('userMemberships');
+          if (memberships) {
+              userMemberships = JSON.parse(memberships);
+          } else
+        {
+              // Default memberships for new users
+              userMemberships = ['c1']; // Auto-join SmileX official community
+              localStorage.setItem('userMemberships', JSON.stringify(userMemberships));
+          }
+      }
+
+      function loadInitialPosts() {
+          posts = [
+              {
+                  id: 1,
+                  title: "WELCOME EVERYONE",
+                  content: "Welcome, everyone and those viewing this message to explore and have fun on this page, but remember the rules and regulations",
+                  author: "SmileX",
+                  community: "SmileX",
+                  communityId: "c1",
+                  visibility: "general",
+                  votes: 5400,
+                  comments: 1400,
+                  timestamp: new Date(Date.now() - 3600000),
+                  type: "text"
+              },
+              {
+                  id: 2,
+                  title: "New Gaming Setup Showcase",
+                  content: "Check out my latest gaming setup! What do you think?",
+                  author: "GamerPro",
+                  community: "Gaming",
+                  communityId: "c2",
+                  visibility: "community",
+                  votes: 2700,
+                  comments: 423,
+                  timestamp: new Date(Date.now() - 7200000),
+                  type: "image",
+                  imageUrl: "https://source.unsplash.com/800x600/?gaming,setup"
+              },
+              {
+                  id: 3,
+                  title: "What programming language should I learn next?",
+                  content: "",
+                  author: "CodeNewbie",
+                  community: "TechTalks",
+                  communityId: "c3",
+                  visibility: "community",
+                  votes: 1850,
+                  comments: 234,
+                  timestamp: new Date(Date.now() - 10800000),
+                  type: "poll",
+                  pollOptions: [
+                      { text: "Python", votes: 450, percentage: 35 },
+                      { text: "JavaScript", votes: 380, percentage: 30 },
+                      { text: "Rust", votes: 260, percentage: 20 },
+                      { text: "Go", votes: 190, percentage: 15 }
+                  ]
+              },
+              {
+                  id: 4,
+                  title: "Beautiful sunset photography tips",
+                  content: "Here are some tips for capturing amazing sunset photos that I've learned over the years...",
+                  author: "PhotoMaster",
+                  community: "General",
+                  communityId: null,
+                  visibility: "general",
+                  votes: 1240,
+                  comments: 89,
+                  timestamp: new Date(Date.now() - 14400000),
+                  type: "text"
+              }
+          ];
+          filterAndDisplayPosts();
+      }
+
+      function openCreatePostModal() {
+          document.getElementById('create-post-modal').classList.remove('hidden');
+          populateUserCommunities('postCommunity');
+      }
+
+      function populateUserCommunities(selectId) {
+          const select = document.getElementById(selectId);
+          const userCommunities = communities.filter(c => userMemberships.includes(c.id));
+          
+          select.innerHTML = '<option value="">Select a community</option>';
+          userCommunities.forEach(community => {
+              const option = document.createElement('option');
+              option.value = community.id;
+              option.textContent = community.displayName;
+              select.appendChild(option);
+          });
+      }
+
+      function createNewPost(postData) {
+          const newPost = {
+              id: posts.length + 1,
+              title: postData.title,
+              content: postData.content,
+              author: currentUser ? currentUser.fullName : "Anonymous",
+              visibility: postData.visibility,
+              votes: 0,
+              comments: 0,
+              timestamp: new Date(),
+              type: "text"
+          };
+
+          if (postData.visibility === 'community' && postData.community) {
+              const community = communities.find(c => c.id === postData.community);
+              if (community) {
+                  newPost.community = community.displayName;
+                  newPost.communityId = community.id;
+              }
+          } else {
+              newPost.community = "General";
+              newPost.communityId = null;
+          }
+          
+          posts.unshift(newPost);
+          filterAndDisplayPosts();
+      }
+
+      function createNewCommunity(communityData) {
+          const newCommunity = {
+              id: 'c' + (communities.length + 1),
+              name: communityData.name.replace(/\s+/g, ''),
+              displayName: communityData.displayName,
+              description: communityData.description,
+              type: communityData.type,
+              createdBy: currentUser ? currentUser.fullName : "Anonymous",
+              createdAt: new Date().toISOString(),
+              memberCount: 1,
+              topics: communityData.topics ? communityData.topics.split(',').map(t => t.trim()) : []
+          };
+
+          communities.push(newCommunity);
+          
+          // Auto-join the creator to the community
+          if (!userMemberships.includes(newCommunity.id)) {
+              userMemberships.push(newCommunity.id);
+              localStorage.setItem('userMemberships', JSON.stringify(userMemberships));
+          }
+
+          // Save communities to localStorage
+          localStorage.setItem('communities', JSON.stringify(communities));
+
+          updateCommunityLists();
+          showNotification(`Community "${communityData.displayName}" created successfully!`);
+      }
+
+      function updateCommunityLists() {
+          // Update left sidebar communities list
+          const communitiesList = document.getElementById('communitiesList');
+          const userCommunities = communities.filter(c => userMemberships.includes(c.id));
+          
+          communitiesList.innerHTML = userCommunities.map(community => `
+              <li>
+                  <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-800" onclick="viewCommunityDetails('${community.id}')">
+                      <span class="w-6 h-6 rounded-full ${getCommunityColor(community.name)} flex items-center justify-center text-white text-xs mr-2">
+                          ${community.name.charAt(0)}
+                      </span>
+                      <span class="flex-1">${community.displayName}</span>
+                      ${community.type === 'private' ? '<i class="fas fa-lock text-xs text-gray-400"></i>' : ''}
+                  </a>
+              </li>
+          `).join('');
+
+          // Update recommended communities
+          displayRecommendedCommunities();
+      }
+
+      function displayRecommendedCommunities() {
+          const container = document.getElementById('recommendedCommunities');
+          const nonMemberCommunities = communities.filter(c => !userMemberships.includes(c.id) && c.type === 'public').slice(0, 3);
+          
+          container.innerHTML = nonMemberCommunities.map(community => `
+              <div class="bg-gray-800 rounded-lg p-3 community-card cursor-pointer" onclick="viewCommunityDetails('${community.id}')">
+                  <div class="flex items-center mb-2">
+                      <span class="w-8 h-8 rounded-full ${getCommunityColor(community.name)} flex items-center justify-center text-white text-xs mr-2">
+                          ${community.name.charAt(0)}
+                      </span>
+                      <div class="flex-1">
+                          <h4 class="font-medium">${community.displayName}</h4>
+                          <p class="text-xs text-gray-400">${formatNumber(community.memberCount)} members</p>
+                      </div>
+                      <span class="badge ${community.type === 'private' ? 'badge-private' : 'badge-public'}">
+                          ${community.type}
+                      </span>
+                  </div>
+                  <p class="text-sm text-gray-300 line-clamp-2">${community.description}</p>
+              </div>
+          `).join('');
+      }
+
+      function openBrowseCommunitiesModal() {
+          document.getElementById('browse-communities-modal').classList.remove('hidden');
+          filterBrowseCommunities();
+      }
+
+      function filterBrowseCommunities() {
+          const searchQuery = document.getElementById('communitySearchInput').value.toLowerCase();
+          let filteredCommunities = communities;
+
+          // Filter by tab
+          if (currentCommunityTab !== 'all') {
+              filteredCommunities = filteredCommunities.filter(c => c.type === currentCommunityTab);
+          }
+
+          // Filter by search query
+          if (searchQuery) {
+              filteredCommunities = filteredCommunities.filter(c => 
+                  c.name.toLowerCase().includes(searchQuery) ||
+                  c.displayName.toLowerCase().includes(searchQuery) ||
+                  (c.description && c.description.toLowerCase().includes(searchQuery)) ||
+                  (c.topics && c.topics.some(topic => topic.toLowerCase().includes(searchQuery)))
+              );
+          }
+
+          displayBrowseCommunities(filteredCommunities);
+      }
+
+      function displayBrowseCommunities(communitiesToShow) {
+          const container = document.getElementById('communitiesBrowseList');
+          const noCommunitiesMessage = document.getElementById('noCommunitiesMessage');
+
+          if (communitiesToShow.length === 0) {
+              container.innerHTML = '';
+              noCommunitiesMessage.classList.remove('hidden');
+              return;
+          }
+
+          noCommunitiesMessage.classList.add('hidden');
+          container.innerHTML = communitiesToShow.map(community => {
+              const isMember = userMemberships.includes(community.id);
+              return `
+                  <div class="bg-gray-800 rounded-lg p-4 community-card">
+                      <div class="flex items-start justify-between mb-3">
+                          <div class="flex items-center">
+                              <span class="w-10 h-10 rounded-full ${getCommunityColor(community.name)} flex items-center justify-center text-white text-sm mr-3">
+                                  ${community.name.charAt(0)}
+                              </span>
+                              <div>
+                                  <h3 class="font-medium">${community.displayName}</h3>
+                                  <p class="text-sm text-gray-400">${formatNumber(community.memberCount)} members</p>
+                              </div>
+                          </div>
+                          <span class="badge ${community.type === 'private' ? 'badge-private' : 'badge-public'}">
+                              ${community.type}
+                          </span>
+                      </div>
+                      
+                      <p class="text-sm text-gray-300 mb-3 line-clamp-2">${community.description}</p>
+                      
+                      ${community.topics && community.topics.length > 0 ? `
+                          <div class="flex flex-wrap gap-1 mb-3">
+                              ${community.topics.slice(0, 3).map(topic => `
+                                  <span class="px-2 py-1 bg-gray-700 rounded-full text-xs">${topic}</span>
+                              `).join('')}
+                              ${community.topics.length > 3 ? `<span class="text-xs text-gray-400">+${community.topics.length - 3} more</span>` : ''}
+                          </div>
+                      ` : ''}
+                      
+                      <div class="flex justify-between items-center">
+                          <button onclick="viewCommunityDetails('${community.id}')" class="text-purple-400 hover:text-purple-300 text-sm">
+                              View Details
+                          </button>
+                          <button onclick="${isMember ? `leaveCommunity('${community.id}')` : `joinCommunity('${community.id}')`}" 
+                                  class="px-3 py-1 ${isMember ? 'bg-gray-600 hover:bg-gray-700' : 'bg-purple-600 hover:bg-purple-700'} text-white rounded text-sm">
+                              ${isMember ? 'Leave' : 'Join'}
+                          </button>
+                      </div>
+                  </div>
+              `;
+          }).join('');
+      }
+
+      function viewCommunityDetails(communityId) {
+          const community = communities.find(c => c.id === communityId);
+          if (!community) return;
+
+          currentCommunity = community;
+          const isMember = userMemberships.includes(communityId);
+
+          // Update community detail modal
+          document.getElementById('communityDetailHeader').innerHTML = `
+              <button onclick="document.getElementById('community-detail-modal').classList.add('hidden')" 
+                      class="absolute top-4 right-4 text-gray-400 hover:text-gray-300">
+                  <i class="fas fa-times"></i>
+              </button>
+              <div class="flex items-center">
+                  <span class="w-16 h-16 rounded-full ${getCommunityColor(community.name)} flex items-center justify-center text-white text-2xl mr-4">
+                      ${community.name.charAt(0)}
+                  </span>
+                  <div>
+                      <h2 class="text-2xl font-bold">${community.displayName}</h2>
+                      <p class="text-gray-400">c/${community.name}</p>
+                      <div class="flex items-center mt-2">
+                          <span class="badge ${community.type === 'private' ? 'badge-private' : 'badge-public'} mr-2">
+                              ${community.type}
+                          </span>
+                          <span class="text-sm text-gray-400">${formatNumber(community.memberCount)} members</span>
+                      </div>
+                  </div>
+              </div>
+          `;
+
+          document.getElementById('communityDetailDescription').textContent = community.description || 'No description available.';
+          document.getElementById('communityCreationDate').textContent = new Date(community.createdAt).toLocaleDateString();
+          document.getElementById('communityMemberCount').textContent = formatNumber(community.memberCount);
+          document.getElementById('communityType').innerHTML = `
+              <span class="badge ${community.type === 'private' ? 'badge-private' : 'badge-public'}">
+                  ${community.type}
+              </span>
+          `;
+
+          // Display topics
+          const topicsContainer = document.getElementById('communityTopics');
+          if (community.topics && community.topics.length > 0) {
+              topicsContainer.innerHTML = community.topics.map(topic => `
+                  <span class="px-2 py-1 bg-gray-700 rounded-full text-xs">${topic}</span>
+              `).join('');
+          } else {
+              topicsContainer.innerHTML = '<span class="text-gray-400 text-sm">No topics specified</span>';
+          }
+
+          // Display community posts
+          const communityPosts = posts.filter(p => p.communityId === communityId).slice(0, 3);
+          const postsContainer = document.getElementById('communityPosts');
+          
+          if (communityPosts.length > 0) {
+              postsContainer.innerHTML = communityPosts.map(post => `
+                  <div class="bg-gray-800 rounded-lg p-3">
+                      <h4 class="font-medium mb-1">${post.title}</h4>
+                      <p class="text-sm text-gray-400">by ${post.author} • ${getTimeAgo(post.timestamp)}</p>
+                      <div class="flex items-center mt-2 text-xs text-gray-400">
+                          <span>${formatNumber(post.votes)} votes</span>
+                          <span class="mx-2">•</span>
+                          <span>${formatNumber(post.comments)} comments</span>
+                      </div>
+                  </div>
+              `).join('');
+          } else {
+              postsContainer.innerHTML = '<p class="text-gray-400">No posts yet in this community.</p>';
+          }
+
+          updateJoinLeaveButton();
+          document.getElementById('community-detail-modal').classList.remove('hidden');
+      }
+
+      function updateJoinLeaveButton() {
+          if (!currentCommunity) return;
+          
+          const button = document.getElementById('joinLeaveButton');
+          const isMember = userMemberships.includes(currentCommunity.id);
+          
+          if (isMember) {
+              button.textContent = 'Leave';
+              button.className = 'px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700';
+          } else {
+              button.textContent = 'Join';
+              button.className = 'px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700';
+          }
+      }
+
+      function joinCommunity(communityId) {
+          if (!userMemberships.includes(communityId)) {
+              userMemberships.push(communityId);
+              localStorage.setItem('userMemberships', JSON.stringify(userMemberships));
+              
+              // Update member count
+              const community = communities.find(c => c.id === communityId);
+              if (community) {
+                  community.memberCount++;
+                  localStorage.setItem('communities', JSON.stringify(communities));
+              }
+              
+              updateCommunityLists();
+              filterBrowseCommunities();
+              showNotification(`Joined ${community ? community.displayName : 'community'} successfully!`);
+          }
+      }
+
+      function leaveCommunity(communityId) {
+          const index = userMemberships.indexOf(communityId);
+          if (index > -1) {
+              userMemberships.splice(index, 1);
+              localStorage.setItem('userMemberships', JSON.stringify(userMemberships));
+              
+              // Update member count
+              const community = communities.find(c => c.id === communityId);
+              if (community && community.memberCount > 0) {
+                  community.memberCount--;
+                  localStorage.setItem('communities', JSON.stringify(communities));
+              }
+              
+              updateCommunityLists();
+              filterBrowseCommunities();
+              showNotification(`Left ${community ? community.displayName : 'community'}`);
+          }
+      }
+
+      function filterAndDisplayPosts() {
+          let filteredPosts = [...posts];
+
+          // Filter by feed type
+          switch (currentFeedFilter) {
+              case 'general':
+                  filteredPosts = filteredPosts.filter(p => p.visibility === 'general');
+                  break;
+              case 'mycommunities':
+                  filteredPosts = filteredPosts.filter(p => 
+                      p.visibility === 'community' && 
+                      p.communityId && 
+                      userMemberships.includes(p.communityId)
+                  );
+                  break;
+              case 'all':
+              default:
+                  // Show general posts and community posts from joined communities
+                  filteredPosts = filteredPosts.filter(p => 
+                      p.visibility === 'general' || 
+                      (p.visibility === 'community' && p.communityId && userMemberships.includes(p.communityId))
+                  );
+                  break;
+          }
+
+          displayPosts(filteredPosts);
+      }
+
+      function displayPosts(postsToDisplay) {
+          const container = document.getElementById('posts-feed');
+          container.innerHTML = postsToDisplay.map(post => createPostHTML(post)).join('');
+          
+          // Attach event listeners to vote buttons
+          attachVoteListeners();
+      }
+
+      function createPostHTML(post) {
+          const timeAgo = getTimeAgo(post.timestamp);
+          const communityInitial = post.community ? post.community.charAt(0) : 'G';
+          const communityColor = getCommunityColor(post.community || 'General');
+          
+          let contentHTML = '';
+          
+          if (post.type === 'image' && post.imageUrl) {
+              contentHTML = `
+                  <div class="mb-4">
+                      <img src="${post.imageUrl}" alt="${post.title}" class="w-full h-auto rounded-lg object-cover max-h-96">
+                  </div>
+              `;
+          } else if (post.type === 'poll' && post.pollOptions) {
+              contentHTML = `
+                  <div class="mb-4">
+                      <div class="space-y-2">
+                          ${post.pollOptions.map(option => `
+                              <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-700" onclick="voteInPoll(${post.id}, '${option.text}')">
+                                  <span>${option.text}</span>
+                                  <span class="text-sm text-gray-400">${option.percentage}% (${formatNumber(option.votes)} votes)</span>
+                              </div>
+                          `).join('')}
+                      </div>
+                      <div class="mt-2 text-xs text-gray-400">
+                          ${formatNumber(post.pollOptions.reduce((sum, option) => sum + option.votes, 0))} votes • Vote ended
+                      </div>
+                  </div>
+              `;
+          } else if (post.content) {
+              contentHTML = `
+                  <div class="prose dark:prose-invert max-w-none mb-4">
+                      <p>${post.content}</p>
+                  </div>
+              `;
+          }
+
+          return `
+              <div class="bg-gray-900 rounded-lg shadow-sm post-card fade-in">
+                  <div class="p-4">
+                      <div class="flex items-start">
+                          <div class="flex flex-col items-center mr-4">
+                              <button class="vote-button text-gray-400 hover:text-purple-500" data-post-id="${post.id}" data-vote="up">
+                                  <i class="fas fa-arrow-up text-xl"></i>
+                              </button>
+                              <span class="my-1 font-medium text-gray-300 vote-count">${formatNumber(post.votes)}</span>
+                              <button class="vote-button text-gray-400 hover:text-blue-500" data-post-id="${post.id}" data-vote="down">
+                                  <i class="fas fa-arrow-down text-xl"></i>
+                              </button>
+                          </div>
+
+                          <div class="flex-1">
+                              <div class="flex items-center text-xs text-gray-400 mb-2">
+                                  <span class="w-6 h-6 rounded-full ${communityColor} flex items-center justify-center text-white text-xs mr-2">${communityInitial}</span>
+                                  <span class="font-medium cursor-pointer hover:text-purple-400" onclick="${post.communityId ? `viewCommunityDetails('${post.communityId}')` : ''}">${post.community || 'General'}</span>
+                                  ${post.visibility === 'community' ? '<i class="fas fa-users text-xs ml-1" title="Community post"></i>' : '<i class="fas fa-globe text-xs ml-1" title="Public post"></i>'}
+                                  <span class="mx-1">•</span>
+                                  <span>Posted by ${post.author}</span>
+                                  <span class="mx-1">•</span>
+                                  <span>${timeAgo}</span>
+                              </div>
+
+                              <h3 class="text-xl font-medium mb-2">${post.title}</h3>
+
+                              ${contentHTML}
+
+                              <div class="flex items-center justify-between">
+                                  <div class="flex space-x-4">
+                                      <button class="flex items-center text-gray-400 hover:text-purple-400" onclick="toggleComments(${post.id})">
+                                          <i class="far fa-comment mr-1"></i>
+                                          <span>${formatNumber(post.comments)} Comments</span>
+                                      </button>
+                                      <button class="flex items-center text-gray-400 hover:text-green-500" onclick="sharePost(${post.id})">
+                                          <i class="fas fa-share mr-1"></i>
+                                          <span>Share</span>
+                                      </button>
+                                      <button class="flex items-center text-gray-400 hover:text-yellow-500" onclick="savePost(${post.id})">
+                                          <i class="far fa-bookmark mr-1"></i>
+                                          <span>Save</span>
+                                      </button>
+                                  </div>
+                                  <button class="text-gray-400 hover:text-red-500" onclick="showPostOptions(${post.id})">
+                                      <i class="fas fa-ellipsis-h"></i>
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          `;
+      }
+
+      function attachVoteListeners() {
+          document.querySelectorAll('.vote-button').forEach(button => {
+              button.addEventListener('click', function() {
+                  const postId = parseInt(this.dataset.postId);
+                  const voteType = this.dataset.vote;
+                  handleVote(postId, voteType, this);
+              });
+          });
+      }
+
+      function handleVote(postId, voteType, buttonElement) {
+          const post = posts.find(p => p.id === postId);
+          if (!post) return;
+
+          const voteContainer = buttonElement.closest('.flex.flex-col.items-center');
+          const countElement = voteContainer.querySelector('.vote-count');
+          const upButton = voteContainer.querySelector('[data-vote="up"]');
+          const downButton = voteContainer.querySelector('[data-vote="down"]');
+
+          // Remove existing votes
+          const wasUpvoted = upButton.classList.contains('voted-up');
+          const wasDownvoted = downButton.classList.contains('voted-down');
+
+          upButton.classList.remove('voted-up');
+          downButton.classList.remove('voted-down');
+
+          if (voteType === 'up') {
+              if (wasUpvoted) {
+                  post.votes--;
+              } else {
+                  if (wasDownvoted) post.votes += 2;
+                  else post.votes++;
+                  upButton.classList.add('voted-up');
+              }
+          } else {
+              if (wasDownvoted) {
+                  post.votes++;
+              } else {
+                  if (wasUpvoted) post.votes -= 2;
+                  else post.votes--;
+                  downButton.classList.add('voted-down');
+              }
+          }
+
+          countElement.textContent = formatNumber(post.votes);
+      }
+
+      function sortAndDisplayPosts() {
+          let sortedPosts = [...posts];
+          
+          switch (currentSort) {
+              case 'hot':
+                  sortedPosts.sort((a, b) => {
+                      const aScore = a.votes + a.comments * 2;
+                      const bScore = b.votes + b.comments * 2;
+                      return bScore - aScore;
+                  });
+                  break;
+              case 'new':
+                  sortedPosts.sort((a, b) => b.timestamp - a.timestamp);
+                  break;
+              case 'top':
+                  sortedPosts.sort((a, b) => b.votes - a.votes);
+                  break;
+          }
+          
+          displayPosts(sortedPosts);
+      }
+
+      function loadMorePosts() {
+          const loadMoreBtn = document.getElementById('loadMoreBtn');
+          loadMoreBtn.textContent = 'Loading...';
+          loadMoreBtn.disabled = true;
+
+          setTimeout(() => {
+              const newPosts = [
+                  {
+                      id: posts.length + 1,
+                      title: "Amazing sunset photography tips",
+                      content: "Here are some tips for capturing the perfect sunset photo...",
+                      author: "PhotoPro",
+                      community: "General",
+                      communityId: null,
+                      visibility: "general",
+                      votes: 1250,
+                      comments: 89,
+                      timestamp: new Date(Date.now() - 14400000),
+                      type: "text"
+                  },
+                  {
+                      id: posts.length + 2,
+                      title: "New AI breakthrough in machine learning",
+                      content: "Researchers have made significant progress in developing more efficient neural networks...",
+                      author: "TechExpert",
+                      community: "TechTalks",
+                      communityId: "c3",
+                      visibility: "community",
+                      votes: 3400,
+                      comments: 234,
+                      timestamp: new Date(Date.now() - 18000000),
+                      type: "text"
+                  }
+              ];
+
+              posts.push(...newPosts);
+              filterAndDisplayPosts();
+
+              loadMoreBtn.textContent = 'Load more posts';
+              loadMoreBtn.disabled = false;
+          }, 1000);
+      }
+
+      function sendChatMessage() {
+          const input = document.getElementById('chat-input');
+          const message = input.value.trim();
+          
+          if (message) {
+              addChatMessage(currentUser ? currentUser.fullName : 'You', message);
+              input.value = '';
+              
+              // Simulate bot response
+              setTimeout(() => {
+                  const responses = [
+                      "Thanks for your message! How can I help you?",
+                      "I'll look into that for you.",
+                      "Our support team will get back to you shortly.",
+                      "That's a great question! Let me check...",
+                      "I'm here to help with any questions you have.",
+                      "Is there anything specific you'd like to know about SmileX?",
+                      "I appreciate you reaching out to us!"
+                  ];
+                  const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                  addChatMessage('Support Agent', randomResponse);
+              }, 1000 + Math.random() * 2000);
+          }
+      }
+
+      function addChatMessage(user, text) {
+          const messagesContainer = document.getElementById('chat-messages');
+          const messageDiv = document.createElement('div');
+          messageDiv.className = 'message';
+          
+          messageDiv.innerHTML = `
+              <div class="message-user">${user}</div>
+              <div class="message-text">${text}</div>
+              <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+          `;
+          
+          messagesContainer.appendChild(messageDiv);
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      // Utility functions
+      function formatNumber(num) {
+          if (num >= 1000000) {
+              return (num / 1000000).toFixed(1) + 'M';
+          } else if (num >= 1000) {
+              return (num / 1000).toFixed(1) + 'k';
+          }
+          return num.toString();
+      }
+
+      function getTimeAgo(timestamp) {
+          const now = new Date();
+          const diff = now - timestamp;
+          const minutes = Math.floor(diff / 60000);
+          const hours = Math.floor(diff / 3600000);
+          const days = Math.floor(diff / 86400000);
+
+          if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
+          if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+          if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+          return 'Just now';
+      }
+
+      function getCommunityColor(community) {
+          const colors = {
+              'SmileX': 'bg-blue-500',
+              'Gaming': 'bg-red-500',
+              'TechTalks': 'bg-green-500',
+              'ArtistsLounge': 'bg-purple-500',
+              'General': 'bg-gray-500'
+          };
+          return colors[community] || 'bg-gray-500';
+      }
+
+      function showNotification(message) {
+          const notification = document.createElement('div');
+          notification.className = 'notification';
+          notification.innerHTML = `
+              <i class="fas fa-check-circle mr-2"></i>
+              ${message}
+          `;
+          
+          document.body.appendChild(notification);
+          
+          setTimeout(() => notification.classList.add('show'), 100);
+          setTimeout(() => {
+              notification.classList.remove('show');
+              setTimeout(() => notification.remove(), 300);
+          }, 3000);
+      }
+
+      // Post interaction functions
+      function toggleComments(postId) {
+          showNotification('Comments feature coming soon!');
+      }
+
+      function sharePost(postId) {
+          if (navigator.share) {
+              navigator.share({
+                  title: 'Check out this post on SmileX',
+                  url: window.location.href
+              });
+          } else {
+              navigator.clipboard.writeText(window.location.href);
+              showNotification('Link copied to clipboard!');
+          }
+      }
+
+      function savePost(postId) {
+          const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+          if (!savedPosts.includes(postId)) {
+              savedPosts.push(postId);
+              localStorage.setItem('savedPosts', JSON.stringify(savedPosts));
+              showNotification('Post saved!');
+          } else {
+              showNotification('Post already saved!');
+          }
+      }
+
+      function showPostOptions(postId) {
+          showNotification('Post options coming soon!');
+      }
+
+      function voteInPoll(postId, option) {
+          showNotification(`Voted for: ${option}`);
+      }
+
+      // Prevent right-click context menu
+      document.addEventListener('contextmenu', e => e.preventDefault());
+
+      // Configure Tailwind
+      tailwind.config = {
+          theme: {
+              extend: {
+                  colors: {
+                      smile: {
+                          50: '#fff1f2',
+                          500: '#f43f5e',
+                          600: '#e11d48',
+                      }
+                  }
+              }
+          }
+      };
+  </script>
 </body>
 </html>
