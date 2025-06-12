@@ -468,7 +468,7 @@
             {
                 name: "Mr.Smile",
                 role: "Web and App Developer",
-                image: "https://randomuser.me/api/portraits/men/32.jpg",
+                image: "",
                 stars: 5,
                 comment: "I recommend everyone to explore through my website"
             },

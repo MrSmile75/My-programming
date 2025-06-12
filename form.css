@@ -91,6 +91,7 @@
             font-size: 1.2rem;
             color: var(--text-secondary);
             font-weight: 300;
+            text-decoration: underline;
         }
 
         @keyframes gradientShift {

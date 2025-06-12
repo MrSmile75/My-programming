@@ -75,7 +75,7 @@
               background: linear-gradient( #00ffff, #ff00ff);
             background-size: 300% 300%;
             -webkit-background-clip: text;
-            -webkit-text-fill-color: rgb(223, 165, 59);
+            -webkit-text-fill-color:#ffff00;
             
                              animation: bounce 2s infinite;
         }
@@ -261,9 +261,9 @@
         }
 
         .button:hover {
-            transform: translateY(-5px);
+            transform: translateY(-1px);
             box-shadow: 
-                0 10px 30px rgba(0, 255, 255, 0.7),
+                0 0 1px #ffff00,
                 inset 0 0 30px rgba(255, 255, 255, 0.2);
             background: linear-gradient(45deg, #ff00ff, #00ffff);
         }
