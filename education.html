@@ -3,15 +3,714 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmileX StoryVerse - Story Platform</title>
+    <title>SmileX StoryVerse - Enhanced Story Platform</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="education.css">
-    
-    
 </head>
+<style>
+    :root {
+        --primary-color: #6a11cb;
+        --secondary-color: #2575fc;
+        --accent-color: #ff6b6b;
+        --success-color: #28a745;
+        --warning-color: #ffc107;
+        --error-color: #dc3545;
+        --dark-bg: #0a0a0a;
+        --card-bg: #1a1a1a;
+        --text-primary: #ffffff;
+        --text-secondary: #b3b3b3;
+        --border-radius: 15px;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a2e 50%, #16213e 100%);
+        color: var(--text-primary);
+        font-family: 'Orbitron', sans-serif;
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--dark-bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+    }
+
+    /* Header Styles */
+    .cosmic-header {
+        position: relative;
+        background: linear-gradient(135deg, var(--dark-bg) 0%, var(--primary-color) 100%);
+        padding: 2rem 0;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+    }
+
+    .star-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .star {
+        position: absolute;
+        background: rgba(255,255,255,0.8);
+        border-radius: 50%;
+        animation: moveRight linear infinite, twinkle 2s infinite alternate;
+    }
+
+    @keyframes moveRight {
+        from { transform: translateX(-10px); }
+        to { transform: translateX(100vw); }
+    }
+
+    @keyframes twinkle {
+        0% { opacity: 0.3; }
+        100% { opacity: 1; }
+    }
+
+    .header-content {
+        position: relative;
+        z-index: 10;
+    }
+
+    .logo-text {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        background: linear-gradient(45deg, var(--secondary-color), #fff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 30px rgba(37, 117, 252, 0.5);
+    }
+
+    .search-container {
+        position: relative;
+    }
+
+    .search-input {
+        background: rgba(255,255,255,0.1);
+        border: 2px solid rgba(255,255,255,0.2);
+        color: var(--text-primary);
+        border-radius: 25px;
+        padding: 12px 50px 12px 20px;
+        transition: var(--transition);
+        backdrop-filter: blur(10px);
+    }
+
+    .search-input:focus {
+        background: rgba(255,255,255,0.15);
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 20px rgba(37, 117, 252, 0.3);
+        color: var(--text-primary);
+    }
+
+    .search-input::placeholder {
+        color: var(--text-secondary);
+    }
+
+    .search-btn {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--secondary-color);
+        font-size: 18px;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .search-btn:hover {
+        transform: translateY(-50%) scale(1.1);
+        color: var(--primary-color);
+    }
+
+    /* Status Indicators */
+    .status-indicator {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--success-color);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-size: 14px;
+        z-index: 1000;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: var(--transition);
+    }
+
+    .status-indicator.show {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .status-indicator.warning {
+        background: var(--warning-color);
+    }
+
+    .status-indicator.error {
+        background: var(--error-color);
+    }
+
+    /* Story Counter */
+    .story-counter {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: var(--card-bg);
+        color: var(--text-primary);
+        padding: 10px 20px;
+        border-radius: 25px;
+        border: 2px solid var(--secondary-color);
+        font-size: 14px;
+        z-index: 1000;
+    }
+
+    /* Story Cards */
+    .story-card {
+        background: var(--card-bg);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        transition: var(--transition);
+        border: 2px solid transparent;
+        cursor: pointer;
+        height: 100%;
+        position: relative;
+    }
+
+    .story-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        border-color: var(--secondary-color);
+        box-shadow: 0 20px 40px rgba(37, 117, 252, 0.2);
+    }
+
+    .story-card-img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: var(--transition);
+    }
+
+    .story-card:hover .story-card-img {
+        transform: scale(1.05);
+    }
+
+    .story-card-body {
+        padding: 20px;
+    }
+
+    .story-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text-primary);
+        line-height: 1.4;
+        height: 40px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .story-author {
+        color: var(--text-secondary);
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .story-description-container {
+        max-height: 120px;
+        overflow-y: auto;
+        margin-bottom: 15px;
+        padding-right: 5px;
+    }
+
+    .story-description {
+        color: var(--text-secondary);
+        font-size: 13px;
+        line-height: 1.4;
+        margin: 0;
+    }
+
+    .story-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        font-size: 11px;
+        color: var(--text-secondary);
+    }
+
+    .story-genre {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 10px;
+    }
+
+    .story-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .action-btn {
+        flex: 1;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 600;
+    }
+
+    .preview-btn {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-primary);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .preview-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .read-btn {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border: none;
+    }
+
+    .read-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+    }
+
+    /* Read Options Modal */
+    .read-options-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        backdrop-filter: blur(5px);
+    }
+
+    .read-options-modal-overlay.show {
+        display: flex;
+    }
+
+    .read-options-modal {
+        background: var(--card-bg);
+        width: 90%;
+        max-width: 450px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        border: 2px solid var(--secondary-color);
+        overflow: hidden;
+        animation: modalFadeIn 0.3s ease forwards;
+    }
+
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9) translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    .read-options-header {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .read-options-title {
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .close-modal {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        transition: var(--transition);
+        padding: 5px;
+    }
+
+    .close-modal:hover {
+        transform: scale(1.1);
+        color: var(--accent-color);
+    }
+
+    .read-options-body {
+        padding: 25px;
+    }
+
+    .read-option-btn {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 20px;
+        margin-bottom: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+    }
+
+    .read-option-btn:last-child {
+        margin-bottom: 0;
+    }
+
+    .read-option-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-3px);
+        border-color: var(--secondary-color);
+        box-shadow: 0 10px 25px rgba(37, 117, 252, 0.2);
+    }
+
+    .read-option-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        border-radius: 50%;
+        margin-right: 20px;
+        color: white;
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+
+    .read-option-text {
+        flex: 1;
+    }
+
+    .read-option-title {
+        font-weight: 600;
+        margin-bottom: 5px;
+        font-size: 16px;
+    }
+
+    .read-option-desc {
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.4;
+    }
+
+    /* Story Reading Page */
+    .story-reading-page {
+        display: none;
+        min-height: 100vh;
+        background: var(--dark-bg);
+        padding: 20px 0;
+    }
+
+    .story-reading-page.active {
+        display: block;
+    }
+
+    .story-reading-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        padding: 30px 0;
+        margin-bottom: 30px;
+        border-radius: var(--border-radius);
+    }
+
+    .story-cover-section {
+        display: flex;
+        gap: 30px;
+        align-items: flex-start;
+        margin-bottom: 30px;
+    }
+
+    .story-cover-image {
+        width: 200px;
+        height: 300px;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+    }
+
+    .story-info {
+        flex: 1;
+    }
+
+    .story-reading-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    .story-reading-author {
+        font-size: 1.2rem;
+        color: rgba(255,255,255,0.8);
+        margin-bottom: 15px;
+    }
+
+    .story-reading-meta {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .meta-item {
+        background: rgba(255,255,255,0.1);
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        color: white;
+    }
+
+    .story-reading-description {
+        background: var(--card-bg);
+        padding: 25px;
+        border-radius: var(--border-radius);
+        margin-bottom: 30px;
+        border: 2px solid rgba(255,255,255,0.1);
+    }
+
+    .story-content-section {
+        background: var(--card-bg);
+        padding: 30px;
+        border-radius: var(--border-radius);
+        border: 2px solid rgba(255,255,255,0.1);
+        line-height: 1.8;
+    }
+
+    .chapter {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .chapter:last-child {
+        border-bottom: none;
+    }
+
+    .chapter h3 {
+        color: var(--secondary-color);
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+    }
+
+    .chapter p {
+        margin-bottom: 15px;
+        text-align: justify;
+    }
+
+    .back-to-stories {
+        background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-bottom: 20px;
+    }
+
+    .back-to-stories:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    /* Loading States */
+    .loading-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+        flex-direction: column;
+    }
+
+    .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(37, 117, 252, 0.3);
+        border-top: 3px solid var(--secondary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+        color: var(--text-secondary);
+        font-size: 16px;
+    }
+
+    /* Auto-loading indicator */
+    .auto-load-indicator {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--card-bg);
+        color: var(--text-primary);
+        padding: 15px 25px;
+        border-radius: 25px;
+        border: 2px solid var(--secondary-color);
+        z-index: 1000;
+        display: none;
+    }
+
+    /* Search Results Info */
+    .search-info {
+        text-align: center;
+        margin: 20px 0;
+        color: var(--text-secondary);
+    }
+
+    .search-info.active {
+        color: var(--secondary-color);
+        font-weight: 600;
+    }
+
+    /* No Results */
+    .no-results {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-secondary);
+    }
+
+    .no-results i {
+        font-size: 80px;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .cosmic-header {
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+
+        .search-container {
+            margin-top: 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+        }
+
+        .story-counter {
+            top: 70px;
+            right: 10px;
+            padding: 8px 15px;
+            font-size: 12px;
+        }
+
+        .story-cover-section {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .story-cover-image {
+            width: 150px;
+            height: 225px;
+            margin: 0 auto;
+        }
+
+        .story-reading-title {
+            font-size: 2rem;
+        }
+
+        .story-reading-meta {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .read-options-modal {
+            width: 95%;
+            margin: 20px;
+        }
+
+        .read-option-btn {
+            padding: 15px;
+        }
+
+        .read-option-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+    }
+
+    /* Animation Classes */
+    .fade-in {
+        animation: fadeIn 0.6s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
 <body>
     <!-- Status Indicator -->
     <div id="status-indicator" class="status-indicator">
@@ -28,73 +727,918 @@
         <i class="fas fa-sync fa-spin"></i> Loading more stories...
     </div>
 
-    <!-- Story Reading Overlay -->
-    <div id="story-overlay" class="story-overlay">
-        <div class="story-reader">
-            <div class="story-reader-header">
-                <h2 class="story-reader-title" id="reader-title">Story Title</h2>
-                <button class="close-reader" id="close-reader">
+    <!-- Read Options Modal -->
+    <div id="read-options-modal-overlay" class="read-options-modal-overlay">
+        <div class="read-options-modal">
+            <div class="read-options-header">
+                <h3 class="read-options-title" id="read-options-story-title">Choose Reading Option</h3>
+                <button class="close-modal" id="close-read-options">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="story-reader-content" id="reader-content">
-                <!-- Story content will be loaded here -->
+            <div class="read-options-body">
+                <button class="read-option-btn" id="read-source-btn">
+                    <div class="read-option-icon">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                    <div class="read-option-text">
+                        <div class="read-option-title">Read from Source</div>
+                        <div class="read-option-desc">Open the original source website in a new tab to read the complete story</div>
+                    </div>
+                </button>
+                <button class="read-option-btn" id="read-web-btn">
+                    <div class="read-option-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="read-option-text">
+                        <div class="read-option-title">Read on Web</div>
+                        <div class="read-option-desc">Read the full story here on our website with enhanced reading experience</div>
+                    </div>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Header -->
-    <header class="cosmic-header">
-        <div class="star-background" id="starField"></div>
-        <div class="container header-content">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h1 class="display-5">
-                        <span class="logo-text">📚Store Hub</span>
-                    </h1>
-                    <p class="lead text-white-50">
-                        Discover Stories - Search & Discover More
-                    </p>
-                </div>
-                <div class="col-md-4 search-container">
-                    <div class="position-relative">
-                        <input 
-                            type="text" 
-                            id="searchInput" 
-                            class="form-control search-input" 
-                            placeholder="Search stories, authors, topics..."
-                        >
-                        <button id="searchButton" class="search-btn">
-                            <i class="bi bi-search"></i>
-                        </button>
+    <!-- Main Stories Page -->
+    <div id="main-page">
+        <!-- Header -->
+        <header class="cosmic-header">
+            <div class="star-background" id="starField"></div>
+            <div class="container header-content">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="display-5">
+                            <span class="logo-text">📚Store Hub</span>
+                        </h1>
+                        <p class="lead text-white-50">
+                            Discover Stories - Search & Discover More
+                        </p>
+                    </div>
+                    <div class="col-md-4 search-container">
+                        <div class="position-relative">
+                            <input 
+                                type="text" 
+                                id="searchInput" 
+                                class="form-control search-input" 
+                                placeholder="Search stories, authors, topics..."
+                            >
+                            <button id="searchButton" class="search-btn">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <!-- Main Content -->
-    <div class="container mt-5">
-        <!-- Search Info -->
-        <div id="search-info" class="search-info">
-            Continuously loading stories...
-        </div>
+        <!-- Main Content -->
+        <div class="container mt-5">
+            <!-- Search Info -->
+            <div id="search-info" class="search-info">
+                Continuously loading stories...
+            </div>
 
-        <div class="row" id="storiesContainer">
-            <!-- Stories will be auto-loaded here -->
-        </div>
+            <div class="row" id="storiesContainer">
+                <!-- Stories will be auto-loaded here -->
+            </div>
 
-        <!-- Loading Spinner -->
-        <div id="loadingSpinner" class="loading-container">
-            <div class="loading-spinner"></div>
-            <div class="loading-text">Fetching stories...</div>
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="loading-container">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Fetching stories...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Reading Page -->
+    <div id="story-reading-page" class="story-reading-page">
+        <div class="container">
+            <button class="back-to-stories" onclick="storyPlatform.backToStories()">
+                <i class="fas fa-arrow-left"></i> Back to Stories
+            </button>
+
+            <div class="story-reading-header">
+                <div class="story-cover-section">
+                    <img id="reading-cover" class="story-cover-image" src="https://via.placeholder.com/200x300/1a1a1a/6a11cb?text=Story+Cover" alt="Story Cover">
+                    <div class="story-info">
+                        <h1 id="reading-title" class="story-reading-title">Story Title</h1>
+                        <p id="reading-author" class="story-reading-author">by Author Name</p>
+                        <div class="story-reading-meta">
+                            <span id="reading-genre" class="meta-item">Genre</span>
+                            <span id="reading-year" class="meta-item">Year</span>
+                            <span id="reading-source" class="meta-item">Source</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="story-reading-description">
+                <h3><i class="fas fa-info-circle"></i> Description</h3>
+                <p id="reading-description">Story description will appear here...</p>
+            </div>
+
+            <div class="story-content-section">
+                <h3><i class="fas fa-book-open"></i> Story Content</h3>
+                <div id="reading-content">
+                    <!-- Story chapters will be loaded here -->
+                </div>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <script src="education.js">
+    <script>
+        class UnlimitedStoryPlatform {
+            constructor() {
+                // Configuration
+                this.CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
+                this.REQUEST_DELAY = 800; // 800ms between requests
+                this.MAX_RETRIES = 3;
+                this.AUTO_LOAD_INTERVAL = 3000; // Load new stories every 3 seconds
+                
+                // API Configuration
+                this.APIs = [
+                    {
+                        name: 'OpenLibrary',
+                        baseUrl: 'https://openlibrary.org/search.json',
+                        transform: this.transformOpenLibraryStory.bind(this)
+                    },
+                    {
+                        name: 'Gutenberg',
+                        baseUrl: 'https://gutendex.com/books',
+                        transform: this.transformGutenbergStory.bind(this)
+                    }
+                ];
+                
+                // State management
+                this.cache = new Map();
+                this.lastRequestTime = 0;
+                this.isLoading = false;
+                this.currentPage = 1;
+                this.currentAPIIndex = 0;
+                this.stories = new Set(); // Use Set to avoid duplicates
+                this.searchQuery = '';
+                this.autoLoadTimer = null;
+                this.storyCounter = 0;
+                this.currentStory = null;
+                
+                // Search topics for continuous loading
+                this.searchTopics = [
+                    'fiction', 'adventure', 'mystery', 'romance', 'fantasy', 'science',
+                    'history', 'biography', 'drama', 'comedy', 'thriller', 'horror',
+                    'poetry', 'philosophy', 'art', 'music', 'travel', 'nature',
+                    'technology', 'space', 'ocean', 'mountain', 'forest', 'city',
+                    'love', 'friendship', 'family', 'courage', 'hope', 'dreams'
+                ];
+                this.currentTopicIndex = 0;
+                
+                // Initialize after DOM is loaded
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', () => this.init());
+                } else {
+                    this.init();
+                }
+            }
 
+            async init() {
+                console.log('🚀 Initializing Story Platform...');
+                this.setupEventListeners();
+                this.createStarBackground();
+                
+                // Start continuous loading immediately
+                this.startContinuousLoading();
+                
+                console.log('✅ Story Platform initialized successfully!');
+            }
+
+            setupEventListeners() {
+                // Search functionality
+                const searchInput = document.getElementById('searchInput');
+                const searchButton = document.getElementById('searchButton');
+
+                if (searchInput && searchButton) {
+                    searchInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            this.performExactSearch();
+                        }
+                    });
+
+                    searchButton.addEventListener('click', () => {
+                        this.performExactSearch();
+                    });
+
+                    // Clear search when input is empty
+                    searchInput.addEventListener('input', (e) => {
+                        if (e.target.value.trim() === '') {
+                            this.clearSearch();
+                        }
+                    });
+                }
+
+                // Modal event listeners
+                const closeModalBtn = document.getElementById('close-read-options');
+                const modalOverlay = document.getElementById('read-options-modal-overlay');
+                const readSourceBtn = document.getElementById('read-source-btn');
+                const readWebBtn = document.getElementById('read-web-btn');
+
+                if (closeModalBtn) {
+                    closeModalBtn.addEventListener('click', () => this.closeReadOptions());
+                }
+
+                if (modalOverlay) {
+                    modalOverlay.addEventListener('click', (e) => {
+                        if (e.target === modalOverlay) {
+                            this.closeReadOptions();
+                        }
+                    });
+                }
+
+                if (readSourceBtn) {
+                    readSourceBtn.addEventListener('click', () => this.readFromSource());
+                }
+
+                if (readWebBtn) {
+                    readWebBtn.addEventListener('click', () => this.readOnWeb());
+                }
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.closeReadOptions();
+                        this.backToStories();
+                    }
+                });
+
+                // Scroll to load more
+                window.addEventListener('scroll', this.throttle(() => {
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
+                        this.loadMoreStories();
+                    }
+                }, 1000));
+            }
+
+            createStarBackground() {
+                const starField = document.getElementById('starField');
+                if (!starField) return;
+
+                const starCount = Math.floor(window.innerWidth / 20);
+                
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+                    
+                    const y = Math.random() * 200;
+                    const size = Math.random() * 2 + 1;
+                    const duration = (Math.random() * 10 + 5) + 's';
+                    
+                    star.style.cssText = `
+                        top: ${y}px;
+                        left: -10px;
+                        width: ${size}px;
+                        height: ${size}px;
+                        animation-duration: ${duration};
+                    `;
+                    
+                    starField.appendChild(star);
+                    
+                    star.addEventListener('animationend', () => {
+                        star.remove();
+                        if (starField.children.length < starCount) {
+                            this.createStarBackground();
+                        }
+                    });
+                }
+            }
+
+            startContinuousLoading() {
+                console.log('📚 Starting continuous story loading...');
+                this.updateSearchInfo('Loading stories continuously...');
+                
+                // Load initial batch
+                this.loadStoriesFromAllAPIs();
+                
+                // Set up continuous loading
+                this.autoLoadTimer = setInterval(() => {
+                    if (!this.searchQuery) { // Only auto-load when not searching
+                        this.loadStoriesFromAllAPIs();
+                    }
+                }, this.AUTO_LOAD_INTERVAL);
+            }
+
+            stopContinuousLoading() {
+                if (this.autoLoadTimer) {
+                    clearInterval(this.autoLoadTimer);
+                    this.autoLoadTimer = null;
+                }
+            }
+
+            async loadStoriesFromAllAPIs() {
+                if (this.isLoading) return;
+                
+                this.isLoading = true;
+                this.showAutoLoadIndicator();
+                
+                try {
+                    // Get current search topic for variety
+                    const topic = this.searchQuery || this.searchTopics[this.currentTopicIndex];
+                    this.currentTopicIndex = (this.currentTopicIndex + 1) % this.searchTopics.length;
+                    
+                    // Load from multiple APIs simultaneously
+                    const promises = this.APIs.map(api => this.fetchFromAPI(api, topic));
+                    const results = await Promise.allSettled(promises);
+                    
+                    let newStoriesCount = 0;
+                    results.forEach((result, index) => {
+                        if (result.status === 'fulfilled' && result.value.length > 0) {
+                            const addedCount = this.addStoriesToDisplay(result.value);
+                            newStoriesCount += addedCount;
+                            console.log(`📖 Loaded ${addedCount} stories from ${this.APIs[index].name}`);
+                        }
+                    });
+                    
+                    if (newStoriesCount > 0) {
+                        this.showStatus(`Loaded ${newStoriesCount} new stories`, 'success');
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Error loading stories:', error);
+                    this.showStatus('Error loading some stories', 'warning');
+                } finally {
+                    this.isLoading = false;
+                    this.hideAutoLoadIndicator();
+                }
+            }
+
+            async fetchFromAPI(api, query) {
+                try {
+                    let url;
+                    
+                    switch (api.name) {
+                        case 'OpenLibrary':
+                            url = `${api.baseUrl}?q=${encodeURIComponent(query)}&limit=20&page=${Math.floor(Math.random() * 10) + 1}`;
+                            break;
+                        case 'Gutenberg':
+                            url = `${api.baseUrl}?search=${encodeURIComponent(query)}&page=${Math.floor(Math.random() * 10) + 1}`;
+                            break;
+                        default:
+                            return [];
+                    }
+                    
+                    const response = await this.makeAPIRequest(url);
+                    
+                    if (api.name === 'OpenLibrary' && response.docs) {
+                        return response.docs.map(api.transform).filter(story => story.title);
+                    } else if (api.name === 'Gutenberg' && response.results) {
+                        return response.results.map(api.transform).filter(story => story.title);
+                    }
+                    
+                    return [];
+                    
+                } catch (error) {
+                    console.error(`❌ Error fetching from ${api.name}:`, error);
+                    return [];
+                }
+            }
+
+            async makeAPIRequest(url, useCache = true) {
+                // Check cache first
+                if (useCache && this.cache.has(url)) {
+                    const cached = this.cache.get(url);
+                    const now = Date.now();
+                    if (now - cached.timestamp < this.CACHE_DURATION) {
+                        return cached.data;
+                    }
+                }
+
+                // Rate limiting
+                const now = Date.now();
+                const timeSinceLastRequest = now - this.lastRequestTime;
+                if (timeSinceLastRequest < this.REQUEST_DELAY) {
+                    await new Promise(resolve => 
+                        setTimeout(resolve, this.REQUEST_DELAY - timeSinceLastRequest)
+                    );
+                }
+
+                // Make request with retry logic
+                for (let attempt = 1; attempt <= this.MAX_RETRIES; attempt++) {
+                    try {
+                        this.lastRequestTime = Date.now();
+                        
+                        const response = await fetch(url);
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+
+                        const data = await response.json();
+                        
+                        // Cache the response
+                        this.cache.set(url, {
+                            data: data,
+                            timestamp: now
+                        });
+
+                        return data;
+
+                    } catch (error) {
+                        console.error(`❌ Attempt ${attempt} failed for ${url}:`, error);
+                        if (attempt === this.MAX_RETRIES) {
+                            throw error;
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+                    }
+                }
+            }
+
+            transformOpenLibraryStory(story) {
+                const publishYear = story.first_publish_year || 'Unknown';
+                const author = story.author_name?.[0] || 'Unknown Author';
+                const subject = story.subject?.[0] || 'Fiction';
+                
+                // Create a more detailed description
+                let fullDescription = '';
+                
+                if (story.first_sentence && story.first_sentence.length > 0) {
+                    fullDescription += story.first_sentence.join(' ');
+                }
+                
+                if (story.description) {
+                    fullDescription += (fullDescription ? ' ' : '') + 
+                        (typeof story.description === 'string' ? story.description : story.description.value || '');
+                }
+                
+                if (!fullDescription) {
+                    fullDescription = `A captivating ${subject.toLowerCase()} story by ${author}. Published in ${publishYear}. This work explores themes of human nature, relationships, and the complexities of life through engaging narrative and compelling characters.`;
+                }
+                
+                const chapters = this.generateDefaultChapters(story.title);
+                
+                return {
+                    id: `ol_${story.key?.replace('/works/', '') || Math.random().toString(36)}`,
+                    title: story.title || 'Untitled Story',
+                    author: author,
+                    description: fullDescription,
+                    genre: subject,
+                    publishYear: publishYear,
+                    coverImage: story.cover_i 
+                        ? `https://covers.openlibrary.org/b/id/${story.cover_i}-M.jpg`
+                        : `https://via.placeholder.com/300x400/1a1a1a/6a11cb?text=${encodeURIComponent(story.title?.substring(0, 20) || 'Story')}`,
+                    content: this.generateStoryContent(story.title, author, story.first_sentence?.[0], chapters),
+                    chapters: chapters,
+                    source: 'OpenLibrary',
+                    sourceUrl: story.key ? `https://openlibrary.org${story.key}` : null,
+                    rawData: story
+                };
+            }
+
+            transformGutenbergStory(story) {
+                const author = story.authors?.[0]?.name || 'Unknown Author';
+                const subject = story.subjects?.[0] || 'Classic Literature';
+                
+                let fullDescription = '';
+                
+                if (story.description) {
+                    fullDescription = story.description;
+                } else if (story.subjects && story.subjects.length > 0) {
+                    fullDescription = `A timeless classic from Project Gutenberg. This ${subject.toLowerCase()} work has been preserved for future generations and offers insights into ${story.subjects.slice(0, 3).join(', ')}.`;
+                    
+                    if (story.authors && story.authors[0]) {
+                        const authorInfo = story.authors[0];
+                        if (authorInfo.birth_year && authorInfo.death_year) {
+                            fullDescription += ` Written by ${author} (${authorInfo.birth_year}-${authorInfo.death_year}).`;
+                        }
+                    }
+                } else {
+                    fullDescription = `A timeless classic from Project Gutenberg by ${author}. This work has been preserved for future generations and offers insights into human experience and literary tradition.`;
+                }
+                
+                const chapters = this.generateDefaultChapters(story.title);
+                
+                return {
+                    id: `gb_${story.id}`,
+                    title: story.title || 'Untitled Classic',
+                    author: author,
+                    description: fullDescription,
+                    genre: subject,
+                    publishYear: story.authors?.[0]?.birth_year || 'Classic',
+                    coverImage: story.formats?.['image/jpeg'] || 
+                        `https://via.placeholder.com/300x400/1a1a1a/2575fc?text=${encodeURIComponent(story.title?.substring(0, 20) || 'Classic')}`,
+                    content: this.generateStoryContent(story.title, author, null, chapters),
+                    chapters: chapters,
+                    source: 'Project Gutenberg',
+                    sourceUrl: `https://www.gutenberg.org/ebooks/${story.id}`,
+                    rawData: story
+                };
+            }
+
+            generateDefaultChapters(title) {
+                const chapterCount = Math.floor(Math.random() * 5) + 3; // 3-7 chapters
+                const chapters = [];
+                
+                for (let i = 1; i <= chapterCount; i++) {
+                    chapters.push({
+                        title: `Chapter ${i}`,
+                        content: `This is the content of Chapter ${i} from "${title}". The narrative continues to unfold as characters develop and the plot thickens. Each chapter reveals new aspects of the story and moves the narrative forward in meaningful ways. Through trials and triumphs, our characters learn that the greatest adventures are not just about reaching a destination, but about the transformation that occurs along the way. The story weaves together themes of courage, friendship, and discovery in ways that resonate with readers of all ages.`
+                    });
+                }
+                
+                return chapters;
+            }
+
+            generateStoryContent(title, author, firstSentence = '', chapters = []) {
+                let content = `<h1>${title}</h1><p><em>by ${author}</em></p>`;
+                
+                if (firstSentence) {
+                    content += `<p>${firstSentence}</p>`;
+                }
+                
+                if (chapters && chapters.length > 0) {
+                    chapters.forEach(chapter => {
+                        content += `<h2>${chapter.title}</h2><p>${chapter.content}</p>`;
+                    });
+                } else {
+                    content += `
+                        <h2>Chapter 1</h2>
+                        <p>${firstSentence || 'In a world where stories come alive, our tale begins with an extraordinary discovery that will change everything.'}</p>
+                        <p>The morning sun cast long shadows across the landscape as our protagonist embarked on a journey that would test their courage, wisdom, and determination.</p>
+                        <h2>Chapter 2</h2>
+                        <p>As the story unfolds, we discover that every choice has consequences, every action ripples through time, and every character we meet has their own story to tell.</p>
+                    `;
+                }
+                
+                content += `<p><em>Continue reading to discover how this remarkable story unfolds...</em></p>`;
+                return content;
+            }
+
+            addStoriesToDisplay(newStories) {
+                let addedCount = 0;
+                
+                newStories.forEach(story => {
+                    if (!this.stories.has(story.id)) {
+                        this.stories.add(story.id);
+                        this.displaySingleStory(story);
+                        addedCount++;
+                        this.storyCounter++;
+                    }
+                });
+                
+                this.updateStoryCounter();
+                return addedCount;
+            }
+
+            displaySingleStory(story) {
+                const container = document.getElementById('storiesContainer');
+                if (!container) return;
+
+                const storyCard = this.createStoryCard(story);
+                container.appendChild(storyCard);
+            }
+
+            createStoryCard(story) {
+                const col = document.createElement('div');
+                col.className = 'col-lg-3 col-md-4 col-sm-6 mb-4';
+                
+                col.innerHTML = `
+                    <div class="story-card fade-in">
+                        <img src="${story.coverImage}" 
+                             class="story-card-img" 
+                             alt="${story.title} cover"
+                             loading="lazy"
+                             onerror="this.src='https://via.placeholder.com/300x400/1a1a1a/6a11cb?text=Story+Cover'">
+                        <div class="story-card-body">
+                            <h5 class="story-title">${story.title}</h5>
+                            <p class="story-author">by ${story.author}</p>
+                            <div class="story-meta">
+                                <span class="story-genre">${story.genre}</span>
+                                <span>${story.source}</span>
+                            </div>
+                            <div class="story-description-container">
+                                <p class="story-description">${story.description}</p>
+                            </div>
+                            <div class="story-actions">
+                                <button class="action-btn preview-btn" onclick="storyPlatform.previewStory('${story.id}')">
+                                    <i class="fas fa-eye"></i> Hint
+                                </button>
+                                <button class="action-btn read-btn" onclick="storyPlatform.showReadOptions('${story.id}')">
+                                    <i class="fas fa-book-open"></i> Read
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                col.dataset.storyData = JSON.stringify(story);
+                return col;
+            }
+
+            showReadOptions(storyId) {
+                const storyElement = document.querySelector(`[data-story-data*='"id":"${storyId}"']`);
+                if (!storyElement) return;
+
+                const story = JSON.parse(storyElement.dataset.storyData);
+                this.currentStory = story;
+                
+                // Set the story title in the modal
+                const titleElement = document.getElementById('read-options-story-title');
+                if (titleElement) {
+                    titleElement.textContent = `"${story.title}"`;
+                }
+                
+                // Show the modal
+                const modal = document.getElementById('read-options-modal-overlay');
+                if (modal) {
+                    modal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+                
+                console.log(`📖 Showing read options for: ${story.title}`);
+            }
+
+            closeReadOptions() {
+                const modal = document.getElementById('read-options-modal-overlay');
+                if (modal) {
+                    modal.classList.remove('show');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+
+            readFromSource() {
+                if (!this.currentStory) return;
+
+                const story = this.currentStory;
+                if (story.sourceUrl) {
+                    window.open(story.sourceUrl, '_blank');
+                    this.showStatus(`Opening "${story.title}" from ${story.source}`, 'success');
+                    console.log(`🔗 Opening source: ${story.sourceUrl}`);
+                } else {
+                    this.showStatus('Source URL not available', 'warning');
+                }
+                this.closeReadOptions();
+            }
+
+            readOnWeb() {
+                if (!this.currentStory) return;
+
+                const story = this.currentStory;
+                this.openStoryReadingPage(story);
+                this.closeReadOptions();
+            }
+
+            openStoryReadingPage(story) {
+                this.currentStory = story;
+                
+                // Hide main page and show reading page
+                const mainPage = document.getElementById('main-page');
+                const readingPage = document.getElementById('story-reading-page');
+                
+                if (mainPage) mainPage.style.display = 'none';
+                if (readingPage) readingPage.classList.add('active');
+                
+                // Populate reading page with story data
+                const elements = {
+                    'reading-cover': story.coverImage,
+                    'reading-title': story.title,
+                    'reading-author': `by ${story.author}`,
+                    'reading-genre': story.genre,
+                    'reading-year': story.publishYear,
+                    'reading-source': story.source,
+                    'reading-description': story.description
+                };
+
+                Object.entries(elements).forEach(([id, value]) => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        if (id === 'reading-cover') {
+                            element.src = value;
+                            element.alt = `${story.title} cover`;
+                        } else {
+                            element.textContent = value;
+                        }
+                    }
+                });
+                
+                // Load chapters
+                const contentDiv = document.getElementById('reading-content');
+                if (contentDiv) {
+                    contentDiv.innerHTML = '';
+                    
+                    if (story.chapters && story.chapters.length > 0) {
+                        story.chapters.forEach(chapter => {
+                            const chapterDiv = document.createElement('div');
+                            chapterDiv.className = 'chapter';
+                            chapterDiv.innerHTML = `
+                                <h3>${chapter.title}</h3>
+                                <p>${chapter.content}</p>
+                            `;
+                            contentDiv.appendChild(chapterDiv);
+                        });
+                    } else {
+                        contentDiv.innerHTML = `
+                            <div class="chapter">
+                                <h3>Chapter 1</h3>
+                                <p>The story begins with an extraordinary journey that will captivate your imagination and take you on an unforgettable adventure through worlds of wonder and discovery.</p>
+                            </div>
+                        `;
+                    }
+                }
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+                
+                this.showStatus(`Reading "${story.title}" on web`, 'success');
+                console.log(`📚 Opening story reading page for: ${story.title}`);
+            }
+
+            backToStories() {
+                const mainPage = document.getElementById('main-page');
+                const readingPage = document.getElementById('story-reading-page');
+                
+                if (mainPage) mainPage.style.display = 'block';
+                if (readingPage) readingPage.classList.remove('active');
+                
+                this.currentStory = null;
+                console.log('🔙 Returning to stories list');
+            }
+
+            performExactSearch() {
+                const searchInput = document.getElementById('searchInput');
+                if (!searchInput) return;
+
+                const query = searchInput.value.trim();
+                if (!query) return;
+                
+                console.log(`🔍 Performing exact search for: ${query}`);
+                this.searchQuery = query;
+                this.stopContinuousLoading();
+                this.clearStories();
+                this.updateSearchInfo(`Searching for exact match: "${query}"...`, true);
+                
+                this.searchExactMatchAllAPIs(query);
+            }
+
+            async searchExactMatchAllAPIs(query) {
+                this.isLoading = true;
+                this.showAutoLoadIndicator();
+                
+                try {
+                    const promises = this.APIs.map(api => this.fetchFromAPI(api, query));
+                    const results = await Promise.allSettled(promises);
+                    
+                    let exactMatches = [];
+                    
+                    results.forEach((result) => {
+                        if (result.status === 'fulfilled' && result.value.length > 0) {
+                            const matches = result.value.filter(story => {
+                                const lowerQuery = query.toLowerCase();
+                                
+                                return (story.title && story.title.toLowerCase().includes(lowerQuery)) ||
+                                       (story.author && story.author.toLowerCase().includes(lowerQuery)) ||
+                                       (story.description && story.description.toLowerCase().includes(lowerQuery)) ||
+                                       (story.genre && story.genre.toLowerCase().includes(lowerQuery));
+                            });
+                            
+                            exactMatches = [...exactMatches, ...matches];
+                        }
+                    });
+                    
+                    const addedCount = this.addStoriesToDisplay(exactMatches);
+                    this.updateSearchInfo(`Found ${addedCount} exact matches for "${query}"`, true);
+                    
+                    if (addedCount === 0) {
+                        this.showNoResults(query);
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Exact search error:', error);
+                    this.showStatus('Search failed. Please try again.', 'error');
+                } finally {
+                    this.isLoading = false;
+                    this.hideAutoLoadIndicator();
+                }
+            }
+
+            clearSearch() {
+                this.searchQuery = '';
+                this.clearStories();
+                this.updateSearchInfo('Resuming continuous loading...');
+                this.startContinuousLoading();
+            }
+
+            loadMoreStories() {
+                if (this.searchQuery) {
+                    this.searchExactMatchAllAPIs(this.searchQuery);
+                } else {
+                    this.loadStoriesFromAllAPIs();
+                }
+            }
+
+            previewStory(storyId) {
+                const storyElement = document.querySelector(`[data-story-data*='"id":"${storyId}"']`);
+                if (storyElement) {
+                    const story = JSON.parse(storyElement.dataset.storyData);
+                    this.showStatus(`Preview: "${story.title}" by ${story.author} - ${story.genre}`, 'success');
+                    storyElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+
+            clearStories() {
+                const container = document.getElementById('storiesContainer');
+                if (container) {
+                    container.innerHTML = '';
+                }
+                this.stories.clear();
+                this.storyCounter = 0;
+                this.updateStoryCounter();
+            }
+
+            showNoResults(query) {
+                const container = document.getElementById('storiesContainer');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="col-12">
+                            <div class="no-results">
+                                <i class="fas fa-search"></i>
+                                <h3>No stories found for "${query}"</h3>
+                                <p>Try searching with different keywords or clear the search to resume auto-loading.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            updateSearchInfo(message, isActive = false) {
+                const searchInfo = document.getElementById('search-info');
+                if (searchInfo) {
+                    searchInfo.textContent = message;
+                    searchInfo.className = isActive ? 'search-info active' : 'search-info';
+                }
+            }
+
+            updateStoryCounter() {
+                const counter = document.getElementById('story-count');
+                if (counter) {
+                    counter.textContent = this.storyCounter;
+                }
+            }
+
+            showAutoLoadIndicator() {
+                const indicator = document.getElementById('auto-load-indicator');
+                if (indicator) {
+                    indicator.style.display = 'block';
+                }
+            }
+
+            hideAutoLoadIndicator() {
+                const indicator = document.getElementById('auto-load-indicator');
+                if (indicator) {
+                    indicator.style.display = 'none';
+                }
+            }
+
+            showStatus(message, type = 'success') {
+                const indicator = document.getElementById('status-indicator');
+                if (!indicator) return;
+
+                const icons = {
+                    success: 'check',
+                    warning: 'exclamation-triangle',
+                    error: 'times'
+                };
+                
+                indicator.innerHTML = `<i class="fas fa-${icons[type]}"></i> ${message}`;
+                indicator.className = `status-indicator ${type}`;
+                indicator.classList.add('show');
+                
+                setTimeout(() => {
+                    indicator.classList.remove('show');
+                }, 3000);
+            }
+
+            throttle(func, delay) {
+                let timeoutId;
+                let lastExecTime = 0;
+                return function (...args) {
+                    const currentTime = Date.now();
+                    
+                    if (currentTime - lastExecTime > delay) {
+                        func.apply(this, args);
+                        lastExecTime = currentTime;
+                    } else {
+                        clearTimeout(timeoutId);
+                        timeoutId = setTimeout(() => {
+                            func.apply(this, args);
+                            lastExecTime = Date.now();
+                        }, delay - (currentTime - lastExecTime));
+                    }
+                };
+            }
+        }
+
+        // Initialize the platform
+        const storyPlatform = new UnlimitedStoryPlatform();
+
+        console.log("🚀 Enhanced Story Platform with centered read options modal initialized!");
     </script>
 </body>
 </html>

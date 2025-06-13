@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmileX - AI Video Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #8b5cf6;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .premium-btn {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .premium-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .history-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .history-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 3s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        /* Input Section */
+        .input-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .main-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .main-input:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .main-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #8b5cf6, #3b82f6);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Analysis Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .chat-message {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #8b5cf6, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .style-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .style-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .style-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .style-option.selected {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .duration-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .duration-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .duration-option.premium {
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(255, 237, 78, 0.2));
+        }
+
+        .duration-option.premium::after {
+            content: '👑';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 1.2rem;
+        }
+
+        .duration-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .duration-option.selected {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #8b5cf6, #3b82f6);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Generation Overlay */
+        .generation-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            flex-direction: column;
+        }
+
+        .generation-overlay.active {
+            display: flex;
+        }
+
+        .generation-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 2rem;
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #8b5cf6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .generation-status {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .generation-details {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        /* Video Player */
+        .video-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            display: none;
+        }
+
+        .video-container.active {
+            display: block;
+        }
+
+        .video-player {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .video-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover, .download-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .trials-info {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Download Modal */
+        .download-options {
+            display: grid;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .download-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .download-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .download-option.premium {
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(255, 237, 78, 0.2));
+            border-color: #ffd700;
+        }
+
+        .download-option-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .download-option-features {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* History Section */
+        .history-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .history-section.active {
+            display: block;
+        }
+
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .history-thumbnail {
+            width: 100%;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .history-details {
+            font-size: 0.9rem;
+        }
+
+        .history-date {
+            opacity: 0.7;
+            font-size: 0.8rem;
+        }
+
+        /* Ad Container */
+        .ad-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .ad-placeholder {
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .modal-content {
+                padding: 1rem;
+            }
+
+            .style-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .duration-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .video-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Premium Badge */
+        .premium-badge {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #000;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(139, 92, 246, 0.9);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            z-index: 3000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: rgba(239, 68, 68, 0.9);
+        }
+
+        .notification.success {
+            background: rgba(34, 197, 94, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-video"></i> SmileX AI
+            </div>
+            <div class="nav-buttons">
+                <a href="#" class="history-btn" onclick="toggleHistory()">
+                    <i class="fas fa-history"></i> History
+                </a>
+                <a href="#" class="premium-btn" onclick="showPremiumModal()">
+                    <i class="fas fa-crown"></i> Go Premium
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">AI Video Generator</h1>
+            <p class="hero-subtitle">Transform your ideas into stunning videos with the power of AI</p>
+        </div>
+
+        <!-- Input Section -->
+        <div class="input-section">
+            <div class="input-container">
+                <input 
+                    type="text" 
+                    class="main-input" 
+                    id="videoPrompt" 
+                    placeholder="Describe the video you want to create... (e.g., 'A cat playing piano in a cozy living room')"
+                    maxlength="500"
+                >
+            </div>
+            <button class="generate-btn" onclick="startGeneration()">
+                <i class="fas fa-magic"></i> Generate Video
+            </button>
+        </div>
+
+        <!-- Ad Container for Non-Premium Users -->
+        <div class="ad-container" id="adContainer">
+            <div class="ad-placeholder">
+                <!-- INSERT YOUR GOOGLE ADS CODE HERE -->
+                <p>Advertisement Space</p>
+                <small>Your Google Ads code goes here</small>
+            </div>
+        </div>
+
+        <!-- Video Container -->
+        <div class="video-container" id="videoContainer">
+            <video class="video-player" id="videoPlayer" controls>
+                <source src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            
+            <div class="video-actions">
+                <button class="refresh-btn" onclick="refreshVideo()">
+                    <i class="fas fa-redo"></i> Regenerate
+                </button>
+                <button class="download-btn" onclick="showDownloadOptions()">
+                    <i class="fas fa-download"></i> Download
+                </button>
+            </div>
+            
+            <div class="trials-info" id="trialsInfo">
+                <i class="fas fa-info-circle"></i> 
+                <span id="trialsText">Free users: 3 regenerations remaining</span>
+            </div>
+        </div>
+
+        <!-- History Section -->
+        <div class="history-section" id="historySection">
+            <h2><i class="fas fa-history"></i> Generation History</h2>
+            <div class="history-grid" id="historyGrid">
+                <!-- History items will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Modal -->
+    <div class="modal" id="analysisModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('analysisModal')">&times;</button>
+            <div id="analysisContent">
+                <!-- Analysis content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Generation Overlay -->
+    <div class="generation-overlay" id="generationOverlay">
+        <div class="generation-content">
+            <div class="loading-spinner"></div>
+            <div class="generation-status" id="generationStatus">Analyzing your request...</div>
+            <div class="generation-details" id="generationDetails">
+                <h3>Your Request:</h3>
+                <p id="userPrompt"></p>
+                <div style="margin-top: 1rem;">
+                    <strong>Style:</strong> <span id="selectedStyle">-</span><br>
+                    <strong>Duration:</strong> <span id="selectedDuration">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Modal -->
+    <div class="modal" id="downloadModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('downloadModal')">&times;</button>
+            <h2>Download Options</h2>
+            <div class="download-options">
+                <div class="download-option premium" onclick="downloadVideo('premium')">
+                    <div class="download-option-title">
+                        <i class="fas fa-crown"></i> Premium Download
+                    </div>
+                    <div class="download-option-features">
+                        ✓ High Quality (4K)<br>
+                        ✓ No Watermark<br>
+                        ✓ No Ads<br>
+                        ✓ Instant Download
+                    </div>
+                </div>
+                <div class="download-option" onclick="downloadVideo('free')">
+                    <div class="download-option-title">
+                        <i class="fas fa-download"></i> Free Download
+                    </div>
+                    <div class="download-option-features">
+                        ✓ Standard Quality (1080p)<br>
+                        ✓ With Watermark<br>
+                        ✓ Watch Ad First<br>
+                        ✓ Limited Downloads
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Modal -->
+    <div class="modal" id="premiumModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('premiumModal')">&times;</button>
+            <h2><i class="fas fa-crown"></i> SmileX Premium</h2>
+            <div style="text-align: center; margin: 2rem 0;">
+                <div style="font-size: 2rem; margin-bottom: 1rem;">$9.99/month</div>
+                <div style="margin-bottom: 2rem;">
+                    ✓ Unlimited video generations<br>
+                    ✓ 60s & 120s video lengths<br>
+                    ✓ 4K quality downloads<br>
+                    ✓ No watermarks<br>
+                    ✓ No ads<br>
+                    ✓ Priority processing<br>
+                    ✓ Advanced AI models
+                </div>
+                <button class="btn btn-primary" onclick="upgradeToPremium()">
+                    <i class="fas fa-crown"></i> Upgrade Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Configuration
+        const OPENAI_API_KEY = 'your-openai-api-key-here'; // Replace with your actual API key
+        const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+        
+        // User data
+        let userData = {
+            isPremium: false,
+            trialsRemaining: 3,
+            generationHistory: []
+        };
+
+        // Current generation data
+        let currentGeneration = {
+            prompt: '',
+            style: '',
+            duration: 15,
+            videoUrl: ''
+        };
+
+        // Load user data from localStorage
+        function loadUserData() {
+            const saved = localStorage.getItem('smileXUserData');
+            if (saved) {
+                userData = { ...userData, ...JSON.parse(saved) };
+            }
+            updateTrialsDisplay();
+        }
+
+        // Save user data to localStorage
+        function saveUserData() {
+            localStorage.setItem('smileXUserData', JSON.stringify(userData));
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserData();
+            loadHistory();
+            
+            // Hide ads for premium users
+            if (userData.isPremium) {
+                document.getElementById('adContainer').style.display = 'none';
+            }
+        });
+
+        // Start video generation process
+        async function startGeneration() {
+            const prompt = document.getElementById('videoPrompt').value.trim();
+            
+            if (!prompt) {
+                showNotification('Please enter a description for your video', 'error');
+                return;
+            }
+
+            if (prompt.length < 10) {
+                showNotification('Please provide a more detailed description', 'error');
+                return;
+            }
+
+            currentGeneration.prompt = prompt;
+            
+            // Show analysis modal
+            await showAnalysisModal(prompt);
+        }
+
+        // Show analysis modal with AI interaction
+        async function showAnalysisModal(prompt) {
+            const modal = document.getElementById('analysisModal');
+            const content = document.getElementById('analysisContent');
+            
+            modal.classList.add('active');
+            
+            // Show initial AI message
+            content.innerHTML = `
+                <div class="chat-message">
+                    <div class="ai-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI Analysis</h3>
+                    <p>I'm analyzing your request: "${prompt}"</p>
+                    <div class="loading-spinner" style="width: 40px; height: 40px; margin: 1rem auto;"></div>
+                </div>
+            `;
+
+            // Simulate AI analysis
+            setTimeout(async () => {
+                const analysis = await analyzePrompt(prompt);
+                showStyleOptions(analysis);
+            }, 2000);
+        }
+
+        // Analyze prompt using OpenAI API
+        async function analyzePrompt(prompt) {
+            try {
+                const response = await fetch(OPENAI_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${OPENAI_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-3.5-turbo',
+                        messages: [
+                            {
+                                role: 'system',
+                                content: 'You are an AI video generation assistant. Analyze the user\'s video request and suggest appropriate visual styles. Be concise and helpful.'
+                            },
+                            {
+                                role: 'user',
+                                content: `Analyze this video request and suggest the best visual style: "${prompt}"`
+                            }
+                        ],
+                        max_tokens: 150
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    return data.choices[0].message.content;
+                } else {
+                    throw new Error('API request failed');
+                }
+            } catch (error) {
+                console.error('Error calling OpenAI API:', error);
+                return 'I\'ve analyzed your request and I\'m ready to help you create an amazing video!';
+            }
+        }
+
+        // Show style options
+        function showStyleOptions(analysis) {
+            const content = document.getElementById('analysisContent');
+            
+            content.innerHTML = `
+                <div class="chat-message">
+                    <div class="ai-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Style Selection</h3>
+                    <p>${analysis}</p>
+                    <p>How would you like your video to look?</p>
+                    
+                    <div class="style-options">
+                        <div class="style-option" onclick="selectStyle('realistic')">
+                            <i class="fas fa-camera"></i>
+                            <div>Realistic</div>
+                        </div>
+                        <div class="style-option" onclick="selectStyle('animated')">
+                            <i class="fas fa-palette"></i>
+                            <div>Animated</div>
+                        </div>
+                        <div class="style-option" onclick="selectStyle('cinematic')">
+                            <i class="fas fa-film"></i>
+                            <div>Cinematic</div>
+                        </div>
+                        <div class="style-option" onclick="selectStyle('artistic')">
+                            <i class="fas fa-paint-brush"></i>
+                            <div>Artistic</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Select video style
+        function selectStyle(style) {
+            currentGeneration.style = style;
+            
+            // Update UI
+            document.querySelectorAll('.style-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.closest('.style-option').classList.add('selected');
+            
+            // Show duration options
+            setTimeout(() => {
+                showDurationOptions();
+            }, 500);
+        }
+
+        // Show duration options
+        function showDurationOptions() {
+            const content = document.getElementById('analysisContent');
+            
+            content.innerHTML += `
+                <div class="chat-message">
+                    <div class="ai-avatar">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Duration Selection</h3>
+                    <p>How long should your video be?</p>
+                    
+                    <div class="duration-options">
+                        <div class="duration-option" onclick="selectDuration(15)">
+                            <div><strong>15s</strong></div>
+                            <div>Free</div>
+                        </div>
+                        <div class="duration-option" onclick="selectDuration(30)">
+                            <div><strong>30s</strong></div>
+                            <div>Free</div>
+                        </div>
+                        <div class="duration-option premium" onclick="selectDuration(60)">
+                            <div><strong>60s</strong></div>
+                            <div>Premium</div>
+                        </div>
+                        <div class="duration-option premium" onclick="selectDuration(120)">
+                            <div><strong>120s</strong></div>
+                            <div>Premium</div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="closeModal('analysisModal')">Cancel</button>
+                        <button class="btn btn-primary" onclick="confirmGeneration()">Generate Video</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Select duration
+        function selectDuration(duration) {
+            if ((duration > 30) && !userData.isPremium) {
+                showNotification('Premium required for longer videos', 'error');
+                showPremiumModal();
+                return;
+            }
+            
+            currentGeneration.duration = duration;
+            
+            // Update UI
+            document.querySelectorAll('.duration-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.closest('.duration-option').classList.add('selected');
+        }
+
+        // Confirm generation
+        function confirmGeneration() {
+            if (!currentGeneration.style) {
+                showNotification('Please select a video style', 'error');
+                return;
+            }
+            
+            if (!currentGeneration.duration) {
+                currentGeneration.duration = 15;
+            }
+            
+            closeModal('analysisModal');
+            generateVideo();
+        }
+
+        // Generate video
+        async function generateVideo() {
+            const overlay = document.getElementById('generationOverlay');
+            const status = document.getElementById('generationStatus');
+            const details = document.getElementById('generationDetails');
+            
+            // Show generation overlay
+            overlay.classList.add('active');
+            
+            // Update details
+            document.getElementById('userPrompt').textContent = currentGeneration.prompt;
+            document.getElementById('selectedStyle').textContent = currentGeneration.style;
+            document.getElementById('selectedDuration').textContent = currentGeneration.duration + 's';
+            
+            // Simulate video generation process
+            const steps = [
+                'Analyzing your request...',
+                'Processing visual elements...',
+                'Generating video frames...',
+                'Adding effects and transitions...',
+                'Rendering final video...',
+                'Almost done...'
+            ];
+            
+            for (let i = 0; i < steps.length; i++) {
+                status.textContent = steps[i];
+                await new Promise(resolve => setTimeout(resolve, 3000));
+            }
+            
+            // Simulate video completion
+            status.textContent = 'Video generated successfully!';
+            
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                showGeneratedVideo();
+            }, 2000);
+        }
+
+        // Show generated video
+        function showGeneratedVideo() {
+            const container = document.getElementById('videoContainer');
+            const player = document.getElementById('videoPlayer');
+            
+            // For demo purposes, use a placeholder video
+            // In production, this would be the actual generated video URL
+            currentGeneration.videoUrl = 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4';
+            player.src = currentGeneration.videoUrl;
+            
+            container.classList.add('active');
+            
+            // Add to history
+            addToHistory(currentGeneration);
+            
+            // Update trials
+            if (!userData.isPremium) {
+                userData.trialsRemaining = Math.max(0, userData.trialsRemaining - 1);
+                updateTrialsDisplay();
+                saveUserData();
+            }
+            
+            showNotification('Video generated successfully!', 'success');
+        }
+
+        // Refresh/regenerate video
+        function refreshVideo() {
+            if (!userData.isPremium && userData.trialsRemaining <= 0) {
+                showNotification('No regenerations remaining. Upgrade to Premium for unlimited tries!', 'error');
+                showPremiumModal();
+                return;
+            }
+            
+            generateVideo();
+        }
+
+        // Show download options
+        function showDownloadOptions() {
+            const modal = document.getElementById('downloadModal');
+            modal.classList.add('active');
+        }
+
+        // Download video
+        function downloadVideo(type) {
+            if (type === 'premium' && !userData.isPremium) {
+                showNotification('Premium required for high-quality downloads', 'error');
+                showPremiumModal();
+                return;
+            }
+            
+            if (type === 'free') {
+                // Show ad first for free users
+                showAd(() => {
+                    performDownload('standard');
+                });
+            } else {
+                performDownload('premium');
+            }
+            
+            closeModal('downloadModal');
+        }
+
+        // Perform actual download
+        function performDownload(quality) {
+            // In a real implementation, this would trigger the actual download
+            const link = document.createElement('a');
+            link.href = currentGeneration.videoUrl;
+            link.download = `smileX-video-${Date.now()}.mp4`;
+            link.click();
+            
+            showNotification(`Downloading ${quality} quality video...`, 'success');
+        }
+
+        // Show ad (placeholder)
+        function showAd(callback) {
+            // This is where you would integrate with your ad network
+            // For now, we'll simulate an ad with a timeout
+            showNotification('Please wait for the ad to complete...', 'info');
+            
+            setTimeout(() => {
+                showNotification('Ad completed! Starting download...', 'success');
+                callback();
+            }, 5000);
+        }
+
+        // Add to history
+        function addToHistory(generation) {
+            const historyItem = {
+                id: Date.now(),
+                prompt: generation.prompt,
+                style: generation.style,
+                duration: generation.duration,
+                videoUrl: generation.videoUrl,
+                timestamp: new Date().toISOString(),
+                thumbnail: 'https://via.placeholder.com/250x140/8b5cf6/ffffff?text=Video'
+            };
+            
+            userData.generationHistory.unshift(historyItem);
+            
+            // Keep only last 50 items
+            if (userData.generationHistory.length > 50) {
+                userData.generationHistory = userData.generationHistory.slice(0, 50);
+            }
+            
+            saveUserData();
+            loadHistory();
+        }
+
+        // Load history
+        function loadHistory() {
+            const grid = document.getElementById('historyGrid');
+            
+            if (userData.generationHistory.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; opacity: 0.7;">No videos generated yet</p>';
+                return;
+            }
+            
+            grid.innerHTML = userData.generationHistory.map(item => `
+                <div class="history-item" onclick="playHistoryVideo('${item.id}')">
+                    <div class="history-thumbnail">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="history-details">
+                        <div><strong>${item.prompt.substring(0, 50)}${item.prompt.length > 50 ? '...' : ''}</strong></div>
+                        <div>Style: ${item.style} | Duration: ${item.duration}s</div>
+                        <div class="history-date">${new Date(item.timestamp).toLocaleDateString()}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Play history video
+        function playHistoryVideo(id) {
+            const item = userData.generationHistory.find(h => h.id == id);
+            if (item) {
+                currentGeneration = item;
+                const player = document.getElementById('videoPlayer');
+                player.src = item.videoUrl;
+                document.getElementById('videoContainer').classList.add('active');
+                
+                // Hide history and scroll to video
+                document.getElementById('historySection').classList.remove('active');
+                document.getElementById('videoContainer').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Toggle history section
+        function toggleHistory() {
+            const section = document.getElementById('historySection');
+            section.classList.toggle('active');
+            
+            if (section.classList.contains('active')) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Show premium modal
+        function showPremiumModal() {
+            document.getElementById('premiumModal').classList.add('active');
+        }
+
+        // Upgrade to premium
+        function upgradeToPremium() {
+            // In a real implementation, this would integrate with a payment processor
+            userData.isPremium = true;
+            userData.trialsRemaining = Infinity;
+            saveUserData();
+            
+            // Hide ads
+            document.getElementById('adContainer').style.display = 'none';
+            
+            updateTrialsDisplay();
+            closeModal('premiumModal');
+            showNotification('Welcome to SmileX Premium!', 'success');
+        }
+
+        // Update trials display
+        function updateTrialsDisplay() {
+            const trialsText = document.getElementById('trialsText');
+            if (userData.isPremium) {
+                trialsText.textContent = 'Premium: Unlimited regenerations';
+                trialsText.style.color = '#ffd700';
+            } else {
+                trialsText.textContent = `Free users: ${userData.trialsRemaining} regenerations remaining`;
+                trialsText.style.color = userData.trialsRemaining > 0 ? '#ffffff' : '#ff6b6b';
+            }
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        });
+
+        // Handle Enter key in input
+        document.getElementById('videoPrompt').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                startGeneration();
+            }
+        });
+
+        // Prevent right-click
+        document.addEventListener('contextmenu', event => event.preventDefault());
+    </script>
+</body>
+</html>

@@ -578,17 +578,7 @@
             }
         }
 
-        // Global functions for premium activation
-        function activatePremium() {
-            if (window.gamingHub) {
-                window.gamingHub.userData.isPremium = true;
-                window.gamingHub.saveUserData();
-                window.gamingHub.updateStatusDisplay();
-                window.gamingHub.showNotification('🎉 Welcome to Premium! You now have unlimited gaming access!', 'success');
-                window.gamingHub.showMainPage();
-            }
-        }
-
+ 
         function showMainPage() {
             if (window.gamingHub) {
                 window.gamingHub.showMainPage();

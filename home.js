@@ -167,15 +167,15 @@
         const slides = [
             {
                 backgroundImage: '',
-                title: 'Ultimate Exploration',
-                description: 'Dive into immersive digital experiences',
+                title: 'Gaming Zone',
+                description: 'Explore and have fun playing all in kinds or games,more. ',
                 redirectUrl: 'game1.html',
-                ctaText: 'Begin Journey'
+                ctaText: 'Begin now'
             },
             {
                 backgroundImage: '',
-                title: 'Online Course',
-                description: 'Designed for educational purposes which helps an individual to learn and grow',
+                title: 'Online Library',
+                description: 'Designed for every user with purposes, which helps an individual to explore stories and narative',
                 redirectUrl: 'education1.html',
                 ctaText: 'Explore Now'
             },
