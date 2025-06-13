@@ -11,15 +11,162 @@
     <link rel="stylesheet" href="tournament.css">
 
 </head>
-   
-</head>
 <body>
-    <div id="quiz-container">
-        <div id="timer">Time Left: 15s</div>
-        <div id="question-container"></div>
-        <div id="options-container"></div>
-        <div id="feedback"></div>
-        <div id="score">Score: 0</div>
+      <!-- Name Entry Modal -->
+    <div class="modal-overlay" id="nameEntryModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Enter Your Name to Join Tournament</h2>
+            <input type="text" class="modal-input" id="nameInput" placeholder="Your Name" maxlength="20">
+            <button class="btn btn-primary" id="submitNameBtn">
+                <i class="fas fa-play"></i> Start Quiz Tournament
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <i class="fas fa-trophy"></i> Ultimate Quiz Tournament
+            </div>
+            <div class="nav-controls">
+                <div class="user-profile" id="userProfile">
+                    <div class="user-avatar" id="userAvatar">?</div>
+                    <div class="user-name" id="userName">Guest</div>
+                </div>
+                <button class="btn btn-secondary" id="joinTournamentBtn">
+                    <i class="fas fa-sign-in-alt"></i> Join Tournament
+                </button>
+                <button class="btn btn-danger hidden" id="leaveTournamentBtn">
+                    <i class="fas fa-sign-out-alt"></i> Leave Tournament
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tab Navigation -->
+    <div class="main-container">
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="quizTab">
+                <i class="fas fa-question-circle"></i> Quiz
+            </button>
+            <button class="tab-btn" data-tab="leaderboardTab">
+                <i class="fas fa-trophy"></i> Leaderboard
+            </button>
+            <button class="tab-btn" data-tab="commentsTab">
+                <i class="fas fa-comments"></i> Live Chat
+            </button>
+        </div>
+
+        <!-- Quiz Tab -->
+        <div class="tab-content active" id="quizTab">
+            <div class="quiz-section">
+                <!-- Quiz Header -->
+                <div class="quiz-header">
+                    <div class="quiz-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="currentScore">0</div>
+                            <div class="stat-label">Score</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="questionNumber">1</div>
+                            <div class="stat-label">Question</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="streak">0</div>
+                            <div class="stat-label">Streak</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timer -->
+                <div class="timer-container">
+                    <div class="timer" id="timer">15</div>
+                    <div class="timer-progress">
+                        <div class="timer-bar" id="timerBar"></div>
+                    </div>
+                </div>
+
+                <!-- Hint System -->
+                <div class="hint-container">
+                    <div class="hint-trials">
+                        <i class="fas fa-lightbulb"></i> Hints Remaining: <span id="hintsRemaining">10</span>
+                    </div>
+                    <button class="hint-btn" id="hintBtn">
+                        <i class="fas fa-eye"></i> Use Hint
+                    </button>
+                    <button class="hint-btn" id="watchAdBtn">
+                        <i class="fas fa-video"></i> Watch Ad (+1 Hint)
+                    </button>
+                </div>
+
+                <!-- Ad Container -->
+                <div class="ad-container hidden" id="adContainer">
+                    <h3><i class="fas fa-ad"></i> Advertisement</h3>
+                    <div class="ad-video" id="adVideo">
+                        <div class="ad-countdown" id="adCountdown">15</div>
+                        <img src="https://via.placeholder.com/800x400?text=Google+Advertisement" alt="Advertisement">
+                        <div class="ad-skip disabled" id="adSkip">Skip Ad in <span id="skipTimer">15</span></div>
+                        <div class="ad-attention-check hidden" id="adAttentionCheck">
+                            <p>Are you still watching?</p>
+                            <button class="ad-attention-btn" id="adAttentionBtn">Yes, I'm Watching</button>
+                        </div>
+                    </div>
+                    <p>Watch this ad to get +1 hint!</p>
+                </div>
+
+                <!-- Question Container -->
+                <div class="question-container" id="questionContainer">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+
+                <!-- Options Container -->
+                <div class="options-container" id="optionsContainer"></div>
+
+                <!-- Feedback -->
+                <div class="feedback hidden" id="feedback"></div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Tab -->
+        <div class="tab-content" id="leaderboardTab">
+            <div class="tournament-panel">
+                <div class="tournament-header">
+                    <div class="tournament-title">Live Tournament Leaderboard</div>
+                    <div class="tournament-status" id="tournamentStatus">Join to compete!</div>
+                </div>
+                
+                <div class="leaderboard" id="leaderboard">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comments Tab -->
+        <div class="tab-content" id="commentsTab">
+            <div class="comments-section">
+                <div class="comments-header">
+                    <i class="fas fa-comments"></i> Live Chat
+                </div>
+                
+                <div class="comment-input">
+                    <input type="text" id="commentInput" placeholder="Type your message..." maxlength="100">
+                    <button class="btn btn-primary" id="sendCommentBtn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                
+                <div class="comments-list" id="commentsList">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
   
@@ -29,6 +176,7 @@
     
 
     <script src="tournament.js">
+
 
     </script>
 </body>

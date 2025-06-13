@@ -1,4 +1,4 @@
-        class SmileXGamingHub {
+ class SmileXGamingHub {
             constructor() {
                 this.initializeProperties();
                 this.setupEventListeners();
@@ -457,80 +457,22 @@
                 }
 
                 this.playOptionsModal.style.display = 'none';
-                this.previewModal.style.display = 'none';
                 
-                if (hours > 0) {
-                    this.startGameTimer(hours);
-                }
+                // Save game session data to localStorage
+                const gameSession = {
+                    gameId: this.currentGame.id,
+                    gameName: this.currentGame.name,
+                    gameImage: this.currentGame.background_image,
+                    timeLimit: hours * 3600, // Convert to seconds
+                    startTime: Date.now(),
+                    isPremium: this.userData.isPremium
+                };
                 
-                const message = hours > 0 ? 
-                    `🎮 Starting ${this.currentGame.name}! You have ${hours} hours of gaming time. Enjoy!` :
-                    `🎮 Starting ${this.currentGame.name}! Enjoy unlimited gaming with Premium!`;
+                localStorage.setItem('currentGameSession', JSON.stringify(gameSession));
                 
-                this.showNotification(message, 'success');
-                this.simulateGameProgress();
-            }
-
-            startGameTimer(hours) {
-                this.gameTimeLimit = hours * 60 * 60;
-                this.gameStartTime = Date.now();
-                this.gameTimerElement.style.display = 'block';
-                
-                this.gameTimerInterval = setInterval(() => {
-                    const elapsed = Math.floor((Date.now() - this.gameStartTime) / 1000);
-                    const remaining = this.gameTimeLimit - elapsed;
-                    
-                    if (remaining <= 0) {
-                        this.endGame();
-                        return;
-                    }
-                    
-                    const hours = Math.floor(remaining / 3600);
-                    const minutes = Math.floor((remaining % 3600) / 60);
-                    const seconds = remaining % 60;
-                    
-                    this.timerDisplay.textContent = 
-                        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                    
-                    // Warning when 5 minutes left
-                    if (remaining === 300) {
-                        this.showNotification('⏰ 5 minutes remaining in your gaming session!', 'warning');
-                    }
-                }, 1000);
-            }
-
-            endGame() {
-                if (this.gameTimerInterval) {
-                    clearInterval(this.gameTimerInterval);
-                    this.gameTimerInterval = null;
-                }
-                
-                this.gameTimerElement.style.display = 'none';
-                this.showNotification('🎮 Gaming session completed! Your progress has been saved. Thanks for playing!', 'info');
-                
-                if (this.currentGame) {
-                    const currentProgress = this.userData.gameProgress[this.currentGame.id] || 0;
-                    this.userData.gameProgress[this.currentGame.id] = Math.min(100, currentProgress + Math.random() * 25 + 10);
-                    this.userData.totalPlayTime += 2;
-                    this.saveUserData();
-                }
-            }
-
-            simulateGameProgress() {
-                if (!this.currentGame) return;
-                
-                const progressInterval = setInterval(() => {
-                    if (!this.gameTimerInterval && this.gameTimeLimit) {
-                        clearInterval(progressInterval);
-                        return;
-                    }
-                    
-                    const currentProgress = this.userData.gameProgress[this.currentGame.id] || 0;
-                    if (currentProgress < 100) {
-                        this.userData.gameProgress[this.currentGame.id] = Math.min(100, currentProgress + Math.random() * 8 + 2);
-                        this.saveUserData();
-                    }
-                }, 15000);
+                // Redirect to game page
+                const gameSlug = this.currentGame.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                window.location.href = `play.html?id=${this.currentGame.id}&slug=${gameSlug}&hours=${hours}`;
             }
 
             // Search Functionality
@@ -658,5 +600,5 @@
             window.gamingHub = new SmileXGamingHub();
         });
 
-          // Prevent right-click (optional)
+        // Prevent right-click (optional)
         document.addEventListener('contextmenu', e => e.preventDefault());
