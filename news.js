@@ -888,5 +888,13 @@
             newsHub = new LiveNewsHub();
         });
 
+
+
+        
+
+
+
+
+
         // Prevent right-click (optional)
         document.addEventListener('contextmenu', e => e.preventDefault());

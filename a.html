@@ -1,771 +1,771 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auth System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>News Shorts - Mini Menu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @keyframes starMove {
-            0% { transform: translateX(0) translateY(0); }
-            100% { transform: translateX(100vw) translateY(-20vh); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        .star {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            animation: starMove linear infinite;
-        }
-        
-        .password-strength-meter {
-            height: 4px;
-            transition: width 0.3s, background-color 0.3s;
-        }
-        
-        .login-container, .signup-container {
-            transition: all 0.5s ease;
-        }
-        
-        .signup-container {
-            display: none;
-        }
-        
-        .container.active .login-container {
-            display: none;
-        }
-        
-        .container.active .signup-container {
-            display: flex;
-        }
-        
-        .device-card {
-            border-radius: 8px;
-            margin-bottom: 12px;
-            transition: all 0.3s;
-        }
-        
-        .active-device {
-            background-color: #f0fdf4;
-            border-left: 4px solid #10b981;
-        }
-        
-        .inactive-device {
-            background-color: #f8fafc;
-            border-left: 4px solid #94a3b8;
-        }
-        
-        .premium-badge::after {
-            content: "PRO";
-            background: linear-gradient(135deg, #f59e0b, #ef4444);
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             color: white;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 9999px;
-            margin-left: 8px;
-            font-weight: bold;
+            overflow-x: hidden;
         }
-        
-        #subscriptionModal {
-            display: none;
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .welcome-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        /* Floating Menu Button */
+        .menu-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        .menu-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .menu-btn:active {
+            transform: scale(0.95);
+        }
+
+        .menu-btn.active {
+            background: linear-gradient(45deg, #e74c3c, #3498db);
+            transform: rotate(45deg);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 10px 30px rgba(255, 107, 107, 0.5);
+            }
+            100% {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        /* Mini Menu Popup */
+        .mini-menu-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mini-menu-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mini Menu Container */
+        .mini-menu {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 25px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            transform: scale(0.8) translateY(50px);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .mini-menu-overlay.show .mini-menu {
+            transform: scale(1) translateY(0);
+        }
+
+        /* Close Button */
+        .menu-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s ease;
         }
-        
-        .modal-content {
-            animation: modalFadeIn 0.3s;
+
+        .menu-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1) rotate(90deg);
         }
-        
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        /* Menu Header */
+        .menu-header {
+            margin-bottom: 2rem;
         }
-        
-        #dashboardContainer {
-            display: none;
+
+        .menu-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(255, 107, 107, 0.5);
+        }
+
+        .menu-subtitle {
+            font-size: 1rem;
+            color: #4ecdc4;
+            opacity: 0.9;
+        }
+
+        /* Menu Options */
+        .menu-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+        }
+
+        .menu-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-option-icon {
+            margin-right: 1rem;
+            font-size: 1.3rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        .menu-option:nth-child(1) .menu-option-icon { color: #ff6b6b; }
+        .menu-option:nth-child(2) .menu-option-icon { color: #4ecdc4; }
+        .menu-option:nth-child(3) .menu-option-icon { color: #45b7d1; }
+        .menu-option:nth-child(4) .menu-option-icon { color: #96ceb4; }
+
+        .menu-option-text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .menu-option-arrow {
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .menu-option:hover .menu-option-arrow {
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        /* Premium Option */
+        .menu-option.premium {
+            background: linear-gradient(45deg, rgba(255, 107, 107, 0.2), rgba(76, 205, 196, 0.2));
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-option.premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .menu-option.premium:hover::before {
+            left: 100%;
+        }
+
+        .premium-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.4);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-5px);
+            }
+            60% {
+                transform: translateY(-2px);
+            }
+        }
+
+        /* Status Indicator */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status-indicator.free {
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .status-indicator.premium {
+            color: #4ecdc4;
+            border: 1px solid rgba(76, 205, 196, 0.3);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 107, 107, 0.95);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .notification.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(10px);
+        }
+
+        .notification.success {
+            background: rgba(76, 205, 196, 0.95);
+        }
+
+        .notification.warning {
+            background: rgba(255, 193, 7, 0.95);
+            color: #333;
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mini-menu {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            .menu-title {
+                font-size: 1.3rem;
+            }
+
+            .menu-option {
+                padding: 0.8rem 1rem;
+            }
+
+            .menu-option-icon {
+                font-size: 1.1rem;
+                width: 25px;
+                margin-right: 0.8rem;
+            }
+
+            .menu-btn {
+                width: 60px;
+                height: 60px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mini-menu {
+                padding: 1.2rem;
+            }
+
+            .menu-option {
+                padding: 0.7rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Menu Button Tooltip */
+        .menu-btn-tooltip {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .menu-btn:hover .menu-btn-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-5px);
+        }
+
+        /* Entrance Animations */
+        @keyframes slideInUp {
+            from {
+                transform: translateY(100px) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
-<body class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
-    <div id="starfield" class="fixed inset-0 overflow-hidden z-0"></div>
-    
-    <div class="container mx-auto max-w-6xl" id="authContainer">
-        <!-- Login Container -->
-        <div class="login-container bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
-            <div class="form-section p-8 md:p-12 w-full md:w-1/2">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6">Login</h2>
-                <form id="loginForm">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-medium mb-2">Email</label>
-                        <input 
-                            type="email"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                            id="loginEmail"
-                            required
-                        >
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-medium mb-2">Password</label>
-                        <input 
-                            type="password"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                            id="loginPassword"
-                            required
-                        >
-                    </div>
-                    <div class="mb-6 flex items-center">
-                        <input 
-                            type="checkbox"
-                            class="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
-                            id="rememberMe"
-                        >
-                        <label class="ml-2 block text-sm text-gray-700">Remember me</label>
-                    </div>
-                    <button 
-                        type="submit"
-                        class="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
-                    >
-                        Login
-                    </button>
-                </form>
+<body>
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="welcome-text">Welcome to News Shorts</h1>
+        <p class="subtitle">Experience the future of news consumption</p>
+        <p>Tap the menu button to explore options</p>
+    </div>
+
+    <!-- Floating Menu Button -->
+    <button class="menu-btn" id="menuBtn">
+        <i class="fas fa-bars" id="menuIcon"></i>
+        <div class="menu-btn-tooltip">Open Menu</div>
+    </button>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Mini Menu Overlay -->
+    <div class="mini-menu-overlay" id="miniMenuOverlay">
+        <div class="mini-menu">
+            <!-- Close Button -->
+            <button class="menu-close" id="menuClose">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <!-- Menu Header -->
+            <div class="menu-header">
+                <h2 class="menu-title">News Shorts Menu</h2>
+                <p class="menu-subtitle">Choose your experience</p>
             </div>
-            <div class="image-section bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 md:p-12 w-full md:w-1/2 flex flex-col justify-center items-center text-center">
-                <h3 class="text-3xl font-bold mb-4">Welcome Back!</h3>
-                <p class="text-gray-300 mb-8">Login to continue your journey</p>
-                
-                <div id="g_id_onload"
-                    data-client_id=""
-                    data-context="signin"
-                    data-ux_mode="popup"
-                    data-callback="handleCredentialResponse">
-                </div>
-                
-                <div class="g_id_signin" 
-                    data-type="standard"
-                    data-shape="rectangular"
-                    data-theme="outline"
-                    data-text="sign_in_with"
-                    data-size="large">
-                </div>
-                <br><br>
-                
-                <button
-                    class="toggle-btn bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-black transition duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-                    onclick="toggleForm()"
-                >
-                    Sign Up
-                </button>
+
+            <!-- Menu Options -->
+            <div class="menu-options">
+                <a href="#" class="menu-option" id="watchNewsOption">
+                    <i class="fas fa-video menu-option-icon"></i>
+                    <span class="menu-option-text">Watch News Shorts</span>
+                    <i class="fas fa-chevron-right menu-option-arrow"></i>
+                </a>
+
+                <a href="#" class="menu-option" id="watchOfflineOption">
+                    <i class="fas fa-download menu-option-icon"></i>
+                    <span class="menu-option-text">Watch Shorts Offline</span>
+                    <i class="fas fa-chevron-right menu-option-arrow"></i>
+                </a>
+
+                <a href="#" class="menu-option" id="likeShortsOption">
+                    <i class="fas fa-heart menu-option-icon"></i>
+                    <span class="menu-option-text">Like Shorts</span>
+                    <i class="fas fa-chevron-right menu-option-arrow"></i>
+                </a>
+
+                <a href="#" class="menu-option" id="exploreMoreOption">
+                    <i class="fas fa-compass menu-option-icon"></i>
+                    <span class="menu-option-text">Explore More</span>
+                    <i class="fas fa-chevron-right menu-option-arrow"></i>
+                </a>
+
+                <a href="#" class="menu-option premium" id="premiumOption">
+                    <div class="premium-badge">PRO</div>
+                    <i class="fas fa-crown menu-option-icon"></i>
+                    <span class="menu-option-text">Premium Features</span>
+                    <i class="fas fa-chevron-right menu-option-arrow"></i>
+                    <span class="loading-spinner" id="premiumSpinner" style="display: none;"></span>
+                </a>
             </div>
-        </div>
-        
-        <!-- Signup Container -->
-        <div class="signup-container bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
-            <div class="image-section bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 md:p-12 w-full md:w-1/2 flex flex-col justify-center items-center text-center">
-                <h3 class="text-3xl font-bold mb-4">Hello, There!</h3>
-                <p class="text-gray-300 mb-8">Create your account and start your adventure</p>
-                <button
-                    class="toggle-btn bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-black transition duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-                    onclick="toggleForm()"
-                >
-                    Login
-                </button>
-            </div>
-            <div class="form-section p-8 md:p-12 w-full md:w-1/2">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6">Sign Up</h2>
-                <form id="signupForm">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-medium mb-2">Full Name</label>
-                        <input 
-                            type="text"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                            id="signupName"
-                            required
-                        >
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-medium mb-2">Email</label>
-                        <input 
-                            type="email"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                            id="signupEmail"
-                            required
-                        >
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-medium mb-2">Password</label>
-                        <input 
-                            type="password"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                            id="signupPassword"
-                            required
-                        >
-                        <div class="password-strength mt-2">
-                            <div class="password-strength-meter rounded-full"></div>
-                        </div>
-                        <p class="text-xs text-gray-500 mt-1">Password must contain at least 8 characters, uppercase, lowercase, numbers, and special characters.</p>
-                    </div>
-                    <div class="mb-6">
-                        <label class="block text-gray-700 text-sm font-medium mb-2">Confirm Password</label>
-                        <input 
-                            type="password"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                            id="confirmPassword"
-                            required
-                        >
-                    </div>
-                    <button 
-                        type="submit"
-                        class="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
-                    >
-                        Sign Up
-                    </button>
-                </form>
+
+            <!-- Status Indicator -->
+            <div class="status-indicator free" id="statusIndicator">
+                <i class="fas fa-info-circle"></i>
+                <span style="margin-left: 0.5rem;">Free User</span>
             </div>
         </div>
     </div>
-    
 
     <script>
-        // Form Toggle Function
-        function toggleForm() {
-            const container = document.getElementById('authContainer');
-            container.classList.toggle('active');
-        }
-
-        // Password Strength Checker
-        function checkPasswordStrength(password) {
-            const strengthMeter = document.querySelector('.password-strength-meter');
-            const criteria = [
-                { regex: /.{8,}/, points: 20 },     // Length
-                { regex: /[A-Z]/, points: 20 },     // Uppercase
-                { regex: /[a-z]/, points: 20 },     // Lowercase
-                { regex: /[0-9]/, points: 20 },     // Number
-                { regex: /[^A-Za-z0-9]/, points: 20 } // Special Character
-            ];
-
-            let strength = 0;
-            criteria.forEach(criterion => {
-                if (criterion.regex.test(password)) {
-                    strength += criterion.points;
-                }
-            });
-
-            strengthMeter.style.width = `${strength}%`;
-
-            // Color coding
-            if (strength <= 40) strengthMeter.style.backgroundColor = 'red';
-            else if (strength <= 80) strengthMeter.style.backgroundColor = 'orange';
-            else strengthMeter.style.backgroundColor = 'green';
-
-            return strength === 100;
-        }
-
-        // Signup Form Validation
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-
-            // Comprehensive Validation
-            if (!name || !email) {
-                alert('Please fill in all fields');
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                alert('Passwords do not match');
-                return;
-            }
-
-            const isStrongPassword = checkPasswordStrength(password);
-            if (!isStrongPassword) {
-                alert('Password is not strong enough. Include uppercase, lowercase, numbers, and special characters.');
-                return;
-            }
-
-            // Successful Signup Logic
-            alert('Signup Successful!');
-            toggleForm();
-        });
-
-        // Login Form Validation
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const rememberMe = document.getElementById('rememberMe').checked;
-
-            if (!email || !password) {
-                alert('Please fill in all fields');
-                return;
-            }
-
-            // Simulated Login Logic
-            if (rememberMe) {
-                localStorage.setItem('rememberedEmail', email);
-            }
-
-            // For demo purposes, just show the dashboard
-            showDashboard();
-        });
-
-        // Password Strength Real-time Check
-        document.getElementById('signupPassword').addEventListener('input', function() {
-            checkPasswordStrength(this.value);
-        });
-
-        // Check for Remembered Email on Page Load
-        window.addEventListener('load', () => {
-            const rememberedEmail = localStorage.getItem('rememberedEmail');
-            if (rememberedEmail) {
-                document.getElementById('loginEmail').value = rememberedEmail;
-            }
-        });
-
-        class StarBackground {
+        class MiniMenuManager {
             constructor() {
-                this.starfield = document.getElementById('starfield');
-                this.width = window.innerWidth;
-                this.height = window.innerHeight;
+                this.menuBtn = document.getElementById('menuBtn');
+                this.menuIcon = document.getElementById('menuIcon');
+                this.miniMenuOverlay = document.getElementById('miniMenuOverlay');
+                this.menuClose = document.getElementById('menuClose');
+                this.notification = document.getElementById('notification');
+                this.statusIndicator = document.getElementById('statusIndicator');
+                this.premiumSpinner = document.getElementById('premiumSpinner');
+                
+                // Menu options
+                this.watchNewsOption = document.getElementById('watchNewsOption');
+                this.watchOfflineOption = document.getElementById('watchOfflineOption');
+                this.likeShortsOption = document.getElementById('likeShortsOption');
+                this.exploreMoreOption = document.getElementById('exploreMoreOption');
+                this.premiumOption = document.getElementById('premiumOption');
+                
+                // User subscription status
+                this.isPremiumUser = this.checkPremiumStatus();
+                
+                this.init();
+            }
 
-                this.createStars();
+            init() {
                 this.setupEventListeners();
+                this.updateStatusIndicator();
             }
 
-            createStars() {
-                const starCount = 400;
-
-                for (let i = 0; i < starCount; i++) {
-                    const star = this.createSingleStar();
-                    this.starfield.appendChild(star);
-                }
-            }
-
-            createSingleStar() {
-                const star = document.createElement('div');
-                star.classList.add('star');
-
-                // Random vertical positioning
-                const y = Math.random() * this.height;
-
-                // Random size
-                const size = Math.random() * 2;
-
-                // Random animation duration for varied movement
-                const animationDuration = (Math.random() * 10 + 5) + 's';
-
-                star.style.cssText = `
-                    top: ${y}px;
-                    left: -10px;
-                    width: ${size}px;
-                    height: ${size}px;
-                    animation-duration: ${animationDuration};
-                    opacity: ${Math.random()};
-                `;
-
-                // Remove star when it goes off-screen
-                star.addEventListener('animationend', () => {
-                    this.starfield.removeChild(star);
-                    this.starfield.appendChild(this.createSingleStar());
-                });
-
-                return star;
+            checkPremiumStatus() {
+                const premiumStatus = localStorage.getItem('premiumSubscription');
+                return premiumStatus === 'active';
             }
 
             setupEventListeners() {
-                window.addEventListener('resize', () => {
-                    this.width = window.innerWidth;
-                    this.height = window.innerHeight;
+                // Menu button click
+                this.menuBtn.addEventListener('click', () => {
+                    this.toggleMenu();
+                });
+
+                // Close menu
+                this.menuClose.addEventListener('click', () => {
+                    this.hideMenu();
+                });
+
+                // Close menu when clicking overlay
+                this.miniMenuOverlay.addEventListener('click', (e) => {
+                    if (e.target === this.miniMenuOverlay) {
+                        this.hideMenu();
+                    }
+                });
+
+                // Keyboard events
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.hideMenu();
+                    }
+                });
+
+                // Menu option clicks
+                this.watchNewsOption.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleWatchNews();
+                });
+
+                this.watchOfflineOption.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleWatchOffline();
+                });
+
+                this.likeShortsOption.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleLikeShorts();
+                });
+
+                this.exploreMoreOption.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleExploreMore();
+                });
+
+                this.premiumOption.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handlePremiumOption();
                 });
             }
-        }
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            new StarBackground();
-        });
-
-        // Simulated database
-        const usersDB = {};
-        const sessionsDB = {};
-        let currentUser = null;
-
-        // DOM Elements
-        const authContainer = document.getElementById('authContainer');
-        const dashboardContainer = document.getElementById('dashboardContainer');
-        const loginForm = document.getElementById('loginForm');
-        const signupForm = document.getElementById('signupForm');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const devicesBtn = document.getElementById('devicesBtn');
-        const emailContent = document.getElementById('emailContent');
-        const devicesContent = document.getElementById('devicesContent');
-        const devicesList = document.getElementById('devicesList');
-        const userEmailDisplay = document.getElementById('userEmailDisplay');
-        const subscriptionModal = document.getElementById('subscriptionModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const upgradeToPremiumBtn = document.getElementById('upgradeToPremiumBtn');
-        const upgradeNoticeBtn = document.getElementById('upgradeNoticeBtn');
-        const subscribeBtn = document.getElementById('subscribeBtn');
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            // Check if user is already logged in (from localStorage)
-            const storedUser = localStorage.getItem('currentUser');
-            if (storedUser) {
-                currentUser = JSON.parse(storedUser);
-                showDashboard();
-            }
-
-            // Generate a device ID for the current browser
-            if (!localStorage.getItem('deviceId')) {
-                localStorage.setItem('deviceId', generateDeviceId());
-            }
-        });
-
-        // Form Toggle
-        function toggleForm() {
-            const loginContainer = document.querySelector('.login-container');
-            const signupContainer = document.querySelector('.signup-container');
-
-            loginContainer.classList.toggle('hidden');
-            signupContainer.classList.toggle('hidden');
-        }
-
-        // Password Strength Checker
-        function checkPasswordStrength(password) {
-            const meter = document.querySelector('.password-strength-meter');
-            let strength = 0;
-
-            // Length check
-            if (password.length >= 8) strength += 1;
-            if (password.length >= 12) strength += 1;
-
-            // Character variety checks
-            if (/[A-Z]/.test(password)) strength += 1;
-            if (/[0-9]/.test(password)) strength += 1;
-            if (/[^A-Za-z0-9]/.test(password)) strength += 1;
-
-            // Update meter
-            meter.className = 'password-strength-meter';
-            if (strength <= 2) {
-                meter.classList.add('weak');
-            } else if (strength <= 4) {
-                meter.classList.add('medium');
-            } else {
-                meter.classList.add('strong');
-            }
-        }
-
-        // Signup Form Submission
-        signupForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            // Validate passwords match
-            if (password !== confirmPassword) {
-                alert('Passwords do not match!');
-                return;
-            }
-
-            // Check if user already exists
-            if (usersDB[email]) {
-                alert('An account with this email already exists!');
-                return;
-            }
-
-            // Create new user
-            usersDB[email] = {
-                name,
-                email,
-                password,
-                isPremium: false,
-                createdAt: new Date().toISOString()
-            };
-
-            // Log the user in
-            loginUser(email, password);
-        });
-
-        // Login Form Submission
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-
-            loginUser(email, password);
-        });
-
-        // Login Function
-        function loginUser(email, password) {
-            const user = usersDB[email];
-
-            // Check if user exists
-            if (!user) {
-                alert('No account found with this email!');
-                return;
-            }
-
-            // Check password
-            if (user.password !== password) {
-                alert('Incorrect password!');
-                return;
-            }
-
-            // Check if user is already logged in on another device (for free users)
-            if (!user.isPremium && sessionsDB[email]) {
-                const currentSession = sessionsDB[email];
-                const currentDeviceId = localStorage.getItem('deviceId');
-
-                // If trying to login from a different device
-                if (currentSession.deviceId !== currentDeviceId) {
-                    if (confirm('You are already logged in on another device. Logging in here will log you out from the other device. Continue?')) {
-                        // Logout from the other device
-                        currentSession.isActive = false;
-                    } else {
-                        return;
-                    }
-                }
-            }
-
-            // Create new session
-            const deviceId = localStorage.getItem('deviceId');
-            const deviceInfo = getDeviceInfo();
-
-            sessionsDB[email] = {
-                email,
-                deviceId,
-                deviceInfo,
-                isActive: true,
-                lastActive: new Date().toISOString()
-            };
-
-            // Set current user
-            currentUser = user;
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-
-            // Show dashboard
-            showDashboard();
-        }
-
-        // Logout Function
-        logoutBtn.addEventListener('click', () => {
-            if (currentUser && sessionsDB[currentUser.email]) {
-                sessionsDB[currentUser.email].isActive = false;
-            }
-
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-
-            showAuth();
-        });
-
-        // Show Dashboard
-        function showDashboard() {
-            authContainer.classList.add('hidden');
-            dashboardContainer.classList.remove('hidden');
-
-            // Update user info
-            if (currentUser) {
-                userEmailDisplay.textContent = currentUser.email;
-
-                // Add premium badge if user is premium
-                if (currentUser.isPremium) {
-                    userEmailDisplay.classList.add('premium-badge');
+            toggleMenu() {
+                if (this.miniMenuOverlay.classList.contains('show')) {
+                    this.hideMenu();
                 } else {
-                    userEmailDisplay.classList.remove('premium-badge');
+                    this.showMenu();
                 }
+            }
 
-                // Load devices
-                loadDevices();
+            showMenu() {
+                this.miniMenuOverlay.classList.add('show');
+                this.menuBtn.classList.add('active');
+                this.menuIcon.className = 'fas fa-times';
+                document.body.style.overflow = 'hidden';
+                
+                // Play sound effect
+                this.playNotificationSound();
+            }
+
+            hideMenu() {
+                this.miniMenuOverlay.classList.remove('show');
+                this.menuBtn.classList.remove('active');
+                this.menuIcon.className = 'fas fa-bars';
+                document.body.style.overflow = 'auto';
+            }
+
+            updateStatusIndicator() {
+                if (this.isPremiumUser) {
+                    this.statusIndicator.className = 'status-indicator premium';
+                    this.statusIndicator.innerHTML = `
+                        <i class="fas fa-crown"></i>
+                        <span style="margin-left: 0.5rem;">Premium User</span>
+                    `;
+                } else {
+                    this.statusIndicator.className = 'status-indicator free';
+                    this.statusIndicator.innerHTML = `
+                        <i class="fas fa-info-circle"></i>
+                        <span style="margin-left: 0.5rem;">Free User</span>
+                    `;
+                }
+            }
+
+            handleWatchNews() {
+                this.hideMenu();
+                this.showNotification('🎬 Loading News Shorts...', 'success');
+                
+                setTimeout(() => {
+                    // Redirect to news shorts page or load content
+                    this.showNotification('📺 News Shorts loaded successfully!', 'success');
+                }, 1500);
+            }
+
+            handleWatchOffline() {
+                this.hideMenu();
+                
+                if (this.isPremiumUser) {
+                    this.showNotification('📱 Loading Offline Shorts...', 'success');
+                    setTimeout(() => {
+                        this.showNotification('✅ Offline content ready!', 'success');
+                    }, 1500);
+                } else {
+                    this.showNotification('🔒 Premium feature! Upgrade to access offline viewing.', 'warning');
+                }
+            }
+
+            handleLikeShorts() {
+                this.hideMenu();
+                this.showNotification('❤️ Like feature activated!', 'success');
+                
+                // Simulate like functionality
+                setTimeout(() => {
+                    this.showNotification('👍 You can now like your favorite shorts!', 'success');
+                }, 1000);
+            }
+
+            handleExploreMore() {
+                this.hideMenu();
+                this.showNotification('🧭 Exploring more content...', 'success');
+                
+                setTimeout(() => {
+                    this.showNotification('🌟 More content categories loaded!', 'success');
+                }, 1500);
+            }
+
+            handlePremiumOption() {
+                if (this.isPremiumUser) {
+                    // Premium user - redirect to premium page
+                    this.showLoadingState();
+                    
+                    setTimeout(() => {
+                        window.location.href = 'newslive.html';
+                    }, 2000);
+                } else {
+                    // Free user - show upgrade option
+                    this.hideMenu();
+                    this.showNotification('🔒 Premium subscription required! Upgrade to unlock all features.', 'warning');
+                }
+            }
+
+            showLoadingState() {
+                this.premiumSpinner.style.display = 'inline-block';
+                this.premiumOption.style.opacity = '0.7';
+                this.showNotification('🚀 Launching Premium Experience...', 'success');
+            }
+
+            showNotification(message, type = 'info') {
+                this.notification.textContent = message;
+                this.notification.className = `notification show ${type}`;
+                
+                setTimeout(() => {
+                    this.notification.classList.remove('show');
+                }, 3000);
+            }
+
+            playNotificationSound() {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.1);
+                    
+                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.2);
+                } catch (error) {
+                    console.log('Audio not supported');
+                }
+            }
+
+            // Testing methods
+            upgradeToPremium() {
+                localStorage.setItem('premiumSubscription', 'active');
+                this.isPremiumUser = true;
+                this.updateStatusIndicator();
+                this.showNotification('🎉 Congratulations! You are now a Premium user!', 'success');
+            }
+
+            downgradeToPremium() {
+                localStorage.removeItem('premiumSubscription');
+                this.isPremiumUser = false;
+                this.updateStatusIndicator();
+                this.showNotification('⚠️ Premium subscription expired.', 'warning');
             }
         }
 
-        // Show Auth
-        function showAuth() {
-            authContainer.classList.remove('hidden');
-            dashboardContainer.classList.add('hidden');
+        // Initialize the mini menu manager
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuManager = new MiniMenuManager();
+            
+            // Add global methods for testing
+            window.upgradeToPremium = () => menuManager.upgradeToPremium();
+            window.downgradeToPremium = () => menuManager.downgradeToPremium();
+            window.showMenu = () => menuManager.showMenu();
+        });
 
-            // Reset forms
-            loginForm.reset();
-            signupForm.reset();
-        }
-
-        // Devices Management
-        devicesBtn.addEventListener('click', (e) => {
+        // Prevent right-click context menu
+        document.addEventListener('contextmenu', (e) => {
             e.preventDefault();
-            emailContent.classList.add('hidden');
-            devicesContent.classList.remove('hidden');
         });
 
-        // Load Devices
-        function loadDevices() {
-            if (!currentUser) return;
-
-            devicesList.innerHTML = '';
-
-            const session = sessionsDB[currentUser.email];
-            if (!session) return;
-
-            const deviceItem = createDeviceItem(session, true);
-            devicesList.appendChild(deviceItem);
-
-            // For demo purposes, add some dummy devices
-            if (!currentUser.isPremium) {
-                const dummyDevice = {
-                    deviceInfo: {
-                        os: 'Windows',
-                        browser: 'Chrome',
-                        device: 'Desktop'
-                    },
-                    lastActive: '2023-07-20T10:30:00Z',
-                    isActive: false
-                };
-
-                const dummyItem = createDeviceItem(dummyDevice, false);
-                devicesList.appendChild(dummyItem);
-            }
-        }
-
-        // Create Device Item
-        function createDeviceItem(session, isCurrent) {
-            const deviceItem = document.createElement('div');
-            deviceItem.className = `p-4 device-card ${session.isActive ? 'active-device' : 'inactive-device'}`;
-
-            const deviceIcon = session.deviceInfo.device === 'Mobile' ? 'mobile-alt' : 'desktop';
-
-            deviceItem.innerHTML = `
-                <div class="flex items-start">
-                    <div class="flex-shrink-0 pt-1">
-                        <i class="fas fa-${deviceIcon} text-gray-500 text-xl"></i>
-                    </div>
-                    <div class="ml-3 flex-1">
-                        <div class="flex items-center justify-between">
-                            <p class="text-sm font-medium text-gray-900">
-                                ${session.deviceInfo.device} (${session.deviceInfo.os}, ${session.deviceInfo.browser})
-                                ${isCurrent ? '<span class="ml-2 text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Current</span>' : ''}
-                                ${currentUser.isPremium && session.isActive ? '<span class="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Active</span>' : ''}
-                            </p>
-                            ${!isCurrent ? '<button class="text-xs text-red-600 hover:text-red-800">Logout</button>' : ''}
-                        </div>
-                        <p class="text-xs text-gray-500 mt-1">Last active: ${formatDate(session.lastActive)}</p>
-                        ${!currentUser.isPremium && !isCurrent ? 
-                           '<div class="mt-2 text-xs text-red-600">This device was logged out because you have a free account</div>' : ''}
-                    </div>
-                </div>
-            `;
-
-            return deviceItem;
-        }
-
-        // Subscription Modal
-        upgradeToPremiumBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            subscriptionModal.style.display = 'flex';
-        });
-
-        upgradeNoticeBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            subscriptionModal.style.display = 'flex';
-        });
-
-        closeModalBtn.addEventListener('click', () => {
-            subscriptionModal.style.display = 'none';
-        });
-
-        subscribeBtn.addEventListener('click', () => {
-            if (!currentUser) return;
-
-            // Upgrade to premium
-            currentUser.isPremium = true;
-            usersDB[currentUser.email].isPremium = true;
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-
-            // Close modal
-            subscriptionModal.style.display = 'none';
-
-            // Update UI
-            userEmailDisplay.classList.add('premium-badge');
-            loadDevices();
-
-            // Show success message
-            alert('Congratulations! You are now a premium user. You can now use multiple devices simultaneously.');
-        });
-
-        // Helper Functions
-        function generateDeviceId() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-        }
-
-        function getDeviceInfo() {
-            const userAgent = navigator.userAgent;
-            let os, browser, device;
-
-            // Detect OS
-            if (userAgent.match(/android/i)) {
-                os = 'Android';
-            } else if (userAgent.match(/iphone|ipad|ipod/i)) {
-                os = 'iOS';
-            } else if (userAgent.match(/macintosh/i)) {
-                os = 'MacOS';
-            } else if (userAgent.match(/windows/i)) {
-                os = 'Windows';
-            } else if (userAgent.match(/linux/i)) {
-                os = 'Linux';
-            } else {
-                os = 'Unknown OS';
-            }
-
-            // Detect Browser
-            if (userAgent.match(/firefox|fxios/i)) {
-                browser = 'Firefox';
-            } else if (userAgent.match(/opr\//i)) {
-                browser = 'Opera';
-            } else if (userAgent.match(/edg/i)) {
-                browser = 'Edge';
-            } else if (userAgent.match(/chrome|chromium|crios/i)) {
-                browser = 'Chrome';
-            } else if (userAgent.match(/safari/i)) {
-                browser = 'Safari';
-            } else {
-                browser = 'Unknown Browser';
-            }
-
-            // Detect Device
-            if (userAgent.match(/mobile/i)) {
-                device = 'Mobile';
-            } else if (userAgent.match(/tablet|ipad|playbook|silk/i)) {
-                device = 'Tablet';
-            } else {
-                device = 'Desktop';
-            }
-
-            return { os, browser, device };
-        }
-
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleString();
-        }
+        // Console commands for testing
+        console.log('🎯 Testing Commands:');
+        console.log('upgradeToPremium() - Simulate premium upgrade');
+        console.log('downgradeToPremium() - Simulate premium downgrade');
+        console.log('showMenu() - Show menu manually');
     </script>
 </body>
 </html>
