@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmileX Gaming Hub - Play Game</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
         * {
             margin: 0;
@@ -14,17 +16,21 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+         
+        font-family: 'Orbitron', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: white;
+            overflow: hidden;
         }
 
         .game-header {
             background: rgba(0, 0, 0, 0.8);
             padding: 1rem 0;
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 1000;
             backdrop-filter: blur(10px);
         }
@@ -36,6 +42,7 @@
             font-weight: bold;
             font-size: 1.1rem;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            display: inline-block;
         }
 
         .timer-display.premium {
@@ -43,51 +50,7 @@
             color: #333;
         }
 
-        .timer-display.warning {
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .game-container {
-            background: rgba(0, 0, 0, 0.9);
-            border-radius: 15px;
-            margin: 2rem auto;
-            max-width: 1200px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .game-frame {
-            width: 100%;
-            height: 600px;
-            border: none;
-            background: #1a1a1a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .game-placeholder {
-            text-align: center;
-            color: #888;
-        }
-
-        .game-controls {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .control-btn {
+        .back-btn {
             background: linear-gradient(45deg, #667eea, #764ba2);
             border: none;
             color: white;
@@ -98,59 +61,47 @@
             font-weight: 600;
         }
 
-        .control-btn:hover {
+        .back-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
         }
 
-        .control-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+        .game-container {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('/placeholder.svg?height=800&width=1200');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .premium-banner {
-            background: linear-gradient(45deg, #ffd700, #ffb347);
-            color: #333;
-            padding: 1rem;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            border-radius: 10px;
-        }
-
-        .session-info {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-        }
-
-        .progress-bar {
-            background: #333;
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 0.5rem 0;
-        }
-
-        .progress-fill {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+        .game-content {
+            width: 100%;
             height: 100%;
-            transition: width 0.3s ease;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
 
-        .modal {
-            display: none;
+        .compatibility-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 2000;
         }
 
         .modal-content {
@@ -163,9 +114,50 @@
             position: relative;
         }
 
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .game-interface {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
         .notification {
             position: fixed;
-            top: 20px;
+            top: 100px;
             right: 20px;
             padding: 1rem 1.5rem;
             border-radius: 10px;
@@ -178,390 +170,376 @@
         .notification.success { background: #27ae60; }
         .notification.warning { background: #f39c12; }
         .notification.error { background: #e74c3c; }
-        .notification.info { background: #3498db; }
 
         @keyframes slideInRight {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
 
-        .game-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .fullscreen-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            border: none;
-            color: white;
-            padding: 0.5rem;
-            border-radius: 5px;
-            cursor: pointer;
+        .hidden {
+            display: none !important;
         }
 
         @media (max-width: 768px) {
-            .game-frame {
-                height: 400px;
+            .game-header {
+                padding: 0.5rem 0;
             }
             
-            .game-controls {
-                flex-direction: column;
-                align-items: stretch;
+            .timer-display {
+                font-size: 0.9rem;
+                padding: 0.4rem 1rem;
             }
             
-            .control-btn {
-                width: 100%;
-                margin: 0.25rem 0;
+            .back-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
             }
+            
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Game Controls (Hidden but functional) */
+        .invisible-controls {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Auto-enable keyboard controls */
+        body.game-active {
+            user-select: none;
         }
     </style>
 </head>
 <body>
-    <!-- Game Header -->
-    <div class="game-header">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-4">
-                    <h3><i class="fas fa-gamepad me-2"></i>SmileX Gaming</h3>
-                </div>
-                <div class="col-md-4 text-center">
-                    <div id="timerDisplay" class="timer-display">
-                        <i class="fas fa-clock me-2"></i>
-                        <span id="timeRemaining">Loading...</span>
-                    </div>
-                </div>
-                <div class="col-md-4 text-end">
-                    <button id="backBtn" class="control-btn">
-                        <i class="fas fa-arrow-left me-2"></i>Back to Hub
-                    </button>
-                </div>
-            </div>
-        </div>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="spinner"></div>
+        <h3>Checking Device Compatibility...</h3>
+        <p>Please wait while we verify your system</p>
     </div>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Premium Banner -->
-        <div id="premiumBanner" class="premium-banner" style="display: none;">
-            <i class="fas fa-crown me-2"></i>
-            Premium User - Enjoy Unlimited Gaming!
-        </div>
-
-        <!-- Session Info -->
-        <div class="session-info">
-            <div class="row">
-                <div class="col-md-8">
-                    <h4 id="gameName">Loading Game...</h4>
-                    <p id="gameDescription">Preparing your gaming experience...</p>
-                </div>
-                <div class="col-md-4 text-end">
-                    <div id="sessionType" class="badge bg-primary p-2">
-                        <i class="fas fa-info-circle me-1"></i>
-                        Session Type
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Game Container -->
-        <div class="game-container">
-            <div id="gameFrame" class="game-frame">
-                <button id="fullscreenBtn" class="fullscreen-btn" title="Fullscreen">
-                    <i class="fas fa-expand"></i>
-                </button>
-                <div class="game-placeholder">
-                    <div id="gameContent">
-                        <i class="fas fa-gamepad fa-4x mb-3"></i>
-                        <h3>Game Loading...</h3>
-                        <p>Please wait while we prepare your gaming experience</p>
-                        <div class="spinner-border mt-3" role="status"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Game Controls -->
-            <div class="game-controls">
-                <div class="d-flex gap-2">
-                    <button id="playBtn" class="control-btn">
-                        <i class="fas fa-play me-2"></i>Play
-                    </button>
-                    <button id="pauseBtn" class="control-btn" disabled>
-                        <i class="fas fa-pause me-2"></i>Pause
-                    </button>
-                    <button id="restartBtn" class="control-btn">
-                        <i class="fas fa-redo me-2"></i>Restart
-                    </button>
-                </div>
-                <div class="d-flex gap-2">
-                    <button id="saveBtn" class="control-btn">
-                        <i class="fas fa-save me-2"></i>Save Progress
-                    </button>
-                    <button id="settingsBtn" class="control-btn">
-                        <i class="fas fa-cog me-2"></i>Settings
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Game Stats -->
-        <div class="game-stats">
-            <div class="stat-card">
-                <h5><i class="fas fa-clock me-2"></i>Play Time</h5>
-                <p id="playTime">00:00:00</p>
-            </div>
-            <div class="stat-card">
-                <h5><i class="fas fa-trophy me-2"></i>Progress</h5>
-                <div class="progress-bar">
-                    <div id="progressFill" class="progress-fill" style="width: 0%"></div>
-                </div>
-                <p id="progressText">0%</p>
-            </div>
-            <div class="stat-card">
-                <h5><i class="fas fa-star me-2"></i>Score</h5>
-                <p id="gameScore">0</p>
-            </div>
-            <div class="stat-card">
-                <h5><i class="fas fa-medal me-2"></i>Level</h5>
-                <p id="gameLevel">1</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Time Up Modal -->
-    <div id="timeUpModal" class="modal">
+    <!-- Compatibility Modal -->
+    <div id="compatibilityModal" class="compatibility-modal hidden">
         <div class="modal-content">
-            <h3><i class="fas fa-clock me-2"></i>Time's Up!</h3>
-            <p>Your 2-hour gaming session has ended.</p>
+            <h3><i class="fas fa-exclamation-triangle me-2"></i>Device Not Compatible</h3>
+            <p id="compatibilityMessage">Your device or browser doesn't meet the minimum requirements for this game.</p>
             <div class="mt-3">
-                <button id="upgradeBtn" class="control-btn me-2">
-                    <i class="fas fa-crown me-2"></i>Upgrade to Premium
-                </button>
-                <button id="backToHubBtn" class="control-btn">
-                    <i class="fas fa-home me-2"></i>Back to Hub
+                <button id="backToHubBtn" class="back-btn">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Hub
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Premium Modal -->
-    <div id="premiumModal" class="modal">
-        <div class="modal-content">
-            <h3><i class="fas fa-crown me-2"></i>Upgrade to Premium</h3>
-            <p>Unlock unlimited gaming with Premium!</p>
-            <ul class="text-start mt-3">
-                <li>Unlimited gaming time</li>
-                <li>Access to premium games</li>
-                <li>Save game progress</li>
-                <li>No ads</li>
-                <li>Priority support</li>
-            </ul>
-            <div class="mt-4">
-                <button id="subscribePremiumBtn" class="control-btn me-2">
-                    <i class="fas fa-credit-card me-2"></i>Subscribe Now - $9.99/month
-                </button>
-                <button id="closePremiumBtn" class="control-btn">
-                    <i class="fas fa-times me-2"></i>Maybe Later
+    <!-- Game Header -->
+    <div id="gameHeader" class="game-header hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 2rem;">
+            <div>
+                <h3><i class="fas fa-gamepad me-2"></i>SmileX Gaming</h3>
+            </div>
+            <div>
+                <div id="timerDisplay" class="timer-display">
+                    <i class="fas fa-clock me-2"></i>
+                    <span id="playTime">00:00:00</span>
+                </div>
+            </div>
+            <div>
+                <button id="backBtn" class="back-btn">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Hub
                 </button>
             </div>
         </div>
+    </div>
+
+    <!-- Game Container -->
+    <div id="gameContainer" class="game-container hidden">
+        <div class="game-content">
+            <div id="gameInterface" class="game-interface">
+                <h2><i class="fas fa-gamepad me-2"></i><span id="gameName">Game Active</span></h2>
+                <p>Game controls are automatically enabled</p>
+                <div class="mt-3">
+                    <small class="text-muted">
+                        Use keyboard/mouse controls as intended by the game
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invisible Controls (Functional but hidden) -->
+    <div class="invisible-controls">
+        <button id="playBtn">Play</button>
+        <button id="pauseBtn">Pause</button>
+        <button id="restartBtn">Restart</button>
     </div>
 
     <script>
         class GamePlayer {
             constructor() {
                 this.gameSession = null;
-                this.gameTimer = null;
                 this.playTimer = null;
-                this.startTime = null;
-                this.isPaused = false;
-                this.gameProgress = 0;
-                this.gameScore = 0;
-                this.gameLevel = 1;
                 this.playTimeSeconds = 0;
+                this.isGameActive = false;
+                this.deviceCompatible = false;
                 
                 this.initializeGame();
-                this.setupEventListeners();
             }
 
-            initializeGame() {
-                // Get game session from localStorage
+            async initializeGame() {
+                // Show loading screen
+                document.getElementById('loadingScreen').classList.remove('hidden');
+                
+                // Check device compatibility
+                await this.checkDeviceCompatibility();
+                
+                if (!this.deviceCompatible) {
+                    this.showIncompatibilityModal();
+                    return;
+                }
+                
+                // Load game session data
+                this.loadGameSession();
+                
+                // Start the game
+                await this.startGame();
+            }
+
+            async checkDeviceCompatibility() {
+                // Simulate compatibility check
+                await this.delay(2000);
+                
+                const compatibility = this.performCompatibilityChecks();
+                this.deviceCompatible = compatibility.isCompatible;
+                
+                if (!compatibility.isCompatible) {
+                    document.getElementById('compatibilityMessage').textContent = compatibility.message;
+                }
+            }
+
+            performCompatibilityChecks() {
+                const userAgent = navigator.userAgent.toLowerCase();
+                const platform = navigator.platform.toLowerCase();
+                const screenWidth = window.screen.width;
+                const screenHeight = window.screen.height;
+                
+                // Check for minimum screen resolution
+                if (screenWidth < 800 || screenHeight < 600) {
+                    return {
+                        isCompatible: false,
+                        message: "Screen resolution too low. Minimum required: 800x600"
+                    };
+                }
+                
+                // Check for unsupported browsers
+                if (userAgent.includes('internet explorer') || userAgent.includes('trident')) {
+                    return {
+                        isCompatible: false,
+                        message: "Internet Explorer is not supported. Please use a modern browser."
+                    };
+                }
+                
+                // Check for mobile devices (optional restriction)
+                const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+                if (isMobile && screenWidth < 1024) {
+                    return {
+                        isCompatible: false,
+                        message: "This game requires a larger screen. Please use a desktop or tablet."
+                    };
+                }
+                
+                // Check for WebGL support (for advanced games)
+                const canvas = document.createElement('canvas');
+                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                if (!gl) {
+                    return {
+                        isCompatible: false,
+                        message: "WebGL is not supported. Please update your browser or graphics drivers."
+                    };
+                }
+                
+                // Check for required APIs
+                if (!window.requestAnimationFrame) {
+                    return {
+                        isCompatible: false,
+                        message: "Your browser doesn't support required animation features."
+                    };
+                }
+                
+                // All checks passed
+                return {
+                    isCompatible: true,
+                    message: "Device is compatible"
+                };
+            }
+
+            showIncompatibilityModal() {
+                document.getElementById('loadingScreen').classList.add('hidden');
+                document.getElementById('compatibilityModal').classList.remove('hidden');
+                
+                // Setup back to hub button
+                document.getElementById('backToHubBtn').addEventListener('click', () => {
+                    this.backToHub();
+                });
+            }
+
+            loadGameSession() {
+                // Get game session from localStorage or create default
                 const sessionData = localStorage.getItem('currentGameSession');
                 if (sessionData) {
                     this.gameSession = JSON.parse(sessionData);
                 } else {
-                    // Fallback data for testing
                     this.gameSession = {
                         gameId: 1,
-                        gameName: "Demo Game",
-                        gameImage: "/placeholder.svg?height=400&width=700",
-                        timeLimit: 7200, // 2 hours in seconds
-                        startTime: Date.now(),
-                        isPremium: false
+                        gameName: "Game Mode",
+                        gameImage: "/placeholder.svg?height=800&width=1200",
+                        isPremium: localStorage.getItem('userPremium') === 'true'
                     };
                 }
-
-                this.loadGameData();
-                this.startGameSession();
-            }
-
-            loadGameData() {
+                
+                // Set game name
                 document.getElementById('gameName').textContent = this.gameSession.gameName;
-                document.getElementById('gameDescription').textContent = 
-                    `Experience the thrill of ${this.gameSession.gameName}! An immersive gaming adventure awaits.`;
-
-                // Set session type
-                const sessionType = document.getElementById('sessionType');
+                
+                // Set background image
+                const gameContainer = document.getElementById('gameContainer');
+                gameContainer.style.backgroundImage = `url('${this.gameSession.gameImage}')`;
+                
+                // Setup premium display
                 if (this.gameSession.isPremium) {
-                    sessionType.innerHTML = '<i class="fas fa-crown me-1"></i>Premium - Unlimited';
-                    sessionType.className = 'badge bg-warning text-dark p-2';
-                    document.getElementById('premiumBanner').style.display = 'block';
                     document.getElementById('timerDisplay').classList.add('premium');
-                } else {
-                    sessionType.innerHTML = '<i class="fas fa-clock me-1"></i>Free - 2 Hours';
-                    sessionType.className = 'badge bg-primary p-2';
-                }
-
-                // Load saved progress
-                const savedProgress = localStorage.getItem(`gameProgress_${this.gameSession.gameId}`);
-                if (savedProgress) {
-                    const progress = JSON.parse(savedProgress);
-                    this.gameProgress = progress.progress || 0;
-                    this.gameScore = progress.score || 0;
-                    this.gameLevel = progress.level || 1;
-                    this.updateGameStats();
                 }
             }
 
-            startGameSession() {
-                this.startTime = Date.now();
+            async startGame() {
+                // Hide loading screen
+                document.getElementById('loadingScreen').classList.add('hidden');
                 
-                // Start play time counter
-                this.playTimer = setInterval(() => {
-                    if (!this.isPaused) {
-                        this.playTimeSeconds++;
-                        this.updatePlayTime();
-                        this.simulateGameProgress();
-                    }
-                }, 1000);
-
-                // Start session timer for free users
-                if (!this.gameSession.isPremium) {
-                    this.startSessionTimer();
-                } else {
-                    document.getElementById('timeRemaining').textContent = 'Unlimited';
-                }
-
-                // Load the game
-                this.loadGame();
-            }
-
-            startSessionTimer() {
-                const endTime = this.gameSession.startTime + (this.gameSession.timeLimit * 1000);
+                // Show game interface
+                document.getElementById('gameHeader').classList.remove('hidden');
+                document.getElementById('gameContainer').classList.remove('hidden');
                 
-                this.gameTimer = setInterval(() => {
-                    const now = Date.now();
-                    const remaining = Math.max(0, endTime - now);
-                    
-                    if (remaining <= 0) {
-                        this.endSession();
-                        return;
-                    }
-                    
-                    const hours = Math.floor(remaining / (1000 * 60 * 60));
-                    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-                    
-                    const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                    document.getElementById('timeRemaining').textContent = timeString;
-                    
-                    // Warning when less than 10 minutes
-                    if (remaining < 600000) {
-                        document.getElementById('timerDisplay').classList.add('warning');
-                    }
-                }, 1000);
-            }
-
-            loadGame() {
-                // Simulate game loading
+                // Enable automatic controls
+                this.enableAutomaticControls();
+                
+                // Start play timer
+                this.startPlayTimer();
+                
+                // Mark game as active
+                this.isGameActive = true;
+                document.body.classList.add('game-active');
+                
+                // Show success notification
+                this.showNotification('Game loaded successfully! Controls are automatically enabled.', 'success');
+                
+                // Auto-hide game interface after 3 seconds
                 setTimeout(() => {
-                    const gameContent = document.getElementById('gameContent');
-                    gameContent.innerHTML = `
-                        <div class="text-center">
-                            <h2><i class="fas fa-gamepad me-2"></i>${this.gameSession.gameName}</h2>
-                            <div class="mt-4 p-4" style="background: rgba(255,255,255,0.1); border-radius: 10px;">
-                                <h4>🎮 Game Simulation Active</h4>
-                                <p>This is a demo of the game interface. In a real implementation, 
-                                   this would be replaced with the actual game content.</p>
-                                <div class="mt-3">
-                                    <button class="control-btn me-2" onclick="gamePlayer.simulateAction('jump')">
-                                        <i class="fas fa-arrow-up me-1"></i>Jump
-                                    </button>
-                                    <button class="control-btn me-2" onclick="gamePlayer.simulateAction('attack')">
-                                        <i class="fas fa-sword me-1"></i>Attack
-                                    </button>
-                                    <button class="control-btn" onclick="gamePlayer.simulateAction('collect')">
-                                        <i class="fas fa-gem me-1"></i>Collect
-                                    </button>
-                                </div>
-                                <div class="mt-3">
-                                    <small class="text-muted">Click the buttons above to simulate game actions!</small>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    // Enable play button
-                    document.getElementById('playBtn').disabled = false;
-                    this.showNotification('Game loaded successfully!', 'success');
-                }, 2000);
+                    const gameInterface = document.getElementById('gameInterface');
+                    gameInterface.style.opacity = '0.3';
+                    gameInterface.style.transition = 'opacity 0.5s ease';
+                }, 3000);
             }
 
-            simulateAction(action) {
-                switch(action) {
-                    case 'jump':
-                        this.gameScore += 10;
-                        this.showNotification('Nice jump! +10 points', 'success');
-                        break;
-                    case 'attack':
-                        this.gameScore += 25;
-                        this.showNotification('Great attack! +25 points', 'success');
-                        break;
-                    case 'collect':
-                        this.gameScore += 50;
-                        this.gameProgress += 2;
-                        this.showNotification('Item collected! +50 points', 'success');
-                        break;
-                }
+            enableAutomaticControls() {
+                // Enable keyboard controls automatically
+                document.addEventListener('keydown', this.handleKeyPress.bind(this));
+                document.addEventListener('keyup', this.handleKeyRelease.bind(this));
                 
-                // Level up logic
-                if (this.gameScore > this.gameLevel * 1000) {
-                    this.gameLevel++;
-                    this.showNotification(`Level up! Now level ${this.gameLevel}`, 'success');
-                }
+                // Enable mouse controls
+                document.addEventListener('mousedown', this.handleMouseDown.bind(this));
+                document.addEventListener('mouseup', this.handleMouseUp.bind(this));
+                document.addEventListener('mousemove', this.handleMouseMove.bind(this));
                 
-                this.updateGameStats();
-                this.saveProgress();
+                // Enable touch controls for compatible devices
+                document.addEventListener('touchstart', this.handleTouchStart.bind(this));
+                document.addEventListener('touchend', this.handleTouchEnd.bind(this));
+                document.addEventListener('touchmove', this.handleTouchMove.bind(this));
+                
+                // Setup back button
+                document.getElementById('backBtn').addEventListener('click', () => {
+                    this.backToHub();
+                });
             }
 
-            simulateGameProgress() {
-                // Slowly increase progress over time
-                if (this.playTimeSeconds % 30 === 0 && this.gameProgress < 100) {
-                    this.gameProgress += 0.5;
-                    this.gameScore += 5;
-                    this.updateGameStats();
+            handleKeyPress(event) {
+                if (!this.isGameActive) return;
+                
+                // Handle game-specific key presses
+                switch(event.key.toLowerCase()) {
+                    case 'w':
+                    case 'arrowup':
+                        this.simulateGameAction('move_up');
+                        break;
+                    case 's':
+                    case 'arrowdown':
+                        this.simulateGameAction('move_down');
+                        break;
+                    case 'a':
+                    case 'arrowleft':
+                        this.simulateGameAction('move_left');
+                        break;
+                    case 'd':
+                    case 'arrowright':
+                        this.simulateGameAction('move_right');
+                        break;
+                    case ' ':
+                        event.preventDefault();
+                        this.simulateGameAction('action');
+                        break;
+                    case 'escape':
+                        this.showGameInterface();
+                        break;
                 }
+            }
+
+            handleKeyRelease(event) {
+                if (!this.isGameActive) return;
+                // Handle key release events
+            }
+
+            handleMouseDown(event) {
+                if (!this.isGameActive) return;
+                this.simulateGameAction('click', { x: event.clientX, y: event.clientY });
+            }
+
+            handleMouseUp(event) {
+                if (!this.isGameActive) return;
+                // Handle mouse release
+            }
+
+            handleMouseMove(event) {
+                if (!this.isGameActive) return;
+                // Handle mouse movement
+            }
+
+            handleTouchStart(event) {
+                if (!this.isGameActive) return;
+                event.preventDefault();
+                const touch = event.touches[0];
+                this.simulateGameAction('touch', { x: touch.clientX, y: touch.clientY });
+            }
+
+            handleTouchEnd(event) {
+                if (!this.isGameActive) return;
+                event.preventDefault();
+            }
+
+            handleTouchMove(event) {
+                if (!this.isGameActive) return;
+                event.preventDefault();
+            }
+
+            simulateGameAction(action, data = {}) {
+                // Simulate game actions (replace with actual game logic)
+                console.log(`Game action: ${action}`, data);
+            }
+
+            startPlayTimer() {
+                this.playTimer = setInterval(() => {
+                    this.playTimeSeconds++;
+                    this.updatePlayTime();
+                }, 1000);
             }
 
             updatePlayTime() {
@@ -573,155 +551,39 @@
                 document.getElementById('playTime').textContent = timeString;
             }
 
-            updateGameStats() {
-                document.getElementById('progressFill').style.width = `${Math.min(this.gameProgress, 100)}%`;
-                document.getElementById('progressText').textContent = `${Math.floor(this.gameProgress)}%`;
-                document.getElementById('gameScore').textContent = this.gameScore.toLocaleString();
-                document.getElementById('gameLevel').textContent = this.gameLevel;
-            }
-
-            saveProgress() {
-                const progressData = {
-                    progress: this.gameProgress,
-                    score: this.gameScore,
-                    level: this.gameLevel,
-                    playTime: this.playTimeSeconds,
-                    lastSaved: Date.now()
-                };
+            showGameInterface() {
+                const gameInterface = document.getElementById('gameInterface');
+                gameInterface.style.opacity = '1';
+                gameInterface.style.transition = 'opacity 0.5s ease';
                 
-                localStorage.setItem(`gameProgress_${this.gameSession.gameId}`, JSON.stringify(progressData));
-                this.showNotification('Progress saved!', 'success');
-            }
-
-            pauseGame() {
-                this.isPaused = true;
-                document.getElementById('playBtn').disabled = false;
-                document.getElementById('pauseBtn').disabled = true;
-                this.showNotification('Game paused', 'info');
-            }
-
-            resumeGame() {
-                this.isPaused = false;
-                document.getElementById('playBtn').disabled = true;
-                document.getElementById('pauseBtn').disabled = false;
-                this.showNotification('Game resumed', 'success');
-            }
-
-            restartGame() {
-                if (confirm('Are you sure you want to restart? All unsaved progress will be lost.')) {
-                    this.gameProgress = 0;
-                    this.gameScore = 0;
-                    this.gameLevel = 1;
-                    this.playTimeSeconds = 0;
-                    this.updateGameStats();
-                    this.updatePlayTime();
-                    this.showNotification('Game restarted!', 'info');
-                }
-            }
-
-            endSession() {
-                clearInterval(this.gameTimer);
-                clearInterval(this.playTimer);
-                
-                // Save final progress
-                this.saveProgress();
-                
-                // Show time up modal
-                document.getElementById('timeUpModal').style.display = 'flex';
-                
-                this.showNotification('Your gaming session has ended!', 'warning');
-            }
-
-            showPremiumModal() {
-                document.getElementById('premiumModal').style.display = 'flex';
-            }
-
-            subscribeToPremium() {
-                // Simulate premium subscription
-                this.gameSession.isPremium = true;
-                localStorage.setItem('userPremium', 'true');
-                
-                // Update UI
-                document.getElementById('premiumBanner').style.display = 'block';
-                document.getElementById('timerDisplay').classList.add('premium');
-                document.getElementById('timeRemaining').textContent = 'Unlimited';
-                document.getElementById('sessionType').innerHTML = '<i class="fas fa-crown me-1"></i>Premium - Unlimited';
-                document.getElementById('sessionType').className = 'badge bg-warning text-dark p-2';
-                
-                // Clear existing timer
-                if (this.gameTimer) {
-                    clearInterval(this.gameTimer);
-                }
-                
-                document.getElementById('premiumModal').style.display = 'none';
-                this.showNotification('Welcome to Premium! Enjoy unlimited gaming!', 'success');
-            }
-
-            toggleFullscreen() {
-                const gameFrame = document.getElementById('gameFrame');
-                if (!document.fullscreenElement) {
-                    gameFrame.requestFullscreen();
-                    document.getElementById('fullscreenBtn').innerHTML = '<i class="fas fa-compress"></i>';
-                } else {
-                    document.exitFullscreen();
-                    document.getElementById('fullscreenBtn').innerHTML = '<i class="fas fa-expand"></i>';
-                }
+                setTimeout(() => {
+                    gameInterface.style.opacity = '0.3';
+                }, 3000);
             }
 
             backToHub() {
-                if (confirm('Are you sure you want to leave the game? Your progress will be saved.')) {
-                    this.saveProgress();
-                    localStorage.removeItem('currentGameSession');
-                    window.location.href = 'game.html';
+                // Save play time
+                if (this.gameSession) {
+                    const playData = {
+                        gameId: this.gameSession.gameId,
+                        playTime: this.playTimeSeconds,
+                        lastPlayed: Date.now()
+                    };
+                    localStorage.setItem(`playData_${this.gameSession.gameId}`, JSON.stringify(playData));
                 }
+                
+                // Clear session
+                localStorage.removeItem('currentGameSession');
+                
+                // Redirect to hub (replace with actual hub URL)
+                window.location.href = 'game.html';
             }
 
-            setupEventListeners() {
-                document.getElementById('playBtn').addEventListener('click', () => this.resumeGame());
-                document.getElementById('pauseBtn').addEventListener('click', () => this.pauseGame());
-                document.getElementById('restartBtn').addEventListener('click', () => this.restartGame());
-                document.getElementById('saveBtn').addEventListener('click', () => this.saveProgress());
-                document.getElementById('settingsBtn').addEventListener('click', () => this.showNotification('Settings coming soon!', 'info'));
-                document.getElementById('backBtn').addEventListener('click', () => this.backToHub());
-                document.getElementById('fullscreenBtn').addEventListener('click', () => this.toggleFullscreen());
-                
-                // Modal buttons
-                document.getElementById('upgradeBtn').addEventListener('click', () => this.showPremiumModal());
-                document.getElementById('backToHubBtn').addEventListener('click', () => this.backToHub());
-                document.getElementById('subscribePremiumBtn').addEventListener('click', () => this.subscribeToPremium());
-                document.getElementById('closePremiumBtn').addEventListener('click', () => {
-                    document.getElementById('premiumModal').style.display = 'none';
-                });
-                
-                // Keyboard controls
-                document.addEventListener('keydown', (e) => {
-                    switch(e.key) {
-                        case ' ':
-                            e.preventDefault();
-                            if (this.isPaused) this.resumeGame();
-                            else this.pauseGame();
-                            break;
-                        case 'r':
-                            if (e.ctrlKey) {
-                                e.preventDefault();
-                                this.restartGame();
-                            }
-                            break;
-                        case 's':
-                            if (e.ctrlKey) {
-                                e.preventDefault();
-                                this.saveProgress();
-                            }
-                            break;
-                    }
-                });
-            }
-
-            showNotification(message, type = 'info') {
+            showNotification(message, type = 'success') {
                 const notification = document.createElement('div');
                 notification.className = `notification ${type}`;
                 notification.innerHTML = `
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : type === 'error' ? 'times-circle' : 'info-circle'} me-2"></i>
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'times-circle'} me-2"></i>
                     ${message}
                 `;
                 
@@ -732,6 +594,10 @@
                     setTimeout(() => notification.remove(), 400);
                 }, 3000);
             }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
         }
 
         // Initialize game player when page loads
@@ -740,13 +606,28 @@
             gamePlayer = new GamePlayer();
         });
 
-        // Prevent page refresh during game
+        // Prevent accidental page navigation
         window.addEventListener('beforeunload', (e) => {
-            if (gamePlayer && !gamePlayer.isPaused) {
+            if (gamePlayer && gamePlayer.isGameActive) {
                 e.preventDefault();
-                e.returnValue = 'Are you sure you want to leave? Your progress will be saved.';
+                e.returnValue = 'Are you sure you want to leave the game?';
             }
         });
+
+        // Handle visibility change (tab switching)
+        document.addEventListener('visibilitychange', () => {
+            if (gamePlayer && gamePlayer.isGameActive) {
+                if (document.hidden) {
+                    gamePlayer.showNotification('Game paused - tab not active', 'warning');
+                } else {
+                    gamePlayer.showNotification('Game resumed', 'success');
+                }
+            }
+        });
+
+        
+        // Prevent right-click (optional)
+        document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 </body>
 </html>

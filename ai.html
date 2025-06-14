@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmileX - Advanced AI Video Generator Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -43,7 +44,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+                 font-family: 'Orbitron', sans-serif;
             background: var(--dark-bg);
             color: var(--text-primary);
             line-height: 1.6;
@@ -303,12 +304,12 @@
         .logo-icon {
             width: 45px;
             height: 45px;
-            background: var(--accent-gradient);
+            background: transparent;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: black;
             font-size: 1.3rem;
             box-shadow: 0 0 20px rgba(79, 172, 254, 0.4);
             animation: logoGlow 3s ease-in-out infinite alternate;
@@ -395,7 +396,7 @@
             gap: 0.5rem;
             position: relative;
             overflow: hidden;
-            font-family: inherit;
+                font-family: 'Orbitron', sans-serif;
         }
 
         .btn::before {
@@ -643,6 +644,7 @@
 
         .main-input::placeholder {
             color: var(--text-muted);
+                   font-family: 'Orbitron', sans-serif;
         }
 
         .input-actions {
@@ -652,12 +654,13 @@
             padding-right: 1.5rem;
             position: relative;
             z-index: 1;
+                   font-family: 'Orbitron', sans-serif;
         }
 
         .input-counter {
             font-size: 0.8rem;
             color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
+                   font-family: 'Orbitron', sans-serif;
             padding: 0.25rem 0.5rem;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
@@ -672,6 +675,7 @@
             padding: 1rem 2rem;
             border-radius: var(--border-radius);
             font-weight: 700;
+                   font-family: 'Orbitron', sans-serif;
             cursor: pointer;
             transition: var(--transition);
             position: relative;
@@ -1252,6 +1256,7 @@
             overflow: hidden;
             margin: 2rem 0;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+                   font-family: 'Orbitron', sans-serif;
         }
 
         .progress-bar {
@@ -1269,6 +1274,7 @@
             padding: 2rem;
             margin-top: 2rem;
             border: 1px solid var(--border-color);
+                   font-family: 'Orbitron', sans-serif;
         }
 
         .detail-row {
@@ -1287,18 +1293,20 @@
         .detail-label {
             color: var(--text-secondary);
             font-weight: 500;
+                   font-family: 'Orbitron', sans-serif;
         }
 
         .detail-value {
             font-weight: 700;
             color: var(--text-primary);
-            font-family: 'JetBrains Mono', monospace;
+                   font-family: 'Orbitron', sans-serif;
         }
 
         /* Enhanced Video Section */
         .video-section {
             margin: 6rem 0;
             display: none;
+                   font-family: 'Orbitron', sans-serif;
         }
 
         .video-section.active {
@@ -1325,6 +1333,7 @@
             padding: 3rem;
             text-align: center;
             box-shadow: var(--shadow-heavy);
+                   font-family: 'Orbitron', sans-serif;
         }
 
         .video-player {
@@ -1333,6 +1342,7 @@
             border-radius: var(--border-radius);
             margin-bottom: 2rem;
             box-shadow: var(--shadow-light), 0 0 30px rgba(0, 212, 255, 0.2);
+                   font-family: 'Orbitron', sans-serif;
         }
 
         .video-actions {
@@ -1341,6 +1351,7 @@
             gap: 1rem;
             flex-wrap: wrap;
             margin-bottom: 2rem;
+                   font-family: 'Orbitron', sans-serif;
         }
 
         .action-btn {
@@ -1355,24 +1366,28 @@
             transition: var(--transition);
             text-decoration: none;
             font-size: 1rem;
+                   font-family: 'Orbitron', sans-serif;
         }
 
         .btn-refresh {
             background: var(--secondary-gradient);
             color: white;
             box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+                   font-family: 'Orbitron', sans-serif;
         }
 
         .btn-download {
             background: var(--success-gradient);
             color: white;
             box-shadow: 0 4px 15px rgba(67, 233, 123, 0.3);
+                   font-family: 'Orbitron', sans-serif;
         }
 
         .btn-share {
             background: var(--glass-bg);
             color: var(--text-primary);
             border: 1px solid var(--border-color);
+                   font-family: 'Orbitron', sans-serif;
         }
 
         .action-btn:hover {
@@ -1741,7 +1756,7 @@
                 <div class="logo-icon">
                     <i class="fas fa-video"></i>
                 </div>
-                SmileX AI Pro
+                SmileX
             </div>
             
             <div class="user-welcome" id="userWelcome" style="display: none;">
@@ -1753,8 +1768,7 @@
             <nav class="nav-menu">
                 <a href="#features" class="nav-link">Features</a>
                 <a href="#pricing" class="nav-link">Pricing</a>
-                <a href="#gallery" class="nav-link">Gallery</a>
-                <a href="#support" class="nav-link">Support</a>
+                
             </nav>
             
             <div class="nav-buttons">
