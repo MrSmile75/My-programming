@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmileX StoryVerse - Enhanced Story Platform</title>
+    <title>📚 Enhanced Story Hub - Read Books Online</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
@@ -180,8 +180,8 @@
         background: var(--error-color);
     }
 
-    /* Story Counter */
-    .story-counter {
+    /* Book Counter */
+    .book-counter {
         position: fixed;
         top: 80px;
         right: 20px;
@@ -192,6 +192,86 @@
         border: 2px solid var(--secondary-color);
         font-size: 14px;
         z-index: 1000;
+    }
+
+    /* API Source Indicators */
+    .api-sources {
+        position: fixed;
+        top: 130px;
+        right: 20px;
+        background: var(--card-bg);
+        border: 2px solid var(--secondary-color);
+        border-radius: 15px;
+        padding: 15px;
+        z-index: 1000;
+        min-width: 200px;
+    }
+
+    .api-source {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 12px;
+    }
+
+    .api-source:last-child {
+        margin-bottom: 0;
+    }
+
+    .api-status {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+
+    .api-status.active {
+        background: var(--success-color);
+        box-shadow: 0 0 10px var(--success-color);
+    }
+
+    .api-status.loading {
+        background: var(--warning-color);
+        animation: pulse 1s infinite;
+    }
+
+    .api-status.error {
+        background: var(--error-color);
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+
+    /* Auto-load indicator */
+    .auto-load-indicator {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--card-bg);
+        color: var(--text-primary);
+        padding: 15px 25px;
+        border-radius: 25px;
+        border: 2px solid var(--secondary-color);
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .auto-load-indicator.show {
+        display: flex;
+    }
+
+    .auto-load-spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(37, 117, 252, 0.3);
+        border-top: 2px solid var(--secondary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
     }
 
     /* Story Cards */
@@ -277,6 +357,15 @@
         font-size: 10px;
     }
 
+    .api-badge {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-secondary);
+        padding: 2px 6px;
+        border-radius: 8px;
+        font-size: 9px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
     .story-actions {
         display: flex;
         gap: 8px;
@@ -337,7 +426,7 @@
     .read-options-modal {
         background: var(--card-bg);
         width: 90%;
-        max-width: 450px;
+        max-width: 500px;
         border-radius: var(--border-radius);
         box-shadow: var(--shadow);
         border: 2px solid var(--secondary-color);
@@ -444,6 +533,64 @@
         font-size: 13px;
         color: var(--text-secondary);
         line-height: 1.4;
+    }
+
+    /* Embed Reader */
+    .embed-reader {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--dark-bg);
+        z-index: 10000;
+    }
+
+    .embed-reader.active {
+        display: block;
+    }
+
+    .embed-header {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .embed-title {
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .embed-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        transition: var(--transition);
+        padding: 5px;
+    }
+
+    .embed-close:hover {
+        transform: scale(1.1);
+        color: var(--accent-color);
+    }
+
+    .embed-content {
+        height: calc(100vh - 70px);
+        width: 100%;
+    }
+
+    .embed-iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: white;
     }
 
     /* Story Reading Page */
@@ -595,21 +742,6 @@
         font-size: 16px;
     }
 
-    /* Auto-loading indicator */
-    .auto-load-indicator {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: var(--card-bg);
-        color: var(--text-primary);
-        padding: 15px 25px;
-        border-radius: 25px;
-        border: 2px solid var(--secondary-color);
-        z-index: 1000;
-        display: none;
-    }
-
     /* Search Results Info */
     .search-info {
         text-align: center;
@@ -650,11 +782,18 @@
             width: 100%;
         }
 
-        .story-counter {
+        .book-counter {
             top: 70px;
             right: 10px;
             padding: 8px 15px;
             font-size: 12px;
+        }
+
+        .api-sources {
+            top: 110px;
+            right: 10px;
+            padding: 10px;
+            min-width: 150px;
         }
 
         .story-cover-section {
@@ -714,17 +853,34 @@
 <body>
     <!-- Status Indicator -->
     <div id="status-indicator" class="status-indicator">
-        <i class="fas fa-check"></i> Stories loaded successfully
+        <i class="fas fa-check"></i> Loading books...
     </div>
 
-    <!-- Story Counter -->
-    <div id="story-counter" class="story-counter">
-        <i class="fas fa-book"></i> <span id="story-count">0</span> stories loaded
+    <!-- Book Counter -->
+    <div id="book-counter" class="book-counter">
+        <i class="fas fa-book"></i> <span id="book-count">0</span> books loaded
+    </div>
+
+    <!-- API Sources Status -->
+    <div id="api-sources" class="api-sources">
+        <div class="api-source">
+            <div class="api-status" id="openlibrary-status"></div>
+            <span>Open Library</span>
+        </div>
+        <div class="api-source">
+            <div class="api-status" id="internetarchive-status"></div>
+            <span>Internet Archive</span>
+        </div>
+        <div class="api-source">
+            <div class="api-status" id="gutenberg-status"></div>
+            <span>Project Gutenberg</span>
+        </div>
     </div>
 
     <!-- Auto-load Indicator -->
     <div id="auto-load-indicator" class="auto-load-indicator">
-        <i class="fas fa-sync fa-spin"></i> Loading more stories...
+        <div class="auto-load-spinner"></div>
+        <span>Loading more books...</span>
     </div>
 
     <!-- Read Options Modal -->
@@ -737,13 +893,22 @@
                 </button>
             </div>
             <div class="read-options-body">
+                <button class="read-option-btn" id="read-embed-btn">
+                    <div class="read-option-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <div class="read-option-text">
+                        <div class="read-option-title">Read with Embed</div>
+                        <div class="read-option-desc">Read using Open Library's embedded reader for the best experience</div>
+                    </div>
+                </button>
                 <button class="read-option-btn" id="read-source-btn">
                     <div class="read-option-icon">
                         <i class="fas fa-external-link-alt"></i>
                     </div>
                     <div class="read-option-text">
                         <div class="read-option-title">Read from Source</div>
-                        <div class="read-option-desc">Open the original source website in a new tab to read the complete story</div>
+                        <div class="read-option-desc">Open the original source website in a new tab</div>
                     </div>
                 </button>
                 <button class="read-option-btn" id="read-web-btn">
@@ -752,10 +917,32 @@
                     </div>
                     <div class="read-option-text">
                         <div class="read-option-title">Read on Web</div>
-                        <div class="read-option-desc">Read the full story here on our website with enhanced reading experience</div>
+                        <div class="read-option-desc">Read the full content here with enhanced reading experience</div>
+                    </div>
+                </button>
+                <button class="read-option-btn" id="read-archive-btn">
+                    <div class="read-option-icon">
+                        <i class="fas fa-archive"></i>
+                    </div>
+                    <div class="read-option-text">
+                        <div class="read-option-title">Internet Archive</div>
+                        <div class="read-option-desc">Access scanned pages and digital collections</div>
                     </div>
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Embed Reader -->
+    <div id="embed-reader" class="embed-reader">
+        <div class="embed-header">
+            <h3 class="embed-title" id="embed-reader-title">Reading...</h3>
+            <button class="embed-close" id="embed-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="embed-content">
+            <iframe id="embed-iframe" class="embed-iframe" src=""></iframe>
         </div>
     </div>
 
@@ -768,10 +955,10 @@
                 <div class="row align-items-center">
                     <div class="col-md-8">
                         <h1 class="display-5">
-                            <span class="logo-text">📚Store Hub</span>
+                            <span class="logo-text">📚 Enhanced Story Hub</span>
                         </h1>
                         <p class="lead text-white-50">
-                            Discover Stories - Search & Discover More
+                            Infinite Books from Open Library, Internet Archive & Project Gutenberg
                         </p>
                     </div>
                     <div class="col-md-4 search-container">
@@ -780,7 +967,7 @@
                                 type="text" 
                                 id="searchInput" 
                                 class="form-control search-input" 
-                                placeholder="Search stories, authors, topics..."
+                                placeholder="Search exact titles, authors, topics..."
                             >
                             <button id="searchButton" class="search-btn">
                                 <i class="bi bi-search"></i>
@@ -795,17 +982,17 @@
         <div class="container mt-5">
             <!-- Search Info -->
             <div id="search-info" class="search-info">
-                Continuously loading stories...
+                Continuously loading books from all sources...
             </div>
 
             <div class="row" id="storiesContainer">
-                <!-- Stories will be auto-loaded here -->
+                <!-- Books will be loaded here -->
             </div>
 
             <!-- Loading Spinner -->
-            <div id="loadingSpinner" class="loading-container">
+            <div id="loadingSpinner" class="loading-container" style="display: none;">
                 <div class="loading-spinner"></div>
-                <div class="loading-text">Fetching stories...</div>
+                <div class="loading-text">Loading more books...</div>
             </div>
         </div>
     </div>
@@ -813,15 +1000,15 @@
     <!-- Story Reading Page -->
     <div id="story-reading-page" class="story-reading-page">
         <div class="container">
-            <button class="back-to-stories" onclick="storyPlatform.backToStories()">
-                <i class="fas fa-arrow-left"></i> Back to Stories
+            <button class="back-to-stories" onclick="storyHub.backToStories()">
+                <i class="fas fa-arrow-left"></i> Back to Books
             </button>
 
             <div class="story-reading-header">
                 <div class="story-cover-section">
-                    <img id="reading-cover" class="story-cover-image" src="https://via.placeholder.com/200x300/1a1a1a/6a11cb?text=Story+Cover" alt="Story Cover">
+                    <img id="reading-cover" class="story-cover-image" src="/placeholder.svg" alt="Book Cover">
                     <div class="story-info">
-                        <h1 id="reading-title" class="story-reading-title">Story Title</h1>
+                        <h1 id="reading-title" class="story-reading-title">Book Title</h1>
                         <p id="reading-author" class="story-reading-author">by Author Name</p>
                         <div class="story-reading-meta">
                             <span id="reading-genre" class="meta-item">Genre</span>
@@ -834,13 +1021,13 @@
 
             <div class="story-reading-description">
                 <h3><i class="fas fa-info-circle"></i> Description</h3>
-                <p id="reading-description">Story description will appear here...</p>
+                <p id="reading-description">Book description will appear here...</p>
             </div>
 
             <div class="story-content-section">
-                <h3><i class="fas fa-book-open"></i> Story Content</h3>
+                <h3><i class="fas fa-book-open"></i> Content</h3>
                 <div id="reading-content">
-                    <!-- Story chapters will be loaded here -->
+                    <!-- Book content will be loaded here -->
                 </div>
             </div>
         </div>
@@ -849,67 +1036,76 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        class UnlimitedStoryPlatform {
+        class InfiniteStoryHub {
             constructor() {
                 // Configuration
-                this.CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
+                this.CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
                 this.REQUEST_DELAY = 800; // 800ms between requests
                 this.MAX_RETRIES = 3;
-                this.AUTO_LOAD_INTERVAL = 3000; // Load new stories every 3 seconds
+                this.AUTO_LOAD_INTERVAL = 4000; // Load new books every 4 seconds
+                this.BOOKS_PER_LOAD = 15; // Number of books to load per batch
                 
                 // API Configuration
-                this.APIs = [
-                    {
-                        name: 'OpenLibrary',
-                        baseUrl: 'https://openlibrary.org/search.json',
-                        transform: this.transformOpenLibraryStory.bind(this)
+                this.APIs = {
+                    openLibrary: {
+                        name: 'Open Library',
+                        searchUrl: 'https://openlibrary.org/search.json',
+                        embedUrl: 'https://openlibrary.org/embed',
+                        transform: this.transformOpenLibraryBook.bind(this),
+                        status: 'ready',
+                        currentPage: 1
                     },
-                    {
-                        name: 'Gutenberg',
-                        baseUrl: 'https://gutendex.com/books',
-                        transform: this.transformGutenbergStory.bind(this)
+                    internetArchive: {
+                        name: 'Internet Archive',
+                        searchUrl: 'https://archive.org/advancedsearch.php',
+                        transform: this.transformInternetArchiveBook.bind(this),
+                        status: 'ready',
+                        currentPage: 1
+                    },
+                    gutenberg: {
+                        name: 'Project Gutenberg',
+                        searchUrl: 'https://gutendex.com/books',
+                        transform: this.transformGutenbergBook.bind(this),
+                        status: 'ready',
+                        currentPage: 1
                     }
+                };
+                
+                // Popular search topics for infinite loading
+                this.searchTopics = [
+                    'fiction', 'adventure', 'mystery', 'romance', 'fantasy', 'science',
+                    'history', 'biography', 'drama', 'comedy', 'thriller', 'horror',
+                    'poetry', 'philosophy', 'art', 'music', 'travel', 'nature',
+                    'technology', 'space', 'ocean', 'mountain', 'forest', 'city',
+                    'love', 'friendship', 'family', 'courage', 'hope', 'dreams',
+                    'classic', 'literature', 'novel', 'story', 'tale', 'book',
+                    'education', 'learning', 'knowledge', 'wisdom', 'culture',
+                    'society', 'human', 'life', 'world', 'universe', 'earth'
                 ];
                 
                 // State management
                 this.cache = new Map();
                 this.lastRequestTime = 0;
                 this.isLoading = false;
-                this.currentPage = 1;
-                this.currentAPIIndex = 0;
-                this.stories = new Set(); // Use Set to avoid duplicates
-                this.searchQuery = '';
-                this.autoLoadTimer = null;
-                this.storyCounter = 0;
-                this.currentStory = null;
-                
-                // Search topics for continuous loading
-                this.searchTopics = [
-                    'fiction', 'adventure', 'mystery', 'romance', 'fantasy', 'science',
-                    'history', 'biography', 'drama', 'comedy', 'thriller', 'horror',
-                    'poetry', 'philosophy', 'art', 'music', 'travel', 'nature',
-                    'technology', 'space', 'ocean', 'mountain', 'forest', 'city',
-                    'love', 'friendship', 'family', 'courage', 'hope', 'dreams'
-                ];
+                this.allBooks = new Map(); // All loaded books
+                this.searchResults = new Map(); // Search-specific results
+                this.currentBook = null;
+                this.bookCount = 0;
                 this.currentTopicIndex = 0;
+                this.autoLoadTimer = null;
+                this.isSearchMode = false;
                 
-                // Initialize after DOM is loaded
-                if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', () => this.init());
-                } else {
-                    this.init();
-                }
+                // Initialize
+                this.init();
             }
 
             async init() {
-                console.log('🚀 Initializing Story Platform...');
+                console.log('🚀 Initializing Infinite Story Hub...');
                 this.setupEventListeners();
                 this.createStarBackground();
-                
-                // Start continuous loading immediately
-                this.startContinuousLoading();
-                
-                console.log('✅ Story Platform initialized successfully!');
+                this.updateAPIStatus();
+                this.startInfiniteLoading();
+                console.log('✅ Infinite Story Hub initialized successfully!');
             }
 
             setupEventListeners() {
@@ -937,10 +1133,40 @@
                 }
 
                 // Modal event listeners
+                this.setupModalEventListeners();
+
+                // Embed reader event listeners
+                const embedCloseBtn = document.getElementById('embed-close-btn');
+                if (embedCloseBtn) {
+                    embedCloseBtn.addEventListener('click', () => this.closeEmbedReader());
+                }
+
+                // Infinite scroll
+                window.addEventListener('scroll', this.throttle(() => {
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
+                        if (!this.isSearchMode) {
+                            this.loadMoreBooks();
+                        }
+                    }
+                }, 1000));
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.closeReadOptions();
+                        this.closeEmbedReader();
+                        this.backToStories();
+                    }
+                });
+            }
+
+            setupModalEventListeners() {
                 const closeModalBtn = document.getElementById('close-read-options');
                 const modalOverlay = document.getElementById('read-options-modal-overlay');
+                const readEmbedBtn = document.getElementById('read-embed-btn');
                 const readSourceBtn = document.getElementById('read-source-btn');
                 const readWebBtn = document.getElementById('read-web-btn');
+                const readArchiveBtn = document.getElementById('read-archive-btn');
 
                 if (closeModalBtn) {
                     closeModalBtn.addEventListener('click', () => this.closeReadOptions());
@@ -954,6 +1180,10 @@
                     });
                 }
 
+                if (readEmbedBtn) {
+                    readEmbedBtn.addEventListener('click', () => this.readWithEmbed());
+                }
+
                 if (readSourceBtn) {
                     readSourceBtn.addEventListener('click', () => this.readFromSource());
                 }
@@ -962,20 +1192,9 @@
                     readWebBtn.addEventListener('click', () => this.readOnWeb());
                 }
 
-                // Keyboard shortcuts
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape') {
-                        this.closeReadOptions();
-                        this.backToStories();
-                    }
-                });
-
-                // Scroll to load more
-                window.addEventListener('scroll', this.throttle(() => {
-                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
-                        this.loadMoreStories();
-                    }
-                }, 1000));
+                if (readArchiveBtn) {
+                    readArchiveBtn.addEventListener('click', () => this.readFromArchive());
+                }
             }
 
             createStarBackground() {
@@ -1011,94 +1230,278 @@
                 }
             }
 
-            startContinuousLoading() {
-                console.log('📚 Starting continuous story loading...');
-                this.updateSearchInfo('Loading stories continuously...');
+            startInfiniteLoading() {
+                console.log('📚 Starting infinite book loading...');
+                this.updateSearchInfo('Continuously loading books from all sources...');
                 
                 // Load initial batch
-                this.loadStoriesFromAllAPIs();
+                this.loadBooksFromAllAPIs();
                 
                 // Set up continuous loading
                 this.autoLoadTimer = setInterval(() => {
-                    if (!this.searchQuery) { // Only auto-load when not searching
-                        this.loadStoriesFromAllAPIs();
+                    if (!this.isSearchMode && !this.isLoading) {
+                        this.loadBooksFromAllAPIs();
                     }
                 }, this.AUTO_LOAD_INTERVAL);
             }
 
-            stopContinuousLoading() {
+            stopInfiniteLoading() {
                 if (this.autoLoadTimer) {
                     clearInterval(this.autoLoadTimer);
                     this.autoLoadTimer = null;
                 }
             }
 
-            async loadStoriesFromAllAPIs() {
+            async loadBooksFromAllAPIs() {
                 if (this.isLoading) return;
                 
                 this.isLoading = true;
-                this.showAutoLoadIndicator();
+                this.showAutoLoadIndicator(true);
                 
                 try {
                     // Get current search topic for variety
-                    const topic = this.searchQuery || this.searchTopics[this.currentTopicIndex];
+                    const topic = this.searchTopics[this.currentTopicIndex];
                     this.currentTopicIndex = (this.currentTopicIndex + 1) % this.searchTopics.length;
                     
                     // Load from multiple APIs simultaneously
-                    const promises = this.APIs.map(api => this.fetchFromAPI(api, topic));
+                    const promises = [
+                        this.loadFromOpenLibrary(topic),
+                        this.loadFromInternetArchive(topic),
+                        this.loadFromGutenberg(topic)
+                    ];
+                    
                     const results = await Promise.allSettled(promises);
                     
-                    let newStoriesCount = 0;
+                    let newBooksCount = 0;
                     results.forEach((result, index) => {
+                        const apiKeys = ['openLibrary', 'internetArchive', 'gutenberg'];
+                        const apiKey = apiKeys[index];
+                        
                         if (result.status === 'fulfilled' && result.value.length > 0) {
-                            const addedCount = this.addStoriesToDisplay(result.value);
-                            newStoriesCount += addedCount;
-                            console.log(`📖 Loaded ${addedCount} stories from ${this.APIs[index].name}`);
+                            const addedCount = this.addBooksToDisplay(result.value);
+                            newBooksCount += addedCount;
+                            this.setAPIStatus(apiKey, 'active');
+                            console.log(`📖 Loaded ${addedCount} books from ${this.APIs[apiKey].name}`);
+                        } else {
+                            this.setAPIStatus(apiKey, 'error');
                         }
                     });
                     
-                    if (newStoriesCount > 0) {
-                        this.showStatus(`Loaded ${newStoriesCount} new stories`, 'success');
+                    if (newBooksCount > 0) {
+                        this.showStatus(`Loaded ${newBooksCount} new books`, 'success');
                     }
                     
                 } catch (error) {
-                    console.error('❌ Error loading stories:', error);
-                    this.showStatus('Error loading some stories', 'warning');
+                    console.error('❌ Error loading books:', error);
+                    this.showStatus('Error loading some books', 'warning');
                 } finally {
                     this.isLoading = false;
-                    this.hideAutoLoadIndicator();
+                    this.showAutoLoadIndicator(false);
                 }
             }
 
-            async fetchFromAPI(api, query) {
+            async loadFromOpenLibrary(query) {
                 try {
-                    let url;
-                    
-                    switch (api.name) {
-                        case 'OpenLibrary':
-                            url = `${api.baseUrl}?q=${encodeURIComponent(query)}&limit=20&page=${Math.floor(Math.random() * 10) + 1}`;
-                            break;
-                        case 'Gutenberg':
-                            url = `${api.baseUrl}?search=${encodeURIComponent(query)}&page=${Math.floor(Math.random() * 10) + 1}`;
-                            break;
-                        default:
-                            return [];
-                    }
-                    
+                    this.setAPIStatus('openLibrary', 'loading');
+                    const page = this.APIs.openLibrary.currentPage;
+                    const url = `${this.APIs.openLibrary.searchUrl}?q=${encodeURIComponent(query)}&limit=${this.BOOKS_PER_LOAD}&page=${page}`;
                     const response = await this.makeAPIRequest(url);
                     
-                    if (api.name === 'OpenLibrary' && response.docs) {
-                        return response.docs.map(api.transform).filter(story => story.title);
-                    } else if (api.name === 'Gutenberg' && response.results) {
-                        return response.results.map(api.transform).filter(story => story.title);
+                    this.APIs.openLibrary.currentPage++;
+                    
+                    if (response.docs && response.docs.length > 0) {
+                        return response.docs.map(this.APIs.openLibrary.transform).filter(book => book.title);
                     }
-                    
                     return [];
-                    
                 } catch (error) {
-                    console.error(`❌ Error fetching from ${api.name}:`, error);
+                    console.error('❌ Open Library loading error:', error);
+                    this.setAPIStatus('openLibrary', 'error');
                     return [];
                 }
+            }
+
+            async loadFromInternetArchive(query) {
+                try {
+                    this.setAPIStatus('internetArchive', 'loading');
+                    const page = this.APIs.internetArchive.currentPage;
+                    const url = `${this.APIs.internetArchive.searchUrl}?q=${encodeURIComponent(query)}&fl=identifier,title,creator,description,date,subject&rows=${this.BOOKS_PER_LOAD}&page=${page}&output=json`;
+                    const response = await this.makeAPIRequest(url);
+                    
+                    this.APIs.internetArchive.currentPage++;
+                    
+                    if (response.response && response.response.docs && response.response.docs.length > 0) {
+                        return response.response.docs.map(this.APIs.internetArchive.transform).filter(book => book.title);
+                    }
+                    return [];
+                } catch (error) {
+                    console.error('❌ Internet Archive loading error:', error);
+                    this.setAPIStatus('internetArchive', 'error');
+                    return [];
+                }
+            }
+
+            async loadFromGutenberg(query) {
+                try {
+                    this.setAPIStatus('gutenberg', 'loading');
+                    const page = this.APIs.gutenberg.currentPage;
+                    const url = `${this.APIs.gutenberg.searchUrl}?search=${encodeURIComponent(query)}&page=${page}`;
+                    const response = await this.makeAPIRequest(url);
+                    
+                    this.APIs.gutenberg.currentPage++;
+                    
+                    if (response.results && response.results.length > 0) {
+                        return response.results.map(this.APIs.gutenberg.transform).filter(book => book.title);
+                    }
+                    return [];
+                } catch (error) {
+                    console.error('❌ Project Gutenberg loading error:', error);
+                    this.setAPIStatus('gutenberg', 'error');
+                    return [];
+                }
+            }
+
+            async performExactSearch() {
+                const searchInput = document.getElementById('searchInput');
+                if (!searchInput) return;
+
+                const query = searchInput.value.trim();
+                if (!query) {
+                    this.showStatus('Please enter a search term', 'warning');
+                    return;
+                }
+                
+                console.log(`🔍 Performing exact search for: "${query}"`);
+                this.isSearchMode = true;
+                this.stopInfiniteLoading();
+                this.clearResults();
+                this.showLoading(true);
+                this.updateSearchInfo(`Searching for exact matches: "${query}"...`, true);
+                
+                try {
+                    // Search all APIs simultaneously
+                    const searchPromises = [
+                        this.searchOpenLibrary(query),
+                        this.searchInternetArchive(query),
+                        this.searchGutenberg(query)
+                    ];
+
+                    const results = await Promise.allSettled(searchPromises);
+                    let totalResults = 0;
+
+                    results.forEach((result, index) => {
+                        const apiKeys = ['openLibrary', 'internetArchive', 'gutenberg'];
+                        const apiKey = apiKeys[index];
+                        
+                        if (result.status === 'fulfilled' && result.value.length > 0) {
+                            this.displaySearchResults(result.value);
+                            totalResults += result.value.length;
+                            this.setAPIStatus(apiKey, 'active');
+                        } else {
+                            this.setAPIStatus(apiKey, 'error');
+                        }
+                    });
+
+                    if (totalResults === 0) {
+                        this.showNoResults(query);
+                    } else {
+                        this.updateSearchInfo(`Found ${totalResults} exact matches for "${query}"`, true);
+                        this.showStatus(`Found ${totalResults} books matching "${query}"`, 'success');
+                    }
+
+                } catch (error) {
+                    console.error('❌ Search error:', error);
+                    this.showStatus('Search failed. Please try again.', 'error');
+                } finally {
+                    this.showLoading(false);
+                }
+            }
+
+            clearSearch() {
+                this.isSearchMode = false;
+                this.searchResults.clear();
+                this.clearResults();
+                this.updateSearchInfo('Resuming continuous book loading...');
+                this.startInfiniteLoading();
+            }
+
+            loadMoreBooks() {
+                if (!this.isLoading && !this.isSearchMode) {
+                    this.loadBooksFromAllAPIs();
+                }
+            }
+
+            async searchOpenLibrary(query) {
+                try {
+                    this.setAPIStatus('openLibrary', 'loading');
+                    const url = `${this.APIs.openLibrary.searchUrl}?q=${encodeURIComponent(query)}&limit=20`;
+                    const response = await this.makeAPIRequest(url);
+                    
+                    if (response.docs && response.docs.length > 0) {
+                        const exactMatches = response.docs.filter(book => 
+                            this.isExactMatch(book.title, query) || 
+                            this.isExactMatch(book.author_name?.[0], query) ||
+                            (book.subject && book.subject.some(subject => this.isExactMatch(subject, query)))
+                        );
+                        
+                        return exactMatches.map(this.APIs.openLibrary.transform);
+                    }
+                    return [];
+                } catch (error) {
+                    console.error('❌ Open Library search error:', error);
+                    this.setAPIStatus('openLibrary', 'error');
+                    return [];
+                }
+            }
+
+            async searchInternetArchive(query) {
+                try {
+                    this.setAPIStatus('internetArchive', 'loading');
+                    const url = `${this.APIs.internetArchive.searchUrl}?q=${encodeURIComponent(query)}&fl=identifier,title,creator,description,date,subject&rows=20&page=1&output=json`;
+                    const response = await this.makeAPIRequest(url);
+                    
+                    if (response.response && response.response.docs && response.response.docs.length > 0) {
+                        const exactMatches = response.response.docs.filter(book => 
+                            this.isExactMatch(book.title, query) || 
+                            this.isExactMatch(book.creator, query) ||
+                            (book.subject && book.subject.some && book.subject.some(subject => this.isExactMatch(subject, query)))
+                        );
+                        
+                        return exactMatches.map(this.APIs.internetArchive.transform);
+                    }
+                    return [];
+                } catch (error) {
+                    console.error('❌ Internet Archive search error:', error);
+                    this.setAPIStatus('internetArchive', 'error');
+                    return [];
+                }
+            }
+
+            async searchGutenberg(query) {
+                try {
+                    this.setAPIStatus('gutenberg', 'loading');
+                    const url = `${this.APIs.gutenberg.searchUrl}?search=${encodeURIComponent(query)}`;
+                    const response = await this.makeAPIRequest(url);
+                    
+                    if (response.results && response.results.length > 0) {
+                        const exactMatches = response.results.filter(book => 
+                            this.isExactMatch(book.title, query) || 
+                            (book.authors && book.authors.some(author => this.isExactMatch(author.name, query))) ||
+                            (book.subjects && book.subjects.some(subject => this.isExactMatch(subject, query)))
+                        );
+                        
+                        return exactMatches.map(this.APIs.gutenberg.transform);
+                    }
+                    return [];
+                } catch (error) {
+                    console.error('❌ Project Gutenberg search error:', error);
+                    this.setAPIStatus('gutenberg', 'error');
+                    return [];
+                }
+            }
+
+            isExactMatch(text, query) {
+                if (!text || !query) return false;
+                return text.toLowerCase().includes(query.toLowerCase());
             }
 
             async makeAPIRequest(url, useCache = true) {
@@ -1151,176 +1554,143 @@
                 }
             }
 
-            transformOpenLibraryStory(story) {
-                const publishYear = story.first_publish_year || 'Unknown';
-                const author = story.author_name?.[0] || 'Unknown Author';
-                const subject = story.subject?.[0] || 'Fiction';
+            transformOpenLibraryBook(book) {
+                const author = book.author_name?.[0] || 'Unknown Author';
+                const publishYear = book.first_publish_year || 'Unknown';
+                const subject = book.subject?.[0] || 'General';
                 
-                // Create a more detailed description
-                let fullDescription = '';
-                
-                if (story.first_sentence && story.first_sentence.length > 0) {
-                    fullDescription += story.first_sentence.join(' ');
+                let description = '';
+                if (book.first_sentence && book.first_sentence.length > 0) {
+                    description = book.first_sentence.join(' ');
+                } else {
+                    description = `A book by ${author}, published in ${publishYear}. Subject: ${subject}.`;
                 }
-                
-                if (story.description) {
-                    fullDescription += (fullDescription ? ' ' : '') + 
-                        (typeof story.description === 'string' ? story.description : story.description.value || '');
-                }
-                
-                if (!fullDescription) {
-                    fullDescription = `A captivating ${subject.toLowerCase()} story by ${author}. Published in ${publishYear}. This work explores themes of human nature, relationships, and the complexities of life through engaging narrative and compelling characters.`;
-                }
-                
-                const chapters = this.generateDefaultChapters(story.title);
-                
+
                 return {
-                    id: `ol_${story.key?.replace('/works/', '') || Math.random().toString(36)}`,
-                    title: story.title || 'Untitled Story',
+                    id: `ol_${book.key?.replace('/works/', '') || Math.random().toString(36)}`,
+                    title: book.title || 'Untitled',
                     author: author,
-                    description: fullDescription,
+                    description: description,
                     genre: subject,
                     publishYear: publishYear,
-                    coverImage: story.cover_i 
-                        ? `https://covers.openlibrary.org/b/id/${story.cover_i}-M.jpg`
-                        : `https://via.placeholder.com/300x400/1a1a1a/6a11cb?text=${encodeURIComponent(story.title?.substring(0, 20) || 'Story')}`,
-                    content: this.generateStoryContent(story.title, author, story.first_sentence?.[0], chapters),
-                    chapters: chapters,
-                    source: 'OpenLibrary',
-                    sourceUrl: story.key ? `https://openlibrary.org${story.key}` : null,
-                    rawData: story
+                    coverImage: book.cover_i 
+                        ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
+                        : `https://via.placeholder.com/300x400/1a1a1a/6a11cb?text=${encodeURIComponent(book.title?.substring(0, 20) || 'Book')}`,
+                    source: 'Open Library',
+                    sourceUrl: book.key ? `https://openlibrary.org${book.key}` : null,
+                    embedUrl: book.key ? `https://openlibrary.org/embed${book.key}` : null,
+                    archiveUrl: null,
+                    rawData: book
                 };
             }
 
-            transformGutenbergStory(story) {
-                const author = story.authors?.[0]?.name || 'Unknown Author';
-                const subject = story.subjects?.[0] || 'Classic Literature';
+            transformInternetArchiveBook(book) {
+                const author = book.creator || 'Unknown Author';
+                const publishYear = book.date || 'Unknown';
+                const subject = Array.isArray(book.subject) ? book.subject[0] : (book.subject || 'Archive');
                 
-                let fullDescription = '';
-                
-                if (story.description) {
-                    fullDescription = story.description;
-                } else if (story.subjects && story.subjects.length > 0) {
-                    fullDescription = `A timeless classic from Project Gutenberg. This ${subject.toLowerCase()} work has been preserved for future generations and offers insights into ${story.subjects.slice(0, 3).join(', ')}.`;
-                    
-                    if (story.authors && story.authors[0]) {
-                        const authorInfo = story.authors[0];
-                        if (authorInfo.birth_year && authorInfo.death_year) {
-                            fullDescription += ` Written by ${author} (${authorInfo.birth_year}-${authorInfo.death_year}).`;
-                        }
-                    }
-                } else {
-                    fullDescription = `A timeless classic from Project Gutenberg by ${author}. This work has been preserved for future generations and offers insights into human experience and literary tradition.`;
-                }
-                
-                const chapters = this.generateDefaultChapters(story.title);
-                
+                const description = book.description || `An archived work by ${author}. Available through Internet Archive.`;
+
                 return {
-                    id: `gb_${story.id}`,
-                    title: story.title || 'Untitled Classic',
+                    id: `ia_${book.identifier}`,
+                    title: book.title || 'Untitled Archive',
                     author: author,
-                    description: fullDescription,
+                    description: description,
                     genre: subject,
-                    publishYear: story.authors?.[0]?.birth_year || 'Classic',
-                    coverImage: story.formats?.['image/jpeg'] || 
-                        `https://via.placeholder.com/300x400/1a1a1a/2575fc?text=${encodeURIComponent(story.title?.substring(0, 20) || 'Classic')}`,
-                    content: this.generateStoryContent(story.title, author, null, chapters),
-                    chapters: chapters,
-                    source: 'Project Gutenberg',
-                    sourceUrl: `https://www.gutenberg.org/ebooks/${story.id}`,
-                    rawData: story
+                    publishYear: publishYear,
+                    coverImage: `https://archive.org/services/img/${book.identifier}`,
+                    source: 'Internet Archive',
+                    sourceUrl: `https://archive.org/details/${book.identifier}`,
+                    embedUrl: `https://archive.org/embed/${book.identifier}`,
+                    archiveUrl: `https://archive.org/details/${book.identifier}`,
+                    rawData: book
                 };
             }
 
-            generateDefaultChapters(title) {
-                const chapterCount = Math.floor(Math.random() * 5) + 3; // 3-7 chapters
-                const chapters = [];
+            transformGutenbergBook(book) {
+                const author = book.authors?.[0]?.name || 'Unknown Author';
+                const subject = book.subjects?.[0] || 'Classic Literature';
+                const publishYear = book.authors?.[0]?.birth_year || 'Classic';
                 
-                for (let i = 1; i <= chapterCount; i++) {
-                    chapters.push({
-                        title: `Chapter ${i}`,
-                        content: `This is the content of Chapter ${i} from "${title}". The narrative continues to unfold as characters develop and the plot thickens. Each chapter reveals new aspects of the story and moves the narrative forward in meaningful ways. Through trials and triumphs, our characters learn that the greatest adventures are not just about reaching a destination, but about the transformation that occurs along the way. The story weaves together themes of courage, friendship, and discovery in ways that resonate with readers of all ages.`
-                    });
-                }
-                
-                return chapters;
+                const description = `A classic work from Project Gutenberg by ${author}. ${book.subjects ? 'Subjects: ' + book.subjects.slice(0, 3).join(', ') + '.' : ''}`;
+
+                return {
+                    id: `gb_${book.id}`,
+                    title: book.title || 'Untitled Classic',
+                    author: author,
+                    description: description,
+                    genre: subject,
+                    publishYear: publishYear,
+                    coverImage: book.formats?.['image/jpeg'] || 
+                        `https://via.placeholder.com/300x400/1a1a1a/2575fc?text=${encodeURIComponent(book.title?.substring(0, 20) || 'Classic')}`,
+                    source: 'Project Gutenberg',
+                    sourceUrl: `https://www.gutenberg.org/ebooks/${book.id}`,
+                    embedUrl: null,
+                    archiveUrl: null,
+                    textUrl: book.formats?.['text/plain'] || book.formats?.['text/html'],
+                    rawData: book
+                };
             }
 
-            generateStoryContent(title, author, firstSentence = '', chapters = []) {
-                let content = `<h1>${title}</h1><p><em>by ${author}</em></p>`;
-                
-                if (firstSentence) {
-                    content += `<p>${firstSentence}</p>`;
-                }
-                
-                if (chapters && chapters.length > 0) {
-                    chapters.forEach(chapter => {
-                        content += `<h2>${chapter.title}</h2><p>${chapter.content}</p>`;
-                    });
-                } else {
-                    content += `
-                        <h2>Chapter 1</h2>
-                        <p>${firstSentence || 'In a world where stories come alive, our tale begins with an extraordinary discovery that will change everything.'}</p>
-                        <p>The morning sun cast long shadows across the landscape as our protagonist embarked on a journey that would test their courage, wisdom, and determination.</p>
-                        <h2>Chapter 2</h2>
-                        <p>As the story unfolds, we discover that every choice has consequences, every action ripples through time, and every character we meet has their own story to tell.</p>
-                    `;
-                }
-                
-                content += `<p><em>Continue reading to discover how this remarkable story unfolds...</em></p>`;
-                return content;
-            }
-
-            addStoriesToDisplay(newStories) {
+            addBooksToDisplay(books) {
                 let addedCount = 0;
                 
-                newStories.forEach(story => {
-                    if (!this.stories.has(story.id)) {
-                        this.stories.add(story.id);
-                        this.displaySingleStory(story);
+                books.forEach(book => {
+                    if (!this.allBooks.has(book.id)) {
+                        this.allBooks.set(book.id, book);
+                        this.displaySingleBook(book);
                         addedCount++;
-                        this.storyCounter++;
+                        this.bookCount++;
                     }
                 });
                 
-                this.updateStoryCounter();
+                this.updateBookCounter();
                 return addedCount;
             }
 
-            displaySingleStory(story) {
+            displaySearchResults(books) {
+                books.forEach(book => {
+                    if (!this.searchResults.has(book.id)) {
+                        this.searchResults.set(book.id, book);
+                        this.displaySingleBook(book);
+                    }
+                });
+            }
+
+            displaySingleBook(book) {
                 const container = document.getElementById('storiesContainer');
                 if (!container) return;
 
-                const storyCard = this.createStoryCard(story);
-                container.appendChild(storyCard);
+                const bookCard = this.createBookCard(book);
+                container.appendChild(bookCard);
             }
 
-            createStoryCard(story) {
+            createBookCard(book) {
                 const col = document.createElement('div');
                 col.className = 'col-lg-3 col-md-4 col-sm-6 mb-4';
                 
                 col.innerHTML = `
                     <div class="story-card fade-in">
-                        <img src="${story.coverImage}" 
+                        <img src="${book.coverImage}" 
                              class="story-card-img" 
-                             alt="${story.title} cover"
+                             alt="${book.title} cover"
                              loading="lazy"
-                             onerror="this.src='https://via.placeholder.com/300x400/1a1a1a/6a11cb?text=Story+Cover'">
+                             onerror="this.src='https://via.placeholder.com/300x400/1a1a1a/6a11cb?text=Book+Cover'">
                         <div class="story-card-body">
-                            <h5 class="story-title">${story.title}</h5>
-                            <p class="story-author">by ${story.author}</p>
+                            <h5 class="story-title">${book.title}</h5>
+                            <p class="story-author">by ${book.author}</p>
                             <div class="story-meta">
-                                <span class="story-genre">${story.genre}</span>
-                                <span>${story.source}</span>
+                                <span class="story-genre">${book.genre}</span>
+                                <span class="api-badge">${book.source}</span>
                             </div>
                             <div class="story-description-container">
-                                <p class="story-description">${story.description}</p>
+                                <p class="story-description">${book.description}</p>
                             </div>
                             <div class="story-actions">
-                                <button class="action-btn preview-btn" onclick="storyPlatform.previewStory('${story.id}')">
-                                    <i class="fas fa-eye"></i> Hint
+                                <button class="action-btn preview-btn" onclick="storyHub.previewBook('${book.id}')">
+                                    <i class="fas fa-eye"></i> Preview
                                 </button>
-                                <button class="action-btn read-btn" onclick="storyPlatform.showReadOptions('${story.id}')">
+                                <button class="action-btn read-btn" onclick="storyHub.showReadOptions('${book.id}')">
                                     <i class="fas fa-book-open"></i> Read
                                 </button>
                             </div>
@@ -1328,21 +1698,32 @@
                     </div>
                 `;
 
-                col.dataset.storyData = JSON.stringify(story);
+                col.dataset.bookData = JSON.stringify(book);
                 return col;
             }
 
-            showReadOptions(storyId) {
-                const storyElement = document.querySelector(`[data-story-data*='"id":"${storyId}"']`);
-                if (!storyElement) return;
+            showReadOptions(bookId) {
+                const book = this.allBooks.get(bookId) || this.searchResults.get(bookId);
+                if (!book) return;
 
-                const story = JSON.parse(storyElement.dataset.storyData);
-                this.currentStory = story;
+                this.currentBook = book;
                 
-                // Set the story title in the modal
+                // Set the book title in the modal
                 const titleElement = document.getElementById('read-options-story-title');
                 if (titleElement) {
-                    titleElement.textContent = `"${story.title}"`;
+                    titleElement.textContent = `"${book.title}"`;
+                }
+                
+                // Show/hide options based on availability
+                const embedBtn = document.getElementById('read-embed-btn');
+                const archiveBtn = document.getElementById('read-archive-btn');
+                
+                if (embedBtn) {
+                    embedBtn.style.display = book.embedUrl ? 'flex' : 'none';
+                }
+                
+                if (archiveBtn) {
+                    archiveBtn.style.display = book.archiveUrl ? 'flex' : 'none';
                 }
                 
                 // Show the modal
@@ -1352,7 +1733,7 @@
                     document.body.style.overflow = 'hidden';
                 }
                 
-                console.log(`📖 Showing read options for: ${story.title}`);
+                console.log(`📖 Showing read options for: ${book.title}`);
             }
 
             closeReadOptions() {
@@ -1363,30 +1744,76 @@
                 }
             }
 
-            readFromSource() {
-                if (!this.currentStory) return;
-
-                const story = this.currentStory;
-                if (story.sourceUrl) {
-                    window.open(story.sourceUrl, '_blank');
-                    this.showStatus(`Opening "${story.title}" from ${story.source}`, 'success');
-                    console.log(`🔗 Opening source: ${story.sourceUrl}`);
-                } else {
-                    this.showStatus('Source URL not available', 'warning');
+            readWithEmbed() {
+                if (!this.currentBook || !this.currentBook.embedUrl) {
+                    this.showStatus('Embed reading not available for this book', 'warning');
+                    return;
                 }
+
+                const embedReader = document.getElementById('embed-reader');
+                const embedIframe = document.getElementById('embed-iframe');
+                const embedTitle = document.getElementById('embed-reader-title');
+                
+                if (embedReader && embedIframe && embedTitle) {
+                    embedTitle.textContent = `Reading: ${this.currentBook.title}`;
+                    embedIframe.src = this.currentBook.embedUrl;
+                    embedReader.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    
+                    this.showStatus(`Opening embedded reader for "${this.currentBook.title}"`, 'success');
+                    console.log(`📚 Opening embed reader: ${this.currentBook.embedUrl}`);
+                }
+                
+                this.closeReadOptions();
+            }
+
+            closeEmbedReader() {
+                const embedReader = document.getElementById('embed-reader');
+                const embedIframe = document.getElementById('embed-iframe');
+                
+                if (embedReader) {
+                    embedReader.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+                
+                if (embedIframe) {
+                    embedIframe.src = '';
+                }
+            }
+
+            readFromSource() {
+                if (!this.currentBook || !this.currentBook.sourceUrl) {
+                    this.showStatus('Source URL not available', 'warning');
+                    return;
+                }
+
+                window.open(this.currentBook.sourceUrl, '_blank');
+                this.showStatus(`Opening "${this.currentBook.title}" from ${this.currentBook.source}`, 'success');
+                console.log(`🔗 Opening source: ${this.currentBook.sourceUrl}`);
+                this.closeReadOptions();
+            }
+
+            readFromArchive() {
+                if (!this.currentBook || !this.currentBook.archiveUrl) {
+                    this.showStatus('Archive URL not available', 'warning');
+                    return;
+                }
+
+                window.open(this.currentBook.archiveUrl, '_blank');
+                this.showStatus(`Opening "${this.currentBook.title}" from Internet Archive`, 'success');
+                console.log(`🏛️ Opening archive: ${this.currentBook.archiveUrl}`);
                 this.closeReadOptions();
             }
 
             readOnWeb() {
-                if (!this.currentStory) return;
+                if (!this.currentBook) return;
 
-                const story = this.currentStory;
-                this.openStoryReadingPage(story);
+                this.openBookReadingPage(this.currentBook);
                 this.closeReadOptions();
             }
 
-            openStoryReadingPage(story) {
-                this.currentStory = story;
+            openBookReadingPage(book) {
+                this.currentBook = book;
                 
                 // Hide main page and show reading page
                 const mainPage = document.getElementById('main-page');
@@ -1395,15 +1822,15 @@
                 if (mainPage) mainPage.style.display = 'none';
                 if (readingPage) readingPage.classList.add('active');
                 
-                // Populate reading page with story data
+                // Populate reading page with book data
                 const elements = {
-                    'reading-cover': story.coverImage,
-                    'reading-title': story.title,
-                    'reading-author': `by ${story.author}`,
-                    'reading-genre': story.genre,
-                    'reading-year': story.publishYear,
-                    'reading-source': story.source,
-                    'reading-description': story.description
+                    'reading-cover': book.coverImage,
+                    'reading-title': book.title,
+                    'reading-author': `by ${book.author}`,
+                    'reading-genre': book.genre,
+                    'reading-year': book.publishYear,
+                    'reading-source': book.source,
+                    'reading-description': book.description
                 };
 
                 Object.entries(elements).forEach(([id, value]) => {
@@ -1411,43 +1838,107 @@
                     if (element) {
                         if (id === 'reading-cover') {
                             element.src = value;
-                            element.alt = `${story.title} cover`;
+                            element.alt = `${book.title} cover`;
                         } else {
                             element.textContent = value;
                         }
                     }
                 });
                 
-                // Load chapters
-                const contentDiv = document.getElementById('reading-content');
-                if (contentDiv) {
-                    contentDiv.innerHTML = '';
-                    
-                    if (story.chapters && story.chapters.length > 0) {
-                        story.chapters.forEach(chapter => {
-                            const chapterDiv = document.createElement('div');
-                            chapterDiv.className = 'chapter';
-                            chapterDiv.innerHTML = `
-                                <h3>${chapter.title}</h3>
-                                <p>${chapter.content}</p>
-                            `;
-                            contentDiv.appendChild(chapterDiv);
-                        });
-                    } else {
-                        contentDiv.innerHTML = `
-                            <div class="chapter">
-                                <h3>Chapter 1</h3>
-                                <p>The story begins with an extraordinary journey that will captivate your imagination and take you on an unforgettable adventure through worlds of wonder and discovery.</p>
-                            </div>
-                        `;
-                    }
-                }
+                // Load content
+                this.loadBookContent(book);
                 
                 // Scroll to top
                 window.scrollTo(0, 0);
                 
-                this.showStatus(`Reading "${story.title}" on web`, 'success');
-                console.log(`📚 Opening story reading page for: ${story.title}`);
+                this.showStatus(`Reading "${book.title}" on web`, 'success');
+                console.log(`📚 Opening book reading page for: ${book.title}`);
+            }
+
+            async loadBookContent(book) {
+                const contentDiv = document.getElementById('reading-content');
+                if (!contentDiv) return;
+
+                contentDiv.innerHTML = '<div class="loading-container"><div class="loading-spinner"></div><div class="loading-text">Loading content...</div></div>';
+
+                try {
+                    let content = '';
+                    
+                    if (book.textUrl) {
+                        // Try to fetch text content for Gutenberg books
+                        try {
+                            const response = await fetch(book.textUrl);
+                            const text = await response.text();
+                            content = this.formatTextContent(text);
+                        } catch (error) {
+                            console.error('Error fetching text content:', error);
+                            content = this.generateSampleContent(book);
+                        }
+                    } else {
+                        content = this.generateSampleContent(book);
+                    }
+
+                    contentDiv.innerHTML = content;
+                } catch (error) {
+                    console.error('Error loading book content:', error);
+                    contentDiv.innerHTML = `
+                        <div class="chapter">
+                            <h3>Content Loading Error</h3>
+                            <p>Unable to load the full content. Please try reading from the source or using the embed option.</p>
+                            <p><strong>Available options:</strong></p>
+                            <ul>
+                                <li>Click "Back to Books" and try "Read from Source"</li>
+                                <li>Use the embedded reader if available</li>
+                                <li>Visit the Internet Archive link</li>
+                            </ul>
+                        </div>
+                    `;
+                }
+            }
+
+            formatTextContent(text) {
+                // Basic text formatting for display
+                const paragraphs = text.split('\n\n').filter(p => p.trim().length > 0);
+                let formattedContent = '';
+                
+                paragraphs.slice(0, 50).forEach((paragraph, index) => { // Limit to first 50 paragraphs
+                    if (paragraph.trim().length > 0) {
+                        if (paragraph.toUpperCase() === paragraph && paragraph.length < 100) {
+                            // Likely a chapter title
+                            formattedContent += `<h3>${paragraph.trim()}</h3>`;
+                        } else {
+                            formattedContent += `<p>${paragraph.trim()}</p>`;
+                        }
+                    }
+                });
+
+                if (paragraphs.length > 50) {
+                    formattedContent += '<p><em>Content truncated. Please use "Read from Source" for the complete text.</em></p>';
+                }
+
+                return formattedContent || '<p>Content could not be formatted properly. Please try reading from the source.</p>';
+            }
+
+            generateSampleContent(book) {
+                return `
+                    <div class="chapter">
+                        <h3>About This Book</h3>
+                        <p><strong>${book.title}</strong> by ${book.author} is available through ${book.source}.</p>
+                        <p>${book.description}</p>
+                        <p><strong>Genre:</strong> ${book.genre}</p>
+                        <p><strong>Published:</strong> ${book.publishYear}</p>
+                        
+                        <h3>Reading Options</h3>
+                        <p>To read the complete content of this book, please use one of the following options:</p>
+                        <ul>
+                            <li><strong>Read from Source:</strong> Visit the original ${book.source} page</li>
+                            ${book.embedUrl ? '<li><strong>Embedded Reader:</strong> Use the built-in reader for the best experience</li>' : ''}
+                            ${book.archiveUrl ? '<li><strong>Internet Archive:</strong> Access the archived version with additional features</li>' : ''}
+                        </ul>
+                        
+                        <p><em>This preview shows book information. The full content is available through the source links above.</em></p>
+                    </div>
+                `;
             }
 
             backToStories() {
@@ -1457,99 +1948,34 @@
                 if (mainPage) mainPage.style.display = 'block';
                 if (readingPage) readingPage.classList.remove('active');
                 
-                this.currentStory = null;
-                console.log('🔙 Returning to stories list');
+                console.log('🔙 Returning to book collection');
             }
 
-            performExactSearch() {
-                const searchInput = document.getElementById('searchInput');
-                if (!searchInput) return;
-
-                const query = searchInput.value.trim();
-                if (!query) return;
-                
-                console.log(`🔍 Performing exact search for: ${query}`);
-                this.searchQuery = query;
-                this.stopContinuousLoading();
-                this.clearStories();
-                this.updateSearchInfo(`Searching for exact match: "${query}"...`, true);
-                
-                this.searchExactMatchAllAPIs(query);
-            }
-
-            async searchExactMatchAllAPIs(query) {
-                this.isLoading = true;
-                this.showAutoLoadIndicator();
-                
-                try {
-                    const promises = this.APIs.map(api => this.fetchFromAPI(api, query));
-                    const results = await Promise.allSettled(promises);
+            previewBook(bookId) {
+                const book = this.allBooks.get(bookId) || this.searchResults.get(bookId);
+                if (book) {
+                    this.showStatus(`Preview: "${book.title}" by ${book.author} - ${book.genre} (${book.source})`, 'success');
                     
-                    let exactMatches = [];
-                    
-                    results.forEach((result) => {
-                        if (result.status === 'fulfilled' && result.value.length > 0) {
-                            const matches = result.value.filter(story => {
-                                const lowerQuery = query.toLowerCase();
-                                
-                                return (story.title && story.title.toLowerCase().includes(lowerQuery)) ||
-                                       (story.author && story.author.toLowerCase().includes(lowerQuery)) ||
-                                       (story.description && story.description.toLowerCase().includes(lowerQuery)) ||
-                                       (story.genre && story.genre.toLowerCase().includes(lowerQuery));
-                            });
-                            
-                            exactMatches = [...exactMatches, ...matches];
-                        }
-                    });
-                    
-                    const addedCount = this.addStoriesToDisplay(exactMatches);
-                    this.updateSearchInfo(`Found ${addedCount} exact matches for "${query}"`, true);
-                    
-                    if (addedCount === 0) {
-                        this.showNoResults(query);
+                    // Scroll to the book card
+                    const bookElement = document.querySelector(`[data-book-data*='"id":"${bookId}"']`);
+                    if (bookElement) {
+                        bookElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
-                    
-                } catch (error) {
-                    console.error('❌ Exact search error:', error);
-                    this.showStatus('Search failed. Please try again.', 'error');
-                } finally {
-                    this.isLoading = false;
-                    this.hideAutoLoadIndicator();
                 }
             }
 
-            clearSearch() {
-                this.searchQuery = '';
-                this.clearStories();
-                this.updateSearchInfo('Resuming continuous loading...');
-                this.startContinuousLoading();
-            }
-
-            loadMoreStories() {
-                if (this.searchQuery) {
-                    this.searchExactMatchAllAPIs(this.searchQuery);
-                } else {
-                    this.loadStoriesFromAllAPIs();
-                }
-            }
-
-            previewStory(storyId) {
-                const storyElement = document.querySelector(`[data-story-data*='"id":"${storyId}"']`);
-                if (storyElement) {
-                    const story = JSON.parse(storyElement.dataset.storyData);
-                    this.showStatus(`Preview: "${story.title}" by ${story.author} - ${story.genre}`, 'success');
-                    storyElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }
-
-            clearStories() {
+            clearResults() {
                 const container = document.getElementById('storiesContainer');
                 if (container) {
                     container.innerHTML = '';
                 }
-                this.stories.clear();
-                this.storyCounter = 0;
-                this.updateStoryCounter();
+                if (this.isSearchMode) {
+                    this.searchResults.clear();
+                } else {
+                    this.allBooks.clear();
+                    this.bookCount = 0;
+                    this.updateBookCounter();
+                }
             }
 
             showNoResults(query) {
@@ -1559,8 +1985,14 @@
                         <div class="col-12">
                             <div class="no-results">
                                 <i class="fas fa-search"></i>
-                                <h3>No stories found for "${query}"</h3>
-                                <p>Try searching with different keywords or clear the search to resume auto-loading.</p>
+                                <h3>No exact matches found for "${query}"</h3>
+                                <p>Try searching with different keywords or check your spelling.</p>
+                                <p><strong>Search tips:</strong></p>
+                                <ul style="text-align: left; display: inline-block;">
+                                    <li>Try partial titles or author names</li>
+                                    <li>Search by genre or subject</li>
+                                    <li>Use simpler, more common terms</li>
+                                </ul>
                             </div>
                         </div>
                     `;
@@ -1575,24 +2007,47 @@
                 }
             }
 
-            updateStoryCounter() {
-                const counter = document.getElementById('story-count');
+            updateBookCounter() {
+                const counter = document.getElementById('book-count');
                 if (counter) {
-                    counter.textContent = this.storyCounter;
+                    counter.textContent = this.bookCount;
                 }
             }
 
-            showAutoLoadIndicator() {
-                const indicator = document.getElementById('auto-load-indicator');
-                if (indicator) {
-                    indicator.style.display = 'block';
+            updateAPIStatus() {
+                Object.keys(this.APIs).forEach(apiKey => {
+                    const statusId = apiKey.toLowerCase().replace('library', 'library').replace('archive', 'archive');
+                    const statusElement = document.getElementById(`${statusId}-status`);
+                    if (statusElement) {
+                        statusElement.className = `api-status ${this.APIs[apiKey].status}`;
+                    }
+                });
+            }
+
+            setAPIStatus(apiKey, status) {
+                this.APIs[apiKey].status = status;
+                const statusId = apiKey.toLowerCase().replace('library', 'library').replace('archive', 'archive');
+                const statusElement = document.getElementById(`${statusId}-status`);
+                if (statusElement) {
+                    statusElement.className = `api-status ${status}`;
                 }
             }
 
-            hideAutoLoadIndicator() {
+            showAutoLoadIndicator(show) {
                 const indicator = document.getElementById('auto-load-indicator');
                 if (indicator) {
-                    indicator.style.display = 'none';
+                    if (show) {
+                        indicator.classList.add('show');
+                    } else {
+                        indicator.classList.remove('show');
+                    }
+                }
+            }
+
+            showLoading(show) {
+                const spinner = document.getElementById('loadingSpinner');
+                if (spinner) {
+                    spinner.style.display = show ? 'flex' : 'none';
                 }
             }
 
@@ -1612,7 +2067,7 @@
                 
                 setTimeout(() => {
                     indicator.classList.remove('show');
-                }, 3000);
+                }, 4000);
             }
 
             throttle(func, delay) {
@@ -1635,10 +2090,10 @@
             }
         }
 
-        // Initialize the platform
-        const storyPlatform = new UnlimitedStoryPlatform();
+        // Initialize the Infinite Story Hub
+        const storyHub = new InfiniteStoryHub();
 
-        console.log("🚀 Enhanced Story Platform with centered read options modal initialized!");
+        console.log("🚀 Infinite Story Hub with Open Library Embed, Internet Archive API, Project Gutenberg integration, and infinite loading initialized!");
     </script>
 </body>
 </html>

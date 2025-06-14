@@ -180,24 +180,10 @@
         background: var(--error-color);
     }
 
-    /* Book Counter */
-    .book-counter {
-        position: fixed;
-        top: 80px;
-        right: 20px;
-        background: var(--card-bg);
-        color: var(--text-primary);
-        padding: 10px 20px;
-        border-radius: 25px;
-        border: 2px solid var(--secondary-color);
-        font-size: 14px;
-        z-index: 1000;
-    }
-
     /* API Source Indicators */
     .api-sources {
         position: fixed;
-        top: 130px;
+        top: 80px;
         right: 20px;
         background: var(--card-bg);
         border: 2px solid var(--secondary-color);
@@ -242,36 +228,6 @@
     @keyframes pulse {
         0%, 100% { opacity: 1; }
         50% { opacity: 0.5; }
-    }
-
-    /* Auto-load indicator */
-    .auto-load-indicator {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: var(--card-bg);
-        color: var(--text-primary);
-        padding: 15px 25px;
-        border-radius: 25px;
-        border: 2px solid var(--secondary-color);
-        z-index: 1000;
-        display: none;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .auto-load-indicator.show {
-        display: flex;
-    }
-
-    .auto-load-spinner {
-        width: 20px;
-        height: 20px;
-        border: 2px solid rgba(37, 117, 252, 0.3);
-        border-top: 2px solid var(--secondary-color);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
     }
 
     /* Story Cards */
@@ -782,15 +738,8 @@
             width: 100%;
         }
 
-        .book-counter {
-            top: 70px;
-            right: 10px;
-            padding: 8px 15px;
-            font-size: 12px;
-        }
-
         .api-sources {
-            top: 110px;
+            top: 70px;
             right: 10px;
             padding: 10px;
             min-width: 150px;
@@ -853,12 +802,7 @@
 <body>
     <!-- Status Indicator -->
     <div id="status-indicator" class="status-indicator">
-        <i class="fas fa-check"></i> Loading books...
-    </div>
-
-    <!-- Book Counter -->
-    <div id="book-counter" class="book-counter">
-        <i class="fas fa-book"></i> <span id="book-count">0</span> books loaded
+        <i class="fas fa-check"></i> Ready to search
     </div>
 
     <!-- API Sources Status -->
@@ -868,19 +812,13 @@
             <span>Open Library</span>
         </div>
         <div class="api-source">
-            <div class="api-status" id="internetarchive-status"></div>
+            <div class="api-status" id="archive-status"></div>
             <span>Internet Archive</span>
         </div>
         <div class="api-source">
             <div class="api-status" id="gutenberg-status"></div>
             <span>Project Gutenberg</span>
         </div>
-    </div>
-
-    <!-- Auto-load Indicator -->
-    <div id="auto-load-indicator" class="auto-load-indicator">
-        <div class="auto-load-spinner"></div>
-        <span>Loading more books...</span>
     </div>
 
     <!-- Read Options Modal -->
@@ -958,7 +896,7 @@
                             <span class="logo-text">📚 Enhanced Story Hub</span>
                         </h1>
                         <p class="lead text-white-50">
-                            Infinite Books from Open Library, Internet Archive & Project Gutenberg
+                            Search & Read Books from Open Library, Internet Archive & Project Gutenberg
                         </p>
                     </div>
                     <div class="col-md-4 search-container">
@@ -982,17 +920,17 @@
         <div class="container mt-5">
             <!-- Search Info -->
             <div id="search-info" class="search-info">
-                Continuously loading books from all sources...
+                Enter a search term to find exact matches across all book sources
             </div>
 
             <div class="row" id="storiesContainer">
-                <!-- Books will be loaded here -->
+                <!-- Stories will be loaded here -->
             </div>
 
             <!-- Loading Spinner -->
             <div id="loadingSpinner" class="loading-container" style="display: none;">
                 <div class="loading-spinner"></div>
-                <div class="loading-text">Loading more books...</div>
+                <div class="loading-text">Searching across all book sources...</div>
             </div>
         </div>
     </div>
@@ -1001,7 +939,7 @@
     <div id="story-reading-page" class="story-reading-page">
         <div class="container">
             <button class="back-to-stories" onclick="storyHub.backToStories()">
-                <i class="fas fa-arrow-left"></i> Back to Books
+                <i class="fas fa-arrow-left"></i> Back to Search
             </button>
 
             <div class="story-reading-header">
@@ -1036,14 +974,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        class InfiniteStoryHub {
+        class EnhancedStoryHub {
             constructor() {
                 // Configuration
                 this.CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
-                this.REQUEST_DELAY = 800; // 800ms between requests
+                this.REQUEST_DELAY = 1000; // 1 second between requests
                 this.MAX_RETRIES = 3;
-                this.AUTO_LOAD_INTERVAL = 4000; // Load new books every 4 seconds
-                this.BOOKS_PER_LOAD = 15; // Number of books to load per batch
                 
                 // API Configuration
                 this.APIs = {
@@ -1052,60 +988,40 @@
                         searchUrl: 'https://openlibrary.org/search.json',
                         embedUrl: 'https://openlibrary.org/embed',
                         transform: this.transformOpenLibraryBook.bind(this),
-                        status: 'ready',
-                        currentPage: 1
+                        status: 'ready'
                     },
                     internetArchive: {
                         name: 'Internet Archive',
                         searchUrl: 'https://archive.org/advancedsearch.php',
                         transform: this.transformInternetArchiveBook.bind(this),
-                        status: 'ready',
-                        currentPage: 1
+                        status: 'ready'
                     },
                     gutenberg: {
                         name: 'Project Gutenberg',
                         searchUrl: 'https://gutendex.com/books',
                         transform: this.transformGutenbergBook.bind(this),
-                        status: 'ready',
-                        currentPage: 1
+                        status: 'ready'
                     }
                 };
-                
-                // Popular search topics for infinite loading
-                this.searchTopics = [
-                    'fiction', 'adventure', 'mystery', 'romance', 'fantasy', 'science',
-                    'history', 'biography', 'drama', 'comedy', 'thriller', 'horror',
-                    'poetry', 'philosophy', 'art', 'music', 'travel', 'nature',
-                    'technology', 'space', 'ocean', 'mountain', 'forest', 'city',
-                    'love', 'friendship', 'family', 'courage', 'hope', 'dreams',
-                    'classic', 'literature', 'novel', 'story', 'tale', 'book',
-                    'education', 'learning', 'knowledge', 'wisdom', 'culture',
-                    'society', 'human', 'life', 'world', 'universe', 'earth'
-                ];
                 
                 // State management
                 this.cache = new Map();
                 this.lastRequestTime = 0;
                 this.isLoading = false;
-                this.allBooks = new Map(); // All loaded books
-                this.searchResults = new Map(); // Search-specific results
+                this.searchResults = new Map();
                 this.currentBook = null;
-                this.bookCount = 0;
-                this.currentTopicIndex = 0;
-                this.autoLoadTimer = null;
-                this.isSearchMode = false;
                 
                 // Initialize
                 this.init();
             }
 
             async init() {
-                console.log('🚀 Initializing Infinite Story Hub...');
+                console.log('🚀 Initializing Enhanced Story Hub...');
                 this.setupEventListeners();
                 this.createStarBackground();
                 this.updateAPIStatus();
-                this.startInfiniteLoading();
-                console.log('✅ Infinite Story Hub initialized successfully!');
+                this.showStatus('Ready to search across all book sources', 'success');
+                console.log('✅ Enhanced Story Hub initialized successfully!');
             }
 
             setupEventListeners() {
@@ -1127,7 +1043,7 @@
                     // Clear search when input is empty
                     searchInput.addEventListener('input', (e) => {
                         if (e.target.value.trim() === '') {
-                            this.clearSearch();
+                            this.clearResults();
                         }
                     });
                 }
@@ -1140,15 +1056,6 @@
                 if (embedCloseBtn) {
                     embedCloseBtn.addEventListener('click', () => this.closeEmbedReader());
                 }
-
-                // Infinite scroll
-                window.addEventListener('scroll', this.throttle(() => {
-                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
-                        if (!this.isSearchMode) {
-                            this.loadMoreBooks();
-                        }
-                    }
-                }, 1000));
 
                 // Keyboard shortcuts
                 document.addEventListener('keydown', (e) => {
@@ -1230,134 +1137,13 @@
                 }
             }
 
-            startInfiniteLoading() {
-                console.log('📚 Starting infinite book loading...');
-                this.updateSearchInfo('Continuously loading books from all sources...');
-                
-                // Load initial batch
-                this.loadBooksFromAllAPIs();
-                
-                // Set up continuous loading
-                this.autoLoadTimer = setInterval(() => {
-                    if (!this.isSearchMode && !this.isLoading) {
-                        this.loadBooksFromAllAPIs();
+            updateAPIStatus() {
+                Object.keys(this.APIs).forEach(apiKey => {
+                    const statusElement = document.getElementById(`${apiKey.toLowerCase().replace('library', 'library').replace('archive', 'archive').replace('gutenberg', 'gutenberg')}-status`);
+                    if (statusElement) {
+                        statusElement.className = `api-status ${this.APIs[apiKey].status}`;
                     }
-                }, this.AUTO_LOAD_INTERVAL);
-            }
-
-            stopInfiniteLoading() {
-                if (this.autoLoadTimer) {
-                    clearInterval(this.autoLoadTimer);
-                    this.autoLoadTimer = null;
-                }
-            }
-
-            async loadBooksFromAllAPIs() {
-                if (this.isLoading) return;
-                
-                this.isLoading = true;
-                this.showAutoLoadIndicator(true);
-                
-                try {
-                    // Get current search topic for variety
-                    const topic = this.searchTopics[this.currentTopicIndex];
-                    this.currentTopicIndex = (this.currentTopicIndex + 1) % this.searchTopics.length;
-                    
-                    // Load from multiple APIs simultaneously
-                    const promises = [
-                        this.loadFromOpenLibrary(topic),
-                        this.loadFromInternetArchive(topic),
-                        this.loadFromGutenberg(topic)
-                    ];
-                    
-                    const results = await Promise.allSettled(promises);
-                    
-                    let newBooksCount = 0;
-                    results.forEach((result, index) => {
-                        const apiKeys = ['openLibrary', 'internetArchive', 'gutenberg'];
-                        const apiKey = apiKeys[index];
-                        
-                        if (result.status === 'fulfilled' && result.value.length > 0) {
-                            const addedCount = this.addBooksToDisplay(result.value);
-                            newBooksCount += addedCount;
-                            this.setAPIStatus(apiKey, 'active');
-                            console.log(`📖 Loaded ${addedCount} books from ${this.APIs[apiKey].name}`);
-                        } else {
-                            this.setAPIStatus(apiKey, 'error');
-                        }
-                    });
-                    
-                    if (newBooksCount > 0) {
-                        this.showStatus(`Loaded ${newBooksCount} new books`, 'success');
-                    }
-                    
-                } catch (error) {
-                    console.error('❌ Error loading books:', error);
-                    this.showStatus('Error loading some books', 'warning');
-                } finally {
-                    this.isLoading = false;
-                    this.showAutoLoadIndicator(false);
-                }
-            }
-
-            async loadFromOpenLibrary(query) {
-                try {
-                    this.setAPIStatus('openLibrary', 'loading');
-                    const page = this.APIs.openLibrary.currentPage;
-                    const url = `${this.APIs.openLibrary.searchUrl}?q=${encodeURIComponent(query)}&limit=${this.BOOKS_PER_LOAD}&page=${page}`;
-                    const response = await this.makeAPIRequest(url);
-                    
-                    this.APIs.openLibrary.currentPage++;
-                    
-                    if (response.docs && response.docs.length > 0) {
-                        return response.docs.map(this.APIs.openLibrary.transform).filter(book => book.title);
-                    }
-                    return [];
-                } catch (error) {
-                    console.error('❌ Open Library loading error:', error);
-                    this.setAPIStatus('openLibrary', 'error');
-                    return [];
-                }
-            }
-
-            async loadFromInternetArchive(query) {
-                try {
-                    this.setAPIStatus('internetArchive', 'loading');
-                    const page = this.APIs.internetArchive.currentPage;
-                    const url = `${this.APIs.internetArchive.searchUrl}?q=${encodeURIComponent(query)}&fl=identifier,title,creator,description,date,subject&rows=${this.BOOKS_PER_LOAD}&page=${page}&output=json`;
-                    const response = await this.makeAPIRequest(url);
-                    
-                    this.APIs.internetArchive.currentPage++;
-                    
-                    if (response.response && response.response.docs && response.response.docs.length > 0) {
-                        return response.response.docs.map(this.APIs.internetArchive.transform).filter(book => book.title);
-                    }
-                    return [];
-                } catch (error) {
-                    console.error('❌ Internet Archive loading error:', error);
-                    this.setAPIStatus('internetArchive', 'error');
-                    return [];
-                }
-            }
-
-            async loadFromGutenberg(query) {
-                try {
-                    this.setAPIStatus('gutenberg', 'loading');
-                    const page = this.APIs.gutenberg.currentPage;
-                    const url = `${this.APIs.gutenberg.searchUrl}?search=${encodeURIComponent(query)}&page=${page}`;
-                    const response = await this.makeAPIRequest(url);
-                    
-                    this.APIs.gutenberg.currentPage++;
-                    
-                    if (response.results && response.results.length > 0) {
-                        return response.results.map(this.APIs.gutenberg.transform).filter(book => book.title);
-                    }
-                    return [];
-                } catch (error) {
-                    console.error('❌ Project Gutenberg loading error:', error);
-                    this.setAPIStatus('gutenberg', 'error');
-                    return [];
-                }
+                });
             }
 
             async performExactSearch() {
@@ -1371,8 +1157,6 @@
                 }
                 
                 console.log(`🔍 Performing exact search for: "${query}"`);
-                this.isSearchMode = true;
-                this.stopInfiniteLoading();
                 this.clearResults();
                 this.showLoading(true);
                 this.updateSearchInfo(`Searching for exact matches: "${query}"...`, true);
@@ -1393,7 +1177,7 @@
                         const apiKey = apiKeys[index];
                         
                         if (result.status === 'fulfilled' && result.value.length > 0) {
-                            this.displaySearchResults(result.value);
+                            this.displayResults(result.value);
                             totalResults += result.value.length;
                             this.setAPIStatus(apiKey, 'active');
                         } else {
@@ -1413,20 +1197,6 @@
                     this.showStatus('Search failed. Please try again.', 'error');
                 } finally {
                     this.showLoading(false);
-                }
-            }
-
-            clearSearch() {
-                this.isSearchMode = false;
-                this.searchResults.clear();
-                this.clearResults();
-                this.updateSearchInfo('Resuming continuous book loading...');
-                this.startInfiniteLoading();
-            }
-
-            loadMoreBooks() {
-                if (!this.isLoading && !this.isSearchMode) {
-                    this.loadBooksFromAllAPIs();
                 }
             }
 
@@ -1632,37 +1402,17 @@
                 };
             }
 
-            addBooksToDisplay(books) {
-                let addedCount = 0;
-                
-                books.forEach(book => {
-                    if (!this.allBooks.has(book.id)) {
-                        this.allBooks.set(book.id, book);
-                        this.displaySingleBook(book);
-                        addedCount++;
-                        this.bookCount++;
-                    }
-                });
-                
-                this.updateBookCounter();
-                return addedCount;
-            }
-
-            displaySearchResults(books) {
-                books.forEach(book => {
-                    if (!this.searchResults.has(book.id)) {
-                        this.searchResults.set(book.id, book);
-                        this.displaySingleBook(book);
-                    }
-                });
-            }
-
-            displaySingleBook(book) {
+            displayResults(books) {
                 const container = document.getElementById('storiesContainer');
                 if (!container) return;
 
-                const bookCard = this.createBookCard(book);
-                container.appendChild(bookCard);
+                books.forEach(book => {
+                    if (!this.searchResults.has(book.id)) {
+                        this.searchResults.set(book.id, book);
+                        const bookCard = this.createBookCard(book);
+                        container.appendChild(bookCard);
+                    }
+                });
             }
 
             createBookCard(book) {
@@ -1703,7 +1453,7 @@
             }
 
             showReadOptions(bookId) {
-                const book = this.allBooks.get(bookId) || this.searchResults.get(bookId);
+                const book = this.searchResults.get(bookId);
                 if (!book) return;
 
                 this.currentBook = book;
@@ -1887,7 +1637,7 @@
                             <p>Unable to load the full content. Please try reading from the source or using the embed option.</p>
                             <p><strong>Available options:</strong></p>
                             <ul>
-                                <li>Click "Back to Books" and try "Read from Source"</li>
+                                <li>Click "Back to Search" and try "Read from Source"</li>
                                 <li>Use the embedded reader if available</li>
                                 <li>Visit the Internet Archive link</li>
                             </ul>
@@ -1948,11 +1698,11 @@
                 if (mainPage) mainPage.style.display = 'block';
                 if (readingPage) readingPage.classList.remove('active');
                 
-                console.log('🔙 Returning to book collection');
+                console.log('🔙 Returning to search results');
             }
 
             previewBook(bookId) {
-                const book = this.allBooks.get(bookId) || this.searchResults.get(bookId);
+                const book = this.searchResults.get(bookId);
                 if (book) {
                     this.showStatus(`Preview: "${book.title}" by ${book.author} - ${book.genre} (${book.source})`, 'success');
                     
@@ -1969,13 +1719,8 @@
                 if (container) {
                     container.innerHTML = '';
                 }
-                if (this.isSearchMode) {
-                    this.searchResults.clear();
-                } else {
-                    this.allBooks.clear();
-                    this.bookCount = 0;
-                    this.updateBookCounter();
-                }
+                this.searchResults.clear();
+                this.updateSearchInfo('Enter a search term to find exact matches across all book sources');
             }
 
             showNoResults(query) {
@@ -2007,40 +1752,11 @@
                 }
             }
 
-            updateBookCounter() {
-                const counter = document.getElementById('book-count');
-                if (counter) {
-                    counter.textContent = this.bookCount;
-                }
-            }
-
-            updateAPIStatus() {
-                Object.keys(this.APIs).forEach(apiKey => {
-                    const statusId = apiKey.toLowerCase().replace('library', 'library').replace('archive', 'archive');
-                    const statusElement = document.getElementById(`${statusId}-status`);
-                    if (statusElement) {
-                        statusElement.className = `api-status ${this.APIs[apiKey].status}`;
-                    }
-                });
-            }
-
             setAPIStatus(apiKey, status) {
                 this.APIs[apiKey].status = status;
-                const statusId = apiKey.toLowerCase().replace('library', 'library').replace('archive', 'archive');
-                const statusElement = document.getElementById(`${statusId}-status`);
+                const statusElement = document.getElementById(`${apiKey.toLowerCase().replace('library', 'library').replace('archive', 'archive').replace('gutenberg', 'gutenberg')}-status`);
                 if (statusElement) {
                     statusElement.className = `api-status ${status}`;
-                }
-            }
-
-            showAutoLoadIndicator(show) {
-                const indicator = document.getElementById('auto-load-indicator');
-                if (indicator) {
-                    if (show) {
-                        indicator.classList.add('show');
-                    } else {
-                        indicator.classList.remove('show');
-                    }
                 }
             }
 
@@ -2069,31 +1785,12 @@
                     indicator.classList.remove('show');
                 }, 4000);
             }
-
-            throttle(func, delay) {
-                let timeoutId;
-                let lastExecTime = 0;
-                return function (...args) {
-                    const currentTime = Date.now();
-                    
-                    if (currentTime - lastExecTime > delay) {
-                        func.apply(this, args);
-                        lastExecTime = currentTime;
-                    } else {
-                        clearTimeout(timeoutId);
-                        timeoutId = setTimeout(() => {
-                            func.apply(this, args);
-                            lastExecTime = Date.now();
-                        }, delay - (currentTime - lastExecTime));
-                    }
-                };
-            }
         }
 
-        // Initialize the Infinite Story Hub
-        const storyHub = new InfiniteStoryHub();
+        // Initialize the Enhanced Story Hub
+        const storyHub = new EnhancedStoryHub();
 
-        console.log("🚀 Infinite Story Hub with Open Library Embed, Internet Archive API, Project Gutenberg integration, and infinite loading initialized!");
+        console.log("🚀 Enhanced Story Hub with Open Library Embed, Internet Archive API, and Project Gutenberg integration initialized!");
     </script>
 </body>
 </html>

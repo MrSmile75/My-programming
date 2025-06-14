@@ -661,6 +661,8 @@
             padding: 0.25rem 0.5rem;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
+            min-width: 80px;
+            text-align: center;
         }
 
         .generate-btn {
@@ -874,7 +876,7 @@
             border-color: var(--neon-blue);
         }
 
-        .feature-icon {
+        .feature-card .feature-icon {
             width: 70px;
             height: 70px;
             background: var(--accent-gradient);
@@ -978,6 +980,169 @@
             transform: rotate(90deg);
         }
 
+        /* Enhanced Chat Styles for Analysis Modal */
+        .chat-container {
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .chat-avatar:has(.fa-robot) {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .chat-avatar:has(.fa-user) {
+            background: var(--premium-gradient);
+            color: var(--dark-bg);
+        }
+
+        .chat-content {
+            flex: 1;
+        }
+
+        .chat-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .chat-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 0.25rem;
+            align-items: center;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            animation: typingBounce 1.4s ease-in-out infinite both;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Enhanced Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .option-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--neon-blue);
+            transform: translateY(-2px);
+        }
+
+        .option-card.selected {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .option-card.premium-lock {
+            opacity: 0.6;
+            position: relative;
+        }
+
+        .option-card.premium-lock::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        .option-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .option-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .premium-badge {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--premium-gradient);
+            color: var(--dark-bg);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
         /* Premium Enforcement */
         .premium-lock {
             position: relative;
@@ -986,7 +1151,7 @@
         }
 
         .premium-lock::after {
-            content: '🔒 Premium Required';
+            content: '';
             position: absolute;
             top: 50%;
             left: 50%;
@@ -1461,6 +1626,10 @@
                 padding: 2rem;
                 margin: 1rem;
             }
+
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1485,6 +1654,10 @@
             
             .generate-btn {
                 padding: 0.75rem 1.5rem;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -1649,7 +1822,7 @@
                             maxlength="500"
                         >
                         <div class="input-actions">
-                            <span class="input-counter" id="charCounter">0/500</span>
+                            <span class="input-counter" id="charCounter">0 words</span>
                             <button class="generate-btn" id="generateBtn" onclick="startGeneration()">
                                 <span class="btn-text">
                                     <i class="fas fa-magic"></i>
@@ -1690,7 +1863,7 @@
                         <span>No watermarks or branding</span>
                     </div>
                     <div class="feature-item">
-                        <i class="fas fa-ad feature-icon"></i>
+                        <i class="fas fa-ban feature-icon"></i>
                         <span>Completely ad-free experience</span>
                     </div>
                     <div class="feature-item">
@@ -1721,7 +1894,7 @@
         <!-- Ad Container for Non-Premium Users -->
         <div class="ad-container" id="adContainer">
             <div class="ad-placeholder">
-                <i class="fas fa-ad" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                <i class="fas fa-rectangle-ad" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
                 <h3>Advertisement Space</h3>
                 <p>Your Google Ads code goes here</p>
                 <small>This ad will be hidden for Premium subscribers</small>
@@ -1929,12 +2102,12 @@
                         </div>
                     </div>
                     <div style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6;">
-                        ✓ 4K Ultra HD Quality (3840x2160)<br>
-                        ✓ No Watermarks or Branding<br>
-                        ✓ No Advertisements<br>
-                        ✓ Instant Download<br>
-                        ✓ Commercial Usage Rights<br>
-                        ✓ Multiple Format Options
+                        <i class="fas fa-check" style="color: var(--neon-green);"></i> 4K Ultra HD Quality (3840x2160)<br>
+                        <i class="fas fa-check" style="color: var(--neon-green);"></i> No Watermarks or Branding<br>
+                        <i class="fas fa-check" style="color: var(--neon-green);"></i> No Advertisements<br>
+                        <i class="fas fa-check" style="color: var(--neon-green);"></i> Instant Download<br>
+                        <i class="fas fa-check" style="color: var(--neon-green);"></i> Commercial Usage Rights<br>
+                        <i class="fas fa-check" style="color: var(--neon-green);"></i> Multiple Format Options
                     </div>
                 </div>
                 
@@ -1949,12 +2122,12 @@
                         </div>
                     </div>
                     <div style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6;">
-                        ✓ 1080p HD Quality (1920x1080)<br>
-                        ✓ SmileX Watermark Included<br>
-                        ✓ Watch 30-second Ad First<br>
-                        ✓ Limited Downloads per Day (3)<br>
-                        ✓ Personal Use Only<br>
-                        ✓ MP4 Format Only
+                        <i class="fas fa-check" style="color: var(--neon-green);"></i> 1080p HD Quality (1920x1080)<br>
+                        <i class="fas fa-check" style="color: var(--neon-green);"></i> SmileX Watermark Included<br>
+                        <i class="fas fa-check" style="color: var(--neon-green);"></i> Watch 30-second Ad First<br>
+                        <i class="fas fa-check" style="color: var(--neon-green);"></i> Limited Downloads per Day (3)<br>
+                        <i class="fas fa-check" style="color: var(--neon-green);"></i> Personal Use Only<br>
+                        <i class="fas fa-check" style="color: var(--neon-green);"></i> MP4 Format Only
                     </div>
                 </div>
             </div>
@@ -2001,7 +2174,7 @@
                         <span>No watermarks or branding</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: var(--border-radius);">
-                        <i class="fas fa-ad" style="color: var(--neon-green); font-size: 1.2rem;"></i>
+                        <i class="fas fa-ban" style="color: var(--neon-green); font-size: 1.2rem;"></i>
                         <span>Completely ad-free experience</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: var(--border-radius);">
@@ -2038,13 +2211,14 @@
         const OPENAI_API_KEY = 'your-openai-api-key-here'; // Replace with your actual API key
         const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
         
-        // User data
+        // User data with enhanced history management
         let userData = {
             name: '',
             isPremium: false,
             isSubscribed: false,
             trialsRemaining: 3,
             generationHistory: [],
+            previewHistory: [],
             dailyDownloads: 0,
             lastDownloadDate: null,
             subscriptionDate: null,
@@ -2102,7 +2276,7 @@
             
             document.getElementById('welcomeModal').classList.remove('active');
             showUserWelcome();
-            showNotification(`Welcome to SmileX AI, ${name}! 🎉`, 'success');
+            showNotification(`Welcome to SmileX AI, ${name}! <i class="fas fa-party-horn"></i>`, 'success');
         }
 
         // Show user welcome
@@ -2132,7 +2306,7 @@
             });
         }
 
-        // Animate statistics
+        // Enhanced animate statistics with exact counting
         function animateStats() {
             const statNumbers = document.querySelectorAll('.stat-number');
             
@@ -2140,7 +2314,7 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const target = parseInt(entry.target.dataset.count);
-                        animateNumber(entry.target, target);
+                        animateNumberToExact(entry.target, target);
                         observer.unobserve(entry.target);
                     }
                 });
@@ -2149,46 +2323,81 @@
             statNumbers.forEach(stat => observer.observe(stat));
         }
 
-        // Animate number counting
-        function animateNumber(element, target) {
+        // Enhanced number animation to exact count
+        function animateNumberToExact(element, target) {
             let current = 0;
-            const increment = target / 100;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                }
+            const duration = 2000; // 2 seconds
+            const startTime = performance.now();
+            
+            function updateNumber(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Use easing function for smooth animation
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                current = Math.floor(target * easeOutQuart);
                 
                 if (target === 4.9) {
-                    element.textContent = current.toFixed(1) + '★';
+                    const value = (target * easeOutQuart).toFixed(1);
+                    element.textContent = value + '<i class="fas fa-star"></i>';
+                    element.innerHTML = value + '<i class="fas fa-star" style="color: #ffd700; margin-left: 0.25rem;"></i>';
                 } else if (target >= 1000000) {
-                    element.textContent = (current / 1000000).toFixed(1) + 'M+';
+                    const value = (current / 1000000).toFixed(1);
+                    element.textContent = value + 'M+';
                 } else if (target >= 1000) {
-                    element.textContent = (current / 1000).toFixed(0) + 'K+';
+                    const value = Math.floor(current / 1000);
+                    element.textContent = value + 'K+';
                 } else {
-                    element.textContent = Math.floor(current);
+                    element.textContent = current.toLocaleString();
                 }
-            }, 20);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateNumber);
+                } else {
+                    // Ensure exact final value
+                    if (target === 4.9) {
+                        element.innerHTML = '4.9<i class="fas fa-star" style="color: #ffd700; margin-left: 0.25rem;"></i>';
+                    } else if (target >= 1000000) {
+                        element.textContent = (target / 1000000).toFixed(1) + 'M+';
+                    } else if (target >= 1000) {
+                        element.textContent = Math.floor(target / 1000) + 'K+';
+                    } else {
+                        element.textContent = target.toLocaleString();
+                    }
+                }
+            }
+            
+            requestAnimationFrame(updateNumber);
         }
 
-        // Setup event listeners
+        // Enhanced setup event listeners with word counter
         function setupEventListeners() {
             const input = document.getElementById('videoPrompt');
             const counter = document.getElementById('charCounter');
             const nameInput = document.getElementById('nameInput');
             
-            // Character counter
+            // Enhanced word counter
             input.addEventListener('input', function() {
-                const length = this.value.length;
-                counter.textContent = `${length}/500`;
+                const text = this.value.trim();
+                const words = text === '' ? 0 : text.split(/\s+/).filter(word => word.length > 0).length;
+                const chars = this.value.length;
                 
-                if (length > 450) {
+                counter.textContent = `${words} words`;
+                
+                // Color coding based on word count
+                if (words > 80) {
                     counter.style.color = '#fa709a';
-                } else if (length > 350) {
+                } else if (words > 60) {
                     counter.style.color = '#fee140';
+                } else if (words > 0) {
+                    counter.style.color = 'var(--neon-green)';
                 } else {
                     counter.style.color = 'var(--text-muted)';
+                }
+                
+                // Save to preview history as user types
+                if (words > 5) {
+                    saveToPreviewHistory(text);
                 }
             });
             
@@ -2213,13 +2422,31 @@
                 if (e.target.classList.contains('modal')) {
                     e.target.classList.remove('active');
                 }
-                if (e.target.classList.contains('welcome-modal')) {
-                    // Don't allow closing welcome modal by clicking outside
-                }
             });
             
             // Prevent right-click
             document.addEventListener('contextmenu', e => e.preventDefault());
+        }
+
+        // Save to preview history
+        function saveToPreviewHistory(prompt) {
+            const previewItem = {
+                id: Date.now(),
+                prompt: prompt,
+                timestamp: new Date().toISOString(),
+                wordCount: prompt.trim().split(/\s+/).filter(word => word.length > 0).length
+            };
+            
+            // Remove duplicates and add new item
+            userData.previewHistory = userData.previewHistory.filter(item => item.prompt !== prompt);
+            userData.previewHistory.unshift(previewItem);
+            
+            // Keep only last 50 previews
+            if (userData.previewHistory.length > 50) {
+                userData.previewHistory = userData.previewHistory.slice(0, 50);
+            }
+            
+            saveUserData();
         }
 
         // Load user data from localStorage
@@ -2228,6 +2455,10 @@
             if (saved) {
                 userData = { ...userData, ...JSON.parse(saved) };
             }
+            
+            // Initialize arrays if they don't exist
+            if (!userData.previewHistory) userData.previewHistory = [];
+            if (!userData.generationHistory) userData.generationHistory = [];
             
             // Reset daily downloads if new day
             const today = new Date().toDateString();
@@ -2296,16 +2527,16 @@
             if (userData.isSubscribed) {
                 btn.classList.remove('btn-premium');
                 btn.classList.add('btn-premium', 'subscribed');
-                btnText.textContent = 'Premium Active';
-                btn.onclick = () => showNotification('You are already subscribed to Premium! 👑', 'success');
+                btnText.innerHTML = '<i class="fas fa-crown"></i> Premium Active';
+                btn.onclick = () => showNotification('You are already subscribed to Premium! <i class="fas fa-crown"></i>', 'success');
             } else {
                 btn.classList.remove('subscribed');
-                btnText.textContent = 'Go Premium';
+                btnText.innerHTML = '<i class="fas fa-crown"></i> Go Premium';
                 btn.onclick = () => showPremiumModal();
             }
         }
 
-        // Start video generation process
+        // Enhanced start video generation process
         async function startGeneration() {
             const prompt = document.getElementById('videoPrompt').value.trim();
             const btn = document.getElementById('generateBtn');
@@ -2315,8 +2546,9 @@
                 return;
             }
 
-            if (prompt.length < 15) {
-                showNotification('Please provide a more detailed description (at least 15 characters)', 'error');
+            const wordCount = prompt.split(/\s+/).filter(word => word.length > 0).length;
+            if (wordCount < 5) {
+                showNotification('Please provide a more detailed description (at least 5 words)', 'error');
                 return;
             }
 
@@ -2344,7 +2576,7 @@
             }
         }
 
-        // Show analysis modal with AI interaction
+        // Enhanced analysis modal with better AI interaction
         async function showAnalysisModal(prompt) {
             const modal = document.getElementById('analysisModal');
             const container = document.getElementById('chatContainer');
@@ -2371,15 +2603,19 @@
             }, 2000);
         }
 
-        // Add chat message
+        // Enhanced chat message with better styling
         function addChatMessage(type, name, message) {
             const container = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');
             messageDiv.className = 'chat-message';
             
+            const avatarContent = type === 'ai' ? 
+                '<i class="fas fa-robot"></i>' : 
+                (userData.name ? userData.name.charAt(0).toUpperCase() : '<i class="fas fa-user"></i>');
+            
             messageDiv.innerHTML = `
                 <div class="chat-avatar">
-                    ${type === 'ai' ? '<i class="fas fa-robot"></i>' : (userData.name ? userData.name.charAt(0).toUpperCase() : '<i class="fas fa-user"></i>')}
+                    ${avatarContent}
                 </div>
                 <div class="chat-content">
                     <div class="chat-name">${name}</div>
@@ -2424,7 +2660,7 @@
             }
         }
 
-        // Analyze prompt using OpenAI API
+        // Enhanced analyze prompt using OpenAI API
         async function analyzePrompt(prompt) {
             try {
                 const response = await fetch(OPENAI_API_URL, {
@@ -2438,7 +2674,7 @@
                         messages: [
                             {
                                 role: 'system',
-                                content: 'You are an AI video generation assistant. Analyze the user\'s video request and provide helpful insights about the visual style that would work best. Be enthusiastic, creative, and concise. Focus on cinematography, mood, and visual elements.'
+                                content: 'You are an AI video generation assistant. Analyze the user\'s video request and provide helpful insights about the visual style that would work best. Be enthusiastic, creative, and concise. Focus on cinematography, mood, and visual elements. Use professional language but keep it engaging.'
                             },
                             {
                                 role: 'user',
@@ -2458,11 +2694,11 @@
                 }
             } catch (error) {
                 console.error('Error calling OpenAI API:', error);
-                return `I've analyzed your request: "${prompt}". This sounds like an incredible video concept! The visual elements you've described would work beautifully with our AI technology. Let's choose the perfect style to bring your vision to life.`;
+                return `I've analyzed your request: "${prompt}". This sounds like an incredible video concept! The visual elements you've described would work beautifully with our AI technology. The composition suggests rich storytelling potential with dynamic visual elements. Let's choose the perfect style to bring your vision to life with cinematic quality.`;
             }
         }
 
-        // Show style options
+        // Enhanced style options with better UI
         function showStyleOptions() {
             const container = document.getElementById('chatContainer');
             const optionsDiv = document.createElement('div');
@@ -2478,22 +2714,22 @@
                     
                     <div class="options-grid" style="margin-top: 1.5rem;">
                         <div class="option-card" onclick="selectStyle('realistic')">
-                            <div class="option-icon">🎬</div>
+                            <div class="option-icon"><i class="fas fa-camera"></i></div>
                             <div class="option-title">Realistic</div>
                             <div class="option-subtitle">Photorealistic</div>
                         </div>
                         <div class="option-card" onclick="selectStyle('animated')">
-                            <div class="option-icon">🎨</div>
+                            <div class="option-icon"><i class="fas fa-paint-brush"></i></div>
                             <div class="option-title">Animated</div>
                             <div class="option-subtitle">Cartoon style</div>
                         </div>
                         <div class="option-card" onclick="selectStyle('cinematic')">
-                            <div class="option-icon">🎭</div>
+                            <div class="option-icon"><i class="fas fa-film"></i></div>
                             <div class="option-title">Cinematic</div>
                             <div class="option-subtitle">Movie quality</div>
                         </div>
                         <div class="option-card" onclick="selectStyle('artistic')">
-                            <div class="option-icon">🖼️</div>
+                            <div class="option-icon"><i class="fas fa-palette"></i></div>
                             <div class="option-title">Artistic</div>
                             <div class="option-subtitle">Creative style</div>
                         </div>
@@ -2521,7 +2757,7 @@
             }, 500);
         }
 
-        // Show duration options
+        // Enhanced duration options with premium indicators
         function showDurationOptions() {
             const container = document.getElementById('chatContainer');
             const durationDiv = document.createElement('div');
@@ -2537,26 +2773,26 @@
                     
                     <div class="options-grid" style="margin-top: 1.5rem;">
                         <div class="option-card" onclick="selectDuration(15)">
-                            <div class="option-icon">⚡</div>
+                            <div class="option-icon"><i class="fas fa-bolt"></i></div>
                             <div class="option-title">15 seconds</div>
                             <div class="option-subtitle">Free</div>
                         </div>
                         <div class="option-card" onclick="selectDuration(30)">
-                            <div class="option-icon">🚀</div>
+                            <div class="option-icon"><i class="fas fa-rocket"></i></div>
                             <div class="option-title">30 seconds</div>
                             <div class="option-subtitle">Free</div>
                         </div>
                         <div class="option-card ${!userData.isPremium ? 'premium-lock' : ''}" onclick="selectDuration(60)">
-                            <div class="option-icon">💎</div>
+                            <div class="option-icon"><i class="fas fa-gem"></i></div>
                             <div class="option-title">60 seconds</div>
                             <div class="option-subtitle">Premium</div>
-                            ${!userData.isPremium ? '<div class="premium-badge">👑</div>' : ''}
+                            ${!userData.isPremium ? '<div class="premium-badge"><i class="fas fa-crown"></i></div>' : ''}
                         </div>
                         <div class="option-card ${!userData.isPremium ? 'premium-lock' : ''}" onclick="selectDuration(120)">
-                            <div class="option-icon">🎯</div>
+                            <div class="option-icon"><i class="fas fa-star"></i></div>
                             <div class="option-title">120 seconds</div>
                             <div class="option-subtitle">Premium</div>
-                            ${!userData.isPremium ? '<div class="premium-badge">👑</div>' : ''}
+                            ${!userData.isPremium ? '<div class="premium-badge"><i class="fas fa-crown"></i></div>' : ''}
                         </div>
                     </div>
                     
@@ -2610,7 +2846,7 @@
             generateVideo();
         }
 
-        // Generate video with enhanced progress simulation
+        // Enhanced video generation with realistic progress
         async function generateVideo() {
             const overlay = document.getElementById('generationOverlay');
             const status = document.getElementById('generationStatus');
@@ -2650,13 +2886,12 @@
             }, 1500);
         }
 
-        // Show generated video
+        // Enhanced show generated video with history saving
         function showGeneratedVideo() {
             const section = document.getElementById('videoSection');
             const player = document.getElementById('videoPlayer');
             
             // For demo purposes, use a sample video
-            // In production, this would be the actual generated video URL
             const sampleVideos = [
                 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
                 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
@@ -2669,7 +2904,7 @@
             section.classList.add('active');
             section.scrollIntoView({ behavior: 'smooth' });
             
-            // Add to history
+            // Add to both generation and preview history
             addToHistory(currentGeneration);
             
             // Update trials for non-premium users
@@ -2679,7 +2914,7 @@
                 saveUserData();
             }
             
-            showNotification(`🎉 Video generated successfully! Quality: ${currentGeneration.quality}`, 'success');
+            showNotification(`<i class="fas fa-check-circle"></i> Video generated successfully! Quality: ${currentGeneration.quality}`, 'success');
         }
 
         // Refresh/regenerate video
@@ -2765,7 +3000,7 @@
                 saveUserData();
             }
             
-            showNotification(`📥 Downloading ${quality} video...`, 'success');
+            showNotification(`<i class="fas fa-download"></i> Downloading ${quality} video...`, 'success');
         }
 
         // Share video
@@ -2796,8 +3031,6 @@
         // Subscribe to premium
         function subscribeToPremium() {
             // In a real implementation, this would integrate with a payment processor like Stripe
-            // For demo purposes, we'll simulate a successful subscription
-            
             showNotification('Redirecting to secure payment...', 'info');
             
             setTimeout(() => {
@@ -2813,7 +3046,7 @@
                 updateUI();
                 closeModal('premiumModal');
                 
-                showNotification('🎉 Welcome to SmileX Premium! You now have unlimited access to all features.', 'success');
+                showNotification('<i class="fas fa-crown"></i> Welcome to SmileX Premium! You now have unlimited access to all features.', 'success');
             }, 2000);
         }
 
@@ -2822,7 +3055,7 @@
             document.getElementById('premiumModal').classList.add('active');
         }
 
-        // Add to history with enhanced metadata
+        // Enhanced add to history with both preview and generation tracking
         function addToHistory(generation) {
             const historyItem = {
                 id: Date.now(),
@@ -2833,7 +3066,8 @@
                 videoUrl: generation.videoUrl,
                 timestamp: new Date().toISOString(),
                 thumbnail: `https://via.placeholder.com/320x180/${Math.floor(Math.random()*16777215).toString(16)}/ffffff?text=${encodeURIComponent(generation.style)}`,
-                tags: [generation.style, generation.duration + 's', generation.quality]
+                tags: [generation.style, generation.duration + 's', generation.quality],
+                type: 'generated'
             };
             
             userData.generationHistory.unshift(historyItem);
@@ -2847,11 +3081,17 @@
             loadHistory();
         }
 
-        // Load and display history with enhanced UI
+        // Enhanced load and display history with preview and generation separation
         function loadHistory() {
             const grid = document.getElementById('historyGrid');
             
-            if (userData.generationHistory.length === 0) {
+            // Combine and sort all history items
+            const allHistory = [
+                ...userData.generationHistory.map(item => ({...item, type: 'generated'})),
+                ...userData.previewHistory.map(item => ({...item, type: 'preview'}))
+            ].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            if (allHistory.length === 0) {
                 grid.innerHTML = `
                     <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; color: var(--text-muted);">
                         <i class="fas fa-video" style="font-size: 4rem; margin-bottom: 2rem; opacity: 0.3;"></i>
@@ -2866,23 +3106,50 @@
                 return;
             }
             
-            grid.innerHTML = userData.generationHistory.map(item => `
-                <div class="history-card" onclick="playHistoryVideo('${item.id}')">
-                    <div class="history-thumbnail">
-                        <i class="fas fa-play"></i>
-                    </div>
-                    <div class="history-info">
-                        <div class="history-title">${item.prompt}</div>
-                        <div class="history-meta">
-                            <span>${item.style} • ${item.duration}s</span>
-                            <span class="history-date">${new Date(item.timestamp).toLocaleDateString()}</span>
+            grid.innerHTML = allHistory.map(item => {
+                const isGenerated = item.type === 'generated';
+                const displayTitle = isGenerated ? item.prompt : `Preview: ${item.prompt}`;
+                const statusIcon = isGenerated ? 
+                    '<i class="fas fa-play-circle" style="color: var(--neon-green);"></i>' : 
+                    '<i class="fas fa-eye" style="color: var(--neon-blue);"></i>';
+                
+                return `
+                    <div class="history-card" onclick="${isGenerated ? `playHistoryVideo('${item.id}')` : `loadPreview('${item.id}')`}">
+                        <div class="history-thumbnail">
+                            ${statusIcon}
                         </div>
-                        <div class="history-tags">
-                            ${item.tags.map(tag => `<span class="history-tag">${tag}</span>`).join('')}
+                        <div class="history-info">
+                            <div class="history-title">${displayTitle}</div>
+                            <div class="history-meta">
+                                <span>${isGenerated ? `${item.style} • ${item.duration}s` : `${item.wordCount} words`}</span>
+                                <span class="history-date">${new Date(item.timestamp).toLocaleDateString()}</span>
+                            </div>
+                            <div class="history-tags">
+                                ${isGenerated ? 
+                                    item.tags.map(tag => `<span class="history-tag">${tag}</span>`).join('') :
+                                    `<span class="history-tag">Preview</span><span class="history-tag">${item.wordCount} words</span>`
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+        }
+
+        // Load preview into input
+        function loadPreview(id) {
+            const item = userData.previewHistory.find(h => h.id == id);
+            if (item) {
+                document.getElementById('videoPrompt').value = item.prompt;
+                document.getElementById('videoPrompt').dispatchEvent(new Event('input'));
+                showNotification(`<i class="fas fa-eye"></i> Preview loaded: ${item.prompt.substring(0, 50)}...`, 'info');
+                
+                // Hide history
+                document.getElementById('historySection').classList.remove('active');
+                
+                // Scroll to input
+                document.querySelector('.input-section').scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         // Play history video
@@ -2900,7 +3167,7 @@
                 // Hide history
                 document.getElementById('historySection').classList.remove('active');
                 
-                showNotification(`Playing: ${item.prompt.substring(0, 50)}...`, 'info');
+                showNotification(`<i class="fas fa-play"></i> Playing: ${item.prompt.substring(0, 50)}...`, 'info');
             }
         }
 
@@ -2915,7 +3182,7 @@
             }
         }
 
-        // Update trials display with enhanced styling
+        // Enhanced update trials display
         function updateTrialsDisplay() {
             const trialsText = document.getElementById('trialsText');
             if (userData.isPremium) {
@@ -2940,7 +3207,7 @@
             document.getElementById(modalId).classList.remove('active');
         }
 
-        // Enhanced notification system
+        // Enhanced notification system with icon support
         function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
             
@@ -2949,7 +3216,7 @@
                 clearTimeout(notification.timeout);
             }
             
-            notification.textContent = message;
+            notification.innerHTML = message;
             notification.className = `notification ${type} show`;
             
             // Auto-hide after 5 seconds
@@ -2958,7 +3225,7 @@
             }, 5000);
         }
 
-        // Initialize character counter
+        // Initialize character counter with word count
         document.getElementById('videoPrompt').dispatchEvent(new Event('input'));
         
         // Add smooth scrolling for navigation links
