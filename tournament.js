@@ -1,4 +1,19 @@
-  class UltimateQuizTournament {
+        // Firebase Configuration - Replace with your config
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        class UltimateQuizTournament {
             constructor() {
                 this.apiUrl = 'https://opentdb.com/api.php?amount=50&type=multiple';
                 this.questions = [];
@@ -8,52 +23,88 @@
                 this.timer = null;
                 this.timeLeft = 15;
                 this.hintsRemaining = 10;
-                this.isInTournament = false;
+                this.isInTournament = true; // Auto-join tournament
                 this.userId = this.generateUserId();
-                this.userName = "Guest";
+                this.userName = this.loadUserName();
                 this.currentQuestion = null;
                 this.hintUsed = false;
                 this.isWatchingAd = false;
-                this.adAttentionVerified = false;
-                this.adAttentionCheckShown = false;
+                this.userRank = 0;
+                this.isOnline = navigator.onLine;
 
                 this.initializeApp();
             }
 
             generateUserId() {
-                return 'user_' + Math.random().toString(36).substr(2, 9);
+                let userId = localStorage.getItem('quiz_user_id');
+                if (!userId) {
+                    userId = 'user_' + Math.random().toString(36).substr(2, 9) + Date.now();
+                    localStorage.setItem('quiz_user_id', userId);
+                }
+                return userId;
+            }
+
+            loadUserName() {
+                const savedName = localStorage.getItem('quiz_user_name');
+                return savedName || null;
+            }
+
+            saveUserName(name) {
+                localStorage.setItem('quiz_user_name', name);
+                this.userName = name;
             }
 
             async initializeApp() {
+                this.setupNetworkMonitoring();
                 this.loadUserData();
                 this.setupEventListeners();
-                this.updateUserProfile();
+                
+                if (!this.userName) {
+                    this.showNameEntryModal();
+                } else {
+                    this.updateUserProfile();
+                    await this.joinTournament();
+                }
+                
                 await this.fetchQuestions();
                 this.loadQuestion();
-                this.startLeaderboardUpdates();
-                this.startCommentsUpdates();
+                this.startFirebaseListeners();
+            }
+
+            setupNetworkMonitoring() {
+                const updateOnlineStatus = () => {
+                    this.isOnline = navigator.onLine;
+                    const statusEl = document.getElementById('onlineStatus');
+                    if (this.isOnline) {
+                        statusEl.className = 'online-status online';
+                        statusEl.innerHTML = '<i class="fas fa-wifi"></i> Online';
+                    } else {
+                        statusEl.className = 'online-status offline';
+                        statusEl.innerHTML = '<i class="fas fa-wifi-slash"></i> Offline';
+                    }
+                };
+
+                window.addEventListener('online', updateOnlineStatus);
+                window.addEventListener('offline', updateOnlineStatus);
+                updateOnlineStatus();
             }
 
             loadUserData() {
                 const savedData = localStorage.getItem('quizTournamentData');
                 if (savedData) {
                     const data = JSON.parse(savedData);
-                    this.userName = data.userName || "Guest";
                     this.score = data.score || 0;
                     this.hintsRemaining = data.hintsRemaining !== undefined ? data.hintsRemaining : 10;
-                    
-                    // If user already has a name, hide the modal
-                    if (this.userName !== "Guest") {
-                        document.getElementById('nameEntryModal').classList.add('hidden');
-                    }
+                    this.streak = data.streak || 0;
                 }
             }
 
             saveUserData() {
                 const data = {
-                    userName: this.userName,
                     score: this.score,
-                    hintsRemaining: this.hintsRemaining
+                    hintsRemaining: this.hintsRemaining,
+                    streak: this.streak,
+                    lastPlayed: Date.now()
                 };
                 localStorage.setItem('quizTournamentData', JSON.stringify(data));
             }
@@ -64,10 +115,6 @@
                     btn.addEventListener('click', () => this.switchTab(btn.dataset.tab));
                 });
 
-                // Tournament buttons
-                document.getElementById('joinTournamentBtn').addEventListener('click', () => this.showNameEntryModal());
-                document.getElementById('leaveTournamentBtn').addEventListener('click', () => this.leaveTournament());
-                
                 // Name entry
                 document.getElementById('submitNameBtn').addEventListener('click', () => this.submitName());
                 document.getElementById('nameInput').addEventListener('keypress', (e) => {
@@ -78,31 +125,28 @@
                 document.getElementById('hintBtn').addEventListener('click', () => this.useHint());
                 document.getElementById('watchAdBtn').addEventListener('click', () => this.watchAd());
                 
-                // Ad interaction
-                document.getElementById('adAttentionBtn').addEventListener('click', () => this.verifyAdAttention());
-                
                 // Comments
                 document.getElementById('sendCommentBtn').addEventListener('click', () => this.sendComment());
                 document.getElementById('commentInput').addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') this.sendComment();
                 });
+
+                // Emoji picker
+                document.querySelectorAll('.emoji-btn').forEach(btn => {
+                    btn.addEventListener('click', () => this.addEmoji(btn.dataset.emoji));
+                });
             }
 
             switchTab(tabId) {
-                // Hide all tabs
                 document.querySelectorAll('.tab-content').forEach(tab => {
                     tab.classList.remove('active');
                 });
                 
-                // Deactivate all buttons
                 document.querySelectorAll('.tab-btn').forEach(btn => {
                     btn.classList.remove('active');
                 });
                 
-                // Show selected tab
                 document.getElementById(tabId).classList.add('active');
-                
-                // Activate selected button
                 document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
             }
 
@@ -116,7 +160,7 @@
                 document.getElementById('nameInput').focus();
             }
 
-            submitName() {
+            async submitName() {
                 const nameInput = document.getElementById('nameInput');
                 const name = nameInput.value.trim();
                 
@@ -125,11 +169,10 @@
                     return;
                 }
                 
-                this.userName = name;
+                this.saveUserName(name);
                 this.updateUserProfile();
-                this.saveUserData();
                 document.getElementById('nameEntryModal').classList.add('hidden');
-                this.joinTournament();
+                await this.joinTournament();
             }
 
             async fetchQuestions() {
@@ -144,7 +187,6 @@
                     }
                 } catch (error) {
                     console.error('Error fetching questions:', error);
-                    // Fallback questions
                     this.questions = this.getFallbackQuestions();
                 }
             }
@@ -205,10 +247,8 @@
                 this.currentQuestion = this.questions[this.currentQuestionIndex];
                 this.hintUsed = false;
                 
-                // Update question number
                 document.getElementById('questionNumber').textContent = this.currentQuestionIndex + 1;
 
-                // Display question
                 const questionContainer = document.getElementById('questionContainer');
                 questionContainer.innerHTML = `
                     <div class="question-number">Question ${this.currentQuestionIndex + 1}</div>
@@ -216,7 +256,6 @@
                     <div class="question-category">${this.currentQuestion.category || 'General'}</div>
                 `;
 
-                // Display options
                 const optionsContainer = document.getElementById('optionsContainer');
                 optionsContainer.innerHTML = '';
                 
@@ -228,16 +267,9 @@
                     optionsContainer.appendChild(optionElement);
                 });
 
-                // Start timer
                 this.startTimer();
-                
-                // Hide feedback
                 document.getElementById('feedback').classList.add('hidden');
-                
-                // Re-enable hint button
                 document.getElementById('hintBtn').disabled = false;
-                
-                // Update hints display
                 document.getElementById('hintsRemaining').textContent = this.hintsRemaining;
             }
 
@@ -260,13 +292,12 @@
                 }, 1000);
             }
 
-            selectAnswer(selectedOption, optionElement) {
+            async selectAnswer(selectedOption, optionElement) {
                 clearInterval(this.timer);
                 
                 const isCorrect = selectedOption === this.currentQuestion.decodedCorrectAnswer;
                 const feedbackElement = document.getElementById('feedback');
                 
-                // Highlight all options
                 const options = document.querySelectorAll('.option');
                 options.forEach(option => {
                     if (option.textContent === this.currentQuestion.decodedCorrectAnswer) {
@@ -274,53 +305,44 @@
                     } else if (option === optionElement && !isCorrect) {
                         option.classList.add('incorrect');
                     }
-                    option.onclick = null; // Disable clicking
+                    option.onclick = null;
                 });
 
                 if (isCorrect) {
-                    this.score += 1; // +1 for correct answer
+                    this.score += 1;
                     this.streak++;
                     feedbackElement.textContent = `Correct! +1 point`;
                     feedbackElement.className = 'feedback correct';
                 } else {
-                    this.score -= 1; // -1 for wrong answer
-                    if (this.score < 0) this.score = 0; // Don't go below zero
+                    this.score = Math.max(0, this.score - 1);
                     this.streak = 0;
-                    feedbackElement.textContent = `Wrong! -1 point. The correct answer was: ${this.currentQuestion.decodedCorrectAnswer}`;
+                    feedbackElement.textContent = `Wrong! -1 point. Correct: ${this.currentQuestion.decodedCorrectAnswer}`;
                     feedbackElement.className = 'feedback incorrect';
                 }
 
-                // Update display
-                document.getElementById('currentScore').textContent = this.score;
-                document.getElementById('streak').textContent = this.streak;
+                this.updateDisplay();
                 feedbackElement.classList.remove('hidden');
-
-                // Save user data
                 this.saveUserData();
                 
-                // Update tournament score if in tournament
-                if (this.isInTournament) {
-                    this.updateTournamentScore();
+                if (this.isInTournament && this.isOnline) {
+                    await this.updateTournamentScore();
                 }
 
-                // Move to next question
                 setTimeout(() => {
                     this.nextQuestion();
                 }, 3000);
             }
 
-            handleTimeOut() {
+            async handleTimeOut() {
                 clearInterval(this.timer);
                 this.streak = 0;
-                this.score -= 1; // -1 for timeout
-                if (this.score < 0) this.score = 0; // Don't go below zero
+                this.score = Math.max(0, this.score - 1);
                 
                 const feedbackElement = document.getElementById('feedback');
-                feedbackElement.textContent = `Time's up! -1 point. The correct answer was: ${this.currentQuestion.decodedCorrectAnswer}`;
+                feedbackElement.textContent = `Time's up! -1 point. Correct: ${this.currentQuestion.decodedCorrectAnswer}`;
                 feedbackElement.className = 'feedback incorrect';
                 feedbackElement.classList.remove('hidden');
 
-                // Highlight correct answer
                 const options = document.querySelectorAll('.option');
                 options.forEach(option => {
                     if (option.textContent === this.currentQuestion.decodedCorrectAnswer) {
@@ -329,20 +351,21 @@
                     option.onclick = null;
                 });
 
-                document.getElementById('streak').textContent = this.streak;
-                document.getElementById('currentScore').textContent = this.score;
-                
-                // Save user data
+                this.updateDisplay();
                 this.saveUserData();
                 
-                // Update tournament score if in tournament
-                if (this.isInTournament) {
-                    this.updateTournamentScore();
+                if (this.isInTournament && this.isOnline) {
+                    await this.updateTournamentScore();
                 }
 
                 setTimeout(() => {
                     this.nextQuestion();
                 }, 3000);
+            }
+
+            updateDisplay() {
+                document.getElementById('currentScore').textContent = this.score;
+                document.getElementById('streak').textContent = this.streak;
             }
 
             nextQuestion() {
@@ -363,7 +386,6 @@
                 document.getElementById('hintsRemaining').textContent = this.hintsRemaining;
                 this.saveUserData();
                 
-                // Highlight correct answer
                 const options = document.querySelectorAll('.option');
                 options.forEach(option => {
                     if (option.textContent === this.currentQuestion.decodedCorrectAnswer) {
@@ -371,7 +393,6 @@
                     }
                 });
 
-                // Disable hint button
                 document.getElementById('hintBtn').disabled = true;
             }
 
@@ -379,20 +400,13 @@
                 if (this.isWatchingAd) return;
                 
                 this.isWatchingAd = true;
-                this.adAttentionVerified = false;
-                this.adAttentionCheckShown = false;
-                
                 const adContainer = document.getElementById('adContainer');
                 const adCountdown = document.getElementById('adCountdown');
                 const skipTimer = document.getElementById('skipTimer');
                 const adSkip = document.getElementById('adSkip');
-                const adAttentionCheck = document.getElementById('adAttentionCheck');
                 
                 adContainer.classList.remove('hidden');
-                adAttentionCheck.classList.add('hidden');
                 adSkip.classList.add('disabled');
-                
-                // Pause the quiz timer
                 clearInterval(this.timer);
                 
                 let countdown = 15;
@@ -404,41 +418,20 @@
                     adCountdown.textContent = countdown;
                     skipTimer.textContent = countdown;
                     
-                    // Show attention check randomly
-                    if (countdown === 8 && !this.adAttentionCheckShown) {
-                        this.adAttentionCheckShown = true;
-                        adAttentionCheck.classList.remove('hidden');
-                    }
-                    
-                    // Enable skip button at 5 seconds
                     if (countdown === 5) {
                         adSkip.classList.remove('disabled');
                         adSkip.textContent = 'Skip Ad';
                         adSkip.onclick = () => {
-                            if (!this.adAttentionVerified && this.adAttentionCheckShown) {
-                                alert('Please verify you are watching the ad first!');
-                                return;
-                            }
                             clearInterval(adTimer);
-                            this.completeAd(false);
+                            this.completeAd(true);
                         };
                     }
                     
                     if (countdown <= 0) {
                         clearInterval(adTimer);
-                        if (!this.adAttentionVerified && this.adAttentionCheckShown) {
-                            alert('You did not verify you were watching the ad. No reward given.');
-                            this.completeAd(false);
-                        } else {
-                            this.completeAd(true);
-                        }
+                        this.completeAd(true);
                     }
                 }, 1000);
-            }
-
-            verifyAdAttention() {
-                this.adAttentionVerified = true;
-                document.getElementById('adAttentionCheck').classList.add('hidden');
             }
 
             completeAd(giveReward) {
@@ -446,15 +439,11 @@
                 document.getElementById('adContainer').classList.add('hidden');
                 
                 if (giveReward) {
-                    // Add hint
                     this.hintsRemaining++;
                     document.getElementById('hintsRemaining').textContent = this.hintsRemaining;
                     this.saveUserData();
-                    
-                    // Re-enable hint button
                     document.getElementById('hintBtn').disabled = false;
                     
-                    // Show success message
                     const feedbackElement = document.getElementById('feedback');
                     feedbackElement.textContent = 'Ad completed! +1 Hint added!';
                     feedbackElement.className = 'feedback correct';
@@ -465,96 +454,101 @@
                     }, 2000);
                 }
                 
-                // Resume the quiz timer
                 this.startTimer();
             }
 
-            joinTournament() {
+            async joinTournament() {
+                if (!this.isOnline) return;
+                
                 this.isInTournament = true;
-                document.getElementById('joinTournamentBtn').classList.add('hidden');
-                document.getElementById('leaveTournamentBtn').classList.remove('hidden');
-                document.getElementById('tournamentStatus').textContent = 'You are competing!';
+                document.getElementById('tournamentStatus').textContent = 'Competing with players worldwide!';
                 
-                // Add to leaderboard
-                this.updateTournamentScore();
-                
-                // Switch to leaderboard tab to show the user they've joined
-                this.switchTab('leaderboardTab');
-            }
-
-            leaveTournament() {
-                this.isInTournament = false;
-                document.getElementById('joinTournamentBtn').classList.remove('hidden');
-                document.getElementById('leaveTournamentBtn').classList.add('hidden');
-                document.getElementById('tournamentStatus').textContent = 'Join to compete!';
-                
-                // Remove from leaderboard
-                this.removeFromTournament();
-            }
-
-            updateTournamentScore() {
-                if (!this.isInTournament) return;
-                
-                // Get leaderboard from localStorage
-                const leaderboard = JSON.parse(localStorage.getItem('tournament_leaderboard') || '[]');
-                const existingPlayer = leaderboard.find(player => player.id === this.userId);
-                
-                if (existingPlayer) {
-                    existingPlayer.score = this.score;
-                    existingPlayer.lastUpdate = Date.now();
-                } else {
-                    leaderboard.push({
-                        id: this.userId,
+                try {
+                    await db.collection('tournament_players').doc(this.userId).set({
                         name: this.userName,
                         score: this.score,
-                        lastUpdate: Date.now()
-                    });
+                        streak: this.streak,
+                        lastUpdate: firebase.firestore.FieldValue.serverTimestamp(),
+                        isActive: true
+                    }, { merge: true });
+                } catch (error) {
+                    console.error('Error joining tournament:', error);
                 }
-                
-                // Sort by score
-                leaderboard.sort((a, b) => b.score - a.score);
-                
-                localStorage.setItem('tournament_leaderboard', JSON.stringify(leaderboard));
-                this.updateLeaderboardDisplay(leaderboard);
             }
 
-            removeFromTournament() {
-                const leaderboard = JSON.parse(localStorage.getItem('tournament_leaderboard') || '[]');
-                const filteredLeaderboard = leaderboard.filter(player => player.id !== this.userId);
-                localStorage.setItem('tournament_leaderboard', JSON.stringify(filteredLeaderboard));
-                this.updateLeaderboardDisplay(filteredLeaderboard);
-            }
-
-            startLeaderboardUpdates() {
-                // Update leaderboard every 5 seconds
-                setInterval(() => {
-                    const leaderboard = JSON.parse(localStorage.getItem('tournament_leaderboard') || '[]');
-                    this.updateLeaderboardDisplay(leaderboard);
-                }, 5000);
+            async updateTournamentScore() {
+                if (!this.isInTournament || !this.isOnline) return;
                 
-                // Initial load
-                const leaderboard = JSON.parse(localStorage.getItem('tournament_leaderboard') || '[]');
-                this.updateLeaderboardDisplay(leaderboard);
+                try {
+                    await db.collection('tournament_players').doc(this.userId).update({
+                        score: this.score,
+                        streak: this.streak,
+                        lastUpdate: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                } catch (error) {
+                    console.error('Error updating tournament score:', error);
+                }
             }
 
-            updateLeaderboardDisplay(leaderboard) {
+            startFirebaseListeners() {
+                if (!this.isOnline) return;
+
+                // Listen to leaderboard changes
+                db.collection('tournament_players')
+                    .where('isActive', '==', true)
+                    .orderBy('score', 'desc')
+                    .limit(50)
+                    .onSnapshot((snapshot) => {
+                        const players = [];
+                        snapshot.forEach((doc) => {
+                            const data = doc.data();
+                            players.push({
+                                id: doc.id,
+                                ...data
+                            });
+                        });
+                        this.updateLeaderboardDisplay(players);
+                    });
+
+                // Listen to comments
+                db.collection('tournament_comments')
+                    .orderBy('timestamp', 'desc')
+                    .limit(50)
+                    .onSnapshot((snapshot) => {
+                        const comments = [];
+                        snapshot.forEach((doc) => {
+                            comments.push({
+                                id: doc.id,
+                                ...doc.data()
+                            });
+                        });
+                        this.updateCommentsDisplay(comments);
+                    });
+            }
+
+            updateLeaderboardDisplay(players) {
                 const leaderboardElement = document.getElementById('leaderboard');
                 
-                if (leaderboard.length === 0) {
+                if (players.length === 0) {
                     leaderboardElement.innerHTML = '<p style="text-align: center; opacity: 0.6;">No players in tournament</p>';
                     return;
                 }
                 
-                leaderboardElement.innerHTML = leaderboard.map((player, index) => {
+                // Find current user rank
+                const userIndex = players.findIndex(player => player.id === this.userId);
+                this.userRank = userIndex >= 0 ? userIndex + 1 : '-';
+                document.getElementById('userRank').textContent = this.userRank;
+                
+                leaderboardElement.innerHTML = players.map((player, index) => {
                     const rankClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '';
                     const isCurrentUser = player.id === this.userId;
                     
                     return `
-                        <div class="leaderboard-item ${isCurrentUser ? 'current-user' : ''}" style="${isCurrentUser ? 'border: 2px solid var(--primary-color);' : ''}">
+                        <div class="leaderboard-item ${isCurrentUser ? 'current-user' : ''}">
                             <div class="rank ${rankClass}">#${index + 1}</div>
                             <div class="player-info">
                                 <div class="player-name">${player.name} ${isCurrentUser ? '(You)' : ''}</div>
-                                <div class="player-score">${player.score} points</div>
+                                <div class="player-score">${player.score} points • Streak: ${player.streak || 0}</div>
                             </div>
                             ${index < 3 ? `<i class="fas fa-trophy" style="color: var(--${rankClass === 'gold' ? 'gold' : rankClass === 'silver' ? 'silver' : 'bronze'}-color);"></i>` : ''}
                         </div>
@@ -562,9 +556,15 @@
                 }).join('');
             }
 
-            sendComment() {
-                if (!this.isInTournament) {
-                    alert('You must join the tournament to chat!');
+            addEmoji(emoji) {
+                const commentInput = document.getElementById('commentInput');
+                commentInput.value += emoji;
+                commentInput.focus();
+            }
+
+            async sendComment() {
+                if (!this.isInTournament || !this.isOnline) {
+                    alert('You must be online and in the tournament to chat!');
                     return;
                 }
                 
@@ -573,38 +573,18 @@
                 
                 if (!message) return;
                 
-                const comment = {
-                    id: Date.now(),
-                    author: this.userName,
-                    message: message,
-                    timestamp: Date.now()
-                };
-                
-                // Add to comments
-                const comments = JSON.parse(localStorage.getItem('tournament_comments') || '[]');
-                comments.unshift(comment);
-                
-                // Keep only last 50 comments
-                if (comments.length > 50) {
-                    comments.splice(50);
+                try {
+                    await db.collection('tournament_comments').add({
+                        author: this.userName,
+                        authorId: this.userId,
+                        message: message,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    commentInput.value = '';
+                } catch (error) {
+                    console.error('Error sending comment:', error);
                 }
-                
-                localStorage.setItem('tournament_comments', JSON.stringify(comments));
-                commentInput.value = '';
-                
-                this.updateCommentsDisplay(comments);
-            }
-
-            startCommentsUpdates() {
-                // Update comments every 3 seconds
-                setInterval(() => {
-                    const comments = JSON.parse(localStorage.getItem('tournament_comments') || '[]');
-                    this.updateCommentsDisplay(comments);
-                }, 3000);
-                
-                // Initial load
-                const comments = JSON.parse(localStorage.getItem('tournament_comments') || '[]');
-                this.updateCommentsDisplay(comments);
             }
 
             updateCommentsDisplay(comments) {
@@ -616,19 +596,24 @@
                 }
                 
                 commentsElement.innerHTML = comments.map(comment => {
-                    const timeAgo = this.getTimeAgo(comment.timestamp);
+                    const timeAgo = this.getTimeAgo(comment.timestamp?.toDate?.() || new Date());
+                    const isOwnComment = comment.authorId === this.userId;
+                    
                     return `
-                        <div class="comment">
-                            <div class="comment-author">${comment.author}</div>
+                        <div class="comment ${isOwnComment ? 'own-comment' : ''}">
+                            <div class="comment-author">${comment.author} ${isOwnComment ? '(You)' : ''}</div>
                             <div class="comment-text">${comment.message}</div>
                             <div class="comment-time">${timeAgo}</div>
                         </div>
                     `;
                 }).join('');
+                
+                // Auto-scroll to bottom for new messages
+                commentsElement.scrollTop = 0;
             }
 
             getTimeAgo(timestamp) {
-                const now = Date.now();
+                const now = new Date();
                 const diff = now - timestamp;
                 const seconds = Math.floor(diff / 1000);
                 const minutes = Math.floor(seconds / 60);
@@ -647,4 +632,3 @@
 
         // Prevent right-click
         document.addEventListener('contextmenu', event => event.preventDefault());
-    
