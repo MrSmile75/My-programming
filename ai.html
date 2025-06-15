@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmileX AI Video Generator </title>
+    <title>SmileX AI - Complete Video Generator</title>
+    
+    <!-- External Dependencies -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-      <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Google Ads Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
+    
     <style>
+        /* ===== CSS VARIABLES ===== */
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
@@ -34,9 +40,9 @@
             --border-radius: 16px;
             --border-radius-lg: 24px;
             --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* ===== RESET & BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
@@ -44,7 +50,7 @@
         }
 
         body {
-                 font-family: 'Orbitron', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--dark-bg);
             color: var(--text-primary);
             line-height: 1.6;
@@ -52,7 +58,7 @@
             min-height: 100vh;
         }
 
-        /* Enhanced Animated Background with Parallax */
+        /* ===== ANIMATED BACKGROUND ===== */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -112,22 +118,8 @@
             width: 60px; height: 60px; top: 80%; left: 15%; 
             background: var(--neon-green); animation-delay: 9s; 
         }
-        .shape:nth-child(5) { 
-            width: 140px; height: 140px; top: 50%; left: 50%; 
-            background: var(--accent-gradient); animation-delay: 12s; 
-        }
 
-        .grid-overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
-        }
-
+        /* ===== ANIMATIONS ===== */
         @keyframes rotate {
             0% { transform: rotate(0deg) scale(1); }
             50% { transform: rotate(180deg) scale(1.1); }
@@ -141,12 +133,33 @@
             75% { transform: translateY(-10px) translateX(25px) rotate(270deg); }
         }
 
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* Enhanced Glass Morphism */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* ===== GLASS MORPHISM ===== */
         .glass {
             background: var(--glass-bg);
             backdrop-filter: blur(25px);
@@ -165,109 +178,13 @@
             overflow: hidden;
         }
 
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: var(--transition);
-        }
-
         .glass-card:hover {
             transform: translateY(-8px);
             box-shadow: var(--shadow-heavy), var(--shadow-neon);
             border-color: rgba(0, 212, 255, 0.3);
         }
 
-        .glass-card:hover::before {
-            left: 100%;
-        }
-
-        /* Welcome Modal */
-        .welcome-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(20px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 3000;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .welcome-modal.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .welcome-content {
-            background: var(--card-bg);
-            backdrop-filter: blur(30px);
-            border: 2px solid var(--neon-blue);
-            border-radius: var(--border-radius-lg);
-            padding: 3rem;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            box-shadow: var(--shadow-heavy), 0 0 50px rgba(0, 212, 255, 0.3);
-            animation: welcomeSlide 0.8s ease;
-        }
-
-        @keyframes welcomeSlide {
-            from {
-                opacity: 0;
-                transform: translateY(-50px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .welcome-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 2rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .welcome-subtitle {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-
-        .name-input {
-            width: 100%;
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid var(--border-color);
-            border-radius: var(--border-radius);
-            color: var(--text-primary);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            transition: var(--transition);
-        }
-
-        .name-input:focus {
-            outline: none;
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-        }
-
-        /* Enhanced Header */
+        /* ===== HEADER ===== */
         .header {
             position: sticky;
             top: 0;
@@ -276,7 +193,6 @@
             background: rgba(10, 10, 15, 0.9);
             backdrop-filter: blur(25px);
             border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .nav-container {
@@ -286,6 +202,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .logo {
@@ -304,20 +222,14 @@
         .logo-icon {
             width: 45px;
             height: 45px;
-            background: transparent;
+            background: var(--accent-gradient);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: black;
+            color: white;
             font-size: 1.3rem;
             box-shadow: 0 0 20px rgba(79, 172, 254, 0.4);
-            animation: logoGlow 3s ease-in-out infinite alternate;
-        }
-
-        @keyframes logoGlow {
-            from { box-shadow: 0 0 20px rgba(79, 172, 254, 0.4); }
-            to { box-shadow: 0 0 30px rgba(79, 172, 254, 0.8); }
         }
 
         .user-welcome {
@@ -338,50 +250,16 @@
             justify-content: center;
             font-weight: 700;
             color: var(--dark-bg);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
         }
 
-        .nav-menu {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
-            padding: 0.5rem 0;
-        }
-
-        .nav-link:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-gradient);
-            transition: var(--transition);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .nav-buttons {
+        .nav-actions {
             display: flex;
             gap: 1rem;
             align-items: center;
+            flex-wrap: wrap;
         }
 
-        /* Enhanced Buttons */
+        /* ===== BUTTONS ===== */
         .btn {
             padding: 0.75rem 1.5rem;
             border: none;
@@ -396,22 +274,14 @@
             gap: 0.5rem;
             position: relative;
             overflow: hidden;
-                font-family: 'Orbitron', sans-serif;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: var(--transition);
-        }
-
-        .btn:hover::before {
-            left: 100%;
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
         }
 
         .btn-primary {
@@ -420,7 +290,7 @@
             box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(79, 172, 254, 0.5);
         }
@@ -431,9 +301,8 @@
             border: 1px solid var(--border-color);
         }
 
-        .btn-secondary:hover {
+        .btn-secondary:hover:not(:disabled) {
             background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
             border-color: var(--neon-blue);
         }
 
@@ -444,17 +313,41 @@
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
         }
 
-        .btn-premium:hover {
+        .btn-premium:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
         }
 
-        .btn-premium.subscribed {
+        .btn-success {
             background: var(--success-gradient);
             color: white;
+            box-shadow: 0 4px 15px rgba(67, 233, 123, 0.3);
         }
 
-        /* Enhanced Hero Section */
+        .btn-warning {
+            background: var(--warning-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* ===== HERO SECTION ===== */
         .hero-section {
             text-align: center;
             padding: 6rem 0;
@@ -473,12 +366,6 @@
             font-size: 0.9rem;
             color: var(--text-secondary);
             box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
-            animation: badgePulse 3s ease-in-out infinite;
-        }
-
-        @keyframes badgePulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
-            50% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.4); }
         }
 
         .hero-title {
@@ -491,12 +378,6 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             line-height: 1.1;
-            animation: titleGlow 4s ease-in-out infinite alternate;
-        }
-
-        @keyframes titleGlow {
-            from { filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.3)); }
-            to { filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.6)); }
         }
 
         .hero-subtitle {
@@ -512,34 +393,27 @@
         .hero-stats {
             display: flex;
             justify-content: center;
-            gap: 4rem;
-            margin-top: 4rem;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
         }
 
-        .stat-item {
+        .hero-stat {
             text-align: center;
-            position: relative;
         }
 
-        .stat-number {
-            font-family: 'Orbitron', monospace;
+        .hero-stat-number {
             font-size: 2.5rem;
             font-weight: 900;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: block;
             margin-bottom: 0.5rem;
         }
 
-        .stat-label {
-            color: var(--text-secondary);
+        .hero-stat-label {
             font-size: 0.9rem;
-            font-weight: 500;
+            color: var(--text-muted);
         }
 
-        /* Enhanced Input Section */
+        /* ===== INPUT SECTION ===== */
         .input-section {
             margin: 6rem 0;
         }
@@ -553,22 +427,6 @@
             box-shadow: var(--shadow-light);
             position: relative;
             overflow: hidden;
-        }
-
-        .input-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--accent-gradient);
-            animation: inputGlow 3s ease-in-out infinite alternate;
-        }
-
-        @keyframes inputGlow {
-            from { opacity: 0.5; }
-            to { opacity: 1; }
         }
 
         .input-header {
@@ -587,589 +445,174 @@
             background-clip: text;
         }
 
-        .input-description {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        .input-container {
-            position: relative;
-            margin-bottom: 2rem;
-        }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid var(--border-color);
-            border-radius: var(--border-radius);
-            transition: var(--transition);
-            overflow: hidden;
-        }
-
-        .input-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--accent-gradient);
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .input-wrapper:focus-within {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
-        }
-
-        .input-wrapper:focus-within::before {
-            opacity: 0.1;
-        }
-
-        .main-input {
-            flex: 1;
-            padding: 1.5rem 2rem;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-size: 1.1rem;
-            outline: none;
-            position: relative;
-            z-index: 1;
-            font-family: inherit;
-        }
-
-        .main-input::placeholder {
-            color: var(--text-muted);
-                   font-family: 'Orbitron', sans-serif;
-        }
-
-        .input-actions {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding-right: 1.5rem;
-            position: relative;
-            z-index: 1;
-                   font-family: 'Orbitron', sans-serif;
-        }
-
-        .input-counter {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-                   font-family: 'Orbitron', sans-serif;
-            padding: 0.25rem 0.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            min-width: 80px;
-            text-align: center;
-        }
-
-        .generate-btn {
-            background: var(--accent-gradient);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: var(--border-radius);
-            font-weight: 700;
-                   font-family: 'Orbitron', sans-serif;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
-        }
-
-        .generate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.5);
-        }
-
-        .generate-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .generate-btn .btn-text {
-            transition: var(--transition);
-        }
-
-        .generate-btn.loading .btn-text {
-            opacity: 0;
-        }
-
-        .generate-btn .loading-spinner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 24px;
-            height: 24px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .generate-btn.loading .loading-spinner {
-            opacity: 1;
-        }
-
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        /* Premium Subscription Section */
-        .subscription-section {
-            margin: 6rem 0;
-            text-align: center;
-        }
-
-        .subscription-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(30px);
-            border: 2px solid var(--premium-gradient);
-            border-radius: var(--border-radius-lg);
-            padding: 3rem;
-            max-width: 600px;
-            margin: 0 auto;
-            box-shadow: var(--shadow-heavy), 0 0 50px rgba(255, 215, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .subscription-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--premium-gradient);
-            animation: premiumGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes premiumGlow {
-            from { opacity: 0.7; }
-            to { opacity: 1; }
-        }
-
-        .subscription-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-            background: var(--premium-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .subscription-price {
-            font-size: 3rem;
-            font-weight: 900;
-            margin-bottom: 2rem;
-            background: var(--premium-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .subscription-features {
-            display: grid;
-            gap: 1rem;
-            text-align: left;
-            margin-bottom: 3rem;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: var(--border-radius);
-            transition: var(--transition);
-        }
-
-        .feature-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px);
-        }
-
-        .feature-icon {
-            width: 24px;
-            height: 24px;
-            color: var(--neon-green);
-            font-size: 1.2rem;
-        }
-
-        /* Enhanced Features Section */
-        .features-section {
-            margin: 8rem 0;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 5rem;
-        }
-
-        .section-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 3rem;
-            font-weight: 900;
-            margin-bottom: 1.5rem;
-            background: var(--cyber-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .section-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(30px);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius-lg);
-            padding: 2.5rem;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--accent-gradient);
-            transform: scaleX(0);
-            transition: var(--transition);
-        }
-
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-heavy), var(--shadow-neon);
-            border-color: var(--neon-blue);
-        }
-
-        .feature-card .feature-icon {
-            width: 70px;
-            height: 70px;
-            background: var(--accent-gradient);
-            border-radius: var(--border-radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: white;
-            margin-bottom: 2rem;
-            box-shadow: 0 0 20px rgba(79, 172, 254, 0.4);
-        }
-
-        .feature-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .feature-description {
-            color: var(--text-secondary);
-            line-height: 1.7;
-            font-size: 1rem;
-        }
-
-        /* Enhanced Modal Styles */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* ===== TABS ===== */
+        .tabs {
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(15px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            transition: var(--transition);
         }
 
-        .modal.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal-content {
-            background: var(--card-bg);
-            backdrop-filter: blur(30px);
-            border: 2px solid var(--border-color);
-            border-radius: var(--border-radius-lg);
-            padding: 2rem;
-            max-width: 90vw;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: var(--shadow-heavy);
-            transform: scale(0.9);
-            transition: var(--transition);
-        }
-
-        .modal.active .modal-content {
-            transform: scale(1);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .modal-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: var(--transition);
-        }
-
-        .modal-close:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-            transform: rotate(90deg);
-        }
-
-        /* Enhanced Chat Styles for Analysis Modal */
-        .chat-container {
-            max-height: 600px;
-            overflow-y: auto;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-        }
-
-        .chat-message {
+        .tab-list {
             display: flex;
             gap: 1rem;
-            margin-bottom: 1.5rem;
-            animation: messageSlide 0.3s ease;
+            margin-bottom: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-        @keyframes messageSlide {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .chat-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        .tab-trigger {
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.9rem;
-            flex-shrink: 0;
+            gap: 0.5rem;
         }
 
-        .chat-avatar:has(.fa-robot) {
+        .tab-trigger.active {
             background: var(--accent-gradient);
             color: white;
+            border-color: transparent;
         }
 
-        .chat-avatar:has(.fa-user) {
-            background: var(--premium-gradient);
-            color: var(--dark-bg);
+        .tab-trigger:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--neon-blue);
         }
 
-        .chat-content {
-            flex: 1;
+        .tab-content {
+            display: none;
         }
 
-        .chat-name {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
+        .tab-content.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        /* ===== FORM ELEMENTS ===== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
             font-size: 0.9rem;
-        }
-
-        .chat-text {
+            font-weight: 600;
             color: var(--text-secondary);
-            line-height: 1.6;
+            margin-bottom: 0.5rem;
         }
 
-        .typing-indicator {
-            display: flex;
-            gap: 0.25rem;
-            align-items: center;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--neon-blue);
-            border-radius: 50%;
-            animation: typingBounce 1.4s ease-in-out infinite both;
-        }
-
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes typingBounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
-        }
-
-        /* Enhanced Options Grid */
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .option-card {
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 1rem;
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid var(--border-color);
             border-radius: var(--border-radius);
-            padding: 1.5rem 1rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* ===== IMAGE UPLOAD ===== */
+        .image-upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 3rem;
             text-align: center;
             cursor: pointer;
             transition: var(--transition);
-            position: relative;
-            overflow: hidden;
+            margin-bottom: 2rem;
         }
 
-        .option-card:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .image-upload-area:hover {
             border-color: var(--neon-blue);
-            transform: translateY(-2px);
+            background: rgba(0, 212, 255, 0.05);
         }
 
-        .option-card.selected {
+        .image-upload-area.dragover {
             border-color: var(--neon-green);
             background: rgba(0, 255, 136, 0.1);
         }
 
-        .option-card.premium-lock {
-            opacity: 0.6;
-            position: relative;
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
         }
 
-        .option-card.premium-lock::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+        }
+
+        /* ===== GRID LAYOUTS ===== */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        /* ===== ANALYSIS RESULTS ===== */
+        .analysis-status {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 1rem;
+            color: var(--neon-blue);
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            color: #ffd700;
-            font-weight: 600;
+            gap: 0.5rem;
         }
 
-        .option-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .option-title {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            color: var(--text-primary);
-        }
-
-        .option-subtitle {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .premium-badge {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            background: var(--premium-gradient);
-            color: var(--dark-bg);
-            padding: 0.25rem 0.5rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 700;
-        }
-
-        /* Premium Enforcement */
-        .premium-lock {
-            position: relative;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .premium-lock::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--premium-gradient);
-            color: var(--dark-bg);
-            padding: 0.5rem 1rem;
+        .analysis-result {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
             border-radius: var(--border-radius);
-            font-weight: 700;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            padding: 1rem;
+            margin-top: 1rem;
+            color: var(--neon-green);
         }
 
-        /* Enhanced Generation Overlay */
+        .analysis-result strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== GENERATION OVERLAY ===== */
         .generation-overlay {
             position: fixed;
             top: 0;
@@ -1215,7 +658,6 @@
 
         .spinner-ring:nth-child(1) {
             border-top: 3px solid var(--neon-blue);
-            animation-duration: 2s;
         }
 
         .spinner-ring:nth-child(2) {
@@ -1255,8 +697,6 @@
             border-radius: 4px;
             overflow: hidden;
             margin: 2rem 0;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-                   font-family: 'Orbitron', sans-serif;
         }
 
         .progress-bar {
@@ -1265,7 +705,6 @@
             border-radius: 4px;
             transition: width 0.5s ease;
             width: 0%;
-            box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
         }
 
         .generation-details {
@@ -1273,56 +712,40 @@
             border-radius: var(--border-radius);
             padding: 2rem;
             margin-top: 2rem;
-            border: 1px solid var(--border-color);
-                   font-family: 'Orbitron', sans-serif;
         }
 
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .generation-details .grid {
+            gap: 1rem;
+            text-align: left;
         }
 
-        .detail-row:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
+        .generation-detail {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: var(--border-radius);
         }
 
-        .detail-label {
+        .generation-detail-label {
             color: var(--text-secondary);
-            font-weight: 500;
-                   font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
         }
 
-        .detail-value {
-            font-weight: 700;
+        .generation-detail-value {
             color: var(--text-primary);
-                   font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            word-break: break-word;
         }
 
-        /* Enhanced Video Section */
+        /* ===== VIDEO SECTION ===== */
         .video-section {
             margin: 6rem 0;
             display: none;
-                   font-family: 'Orbitron', sans-serif;
         }
 
         .video-section.active {
             display: block;
             animation: fadeInUp 0.8s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .video-card {
@@ -1333,16 +756,34 @@
             padding: 3rem;
             text-align: center;
             box-shadow: var(--shadow-heavy);
-                   font-family: 'Orbitron', sans-serif;
+        }
+
+        .video-player-container {
+            position: relative;
+            display: inline-block;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            margin-bottom: 2rem;
         }
 
         .video-player {
             width: 100%;
             max-width: 900px;
             border-radius: var(--border-radius);
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-light), 0 0 30px rgba(0, 212, 255, 0.2);
-                   font-family: 'Orbitron', sans-serif;
+        }
+
+        .watermark {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 10;
         }
 
         .video-actions {
@@ -1351,170 +792,220 @@
             gap: 1rem;
             flex-wrap: wrap;
             margin-bottom: 2rem;
-                   font-family: 'Orbitron', sans-serif;
         }
 
-        .action-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: var(--border-radius);
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            font-size: 1rem;
-                   font-family: 'Orbitron', sans-serif;
-        }
-
-        .btn-refresh {
-            background: var(--secondary-gradient);
-            color: white;
-            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
-                   font-family: 'Orbitron', sans-serif;
-        }
-
-        .btn-download {
-            background: var(--success-gradient);
-            color: white;
-            box-shadow: 0 4px 15px rgba(67, 233, 123, 0.3);
-                   font-family: 'Orbitron', sans-serif;
-        }
-
-        .btn-share {
-            background: var(--glass-bg);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-                   font-family: 'Orbitron', sans-serif;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-3px);
-        }
-
-        .btn-refresh:hover {
-            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.5);
-        }
-
-        .btn-download:hover {
-            box-shadow: 0 8px 25px rgba(67, 233, 123, 0.5);
-        }
-
-        .btn-share:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--neon-blue);
-        }
-
-        .trials-info {
+        .video-info {
             background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
             border-radius: var(--border-radius);
-            padding: 1.5rem;
-            border: 1px solid var(--border-color);
+            margin-top: 2rem;
         }
 
-        /* Enhanced History Section */
-        .history-section {
-            margin: 6rem 0;
-            display: none;
-        }
-
-        .history-section.active {
-            display: block;
-            animation: fadeInUp 0.8s ease;
-        }
-
-        .history-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .history-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(30px);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .history-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-heavy), var(--shadow-neon);
-            border-color: var(--neon-blue);
-        }
-
-        .history-thumbnail {
-            width: 100%;
-            height: 180px;
-            background: var(--glass-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: var(--text-muted);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .history-thumbnail::before {
-            content: '';
-            position: absolute;
+        /* ===== MODALS ===== */
+        .modal {
+            position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--accent-gradient);
-            opacity: 0.1;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(15px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: var(--transition);
+            padding: 2rem;
         }
 
-        .history-info {
-            padding: 1.5rem;
+        .modal.active {
+            display: flex;
+            opacity: 1;
         }
 
-        .history-title {
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            line-height: 1.4;
+        .modal-content {
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: var(--shadow-heavy);
+            width: 100%;
+            max-width: 600px;
         }
 
-        .history-meta {
+        .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        /* ===== DOWNLOAD OPTIONS ===== */
+        .download-options {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .download-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .download-option:hover {
+            border-color: var(--neon-blue);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .download-option.premium {
+            border-color: rgba(255, 215, 0, 0.5);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 53, 0.1));
+        }
+
+        .download-option.premium:hover {
+            border-color: rgba(255, 215, 0, 0.8);
+        }
+
+        .download-option-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-option-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .download-option-info h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .download-option-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .download-option-features {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .download-option-features i {
+            color: var(--neon-green);
+            margin-right: 0.5rem;
+        }
+
+        .download-remaining {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            font-size: 0.9rem;
             color: var(--text-muted);
+        }
+
+        /* ===== PREMIUM FEATURES ===== */
+        .premium-features {
+            display: grid;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .premium-feature {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+        }
+
+        .premium-feature i {
+            color: var(--neon-green);
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .premium-feature span {
+            font-size: 0.9rem;
+        }
+
+        .premium-price {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .premium-price-amount {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: var(--premium-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 0.5rem;
         }
 
-        .history-date {
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .history-tags {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .history-tag {
-            background: rgba(255, 255, 255, 0.1);
+        .premium-price-description {
             color: var(--text-secondary);
-            padding: 0.25rem 0.5rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 500;
+            font-size: 1.1rem;
         }
 
-        /* Enhanced Ad Container */
+        /* ===== AD CONTAINER ===== */
         .ad-container {
             background: var(--card-bg);
             backdrop-filter: blur(30px);
@@ -1523,16 +1014,10 @@
             padding: 3rem;
             text-align: center;
             margin: 3rem 0;
-            min-height: 150px;
+            min-height: 250px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition);
-        }
-
-        .ad-container:hover {
-            border-color: rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.08);
         }
 
         .ad-placeholder {
@@ -1540,7 +1025,14 @@
             font-style: italic;
         }
 
-        /* Enhanced Notifications */
+        .ad-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+            display: block;
+        }
+
+        /* ===== NOTIFICATIONS ===== */
         .notification {
             position: fixed;
             top: 2rem;
@@ -1565,46 +1057,156 @@
 
         .notification.success {
             border-left: 4px solid var(--neon-green);
-            box-shadow: var(--shadow-light), 0 0 20px rgba(0, 255, 136, 0.2);
         }
 
         .notification.error {
             border-left: 4px solid var(--neon-pink);
-            box-shadow: var(--shadow-light), 0 0 20px rgba(255, 0, 128, 0.2);
         }
 
         .notification.warning {
             border-left: 4px solid #fee140;
-            box-shadow: var(--shadow-light), 0 0 20px rgba(254, 225, 64, 0.2);
         }
 
         .notification.info {
             border-left: 4px solid var(--neon-blue);
-            box-shadow: var(--shadow-light), 0 0 20px rgba(0, 212, 255, 0.2);
         }
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .nav-menu {
-                display: none;
-            }
-            
-            .hero-stats {
-                gap: 2rem;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero-title {
-                font-size: 3rem;
-            }
+        /* ===== HISTORY ===== */
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
+        .history-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--neon-blue);
+        }
+
+        .history-thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--darker-bg);
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+
+        .history-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .history-meta {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .history-tags {
+            display: flex;
+            gap: 0.25rem;
+            flex-wrap: wrap;
+        }
+
+        .history-tag {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+        }
+
+        /* ===== UTILITIES ===== */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flex-between {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+
+        .gap-1 { gap: 0.25rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+
+        .mt-1 { margin-top: 0.25rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-3 { margin-top: 0.75rem; }
+        .mt-4 { margin-top: 1rem; }
+
+        .p-1 { padding: 0.25rem; }
+        .p-2 { padding: 0.5rem; }
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+
+        /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 768px) {
             .nav-container {
-                padding: 0 1rem;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .nav-actions {
+                justify-content: center;
             }
             
             .main-container {
@@ -1616,7 +1218,6 @@
             }
             
             .hero-stats {
-                flex-direction: column;
                 gap: 2rem;
             }
             
@@ -1633,50 +1234,89 @@
                 flex-direction: column;
             }
             
-            .history-grid {
+            .grid-2, .grid-3, .grid-4 {
                 grid-template-columns: 1fr;
             }
             
-            .welcome-content {
-                padding: 2rem;
-                margin: 1rem;
+            .tab-list {
+                flex-direction: column;
             }
-
-            .options-grid {
-                grid-template-columns: 1fr 1fr;
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .input-title {
+                font-size: 1.5rem;
             }
         }
 
         @media (max-width: 480px) {
             .hero-title {
-                font-size: 2.5rem;
-            }
-            
-            .section-title {
                 font-size: 2rem;
             }
             
-            .input-wrapper {
-                flex-direction: column;
-                align-items: stretch;
+            .input-card {
+                padding: 1.5rem 1rem;
             }
             
-            .input-actions {
-                padding: 1rem;
-                border-top: 1px solid var(--border-color);
-                justify-content: space-between;
+            .btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.8rem;
             }
             
-            .generate-btn {
-                padding: 0.75rem 1.5rem;
+            .notification {
+                top: 1rem;
+                right: 1rem;
+                left: 1rem;
+                transform: translateY(-100%);
+                max-width: none;
             }
-
-            .options-grid {
-                grid-template-columns: 1fr;
+            
+            .notification.show {
+                transform: translateY(0);
             }
         }
 
-        /* Custom Scrollbar */
+        /* ===== ACCESSIBILITY ===== */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        @media (prefers-contrast: high) {
+            .glass, .glass-card {
+                background: rgba(0, 0, 0, 0.9);
+                border-color: rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        /* ===== FOCUS STYLES ===== */
+        .btn:focus-visible,
+        .form-input:focus-visible,
+        .form-textarea:focus-visible,
+        .form-select:focus-visible,
+        .tab-trigger:focus-visible {
+            outline: 2px solid var(--neon-blue);
+            outline-offset: 2px;
+        }
+
+        /* ===== LOADING STATES ===== */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .loading-shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        /* ===== CUSTOM SCROLLBAR ===== */
         ::-webkit-scrollbar {
             width: 10px;
         }
@@ -1694,69 +1334,35 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary-gradient);
         }
-
-        /* Selection */
-        ::selection {
-            background: rgba(0, 212, 255, 0.3);
-            color: var(--text-primary);
-        }
-
-        /* Focus styles */
-        .btn:focus,
-        .main-input:focus,
-        .name-input:focus {
-            outline: 2px solid rgba(0, 212, 255, 0.5);
-            outline-offset: 2px;
-        }
-
-        /* Parallax scroll effect */
-        .parallax-element {
-            transform: translateZ(0);
-            will-change: transform;
-        }
     </style>
 </head>
 <body>
-    <!-- Enhanced Animated Background with Parallax -->
+    <!-- Enhanced Animated Background -->
     <div class="animated-bg">
-        <div class="parallax-layer" data-speed="0.2">
+        <div class="parallax-layer">
             <div class="bg-gradient"></div>
         </div>
-        <div class="parallax-layer" data-speed="0.5">
+        <div class="parallax-layer">
             <div class="floating-shapes">
-                <div class="shape"></div>
                 <div class="shape"></div>
                 <div class="shape"></div>
                 <div class="shape"></div>
                 <div class="shape"></div>
             </div>
         </div>
-        <div class="parallax-layer" data-speed="0.8">
-            <div class="grid-overlay"></div>
-        </div>
     </div>
 
-    <!-- Welcome Modal -->
-    <div class="welcome-modal" id="welcomeModal">
-        <div class="welcome-content">
-            <h2 class="welcome-title">Welcome to SmileX AI</h2>
-            <p class="welcome-subtitle">Enter your name to personalize your experience</p>
-            <input type="text" class="name-input" id="nameInput" placeholder="Your name..." maxlength="50">
-            <button class="btn btn-primary" onclick="saveUserName()" style="width: 100%; padding: 1rem;">
-                <i class="fas fa-rocket"></i>
-                Get Started
-            </button>
-        </div>
-    </div>
-
-    <!-- Enhanced Header -->
+    <!-- Header -->
     <header class="header">
         <div class="nav-container">
             <div class="logo">
                 <div class="logo-icon">
                     <i class="fas fa-video"></i>
                 </div>
-                SmileX
+                <div>
+                    <div>SmileX AI</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">Video Generator</div>
+                </div>
             </div>
             
             <div class="user-welcome" id="userWelcome" style="display: none;">
@@ -1765,13 +1371,7 @@
                 <span id="userName"></span>
             </div>
             
-            <nav class="nav-menu">
-                <a href="#features" class="nav-link">Features</a>
-                <a href="#pricing" class="nav-link">Pricing</a>
-                
-            </nav>
-            
-            <div class="nav-buttons">
+            <div class="nav-actions">
                 <button class="btn btn-secondary" onclick="toggleHistory()">
                     <i class="fas fa-history"></i>
                     History
@@ -1786,11 +1386,11 @@
 
     <!-- Main Container -->
     <div class="main-container">
-        <!-- Enhanced Hero Section -->
-        <section class="hero-section parallax-element">
+        <!-- Hero Section -->
+        <section class="hero-section">
             <div class="hero-badge">
                 <i class="fas fa-sparkles"></i>
-                Next-Generation AI Video Technology
+                Next-Generation AI Video Technology with Advanced Features
             </div>
             
             <h1 class="hero-title">
@@ -1799,259 +1399,252 @@
             </h1>
             
             <p class="hero-subtitle">
-                Transform your imagination into stunning, professional-quality videos using our revolutionary AI technology. No editing experience required - just describe your vision and watch it come to life.
+                Transform your imagination into stunning, professional-quality videos using our revolutionary AI technology. 
+                Upload images for reference, describe your vision in words, and watch AI bring your ideas to life with 
+                advanced OpenAI integration and professional-grade processing.
             </p>
-            
+
             <div class="hero-stats">
-                <div class="stat-item">
-                    <div class="stat-number" data-count="2500000">0</div>
-                    <div class="stat-label">Videos Generated</div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number" style="color: var(--neon-purple);">2.5M+</div>
+                    <div class="hero-stat-label">Videos Generated</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="150000">0</div>
-                    <div class="stat-label">Active Creators</div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number" style="color: var(--neon-blue);">150K+</div>
+                    <div class="hero-stat-label">Active Creators</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="4.9">0</div>
-                    <div class="stat-label">User Rating</div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number" style="color: var(--neon-green);">4.9★</div>
+                    <div class="hero-stat-label">User Rating</div>
                 </div>
             </div>
         </section>
 
-        <!-- Enhanced Input Section -->
-        <section class="input-section parallax-element">
+        <!-- Input Section -->
+        <section class="input-section">
             <div class="input-card glass-card">
                 <div class="input-header">
-                    <h2 class="input-title">Describe Your Vision</h2>
-                    <p class="input-description">Tell our AI what you want to create and watch the magic happen</p>
+                    <h2 class="input-title">Create Your Video Masterpiece</h2>
                 </div>
                 
-                <div class="input-container">
-                    <div class="input-wrapper">
-                        <input 
-                            type="text" 
-                            class="main-input" 
-                            id="videoPrompt" 
-                            placeholder="A majestic dragon soaring through a mystical forest at golden hour, with magical particles floating in the air..."
-                            maxlength="500"
-                        >
-                        <div class="input-actions">
-                            <span class="input-counter" id="charCounter">0 words</span>
-                            <button class="generate-btn" id="generateBtn" onclick="startGeneration()">
-                                <span class="btn-text">
-                                    <i class="fas fa-magic"></i>
-                                    Generate Video
-                                </span>
-                                <div class="loading-spinner"></div>
-                            </button>
+                <!-- Tabs -->
+                <div class="tabs">
+                    <div class="tab-list">
+                        <button class="tab-trigger active" onclick="switchTab('text')" data-tab="text">
+                            <i class="fas fa-keyboard"></i>
+                            Text Description
+                        </button>
+                        <button class="tab-trigger" onclick="switchTab('image')" data-tab="image">
+                            <i class="fas fa-image"></i>
+                            Image + Description
+                        </button>
+                    </div>
+                    
+                    <!-- Text Tab -->
+                    <div class="tab-content active" id="textTab">
+                        <div class="form-group">
+                            <label class="form-label">Describe your video vision in detail</label>
+                            <textarea 
+                                class="form-textarea" 
+                                id="videoPrompt" 
+                                placeholder="A majestic dragon soaring through a mystical forest at golden hour, with magical particles floating in the air, cinematic lighting, smooth camera movements, 4K quality..."
+                                maxlength="1000"
+                            ></textarea>
+                            <div class="flex-between mt-2">
+                                <span id="wordCount" style="color: var(--text-muted); font-size: 0.9rem;">0 words</span>
+                                <span id="charCount" style="color: var(--text-muted); font-size: 0.9rem;">0/1000 characters</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Image Tab -->
+                    <div class="tab-content" id="imageTab">
+                        <div class="grid grid-2">
+                            <div>
+                                <label class="form-label">Upload Reference Image</label>
+                                <div class="image-upload-area" id="imageUploadArea" onclick="document.getElementById('imageInput').click()">
+                                    <div id="imageUploadContent">
+                                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                        <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">Upload an image</h3>
+                                        <p style="color: var(--text-muted); font-size: 0.9rem;">PNG, JPG, GIF up to 10MB</p>
+                                        <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">Drag & drop or click to browse</p>
+                                    </div>
+                                    <div id="imagePreviewContainer" class="hidden">
+                                        <img id="imagePreview" class="image-preview" alt="Uploaded image">
+                                        <button class="btn btn-secondary btn-sm" onclick="removeImage()">
+                                            <i class="fas fa-trash"></i>
+                                            Remove Image
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                            </div>
+                            
+                            <div>
+                                <label class="form-label">Additional Description</label>
+                                <textarea 
+                                    class="form-textarea" 
+                                    id="imagePrompt" 
+                                    placeholder="Describe how you want the video to look based on your image... Add camera movements, effects, lighting changes..."
+                                    style="height: 200px;"
+                                ></textarea>
+                                
+                                <div id="analysisStatus" class="analysis-status hidden">
+                                    <i class="fas fa-eye"></i>
+                                    <span>AI is analyzing your image...</span>
+                                </div>
+                                
+                                <div id="analysisResult" class="analysis-result hidden">
+                                    <strong>AI Image Analysis:</strong>
+                                    <p id="analysisText"></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Premium Subscription Section -->
-        <section class="subscription-section parallax-element" id="pricing">
-            <div class="subscription-card">
-                <h2 class="subscription-title">
-                    <i class="fas fa-crown"></i>
-                    SmileX Premium
-                </h2>
-                <div class="subscription-price">$9.99<span style="font-size: 1rem; opacity: 0.7;">/month</span></div>
                 
-                <div class="subscription-features">
-                    <div class="feature-item">
-                        <i class="fas fa-infinity feature-icon"></i>
-                        <span>Unlimited video generations</span>
+                <!-- Generation Controls -->
+                <div class="grid grid-4 mt-4">
+                    <div class="form-group">
+                        <label class="form-label">Video Style</label>
+                        <select class="form-select" id="videoStyle">
+                            <option value="realistic">Realistic</option>
+                            <option value="animated">Animated</option>
+                            <option value="cinematic">Cinematic</option>
+                            <option value="artistic">Artistic</option>
+                            <option value="fantasy">Fantasy</option>
+                            <option value="sci-fi">Sci-Fi</option>
+                        </select>
                     </div>
-                    <div class="feature-item">
-                        <i class="fas fa-clock feature-icon"></i>
-                        <span>Extended video lengths (up to 2 minutes)</span>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Duration</label>
+                        <select class="form-select" id="videoDuration">
+                            <option value="15">15 seconds</option>
+                            <option value="30">30 seconds</option>
+                            <option value="60" class="premium-option">60 seconds (Premium)</option>
+                            <option value="120" class="premium-option">120 seconds (Premium)</option>
+                        </select>
                     </div>
-                    <div class="feature-item">
-                        <i class="fas fa-gem feature-icon"></i>
-                        <span>4K Ultra HD quality downloads</span>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Quality</label>
+                        <div class="form-input" style="background: rgba(255, 255, 255, 0.02); cursor: not-allowed;">
+                            <span id="qualityDisplay">1080p HD (Free)</span>
+                        </div>
                     </div>
-                    <div class="feature-item">
-                        <i class="fas fa-shield-alt feature-icon"></i>
-                        <span>No watermarks or branding</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-ban feature-icon"></i>
-                        <span>Completely ad-free experience</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-rocket feature-icon"></i>
-                        <span>Priority processing queue</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-brain feature-icon"></i>
-                        <span>Access to advanced AI models</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-headset feature-icon"></i>
-                        <span>24/7 premium support</span>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <div class="form-input" style="background: rgba(255, 255, 255, 0.02); cursor: not-allowed;">
+                            <span id="userStatus">Free: 3 generations remaining</span>
+                        </div>
                     </div>
                 </div>
                 
-                <button class="btn btn-premium" onclick="subscribeToPremium()" style="width: 100%; padding: 1.5rem; font-size: 1.2rem;">
-                    <i class="fas fa-crown"></i>
-                    Subscribe to Premium
-                </button>
-                
-                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem;">
-                    Cancel anytime • 30-day money-back guarantee • Secure payment
-                </p>
+                <!-- Generate Button -->
+                <div class="flex-between mt-4">
+                    <div style="color: var(--text-muted); font-size: 0.9rem;">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="trialsInfo">Free users get 3 daily generations</span>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-lg" id="generateBtn" onclick="startGeneration()">
+                        <i class="fas fa-magic"></i>
+                        <span id="generateBtnText">Generate Video</span>
+                    </button>
+                </div>
             </div>
         </section>
 
-        <!-- Ad Container for Non-Premium Users -->
+        <!-- Google Ads Container for Non-Premium Users -->
         <div class="ad-container" id="adContainer">
             <div class="ad-placeholder">
-                <i class="fas fa-rectangle-ad" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                <h3>Advertisement Space</h3>
-                <p>Your Google Ads code goes here</p>
+                <i class="fas fa-rectangle-ad"></i>
+                <h3>Video Advertisement</h3>
+                <p>Your Google Video Ads code goes here</p>
                 <small>This ad will be hidden for Premium subscribers</small>
                 <!-- INSERT YOUR GOOGLE ADS CODE BELOW -->
-                <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+                <!-- 
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXX"
+                     data-ad-slot="XXXXXXXXXX"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+                -->
             </div>
         </div>
 
-        <!-- Enhanced Features Section -->
-        <section class="features-section parallax-element" id="features">
-            <div class="section-header">
-                <h2 class="section-title">Revolutionary AI Features</h2>
-                <p class="section-subtitle">
-                    Experience the cutting-edge technology that makes SmileX the most advanced AI video generator in the world
-                </p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-card glass-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3 class="feature-title">Advanced AI Understanding</h3>
-                    <p class="feature-description">
-                        Our neural networks understand context, emotions, lighting, and cinematography to create videos that perfectly match your vision with unprecedented accuracy.
-                    </p>
-                </div>
-                
-                <div class="feature-card glass-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <h3 class="feature-title">Multiple Visual Styles</h3>
-                    <p class="feature-description">
-                        Choose from photorealistic, animated, cinematic, artistic, or custom styles. Each optimized for different use cases and creative preferences.
-                    </p>
-                </div>
-                
-                <div class="feature-card glass-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <h3 class="feature-title">Flexible Duration Options</h3>
-                    <p class="feature-description">
-                        Create videos from quick 15-second clips to full 2-minute productions. Perfect for social media, presentations, or detailed storytelling.
-                    </p>
-                </div>
-                
-                <div class="feature-card glass-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-download"></i>
-                    </div>
-                    <h3 class="feature-title">Premium Quality Export</h3>
-                    <p class="feature-description">
-                        Download in multiple formats and resolutions up to 4K Ultra HD. Premium users get watermark-free exports with full commercial rights.
-                    </p>
-                </div>
-                
-                <div class="feature-card glass-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-history"></i>
-                    </div>
-                    <h3 class="feature-title">Smart History Management</h3>
-                    <p class="feature-description">
-                        Comprehensive history tracking with search, filtering, and organization features. Never lose track of your creative projects.
-                    </p>
-                </div>
-                
-                <div class="feature-card glass-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-share-alt"></i>
-                    </div>
-                    <h3 class="feature-title">Seamless Sharing</h3>
-                    <p class="feature-description">
-                        Direct integration with social media platforms, cloud storage, and collaboration tools. Share your creations instantly.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Enhanced Video Section -->
+        <!-- Video Section -->
         <section class="video-section" id="videoSection">
             <div class="video-card glass-card">
                 <h2 style="margin-bottom: 2rem; text-align: center; font-family: 'Orbitron', monospace; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    <i class="fas fa-play-circle"></i>
                     Your AI-Generated Masterpiece
                 </h2>
                 
-                <video class="video-player" id="videoPlayer" controls>
-                    <source src="" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+                <div class="video-player-container">
+                    <video class="video-player" id="videoPlayer" controls poster="">
+                        <source src="/placeholder.svg" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="watermark" id="videoWatermark" style="display: none;">SmileX AI</div>
+                </div>
                 
                 <div class="video-actions">
-                    <button class="action-btn btn-refresh" onclick="refreshVideo()">
+                    <button class="btn btn-secondary" onclick="regenerateVideo()">
                         <i class="fas fa-redo"></i>
                         Regenerate
                     </button>
-                    <button class="action-btn btn-download" onclick="showDownloadModal()">
+                    <button class="btn btn-success" onclick="showDownloadModal()">
                         <i class="fas fa-download"></i>
                         Download
                     </button>
-                    <button class="action-btn btn-share" onclick="shareVideo()">
+                    <button class="btn btn-secondary" onclick="shareVideo()">
                         <i class="fas fa-share"></i>
                         Share
                     </button>
+                    <button class="btn btn-secondary" onclick="addToFavorites()">
+                        <i class="fas fa-heart"></i>
+                        Favorite
+                    </button>
                 </div>
                 
-                <div class="trials-info" id="trialsInfo">
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                <div class="video-info">
+                    <div class="flex-center gap-2">
                         <i class="fas fa-info-circle"></i>
-                        <span id="trialsText">Free users: 3 regenerations remaining</span>
+                        <span id="videoInfoText">Free users: 3 regenerations remaining today</span>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Enhanced History Section -->
-        <section class="history-section" id="historySection">
-            <div class="section-header">
-                <h2 class="section-title">Generation History</h2>
-                <p class="section-subtitle">
-                    Browse through your previously generated videos and manage your creative library
-                </p>
-            </div>
-            
-            <div class="history-grid" id="historyGrid">
-                <!-- History items will be populated here -->
             </div>
         </section>
     </div>
 
-    <!-- Analysis Modal -->
-    <div class="modal" id="analysisModal">
-        <div class="modal-content" style="max-width: 800px;">
+    <!-- Welcome Modal -->
+    <div class="modal" id="welcomeModal">
+        <div class="modal-content" style="max-width: 500px;">
             <div class="modal-header">
-                <h2 class="modal-title">AI Video Analysis</h2>
-                <button class="modal-close" onclick="closeModal('analysisModal')">
-                    <i class="fas fa-times"></i>
-                </button>
+                <h2 class="modal-title">
+                    <i class="fas fa-rocket"></i>
+                    Welcome to SmileX AI
+                </h2>
             </div>
-            
-            <div class="chat-container" id="chatContainer">
-                <!-- Chat messages will be populated here -->
+            <div>
+                <p style="color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.6;">
+                    Enter your name to personalize your experience and unlock the power of AI video generation. 
+                    Your progress and creations will be saved automatically.
+                </p>
+                <div class="form-group">
+                    <input type="text" class="form-input" id="nameInput" placeholder="Enter your name..." maxlength="50">
+                </div>
+                <button class="btn btn-primary w-full btn-lg" onclick="saveUserName()">
+                    <i class="fas fa-rocket"></i>
+                    Get Started
+                </button>
             </div>
         </div>
     </div>
@@ -2074,21 +1667,23 @@
             </div>
             
             <div class="generation-details">
-                <div class="detail-row">
-                    <span class="detail-label">Prompt:</span>
-                    <span class="detail-value" id="promptDisplay">-</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Style:</span>
-                    <span class="detail-value" id="styleDisplay">-</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Duration:</span>
-                    <span class="detail-value" id="durationDisplay">-</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Quality:</span>
-                    <span class="detail-value" id="qualityDisplay">-</span>
+                <div class="grid grid-4">
+                    <div class="generation-detail">
+                        <div class="generation-detail-label">Prompt</div>
+                        <div class="generation-detail-value" id="promptDisplay">-</div>
+                    </div>
+                    <div class="generation-detail">
+                        <div class="generation-detail-label">Style</div>
+                        <div class="generation-detail-value" id="styleDisplay">-</div>
+                    </div>
+                    <div class="generation-detail">
+                        <div class="generation-detail-label">Duration</div>
+                        <div class="generation-detail-value" id="durationDisplay">-</div>
+                    </div>
+                    <div class="generation-detail">
+                        <div class="generation-detail-label">Quality</div>
+                        <div class="generation-detail-value" id="qualityDisplayGen">-</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2096,52 +1691,58 @@
 
     <!-- Download Modal -->
     <div class="modal" id="downloadModal">
-        <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">
-                <h2 class="modal-title">Download Options</h2>
+                <h2 class="modal-title">
+                    <i class="fas fa-download"></i>
+                    Download Options
+                </h2>
                 <button class="modal-close" onclick="closeModal('downloadModal')">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             
-            <div style="display: grid; gap: 1.5rem;">
-                <div class="option-card" id="premiumDownload" onclick="downloadVideo('premium')" style="padding: 2rem;">
-                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                        <div class="feature-icon" style="width: 50px; height: 50px; font-size: 1.2rem; background: var(--premium-gradient);">
-                            <i class="fas fa-crown"></i>
+            <div class="download-options">
+                <div class="download-option premium" onclick="downloadVideo('premium')">
+                    <div class="download-option-header">
+                        <div class="download-option-icon" style="background: var(--premium-gradient);">
+                            <i class="fas fa-crown" style="color: var(--dark-bg);"></i>
                         </div>
-                        <div>
-                            <div class="option-title" style="font-size: 1.3rem;">Premium Download</div>
-                            <div class="option-subtitle">Ultimate quality and features</div>
+                        <div class="download-option-info">
+                            <h3 style="color: var(--text-primary);">Premium Download</h3>
+                            <p>Ultimate quality and features</p>
                         </div>
                     </div>
-                    <div style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6;">
-                        <i class="fas fa-check" style="color: var(--neon-green);"></i> 4K Ultra HD Quality (3840x2160)<br>
-                        <i class="fas fa-check" style="color: var(--neon-green);"></i> No Watermarks or Branding<br>
-                        <i class="fas fa-check" style="color: var(--neon-green);"></i> No Advertisements<br>
-                        <i class="fas fa-check" style="color: var(--neon-green);"></i> Instant Download<br>
-                        <i class="fas fa-check" style="color: var(--neon-green);"></i> Commercial Usage Rights<br>
-                        <i class="fas fa-check" style="color: var(--neon-green);"></i> Multiple Format Options
+                    <div class="download-option-features">
+                        <div><i class="fas fa-check"></i> 4K Ultra HD Quality (3840x2160)</div>
+                        <div><i class="fas fa-check"></i> No Watermarks or Branding</div>
+                        <div><i class="fas fa-check"></i> No Advertisements</div>
+                        <div><i class="fas fa-check"></i> Instant Download</div>
+                        <div><i class="fas fa-check"></i> Commercial Usage Rights</div>
+                        <div><i class="fas fa-check"></i> Multiple Format Options (MP4, MOV, AVI)</div>
                     </div>
                 </div>
                 
-                <div class="option-card" onclick="downloadVideo('free')" style="padding: 2rem;">
-                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                        <div class="feature-icon" style="width: 50px; height: 50px; font-size: 1.2rem; background: var(--success-gradient);">
-                            <i class="fas fa-download"></i>
+                <div class="download-option" onclick="downloadVideo('free')">
+                    <div class="download-option-header">
+                        <div class="download-option-icon" style="background: var(--success-gradient);">
+                            <i class="fas fa-download" style="color: white;"></i>
                         </div>
-                        <div>
-                            <div class="option-title" style="font-size: 1.3rem;">Free Download</div>
-                            <div class="option-subtitle">Standard quality with limitations</div>
+                        <div class="download-option-info">
+                            <h3 style="color: var(--text-primary);">Free Download</h3>
+                            <p>Standard quality with limitations</p>
                         </div>
                     </div>
-                    <div style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6;">
-                        <i class="fas fa-check" style="color: var(--neon-green);"></i> 1080p HD Quality (1920x1080)<br>
-                        <i class="fas fa-check" style="color: var(--neon-green);"></i> SmileX Watermark Included<br>
-                        <i class="fas fa-check" style="color: var(--neon-green);"></i> Watch 30-second Ad First<br>
-                        <i class="fas fa-check" style="color: var(--neon-green);"></i> Limited Downloads per Day (3)<br>
-                        <i class="fas fa-check" style="color: var(--neon-green);"></i> Personal Use Only<br>
-                        <i class="fas fa-check" style="color: var(--neon-green);"></i> MP4 Format Only
+                    <div class="download-option-features">
+                        <div><i class="fas fa-check"></i> 1080p HD Quality (1920x1080)</div>
+                        <div><i class="fas fa-check"></i> SmileX Watermark Included</div>
+                        <div><i class="fas fa-check"></i> Watch 30-second Ad First</div>
+                        <div><i class="fas fa-check"></i> Limited Downloads per Day (3)</div>
+                        <div><i class="fas fa-check"></i> Personal Use Only</div>
+                        <div><i class="fas fa-check"></i> MP4 Format Only</div>
+                    </div>
+                    <div class="download-remaining">
+                        <span id="downloadsRemaining">Downloads remaining today: 3</span>
                     </div>
                 </div>
             </div>
@@ -2150,7 +1751,7 @@
 
     <!-- Premium Modal -->
     <div class="modal" id="premiumModal">
-        <div class="modal-content" style="max-width: 700px; text-align: center;">
+        <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">
                 <h2 class="modal-title">
                     <i class="fas fa-crown" style="color: #ffd700;"></i>
@@ -2161,58 +1762,102 @@
                 </button>
             </div>
             
-            <div style="padding: 2rem 0;">
-                <div style="font-size: 3.5rem; font-weight: 900; margin-bottom: 0.5rem; background: var(--premium-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                    $9.99<span style="font-size: 1.2rem; color: var(--text-secondary);">/month</span>
+            <div>
+                <div class="premium-price">
+                    <div class="premium-price-amount">Premium Subscription</div>
+                    <div class="premium-price-description">Unlock unlimited creativity with our premium subscription</div>
                 </div>
                 
-                <p style="color: var(--text-secondary); margin-bottom: 3rem; font-size: 1.1rem;">
-                    Unlock unlimited creativity with our premium subscription
-                </p>
-                
-                <div style="display: grid; gap: 1rem; text-align: left; margin-bottom: 3rem;">
-                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: var(--border-radius);">
-                        <i class="fas fa-infinity" style="color: var(--neon-green); font-size: 1.2rem;"></i>
+                <div class="premium-features">
+                    <div class="premium-feature">
+                        <i class="fas fa-infinity"></i>
                         <span>Unlimited video generations per month</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: var(--border-radius);">
-                        <i class="fas fa-clock" style="color: var(--neon-green); font-size: 1.2rem;"></i>
+                    <div class="premium-feature">
+                        <i class="fas fa-clock"></i>
                         <span>Extended video lengths (60s & 120s)</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: var(--border-radius);">
-                        <i class="fas fa-gem" style="color: var(--neon-green); font-size: 1.2rem;"></i>
+                    <div class="premium-feature">
+                        <i class="fas fa-gem"></i>
                         <span>4K Ultra HD quality downloads</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: var(--border-radius);">
-                        <i class="fas fa-shield-alt" style="color: var(--neon-green); font-size: 1.2rem;"></i>
+                    <div class="premium-feature">
+                        <i class="fas fa-shield-alt"></i>
                         <span>No watermarks or branding</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: var(--border-radius);">
-                        <i class="fas fa-ban" style="color: var(--neon-green); font-size: 1.2rem;"></i>
+                    <div class="premium-feature">
+                        <i class="fas fa-ban"></i>
                         <span>Completely ad-free experience</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: var(--border-radius);">
-                        <i class="fas fa-rocket" style="color: var(--neon-green); font-size: 1.2rem;"></i>
+                    <div class="premium-feature">
+                        <i class="fas fa-rocket"></i>
                         <span>Priority processing queue</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: var(--border-radius);">
-                        <i class="fas fa-brain" style="color: var(--neon-green); font-size: 1.2rem;"></i>
+                    <div class="premium-feature">
+                        <i class="fas fa-brain"></i>
                         <span>Access to advanced AI models</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: var(--border-radius);">
-                        <i class="fas fa-headset" style="color: var(--neon-green); font-size: 1.2rem;"></i>
+                    <div class="premium-feature">
+                        <i class="fas fa-headset"></i>
                         <span>24/7 premium support</span>
                     </div>
                 </div>
                 
-                <button class="btn btn-premium" onclick="subscribeToPremium()" style="width: 100%; padding: 1.5rem; font-size: 1.2rem; margin-bottom: 1rem;">
+                <button class="btn btn-premium w-full btn-lg" onclick="subscribeToPremium()">
                     <i class="fas fa-crown"></i>
-                    Subscribe to Premium Now
+                    Subscribe to Premium
                 </button>
-                
-                <p style="font-size: 0.9rem; color: var(--text-muted);">
-                    Cancel anytime • 30-day money-back guarantee • Secure payment processing
-                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div class="modal" id="historyModal">
+        <div class="modal-content" style="max-width: 1000px;">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <i class="fas fa-history"></i>
+                    Generation History
+                </h2>
+                <button class="modal-close" onclick="closeModal('historyModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="historyContent">
+                <div class="text-center" style="padding: 3rem; color: var(--text-muted);">
+                    <i class="fas fa-video" style="font-size: 4rem; opacity: 0.3; margin-bottom: 1rem;"></i>
+                    <h3>No videos generated yet</h3>
+                    <p>Start creating amazing videos with AI!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ad Modal -->
+    <div class="modal" id="adModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <i class="fas fa-rectangle-ad"></i>
+                    Advertisement
+                </h2>
+            </div>
+            <div style="padding: 2rem 0; text-align: center;">
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 3rem; border-radius: var(--border-radius); margin-bottom: 2rem; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                    <div style="color: var(--text-muted);">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">📺</div>
+                        <div>Video Advertisement</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem;">Your Google Video Ad Here</div>
+                    </div>
+                </div>
+                <div style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;">
+                    Please wait <span id="adCountdown">30</span> seconds...
+                </div>
+                <div class="generation-progress">
+                    <div class="progress-bar" id="adProgressBar"></div>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Your download will start automatically after the ad</p>
             </div>
         </div>
     </div>
@@ -2221,258 +1866,321 @@
     <div class="notification" id="notification"></div>
 
     <script>
-        // Configuration
-        const OPENAI_API_KEY = 'your-openai-api-key-here'; // Replace with your actual API key
-        const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
-        
-        // User data with enhanced history management
+        // ===== CONFIGURATION =====
+        const CONFIG = {
+            OPENAI_API_KEY: 'your-openai-api-key-here', // Replace with your actual OpenAI API key
+            OPENAI_API_URL: 'https://api.openai.com/v1/chat/completions',
+            VISION_API_URL: 'https://api.openai.com/v1/chat/completions',
+            GOOGLE_ADS_CLIENT: 'ca-pub-XXXXXXXXXX', // Replace with your Google Ads client ID
+            MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
+            MAX_PROMPT_LENGTH: 1000,
+            GENERATION_TIMEOUT: 300000, // 5 minutes
+            API_TIMEOUT: 30000 // 30 seconds
+        };
+
+        // ===== USER DATA MANAGEMENT =====
         let userData = {
             name: '',
             isPremium: false,
             isSubscribed: false,
             trialsRemaining: 3,
             generationHistory: [],
-            previewHistory: [],
             dailyDownloads: 0,
             lastDownloadDate: null,
             subscriptionDate: null,
-            subscriptionId: null
+            subscriptionId: null,
+            uploadedImages: [],
+            favorites: [],
+            settings: {
+                autoSave: true,
+                notifications: true,
+                quality: 'auto'
+            }
         };
 
-        // Current generation data
+        // ===== CURRENT GENERATION DATA =====
         let currentGeneration = {
+            id: null,
             prompt: '',
-            style: '',
+            imagePrompt: '',
+            uploadedImage: null,
+            style: 'realistic',
             duration: 15,
-            quality: 'standard',
-            videoUrl: ''
+            quality: '1080p HD',
+            videoUrl: '',
+            hasWatermark: true,
+            timestamp: null,
+            enhancedPrompt: '',
+            processingTime: 0,
+            thumbnail: null
         };
 
-        // Initialize the application
+        // ===== STATE MANAGEMENT =====
+        let appState = {
+            isGenerating: false,
+            isAnalyzing: false,
+            isDownloading: false,
+            currentTab: 'text',
+            generationProgress: {
+                stage: '',
+                progress: 0,
+                estimatedTime: 0
+            }
+        };
+
+        // ===== PYTHON INTEGRATION SIMULATION =====
+        class PythonVideoProcessor {
+            static async processVideo(videoData, options) {
+                console.log('Python: Processing video with options:', options);
+                
+                // Simulate Python video processing
+                await this.sleep(2000);
+                
+                return {
+                    success: true,
+                    processedVideoUrl: videoData.url,
+                    watermarkApplied: options.addWatermark,
+                    quality: options.quality,
+                    processingTime: Date.now() - videoData.startTime
+                };
+            }
+            
+            static async enhancePrompt(prompt, style, duration) {
+                console.log('Python: Enhancing prompt with AI models');
+                
+                // Simulate Python AI enhancement
+                await this.sleep(1500);
+                
+                const enhancements = {
+                    realistic: 'with photorealistic rendering, natural lighting, and cinematic camera work',
+                    animated: 'with smooth animation, vibrant colors, and dynamic character movements',
+                    cinematic: 'with professional cinematography, dramatic lighting, and epic camera angles',
+                    artistic: 'with artistic flair, creative visual effects, and unique aesthetic style',
+                    fantasy: 'with magical elements, mystical atmosphere, and fantastical visual effects',
+                    'sci-fi': 'with futuristic elements, advanced technology, and sci-fi visual effects'
+                };
+                
+                return `${prompt} Enhanced with ${style} cinematography, optimized for ${duration} seconds duration with professional lighting and smooth camera movements. ${enhancements[style] || ''}`;
+            }
+            
+            static async analyzeImage(imageData) {
+                console.log('Python: Analyzing image with computer vision');
+                
+                // Simulate Python image analysis
+                await this.sleep(2000);
+                
+                const analyses = [
+                    "A beautifully composed scene with rich colors and dynamic lighting, perfect for cinematic video generation with smooth transitions and atmospheric effects.",
+                    "An artistic composition featuring dramatic contrasts and compelling visual elements, ideal for creating engaging video content with fluid camera movements.",
+                    "A visually striking image with excellent depth and composition, suitable for generating high-quality video with professional cinematography techniques.",
+                    "A captivating scene with vibrant colors and interesting textures, perfect for AI video generation with creative camera work and visual storytelling.",
+                    "An impressive composition with strong visual impact, ideal for creating dynamic video content with cinematic flair and professional production values."
+                ];
+                
+                return analyses[Math.floor(Math.random() * analyses.length)];
+            }
+            
+            static async applyWatermark(videoPath, watermarkText = "SmileX AI") {
+                console.log('Python: Applying watermark to video');
+                
+                // Simulate Python watermark processing
+                await this.sleep(3000);
+                
+                return {
+                    success: true,
+                    watermarkedPath: videoPath.replace('.mp4', '_watermarked.mp4'),
+                    watermarkText: watermarkText
+                };
+            }
+            
+            static async generateVideo(promptData, userPremium = false) {
+                console.log('Python: Generating video with advanced AI models');
+                
+                // Calculate realistic generation time
+                const baseTime = promptData.duration * 2000; // 2 seconds per video second
+                const qualityMultiplier = userPremium ? 2 : 1;
+                const styleMultiplier = this.getStyleComplexity(promptData.style);
+                
+                const estimatedTime = baseTime * qualityMultiplier * styleMultiplier;
+                
+                // Simulate progressive generation
+                const stages = [
+                    { name: "Initializing AI models", duration: 0.1, progress: 5 },
+                    { name: "Analyzing prompt complexity", duration: 0.15, progress: 15 },
+                    { name: "Processing visual elements", duration: 0.2, progress: 30 },
+                    { name: "Generating keyframes", duration: 0.25, progress: 50 },
+                    { name: "Creating smooth transitions", duration: 0.2, progress: 70 },
+                    { name: "Applying effects and lighting", duration: 0.15, progress: 85 },
+                    { name: "Rendering final video", duration: 0.05, progress: 100 }
+                ];
+                
+                for (const stage of stages) {
+                    const stageDuration = estimatedTime * stage.duration;
+                    await this.sleep(Math.min(stageDuration, 5000)); // Cap at 5 seconds for demo
+                    
+                    // Update progress
+                    updateGenerationProgress(stage.name, stage.progress);
+                }
+                
+                // Generate sample video URL
+                const sampleVideos = [
+                    "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+                    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+                ];
+                
+                return {
+                    success: true,
+                    videoUrl: sampleVideos[Math.floor(Math.random() * sampleVideos.length)],
+                    thumbnail: `https://picsum.photos/320/180?random=${Date.now()}`,
+                    processingTime: estimatedTime,
+                    quality: userPremium ? "4K Ultra HD" : "1080p HD",
+                    hasWatermark: !userPremium
+                };
+            }
+            
+            static getStyleComplexity(style) {
+                const complexity = {
+                    realistic: 1.0,
+                    animated: 1.2,
+                    cinematic: 1.5,
+                    artistic: 1.3,
+                    fantasy: 1.4,
+                    'sci-fi': 1.6
+                };
+                return complexity[style] || 1.0;
+            }
+            
+            static async sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+
+        // ===== OPENAI INTEGRATION =====
+        class OpenAIIntegration {
+            static async analyzeImage(imageData) {
+                if (!CONFIG.OPENAI_API_KEY || CONFIG.OPENAI_API_KEY === 'your-openai-api-key-here') {
+                    // Fallback to Python simulation
+                    return await PythonVideoProcessor.analyzeImage(imageData);
+                }
+                
+                try {
+                    const base64Image = imageData.split(',')[1]; // Remove data URL prefix
+                    
+                    const response = await fetch(CONFIG.VISION_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${CONFIG.OPENAI_API_KEY}`
+                        },
+                        body: JSON.stringify({
+                            model: "gpt-4-vision-preview",
+                            messages: [
+                                {
+                                    role: "user",
+                                    content: [
+                                        {
+                                            type: "text",
+                                            text: "Analyze this image and provide a detailed, cinematic description perfect for AI video generation. Focus on visual elements, mood, lighting, composition, colors, movements, and atmosphere. Be creative and descriptive, using professional cinematography terms. Keep it under 200 words but make it vivid and engaging for video creation."
+                                        },
+                                        {
+                                            type: "image_url",
+                                            image_url: {
+                                                url: imageData,
+                                                detail: "high"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
+                            max_tokens: 300,
+                            temperature: 0.8
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API request failed: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    return data.choices[0]?.message?.content || await PythonVideoProcessor.analyzeImage(imageData);
+                    
+                } catch (error) {
+                    console.error('OpenAI Vision API error:', error);
+                    return await PythonVideoProcessor.analyzeImage(imageData);
+                }
+            }
+            
+            static async enhancePrompt(prompt, imagePrompt, style, duration) {
+                if (!CONFIG.OPENAI_API_KEY || CONFIG.OPENAI_API_KEY === 'your-openai-api-key-here') {
+                    // Fallback to Python simulation
+                    return await PythonVideoProcessor.enhancePrompt(prompt, style, duration);
+                }
+                
+                try {
+                    const combinedPrompt = imagePrompt ? 
+                        `${prompt} Based on image: ${imagePrompt}` : prompt;
+                    
+                    const response = await fetch(CONFIG.OPENAI_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${CONFIG.OPENAI_API_KEY}`
+                        },
+                        body: JSON.stringify({
+                            model: "gpt-4",
+                            messages: [
+                                {
+                                    role: "system",
+                                    content: `You are an expert at creating detailed video generation prompts. Enhance the user's prompt to be more specific and cinematic, considering the style (${style}) and duration (${duration}s). Focus on visual details, camera movements, lighting, atmosphere, and specific cinematography techniques. Keep the enhanced prompt under 300 words but make it vivid and specific for AI video generation.`
+                                },
+                                {
+                                    role: "user",
+                                    content: `Enhance this video prompt for ${style} style, ${duration} seconds duration: "${combinedPrompt}"`
+                                }
+                            ],
+                            max_tokens: 400,
+                            temperature: 0.8
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API request failed: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    return data.choices[0]?.message?.content || combinedPrompt;
+                    
+                } catch (error) {
+                    console.error('Prompt enhancement failed:', error);
+                    return await PythonVideoProcessor.enhancePrompt(prompt, style, duration);
+                }
+            }
+        }
+
+        // ===== INITIALIZATION =====
         document.addEventListener('DOMContentLoaded', function() {
             loadUserData();
             setupEventListeners();
-            setupParallax();
-            animateStats();
             checkUserWelcome();
-            loadHistory();
             updateUI();
+            initializeWordCounter();
+            initializeGoogleAds();
         });
 
-        // Check if user needs welcome
-        function checkUserWelcome() {
-            if (!userData.name) {
-                setTimeout(() => {
-                    document.getElementById('welcomeModal').classList.add('active');
-                }, 1000);
-            } else {
-                showUserWelcome();
-            }
-        }
-
-        // Save user name
-        function saveUserName() {
-            const nameInput = document.getElementById('nameInput');
-            const name = nameInput.value.trim();
-            
-            if (!name) {
-                showNotification('Please enter your name', 'error');
-                return;
-            }
-            
-            if (name.length < 2) {
-                showNotification('Name must be at least 2 characters long', 'error');
-                return;
-            }
-            
-            userData.name = name;
-            saveUserData();
-            
-            document.getElementById('welcomeModal').classList.remove('active');
-            showUserWelcome();
-            showNotification(`Welcome to SmileX AI, ${name}! <i class="fas fa-party-horn"></i>`, 'success');
-        }
-
-        // Show user welcome
-        function showUserWelcome() {
-            const welcomeEl = document.getElementById('userWelcome');
-            const userNameEl = document.getElementById('userName');
-            const userAvatarEl = document.getElementById('userAvatar');
-            
-            if (userData.name) {
-                userNameEl.textContent = userData.name;
-                userAvatarEl.textContent = userData.name.charAt(0).toUpperCase();
-                welcomeEl.style.display = 'flex';
-            }
-        }
-
-        // Setup parallax effects
-        function setupParallax() {
-            window.addEventListener('scroll', () => {
-                const scrolled = window.pageYOffset;
-                const parallaxElements = document.querySelectorAll('.parallax-layer');
-                
-                parallaxElements.forEach(element => {
-                    const speed = element.dataset.speed || 0.5;
-                    const yPos = -(scrolled * speed);
-                    element.style.transform = `translateY(${yPos}px)`;
-                });
-            });
-        }
-
-        // Enhanced animate statistics with exact counting
-        function animateStats() {
-            const statNumbers = document.querySelectorAll('.stat-number');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const target = parseInt(entry.target.dataset.count);
-                        animateNumberToExact(entry.target, target);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            });
-            
-            statNumbers.forEach(stat => observer.observe(stat));
-        }
-
-        // Enhanced number animation to exact count
-        function animateNumberToExact(element, target) {
-            let current = 0;
-            const duration = 2000; // 2 seconds
-            const startTime = performance.now();
-            
-            function updateNumber(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                
-                // Use easing function for smooth animation
-                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-                current = Math.floor(target * easeOutQuart);
-                
-                if (target === 4.9) {
-                    const value = (target * easeOutQuart).toFixed(1);
-                    element.textContent = value + '<i class="fas fa-star"></i>';
-                    element.innerHTML = value + '<i class="fas fa-star" style="color: #ffd700; margin-left: 0.25rem;"></i>';
-                } else if (target >= 1000000) {
-                    const value = (current / 1000000).toFixed(1);
-                    element.textContent = value + 'M+';
-                } else if (target >= 1000) {
-                    const value = Math.floor(current / 1000);
-                    element.textContent = value + 'K+';
-                } else {
-                    element.textContent = current.toLocaleString();
-                }
-                
-                if (progress < 1) {
-                    requestAnimationFrame(updateNumber);
-                } else {
-                    // Ensure exact final value
-                    if (target === 4.9) {
-                        element.innerHTML = '4.9<i class="fas fa-star" style="color: #ffd700; margin-left: 0.25rem;"></i>';
-                    } else if (target >= 1000000) {
-                        element.textContent = (target / 1000000).toFixed(1) + 'M+';
-                    } else if (target >= 1000) {
-                        element.textContent = Math.floor(target / 1000) + 'K+';
-                    } else {
-                        element.textContent = target.toLocaleString();
-                    }
-                }
-            }
-            
-            requestAnimationFrame(updateNumber);
-        }
-
-        // Enhanced setup event listeners with word counter
-        function setupEventListeners() {
-            const input = document.getElementById('videoPrompt');
-            const counter = document.getElementById('charCounter');
-            const nameInput = document.getElementById('nameInput');
-            
-            // Enhanced word counter
-            input.addEventListener('input', function() {
-                const text = this.value.trim();
-                const words = text === '' ? 0 : text.split(/\s+/).filter(word => word.length > 0).length;
-                const chars = this.value.length;
-                
-                counter.textContent = `${words} words`;
-                
-                // Color coding based on word count
-                if (words > 80) {
-                    counter.style.color = '#fa709a';
-                } else if (words > 60) {
-                    counter.style.color = '#fee140';
-                } else if (words > 0) {
-                    counter.style.color = 'var(--neon-green)';
-                } else {
-                    counter.style.color = 'var(--text-muted)';
-                }
-                
-                // Save to preview history as user types
-                if (words > 5) {
-                    saveToPreviewHistory(text);
-                }
-            });
-            
-            // Enter key to generate
-            input.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    startGeneration();
-                }
-            });
-            
-            // Name input enter key
-            nameInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    saveUserName();
-                }
-            });
-            
-            // Close modals on outside click
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('modal')) {
-                    e.target.classList.remove('active');
-                }
-            });
-            
-            // Prevent right-click
-            document.addEventListener('contextmenu', e => e.preventDefault());
-        }
-
-        // Save to preview history
-        function saveToPreviewHistory(prompt) {
-            const previewItem = {
-                id: Date.now(),
-                prompt: prompt,
-                timestamp: new Date().toISOString(),
-                wordCount: prompt.trim().split(/\s+/).filter(word => word.length > 0).length
-            };
-            
-            // Remove duplicates and add new item
-            userData.previewHistory = userData.previewHistory.filter(item => item.prompt !== prompt);
-            userData.previewHistory.unshift(previewItem);
-            
-            // Keep only last 50 previews
-            if (userData.previewHistory.length > 50) {
-                userData.previewHistory = userData.previewHistory.slice(0, 50);
-            }
-            
-            saveUserData();
-        }
-
-        // Load user data from localStorage
+        // ===== USER DATA MANAGEMENT =====
         function loadUserData() {
             const saved = localStorage.getItem('smileXUserData');
             if (saved) {
-                userData = { ...userData, ...JSON.parse(saved) };
+                try {
+                    const parsedData = JSON.parse(saved);
+                    userData = { ...userData, ...parsedData };
+                } catch (error) {
+                    console.error('Error loading user data:', error);
+                }
             }
-            
-            // Initialize arrays if they don't exist
-            if (!userData.previewHistory) userData.previewHistory = [];
-            if (!userData.generationHistory) userData.generationHistory = [];
             
             // Reset daily downloads if new day
             const today = new Date().toDateString();
@@ -2486,12 +2194,14 @@
             checkSubscriptionStatus();
         }
 
-        // Save user data to localStorage
         function saveUserData() {
-            localStorage.setItem('smileXUserData', JSON.stringify(userData));
+            try {
+                localStorage.setItem('smileXUserData', JSON.stringify(userData));
+            } catch (error) {
+                console.error('Error saving user data:', error);
+            }
         }
 
-        // Check subscription status
         function checkSubscriptionStatus() {
             if (userData.subscriptionId && userData.subscriptionDate) {
                 const subscriptionDate = new Date(userData.subscriptionDate);
@@ -2513,448 +2223,470 @@
             }
         }
 
-        // Update UI based on user status
-        function updateUI() {
-            updateTrialsDisplay();
-            updatePremiumButton();
-            
-            // Hide ads for premium users
-            if (userData.isPremium) {
-                const adContainer = document.getElementById('adContainer');
-                if (adContainer) {
-                    adContainer.style.display = 'none';
-                }
-            }
-            
-            // Update premium download option
-            const premiumDownload = document.getElementById('premiumDownload');
-            if (premiumDownload && !userData.isPremium) {
-                premiumDownload.classList.add('premium-lock');
-            }
-        }
-
-        // Update premium button
-        function updatePremiumButton() {
-            const btn = document.getElementById('premiumBtn');
-            const btnText = document.getElementById('premiumBtnText');
-            
-            if (userData.isSubscribed) {
-                btn.classList.remove('btn-premium');
-                btn.classList.add('btn-premium', 'subscribed');
-                btnText.innerHTML = '<i class="fas fa-crown"></i> Premium Active';
-                btn.onclick = () => showNotification('You are already subscribed to Premium! <i class="fas fa-crown"></i>', 'success');
+        function checkUserWelcome() {
+            if (!userData.name) {
+                setTimeout(() => {
+                    document.getElementById('welcomeModal').classList.add('active');
+                }, 1000);
             } else {
-                btn.classList.remove('subscribed');
-                btnText.innerHTML = '<i class="fas fa-crown"></i> Go Premium';
-                btn.onclick = () => showPremiumModal();
+                showUserWelcome();
             }
         }
 
-        // Enhanced start video generation process
-        async function startGeneration() {
-            const prompt = document.getElementById('videoPrompt').value.trim();
-            const btn = document.getElementById('generateBtn');
+        function saveUserName() {
+            const nameInput = document.getElementById('nameInput');
+            const name = nameInput.value.trim();
             
-            if (!prompt) {
-                showNotification('Please enter a description for your video', 'error');
+            if (!name) {
+                showNotification('Please enter your name', 'error');
                 return;
             }
+            
+            if (name.length < 2) {
+                showNotification('Name must be at least 2 characters long', 'error');
+                return;
+            }
+            
+            if (name.length > 50) {
+                showNotification('Name must be less than 50 characters', 'error');
+                return;
+            }
+            
+            userData.name = name;
+            saveUserData();
+            
+            document.getElementById('welcomeModal').classList.remove('active');
+            showUserWelcome();
+            showNotification(`Welcome to SmileX AI, ${name}! 🚀`, 'success');
+        }
 
-            const wordCount = prompt.split(/\s+/).filter(word => word.length > 0).length;
-            if (wordCount < 5) {
+        function showUserWelcome() {
+            const welcomeEl = document.getElementById('userWelcome');
+            const userNameEl = document.getElementById('userName');
+            const userAvatarEl = document.getElementById('userAvatar');
+            
+            if (userData.name) {
+                userNameEl.textContent = userData.name;
+                userAvatarEl.textContent = userData.name.charAt(0).toUpperCase();
+                welcomeEl.style.display = 'flex';
+            }
+        }
+
+        // ===== EVENT LISTENERS =====
+        function setupEventListeners() {
+            const videoPrompt = document.getElementById('videoPrompt');
+            const imagePrompt = document.getElementById('imagePrompt');
+            const nameInput = document.getElementById('nameInput');
+            const imageInput = document.getElementById('imageInput');
+            const uploadArea = document.getElementById('imageUploadArea');
+            
+            // Text input counters
+            videoPrompt.addEventListener('input', updateWordCounter);
+            imagePrompt.addEventListener('input', updateWordCounter);
+            
+            // Enter key shortcuts
+            videoPrompt.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && e.ctrlKey) {
+                    e.preventDefault();
+                    startGeneration();
+                }
+            });
+            
+            nameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    saveUserName();
+                }
+            });
+            
+            // File upload
+            imageInput.addEventListener('change', handleImageUpload);
+            
+            // Drag and drop
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleFileDrop);
+            
+            // Close modals on outside click
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    e.target.classList.remove('active');
+                }
+            });
+            
+            // Prevent right-click for security
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            
+            // Handle window resize
+            window.addEventListener('resize', handleResize);
+            
+            // Handle online/offline status
+            window.addEventListener('online', () => {
+                showNotification('Connection restored! 🌐', 'success');
+            });
+            
+            window.addEventListener('offline', () => {
+                showNotification('You are offline. Some features may not work.', 'warning');
+            });
+        }
+
+        function handleResize() {
+            // Adjust UI for different screen sizes
+            const isMobile = window.innerWidth <= 768;
+            const navContainer = document.querySelector('.nav-container');
+            
+            if (isMobile) {
+                navContainer.style.flexDirection = 'column';
+            } else {
+                navContainer.style.flexDirection = 'row';
+            }
+        }
+
+        // ===== WORD COUNTER =====
+        function initializeWordCounter() {
+            updateWordCounter();
+        }
+
+        function updateWordCounter() {
+            const videoPrompt = document.getElementById('videoPrompt');
+            const imagePrompt = document.getElementById('imagePrompt');
+            const wordCountEl = document.getElementById('wordCount');
+            const charCountEl = document.getElementById('charCount');
+            
+            const activeTab = document.querySelector('.tab-content.active');
+            const isTextTab = activeTab && activeTab.id === 'textTab';
+            
+            const text = isTextTab ? videoPrompt.value.trim() : 
+                        (videoPrompt.value.trim() + ' ' + imagePrompt.value.trim()).trim();
+            
+            const words = text === '' ? 0 : text.split(/\s+/).filter(word => word.length > 0).length;
+            const chars = isTextTab ? videoPrompt.value.length : videoPrompt.value.length + imagePrompt.value.length;
+            
+            if (wordCountEl) wordCountEl.textContent = `${words} words`;
+            if (charCountEl) charCountEl.textContent = `${chars}/${CONFIG.MAX_PROMPT_LENGTH} characters`;
+            
+            // Color coding based on word count
+            if (wordCountEl) {
+                if (words > 100) {
+                    wordCountEl.style.color = '#fa709a';
+                } else if (words > 50) {
+                    wordCountEl.style.color = '#fee140';
+                } else if (words > 0) {
+                    wordCountEl.style.color = 'var(--neon-green)';
+                } else {
+                    wordCountEl.style.color = 'var(--text-muted)';
+                }
+            }
+        }
+
+        // ===== TAB MANAGEMENT =====
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-trigger').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            appState.currentTab = tabName;
+            updateWordCounter();
+        }
+
+        // ===== IMAGE UPLOAD =====
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                processImageFile(file);
+            }
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            event.currentTarget.classList.remove('dragover');
+        }
+
+        function handleFileDrop(event) {
+            event.preventDefault();
+            event.currentTarget.classList.remove('dragover');
+            
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                processImageFile(files[0]);
+            }
+        }
+
+        async function processImageFile(file) {
+            // Validate file
+            if (!file.type.startsWith('image/')) {
+                showNotification('Please select a valid image file', 'error');
+                return;
+            }
+            
+            if (file.size > CONFIG.MAX_FILE_SIZE) {
+                showNotification('File size must be less than 10MB', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const imageData = e.target.result;
+                
+                // Show image preview
+                const preview = document.getElementById('imagePreview');
+                const uploadContent = document.getElementById('imageUploadContent');
+                const previewContainer = document.getElementById('imagePreviewContainer');
+                
+                preview.src = imageData;
+                uploadContent.classList.add('hidden');
+                previewContainer.classList.remove('hidden');
+                
+                // Store uploaded image
+                currentGeneration.uploadedImage = imageData;
+                userData.uploadedImages.push({
+                    id: Date.now(),
+                    data: imageData,
+                    timestamp: new Date().toISOString(),
+                    filename: file.name
+                });
+                saveUserData();
+                
+                // Show analysis status
+                document.getElementById('analysisStatus').classList.remove('hidden');
+                document.getElementById('analysisResult').classList.add('hidden');
+                appState.isAnalyzing = true;
+                
+                try {
+                    // Analyze image with AI
+                    const analysis = await OpenAIIntegration.analyzeImage(imageData);
+                    
+                    // Hide analysis status and show result
+                    document.getElementById('analysisStatus').classList.add('hidden');
+                    document.getElementById('analysisResult').classList.remove('hidden');
+                    document.getElementById('analysisText').textContent = analysis;
+                    
+                    // Auto-fill image prompt
+                    document.getElementById('imagePrompt').value = analysis;
+                    currentGeneration.imagePrompt = analysis;
+                    
+                    updateWordCounter();
+                    showNotification('Image analyzed successfully! 🎯', 'success');
+                    
+                } catch (error) {
+                    console.error('Image analysis failed:', error);
+                    document.getElementById('analysisStatus').classList.add('hidden');
+                    showNotification('Image analysis failed. Please try again.', 'error');
+                } finally {
+                    appState.isAnalyzing = false;
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage() {
+            document.getElementById('imageUploadContent').classList.remove('hidden');
+            document.getElementById('imagePreviewContainer').classList.add('hidden');
+            document.getElementById('imageInput').value = '';
+            document.getElementById('analysisResult').classList.add('hidden');
+            currentGeneration.uploadedImage = null;
+            currentGeneration.imagePrompt = '';
+            document.getElementById('imagePrompt').value = '';
+            updateWordCounter();
+        }
+
+        // ===== VIDEO GENERATION =====
+        async function startGeneration() {
+            const videoPrompt = document.getElementById('videoPrompt').value.trim();
+            const imagePrompt = document.getElementById('imagePrompt').value.trim();
+            const activeTab = document.querySelector('.tab-content.active');
+            const isImageTab = activeTab && activeTab.id === 'imageTab';
+            
+            // Validation
+            if (!videoPrompt && !imagePrompt) {
+                showNotification('Please provide a description or upload an image', 'error');
+                return;
+            }
+            
+            if (!isImageTab && videoPrompt.split(/\s+/).length < 5) {
                 showNotification('Please provide a more detailed description (at least 5 words)', 'error');
                 return;
             }
-
-            // Check if user has trials remaining
+            
+            if (isImageTab && !currentGeneration.uploadedImage) {
+                showNotification('Please upload an image first', 'error');
+                return;
+            }
+            
+            // Check trials
             if (!userData.isPremium && userData.trialsRemaining <= 0) {
                 showNotification('No generations remaining. Subscribe to Premium for unlimited access!', 'warning');
                 showPremiumModal();
                 return;
             }
-
-            // Show loading state
-            btn.classList.add('loading');
-            btn.disabled = true;
-
-            currentGeneration.prompt = prompt;
             
-            try {
-                await showAnalysisModal(prompt);
-            } catch (error) {
-                console.error('Error starting generation:', error);
-                showNotification('Failed to start generation. Please try again.', 'error');
-            } finally {
-                btn.classList.remove('loading');
-                btn.disabled = false;
-            }
-        }
-
-        // Enhanced analysis modal with better AI interaction
-        async function showAnalysisModal(prompt) {
-            const modal = document.getElementById('analysisModal');
-            const container = document.getElementById('chatContainer');
+            // Get generation parameters
+            const style = document.getElementById('videoStyle').value;
+            const duration = parseInt(document.getElementById('videoDuration').value);
+            const quality = userData.isPremium ? '4K Ultra HD' : '1080p HD';
             
-            modal.classList.add('active');
-            container.innerHTML = '';
-            
-            // Add user message
-            addChatMessage('user', userData.name || 'You', prompt);
-            
-            // Add typing indicator
-            addTypingIndicator();
-            
-            // Simulate AI analysis
-            setTimeout(async () => {
-                removeTypingIndicator();
-                
-                const analysis = await analyzePrompt(prompt);
-                addChatMessage('ai', 'SmileX AI', analysis);
-                
-                setTimeout(() => {
-                    showStyleOptions();
-                }, 1000);
-            }, 2000);
-        }
-
-        // Enhanced chat message with better styling
-        function addChatMessage(type, name, message) {
-            const container = document.getElementById('chatContainer');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'chat-message';
-            
-            const avatarContent = type === 'ai' ? 
-                '<i class="fas fa-robot"></i>' : 
-                (userData.name ? userData.name.charAt(0).toUpperCase() : '<i class="fas fa-user"></i>');
-            
-            messageDiv.innerHTML = `
-                <div class="chat-avatar">
-                    ${avatarContent}
-                </div>
-                <div class="chat-content">
-                    <div class="chat-name">${name}</div>
-                    <div class="chat-text">${message}</div>
-                </div>
-            `;
-            
-            container.appendChild(messageDiv);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // Add typing indicator
-        function addTypingIndicator() {
-            const container = document.getElementById('chatContainer');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'chat-message typing-message';
-            typingDiv.id = 'typingIndicator';
-            
-            typingDiv.innerHTML = `
-                <div class="chat-avatar">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <div class="chat-content">
-                    <div class="chat-name">SmileX AI</div>
-                    <div class="typing-indicator">
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                    </div>
-                </div>
-            `;
-            
-            container.appendChild(typingDiv);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // Remove typing indicator
-        function removeTypingIndicator() {
-            const indicator = document.getElementById('typingIndicator');
-            if (indicator) {
-                indicator.remove();
-            }
-        }
-
-        // Enhanced analyze prompt using OpenAI API
-        async function analyzePrompt(prompt) {
-            try {
-                const response = await fetch(OPENAI_API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${OPENAI_API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: 'gpt-3.5-turbo',
-                        messages: [
-                            {
-                                role: 'system',
-                                content: 'You are an AI video generation assistant. Analyze the user\'s video request and provide helpful insights about the visual style that would work best. Be enthusiastic, creative, and concise. Focus on cinematography, mood, and visual elements. Use professional language but keep it engaging.'
-                            },
-                            {
-                                role: 'user',
-                                content: `Analyze this video request and suggest the best visual approach: "${prompt}"`
-                            }
-                        ],
-                        max_tokens: 150,
-                        temperature: 0.8
-                    })
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    return data.choices[0].message.content;
-                } else {
-                    throw new Error('API request failed');
-                }
-            } catch (error) {
-                console.error('Error calling OpenAI API:', error);
-                return `I've analyzed your request: "${prompt}". This sounds like an incredible video concept! The visual elements you've described would work beautifully with our AI technology. The composition suggests rich storytelling potential with dynamic visual elements. Let's choose the perfect style to bring your vision to life with cinematic quality.`;
-            }
-        }
-
-        // Enhanced style options with better UI
-        function showStyleOptions() {
-            const container = document.getElementById('chatContainer');
-            const optionsDiv = document.createElement('div');
-            optionsDiv.className = 'chat-message';
-            
-            optionsDiv.innerHTML = `
-                <div class="chat-avatar">
-                    <i class="fas fa-palette"></i>
-                </div>
-                <div class="chat-content">
-                    <div class="chat-name">Style Selection</div>
-                    <div class="chat-text">Choose the visual style that best matches your vision:</div>
-                    
-                    <div class="options-grid" style="margin-top: 1.5rem;">
-                        <div class="option-card" onclick="selectStyle('realistic')">
-                            <div class="option-icon"><i class="fas fa-camera"></i></div>
-                            <div class="option-title">Realistic</div>
-                            <div class="option-subtitle">Photorealistic</div>
-                        </div>
-                        <div class="option-card" onclick="selectStyle('animated')">
-                            <div class="option-icon"><i class="fas fa-paint-brush"></i></div>
-                            <div class="option-title">Animated</div>
-                            <div class="option-subtitle">Cartoon style</div>
-                        </div>
-                        <div class="option-card" onclick="selectStyle('cinematic')">
-                            <div class="option-icon"><i class="fas fa-film"></i></div>
-                            <div class="option-title">Cinematic</div>
-                            <div class="option-subtitle">Movie quality</div>
-                        </div>
-                        <div class="option-card" onclick="selectStyle('artistic')">
-                            <div class="option-icon"><i class="fas fa-palette"></i></div>
-                            <div class="option-title">Artistic</div>
-                            <div class="option-subtitle">Creative style</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            container.appendChild(optionsDiv);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // Select video style
-        function selectStyle(style) {
-            currentGeneration.style = style;
-            
-            // Update UI
-            document.querySelectorAll('.option-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            event.target.closest('.option-card').classList.add('selected');
-            
-            // Show duration options after a delay
-            setTimeout(() => {
-                showDurationOptions();
-            }, 500);
-        }
-
-        // Enhanced duration options with premium indicators
-        function showDurationOptions() {
-            const container = document.getElementById('chatContainer');
-            const durationDiv = document.createElement('div');
-            durationDiv.className = 'chat-message';
-            
-            durationDiv.innerHTML = `
-                <div class="chat-avatar">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="chat-content">
-                    <div class="chat-name">Duration Selection</div>
-                    <div class="chat-text">How long should your video be?</div>
-                    
-                    <div class="options-grid" style="margin-top: 1.5rem;">
-                        <div class="option-card" onclick="selectDuration(15)">
-                            <div class="option-icon"><i class="fas fa-bolt"></i></div>
-                            <div class="option-title">15 seconds</div>
-                            <div class="option-subtitle">Free</div>
-                        </div>
-                        <div class="option-card" onclick="selectDuration(30)">
-                            <div class="option-icon"><i class="fas fa-rocket"></i></div>
-                            <div class="option-title">30 seconds</div>
-                            <div class="option-subtitle">Free</div>
-                        </div>
-                        <div class="option-card ${!userData.isPremium ? 'premium-lock' : ''}" onclick="selectDuration(60)">
-                            <div class="option-icon"><i class="fas fa-gem"></i></div>
-                            <div class="option-title">60 seconds</div>
-                            <div class="option-subtitle">Premium</div>
-                            ${!userData.isPremium ? '<div class="premium-badge"><i class="fas fa-crown"></i></div>' : ''}
-                        </div>
-                        <div class="option-card ${!userData.isPremium ? 'premium-lock' : ''}" onclick="selectDuration(120)">
-                            <div class="option-icon"><i class="fas fa-star"></i></div>
-                            <div class="option-title">120 seconds</div>
-                            <div class="option-subtitle">Premium</div>
-                            ${!userData.isPremium ? '<div class="premium-badge"><i class="fas fa-crown"></i></div>' : ''}
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                        <button class="btn btn-secondary" onclick="closeModal('analysisModal')" style="flex: 1;">
-                            <i class="fas fa-times"></i>
-                            Cancel
-                        </button>
-                        <button class="btn btn-primary" onclick="confirmGeneration()" style="flex: 1;">
-                            <i class="fas fa-magic"></i>
-                            Generate Video
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            container.appendChild(durationDiv);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // Select duration
-        function selectDuration(duration) {
-            if ((duration > 30) && !userData.isPremium) {
+            // Check premium requirements
+            if (duration > 30 && !userData.isPremium) {
                 showNotification('Premium subscription required for longer videos', 'warning');
                 showPremiumModal();
                 return;
             }
             
-            currentGeneration.duration = duration;
-            currentGeneration.quality = userData.isPremium ? '4K Ultra HD' : '1080p HD';
+            // Prepare generation data
+            currentGeneration = {
+                id: Date.now().toString(),
+                prompt: videoPrompt,
+                imagePrompt: imagePrompt,
+                uploadedImage: currentGeneration.uploadedImage,
+                style: style,
+                duration: duration,
+                quality: quality,
+                hasWatermark: !userData.isPremium,
+                timestamp: new Date().toISOString()
+            };
             
-            // Update UI
-            document.querySelectorAll('.option-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            event.target.closest('.option-card').classList.add('selected');
+            // Start generation process
+            await generateVideoWithAI();
         }
 
-        // Confirm generation
-        function confirmGeneration() {
-            if (!currentGeneration.style) {
-                showNotification('Please select a video style', 'error');
-                return;
-            }
-            
-            if (!currentGeneration.duration) {
-                currentGeneration.duration = 15;
-            }
-            
-            closeModal('analysisModal');
-            generateVideo();
-        }
-
-        // Enhanced video generation with realistic progress
-        async function generateVideo() {
+        async function generateVideoWithAI() {
             const overlay = document.getElementById('generationOverlay');
-            const status = document.getElementById('generationStatus');
-            const progressBar = document.getElementById('progressBar');
             
             // Update display values
-            document.getElementById('promptDisplay').textContent = currentGeneration.prompt.substring(0, 40) + '...';
+            document.getElementById('promptDisplay').textContent = 
+                (currentGeneration.prompt || currentGeneration.imagePrompt).substring(0, 40) + '...';
             document.getElementById('styleDisplay').textContent = currentGeneration.style;
             document.getElementById('durationDisplay').textContent = currentGeneration.duration + 's';
-            document.getElementById('qualityDisplay').textContent = currentGeneration.quality;
+            document.getElementById('qualityDisplayGen').textContent = currentGeneration.quality;
             
             // Show generation overlay
             overlay.classList.add('active');
+            appState.isGenerating = true;
             
-            // Enhanced generation steps with realistic timing
-            const steps = [
-                { text: 'Initializing AI Engine...', progress: 5, delay: 1500 },
-                { text: 'Analyzing your prompt...', progress: 15, delay: 2000 },
-                { text: 'Processing visual elements...', progress: 30, delay: 3000 },
-                { text: 'Generating keyframes...', progress: 45, delay: 4000 },
-                { text: 'Creating transitions...', progress: 60, delay: 3500 },
-                { text: 'Adding effects and lighting...', progress: 75, delay: 3000 },
-                { text: 'Rendering in ' + currentGeneration.quality + '...', progress: 90, delay: 4000 },
-                { text: 'Finalizing video...', progress: 98, delay: 2000 },
-                { text: 'Video generated successfully!', progress: 100, delay: 1000 }
-            ];
+            // Disable generate button
+            const generateBtn = document.getElementById('generateBtn');
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
             
-            for (let i = 0; i < steps.length; i++) {
-                status.textContent = steps[i].text;
-                progressBar.style.width = steps[i].progress + '%';
-                await new Promise(resolve => setTimeout(resolve, steps[i].delay));
-            }
-            
-            setTimeout(() => {
+            try {
+                // Step 1: Enhance prompt with AI
+                updateGenerationProgress('Enhancing prompt with AI...', 10);
+                await sleep(2000);
+                
+                const enhancedPrompt = await OpenAIIntegration.enhancePrompt(
+                    currentGeneration.prompt, 
+                    currentGeneration.imagePrompt, 
+                    currentGeneration.style, 
+                    currentGeneration.duration
+                );
+                
+                currentGeneration.enhancedPrompt = enhancedPrompt;
+                
+                // Step 2: Generate video using Python integration
+                const videoResult = await PythonVideoProcessor.generateVideo(currentGeneration, userData.isPremium);
+                
+                if (videoResult.success) {
+                    currentGeneration.videoUrl = videoResult.videoUrl;
+                    currentGeneration.thumbnail = videoResult.thumbnail;
+                    currentGeneration.processingTime = videoResult.processingTime;
+                    
+                    // Add to history
+                    const newHistory = [currentGeneration, ...userData.generationHistory].slice(0, 50);
+                    userData.generationHistory = newHistory;
+                    
+                    // Update trials for non-premium users
+                    if (!userData.isPremium) {
+                        userData.trialsRemaining = Math.max(0, userData.trialsRemaining - 1);
+                    }
+                    
+                    saveUserData();
+                    
+                    // Show generated video
+                    showGeneratedVideo();
+                    updateUI();
+                    
+                    showNotification(`Video generated successfully! Quality: ${currentGeneration.quality} 🎬`, 'success');
+                } else {
+                    throw new Error('Video generation failed');
+                }
+                
+            } catch (error) {
+                console.error('Generation error:', error);
+                showNotification('Video generation failed. Please try again.', 'error');
+            } finally {
                 overlay.classList.remove('active');
-                showGeneratedVideo();
-            }, 1500);
+                appState.isGenerating = false;
+                
+                // Re-enable generate button
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = '<i class="fas fa-magic"></i> Generate Video';
+            }
         }
 
-        // Enhanced show generated video with history saving
+        function updateGenerationProgress(stage, progress) {
+            document.getElementById('generationStatus').textContent = stage;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            appState.generationProgress = {
+                stage: stage,
+                progress: progress,
+                estimatedTime: 0
+            };
+        }
+
         function showGeneratedVideo() {
             const section = document.getElementById('videoSection');
             const player = document.getElementById('videoPlayer');
+            const watermark = document.getElementById('videoWatermark');
             
-            // For demo purposes, use a sample video
-            const sampleVideos = [
-                'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
-                'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-                'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'
-            ];
-            
-            currentGeneration.videoUrl = sampleVideos[Math.floor(Math.random() * sampleVideos.length)];
             player.src = currentGeneration.videoUrl;
+            player.poster = currentGeneration.thumbnail;
+            
+            // Show/hide watermark based on user status
+            if (currentGeneration.hasWatermark) {
+                watermark.style.display = 'block';
+            } else {
+                watermark.style.display = 'none';
+            }
             
             section.classList.add('active');
             section.scrollIntoView({ behavior: 'smooth' });
-            
-            // Add to both generation and preview history
-            addToHistory(currentGeneration);
-            
-            // Update trials for non-premium users
-            if (!userData.isPremium) {
-                userData.trialsRemaining = Math.max(0, userData.trialsRemaining - 1);
-                updateTrialsDisplay();
-                saveUserData();
-            }
-            
-            showNotification(`<i class="fas fa-check-circle"></i> Video generated successfully! Quality: ${currentGeneration.quality}`, 'success');
         }
 
-        // Refresh/regenerate video
-        function refreshVideo() {
+        function regenerateVideo() {
             if (!userData.isPremium && userData.trialsRemaining <= 0) {
                 showNotification('No regenerations remaining. Subscribe to Premium for unlimited tries!', 'warning');
                 showPremiumModal();
                 return;
             }
             
-            generateVideo();
+            generateVideoWithAI();
         }
 
-        // Show download modal
+        // ===== DOWNLOAD FUNCTIONALITY =====
         function showDownloadModal() {
             if (!currentGeneration.videoUrl) {
                 showNotification('No video to download. Generate a video first.', 'error');
                 return;
             }
             
-            const modal = document.getElementById('downloadModal');
-            modal.classList.add('active');
+            // Update downloads remaining display
+            const remaining = Math.max(0, 3 - userData.dailyDownloads);
+            document.getElementById('downloadsRemaining').textContent = `Downloads remaining today: ${remaining}`;
+            
+            document.getElementById('downloadModal').classList.add('active');
         }
 
-        // Download video with premium enforcement
-        function downloadVideo(type) {
+        async function downloadVideo(type) {
             if (type === 'premium' && !userData.isPremium) {
                 showNotification('Premium subscription required for high-quality downloads', 'warning');
                 showPremiumModal();
@@ -2972,52 +2704,82 @@
             
             if (type === 'free') {
                 // Show ad first for free users
-                showAd(() => {
-                    performDownload('1080p HD with watermark');
+                showAdModal(() => {
+                    performDownload('1080p HD with SmileX watermark');
                 });
             } else {
                 performDownload('4K Ultra HD');
             }
         }
 
-        // Show ad simulation with countdown
-        function showAd(callback) {
-            showNotification('Please wait for the advertisement to complete...', 'info');
+        function showAdModal(callback) {
+            const modal = document.getElementById('adModal');
+            const countdown = document.getElementById('adCountdown');
+            const progressBar = document.getElementById('adProgressBar');
             
-            // Simulate 30-second ad with countdown
-            let countdown = 30;
+            modal.classList.add('active');
+            
+            let timeLeft = 30;
+            countdown.textContent = timeLeft;
+            progressBar.style.width = '0%';
+            
             const adInterval = setInterval(() => {
-                countdown--;
-                if (countdown <= 0) {
+                timeLeft--;
+                countdown.textContent = timeLeft;
+                progressBar.style.width = `${((30 - timeLeft) / 30) * 100}%`;
+                
+                if (timeLeft <= 0) {
                     clearInterval(adInterval);
+                    modal.classList.remove('active');
                     showNotification('Advertisement completed! Starting download...', 'success');
                     callback();
-                } else {
-                    showNotification(`Advertisement: ${countdown}s remaining... Please wait`, 'info');
                 }
             }, 1000);
         }
 
-        // Perform actual download
-        function performDownload(quality) {
-            // Simulate download
-            const link = document.createElement('a');
-            link.href = currentGeneration.videoUrl;
-            link.download = `smileX-${currentGeneration.style}-${Date.now()}.mp4`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            // Update download count for free users
-            if (!userData.isPremium) {
-                userData.dailyDownloads++;
-                saveUserData();
+        async function performDownload(quality) {
+            try {
+                appState.isDownloading = true;
+                showNotification(`Preparing ${quality} download...`, 'info');
+                
+                // Simulate download processing with Python integration
+                const downloadResult = await PythonVideoProcessor.processVideo(
+                    { url: currentGeneration.videoUrl, startTime: Date.now() },
+                    { 
+                        addWatermark: quality.includes('watermark'),
+                        quality: quality.includes('4K') ? '4K' : '1080p'
+                    }
+                );
+                
+                if (downloadResult.success) {
+                    // Create download link
+                    const link = document.createElement('a');
+                    link.href = currentGeneration.videoUrl;
+                    link.download = `smileX-${currentGeneration.style}-${Date.now()}.mp4`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Update download count for free users
+                    if (!userData.isPremium) {
+                        userData.dailyDownloads++;
+                        saveUserData();
+                    }
+                    
+                    showNotification(`Downloading ${quality} video... 📥`, 'success');
+                } else {
+                    throw new Error('Download processing failed');
+                }
+                
+            } catch (error) {
+                console.error('Download error:', error);
+                showNotification('Download failed. Please try again.', 'error');
+            } finally {
+                appState.isDownloading = false;
             }
-            
-            showNotification(`<i class="fas fa-download"></i> Downloading ${quality} video...`, 'success');
         }
 
-        // Share video
+        // ===== SHARING FUNCTIONALITY =====
         function shareVideo() {
             if (!currentGeneration.videoUrl) {
                 showNotification('No video to share. Generate a video first.', 'error');
@@ -3026,7 +2788,7 @@
             
             const shareData = {
                 title: 'Check out my AI-generated video!',
-                text: `I created this amazing video using SmileX AI: "${currentGeneration.prompt}"`,
+                text: `I created this amazing video using SmileX AI: "${currentGeneration.prompt || currentGeneration.imagePrompt}"`,
                 url: window.location.href
             };
             
@@ -3034,194 +2796,199 @@
                 navigator.share(shareData).catch(console.error);
             } else {
                 // Fallback to clipboard
-                navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`).then(() => {
-                    showNotification('Share text copied to clipboard!', 'success');
+                const shareText = `${shareData.text} ${shareData.url}`;
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showNotification('Share text copied to clipboard! 📋', 'success');
                 }).catch(() => {
                     showNotification('Unable to share. Please copy the URL manually.', 'error');
                 });
             }
         }
 
-        // Subscribe to premium
+        function addToFavorites() {
+            if (!currentGeneration.videoUrl) {
+                showNotification('No video to add to favorites.', 'error');
+                return;
+            }
+            
+            const favorite = {
+                id: currentGeneration.id,
+                timestamp: new Date().toISOString(),
+                videoData: { ...currentGeneration }
+            };
+            
+            userData.favorites.push(favorite);
+            saveUserData();
+            
+            showNotification('Video added to favorites! ❤️', 'success');
+        }
+
+        // ===== PREMIUM FUNCTIONALITY =====
         function subscribeToPremium() {
-            // In a real implementation, this would integrate with a payment processor like Stripe
             showNotification('Redirecting to secure payment...', 'info');
             
+            // Simulate payment process
             setTimeout(() => {
-                // Simulate successful payment
                 userData.isPremium = true;
                 userData.isSubscribed = true;
                 userData.subscriptionDate = new Date().toISOString();
                 userData.subscriptionId = 'sub_' + Math.random().toString(36).substr(2, 9);
-                userData.trialsRemaining = Infinity;
+                userData.trialsRemaining = Number.POSITIVE_INFINITY;
                 userData.dailyDownloads = 0;
                 
                 saveUserData();
                 updateUI();
                 closeModal('premiumModal');
                 
-                showNotification('<i class="fas fa-crown"></i> Welcome to SmileX Premium! You now have unlimited access to all features.', 'success');
+                showNotification('Welcome to SmileX Premium! You now have unlimited access to all features. 👑', 'success');
             }, 2000);
         }
 
-        // Show premium modal
         function showPremiumModal() {
             document.getElementById('premiumModal').classList.add('active');
         }
 
-        // Enhanced add to history with both preview and generation tracking
-        function addToHistory(generation) {
-            const historyItem = {
-                id: Date.now(),
-                prompt: generation.prompt,
-                style: generation.style,
-                duration: generation.duration,
-                quality: generation.quality,
-                videoUrl: generation.videoUrl,
-                timestamp: new Date().toISOString(),
-                thumbnail: `https://via.placeholder.com/320x180/${Math.floor(Math.random()*16777215).toString(16)}/ffffff?text=${encodeURIComponent(generation.style)}`,
-                tags: [generation.style, generation.duration + 's', generation.quality],
-                type: 'generated'
-            };
-            
-            userData.generationHistory.unshift(historyItem);
-            
-            // Keep only last 100 items
-            if (userData.generationHistory.length > 100) {
-                userData.generationHistory = userData.generationHistory.slice(0, 100);
-            }
-            
-            saveUserData();
-            loadHistory();
-        }
-
-        // Enhanced load and display history with preview and generation separation
-        function loadHistory() {
-            const grid = document.getElementById('historyGrid');
-            
-            // Combine and sort all history items
-            const allHistory = [
-                ...userData.generationHistory.map(item => ({...item, type: 'generated'})),
-                ...userData.previewHistory.map(item => ({...item, type: 'preview'}))
-            ].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-            
-            if (allHistory.length === 0) {
-                grid.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; color: var(--text-muted);">
-                        <i class="fas fa-video" style="font-size: 4rem; margin-bottom: 2rem; opacity: 0.3;"></i>
-                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">No videos generated yet</h3>
-                        <p style="font-size: 1.1rem;">Start creating amazing videos with AI!</p>
-                        <button class="btn btn-primary" onclick="document.getElementById('videoPrompt').focus()" style="margin-top: 2rem;">
-                            <i class="fas fa-magic"></i>
-                            Create Your First Video
-                        </button>
-                    </div>
-                `;
-                return;
-            }
-            
-            grid.innerHTML = allHistory.map(item => {
-                const isGenerated = item.type === 'generated';
-                const displayTitle = isGenerated ? item.prompt : `Preview: ${item.prompt}`;
-                const statusIcon = isGenerated ? 
-                    '<i class="fas fa-play-circle" style="color: var(--neon-green);"></i>' : 
-                    '<i class="fas fa-eye" style="color: var(--neon-blue);"></i>';
-                
-                return `
-                    <div class="history-card" onclick="${isGenerated ? `playHistoryVideo('${item.id}')` : `loadPreview('${item.id}')`}">
-                        <div class="history-thumbnail">
-                            ${statusIcon}
-                        </div>
-                        <div class="history-info">
-                            <div class="history-title">${displayTitle}</div>
-                            <div class="history-meta">
-                                <span>${isGenerated ? `${item.style} • ${item.duration}s` : `${item.wordCount} words`}</span>
-                                <span class="history-date">${new Date(item.timestamp).toLocaleDateString()}</span>
-                            </div>
-                            <div class="history-tags">
-                                ${isGenerated ? 
-                                    item.tags.map(tag => `<span class="history-tag">${tag}</span>`).join('') :
-                                    `<span class="history-tag">Preview</span><span class="history-tag">${item.wordCount} words</span>`
-                                }
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Load preview into input
-        function loadPreview(id) {
-            const item = userData.previewHistory.find(h => h.id == id);
-            if (item) {
-                document.getElementById('videoPrompt').value = item.prompt;
-                document.getElementById('videoPrompt').dispatchEvent(new Event('input'));
-                showNotification(`<i class="fas fa-eye"></i> Preview loaded: ${item.prompt.substring(0, 50)}...`, 'info');
-                
-                // Hide history
-                document.getElementById('historySection').classList.remove('active');
-                
-                // Scroll to input
-                document.querySelector('.input-section').scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        // Play history video
-        function playHistoryVideo(id) {
-            const item = userData.generationHistory.find(h => h.id == id);
-            if (item) {
-                currentGeneration = { ...item };
-                const player = document.getElementById('videoPlayer');
-                player.src = item.videoUrl;
-                
-                const section = document.getElementById('videoSection');
-                section.classList.add('active');
-                section.scrollIntoView({ behavior: 'smooth' });
-                
-                // Hide history
-                document.getElementById('historySection').classList.remove('active');
-                
-                showNotification(`<i class="fas fa-play"></i> Playing: ${item.prompt.substring(0, 50)}...`, 'info');
-            }
-        }
-
-        // Toggle history section
+        // ===== HISTORY FUNCTIONALITY =====
         function toggleHistory() {
-            const section = document.getElementById('historySection');
-            section.classList.toggle('active');
+            const modal = document.getElementById('historyModal');
+            const content = document.getElementById('historyContent');
             
-            if (section.classList.contains('active')) {
-                section.scrollIntoView({ behavior: 'smooth' });
-                loadHistory(); // Refresh history when opened
+            if (userData.generationHistory.length === 0) {
+                content.innerHTML = `
+                    <div class="text-center" style="padding: 3rem; color: var(--text-muted);">
+                        <i class="fas fa-video" style="font-size: 4rem; opacity: 0.3; margin-bottom: 1rem;"></i>
+                        <h3>No videos generated yet</h3>
+                        <p>Start creating amazing videos with AI!</p>
+                    </div>
+                `;
+            } else {
+                content.innerHTML = `
+                    <div class="history-grid">
+                        ${userData.generationHistory.map(video => `
+                            <div class="history-item" onclick="loadHistoryVideo('${video.id}')">
+                                <div class="history-thumbnail">
+                                    <i class="fas fa-play" style="font-size: 2rem;"></i>
+                                </div>
+                                <div class="history-title">${video.prompt || video.imagePrompt}</div>
+                                <div class="history-meta">
+                                    <span>${video.style} • ${video.duration}s</span>
+                                    <span>${new Date(video.timestamp).toLocaleDateString()}</span>
+                                </div>
+                                <div class="history-tags">
+                                    <span class="history-tag">${video.style}</span>
+                                    <span class="history-tag">${video.duration}s</span>
+                                    <span class="history-tag">${video.quality}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function loadHistoryVideo(videoId) {
+            const video = userData.generationHistory.find(v => v.id === videoId);
+            if (video) {
+                currentGeneration = { ...video };
+                showGeneratedVideo();
+                closeModal('historyModal');
+                showNotification('Video loaded from history', 'success');
             }
         }
 
-        // Enhanced update trials display
+        // ===== UI UPDATES =====
+        function updateUI() {
+            updateTrialsDisplay();
+            updatePremiumButton();
+            updateQualityOptions();
+            updateAdVisibility();
+        }
+
         function updateTrialsDisplay() {
-            const trialsText = document.getElementById('trialsText');
+            const statusEl = document.getElementById('userStatus');
+            const trialsEl = document.getElementById('videoInfoText');
+            const trialsInfo = document.getElementById('trialsInfo');
+            
             if (userData.isPremium) {
-                trialsText.innerHTML = '<i class="fas fa-crown" style="color: #ffd700;"></i> Premium: Unlimited generations';
-                trialsText.style.color = '#ffd700';
+                const premiumText = '✨ Premium: Unlimited generations';
+                if (statusEl) statusEl.textContent = premiumText;
+                if (trialsEl) trialsEl.textContent = premiumText;
+                if (trialsInfo) trialsInfo.textContent = 'Premium users have unlimited access';
             } else {
                 const remaining = userData.trialsRemaining;
-                trialsText.innerHTML = `<i class="fas fa-info-circle"></i> Free users: ${remaining} generation${remaining !== 1 ? 's' : ''} remaining`;
+                const freeText = `Free: ${remaining} generation${remaining !== 1 ? 's' : ''} remaining`;
+                if (statusEl) statusEl.textContent = freeText;
+                if (trialsEl) trialsEl.textContent = freeText;
+                if (trialsInfo) trialsInfo.textContent = 'Free users get 3 daily generations';
+            }
+        }
+
+        function updatePremiumButton() {
+            const btn = document.getElementById('premiumBtn');
+            const btnText = document.getElementById('premiumBtnText');
+            
+            if (userData.isSubscribed) {
+                btn.style.background = 'var(--success-gradient)';
+                btnText.innerHTML = '<i class="fas fa-crown"></i> Premium Active';
+                btn.onclick = () => showNotification('You are already subscribed to Premium! 👑', 'success');
+            } else {
+                btn.style.background = 'var(--premium-gradient)';
+                btnText.innerHTML = '<i class="fas fa-crown"></i> Go Premium';
+                btn.onclick = () => showPremiumModal();
+            }
+        }
+
+        function updateQualityOptions() {
+            const qualityDisplay = document.getElementById('qualityDisplay');
+            const durationSelect = document.getElementById('videoDuration');
+            
+            if (userData.isPremium) {
+                qualityDisplay.textContent = '4K Ultra HD (Premium)';
                 
-                if (remaining === 0) {
-                    trialsText.style.color = '#fa709a';
-                } else if (remaining === 1) {
-                    trialsText.style.color = '#fee140';
-                } else {
-                    trialsText.style.color = 'var(--text-secondary)';
+                // Enable premium duration options
+                Array.from(durationSelect.options).forEach(option => {
+                    option.disabled = false;
+                    if (option.classList.contains('premium-option')) {
+                        option.textContent = option.textContent.replace(' (Premium)', '');
+                    }
+                });
+            } else {
+                qualityDisplay.textContent = '1080p HD (Free)';
+                
+                // Disable premium duration options
+                Array.from(durationSelect.options).forEach(option => {
+                    if (option.classList.contains('premium-option')) {
+                        option.disabled = true;
+                        if (!option.textContent.includes('(Premium)')) {
+                            option.textContent += ' (Premium)';
+                        }
+                    }
+                });
+                
+                // Reset to free option if premium option is selected
+                if (durationSelect.value > 30) {
+                    durationSelect.value = '30';
                 }
             }
         }
 
-        // Close modal
+        function updateAdVisibility() {
+            const adContainer = document.getElementById('adContainer');
+            if (userData.isPremium) {
+                adContainer.style.display = 'none';
+            } else {
+                adContainer.style.display = 'flex';
+            }
+        }
+
+        // ===== MODAL MANAGEMENT =====
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
         }
 
-        // Enhanced notification system with icon support
+        // ===== NOTIFICATION SYSTEM =====
         function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
             
@@ -3239,22 +3006,163 @@
             }, 5000);
         }
 
-        // Initialize character counter with word count
-        document.getElementById('videoPrompt').dispatchEvent(new Event('input'));
-        
-        // Add smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+        // ===== GOOGLE ADS INTEGRATION =====
+        function initializeGoogleAds() {
+            if (CONFIG.GOOGLE_ADS_CLIENT !== 'ca-pub-XXXXXXXXXX') {
+                try {
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                } catch (error) {
+                    console.error('Google Ads initialization error:', error);
+                }
+            }
+        }
+
+        // ===== UTILITY FUNCTIONS =====
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function formatFileSize(bytes) {
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            if (bytes === 0) return '0 Bytes';
+            const i = Math.floor(Math.log(bytes) / Math.log(1024));
+            return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        function generateUniqueId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // ===== ERROR HANDLING =====
+        window.addEventListener('error', function(event) {
+            console.error('Application error:', event.error);
+            showNotification('An unexpected error occurred. Please refresh the page.', 'error');
+        });
+
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('Unhandled promise rejection:', event.reason);
+            showNotification('A network error occurred. Please check your connection.', 'error');
+        });
+
+        // ===== PERFORMANCE MONITORING =====
+        window.addEventListener('load', () => {
+            const loadTime = performance.now();
+            console.log(`SmileX AI loaded in ${loadTime.toFixed(2)}ms`);
+            
+            // Initialize performance observer
+            if ('PerformanceObserver' in window) {
+                const observer = new PerformanceObserver((list) => {
+                    for (const entry of list.getEntries()) {
+                        if (entry.entryType === 'navigation') {
+                            console.log(`Page load time: ${entry.loadEventEnd - entry.loadEventStart}ms`);
+                        }
+                    }
+                });
+                observer.observe({ entryTypes: ['navigation'] });
+            }
+        });
+
+        // ===== KEYBOARD SHORTCUTS =====
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + Enter to generate
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                if (!appState.isGenerating) {
+                    startGeneration();
+                }
+            }
+            
+            // Escape to close modals
+            if (e.key === 'Escape') {
+                const activeModal = document.querySelector('.modal.active');
+                if (activeModal) {
+                    activeModal.classList.remove('active');
+                }
+            }
+            
+            // Ctrl/Cmd + H for history
+            if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
+                e.preventDefault();
+                toggleHistory();
+            }
+        });
+
+        // ===== ACCESSIBILITY ENHANCEMENTS =====
+        function enhanceAccessibility() {
+            // Add ARIA labels
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                if (!button.getAttribute('aria-label') && button.textContent) {
+                    button.setAttribute('aria-label', button.textContent.trim());
                 }
             });
-        });
+            
+            // Add focus indicators
+            const focusableElements = document.querySelectorAll('button, input, textarea, select, [tabindex]');
+            focusableElements.forEach(element => {
+                element.addEventListener('focus', function() {
+                    this.style.outline = '2px solid var(--neon-blue)';
+                    this.style.outlineOffset = '2px';
+                });
+                
+                element.addEventListener('blur', function() {
+                    this.style.outline = '';
+                    this.style.outlineOffset = '';
+                });
+            });
+        }
+
+        // Initialize accessibility enhancements
+        document.addEventListener('DOMContentLoaded', enhanceAccessibility);
+
+        // ===== ANALYTICS AND TRACKING =====
+        function trackEvent(eventName, eventData = {}) {
+            // Placeholder for analytics tracking
+            console.log('Analytics Event:', eventName, eventData);
+            
+            // Example: Google Analytics 4
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, eventData);
+            }
+        }
+
+        // Track user interactions
+        function setupAnalytics() {
+            // Track video generations
+            const originalStartGeneration = startGeneration;
+            startGeneration = function() {
+                trackEvent('video_generation_started', {
+                    style: document.getElementById('videoStyle').value,
+                    duration: document.getElementById('videoDuration').value,
+                    user_type: userData.isPremium ? 'premium' : 'free'
+                });
+                return originalStartGeneration.apply(this, arguments);
+            };
+            
+            // Track downloads
+            const originalDownloadVideo = downloadVideo;
+            downloadVideo = function(type) {
+                trackEvent('video_download_started', {
+                    download_type: type,
+                    user_type: userData.isPremium ? 'premium' : 'free'
+                });
+                return originalDownloadVideo.apply(this, arguments);
+            };
+        }
+
+        // Initialize analytics
+        document.addEventListener('DOMContentLoaded', setupAnalytics);
+
+        // ===== FINAL INITIALIZATION =====
+        console.log('SmileX AI Video Generator - Complete Edition Loaded');
+        console.log('Features: AI Video Generation, Image Analysis, Premium Subscriptions, Watermarking, Google Ads Integration');
+        console.log('Technologies: SMILEX OPERATIONS');
     </script>
 </body>
 </html>
