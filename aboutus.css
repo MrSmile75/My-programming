@@ -49,6 +49,8 @@
             overflow: auto;
             height: 100vh;
             line-height: 1.6;
+                user-select: none;
+          
             
         }
 

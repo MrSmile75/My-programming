@@ -11,6 +11,8 @@
             cursor: pointer;
             height: 100vh;
             color: white;
+                user-select: none;
+            
         }
 
 

@@ -23,6 +23,8 @@
             background: var(--bg-gradient);
             min-height: 100vh;
             color: white;
+                user-select: none;
+           
         }
 
         .hidden {

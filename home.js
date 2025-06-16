@@ -743,5 +743,4 @@ attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStree
             }
         });
 
-        // Disable right-click context menu
-        document.addEventListener('contextmenu', event => event.preventDefault());
+  

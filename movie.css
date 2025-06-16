@@ -25,6 +25,8 @@
               font-family: 'Orbitron', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
+                user-select: none;
+           
         }
 
 

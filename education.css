@@ -25,6 +25,8 @@
         color: var(--text-primary);
         font-family: 'Orbitron', sans-serif;
         line-height: 1.6;
+            user-select: none;
+           
         overflow-x: hidden;
     }
 

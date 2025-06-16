@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmileX AI - Complete Video Generator</title>
-    
-    <!-- External Dependencies -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Google Ads Script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
-    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; object-src 'none';">
     <style>
         /* ===== CSS VARIABLES ===== */
         :root {
@@ -56,6 +53,8 @@
             line-height: 1.6;
             overflow-x: hidden;
             min-height: 100vh;
+                user-select: none;
+           
         }
 
         /* ===== ANIMATED BACKGROUND ===== */
@@ -1803,10 +1802,7 @@
                     </div>
                 </div>
                 
-                <button class="btn btn-premium w-full btn-lg" onclick="subscribeToPremium()">
-                    <i class="fas fa-crown"></i>
-                    Subscribe to Premium
-                </button>
+              
             </div>
         </div>
     </div>

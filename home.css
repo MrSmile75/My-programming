@@ -26,6 +26,8 @@
             color: var(--text-color);
             overflow-x: hidden;
             perspective: 1000px;
+                user-select: none;
+            
         }
 
         /* Map Styles */

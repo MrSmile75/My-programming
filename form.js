@@ -1,5 +1,4 @@
-        // Disable right-click context menu
-        document.addEventListener('contextmenu', event => event.preventDefault());
+
 
         // Quiz State
         let currentQuestion = 1;

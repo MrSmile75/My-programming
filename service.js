@@ -1,4 +1,31 @@
-    // Background bubble animation
+      document.addEventListener('contextmenu', event => event.preventDefault());
+
+             // Disable F12, Ctrl+U, and Ctrl+Shift+I
+        document.addEventListener("keydown", function(e) {
+            // F12, Ctrl+Shift+I, and Ctrl+U
+            if ((e.key === 'F12') || 
+                (e.ctrlKey && (e.key === 'u' || e.key === 'U')) || 
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i'))) {
+                e.preventDefault();
+              
+            }
+        });
+
+        // Detect DevTools opening (using resize event)
+        let devtoolsOpen = false;
+        setInterval(function() {
+            const width = window.outerWidth - window.innerWidth > 100;
+            const height = window.outerHeight - window.innerHeight > 100;
+            if ((width || height) && !devtoolsOpen) {
+                devtoolsOpen = true;
+               
+            }
+            if (!(width || height) && devtoolsOpen) {
+                devtoolsOpen = false;
+            }
+        }, 1000);
+   
+   // Background bubble animation
     function createBubbles() {
         const backgroundAnimation = document.getElementById('backgroundAnimation');
         const bubbleCount = 40;

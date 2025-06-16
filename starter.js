@@ -131,9 +131,7 @@
             });
         });
 
-        // Disable right-click context menu
-        document.addEventListener('contextmenu', event => event.preventDefault());
-
+  
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
