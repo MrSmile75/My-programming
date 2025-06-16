@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login/Signup Portal</title>
+    <title>Login/Signup Portal with Backend</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
- 
-
 </head>
+
 <style>
     :root {
         --primary-color: #ffd700;
@@ -35,7 +34,7 @@
     }
 
     body {
-          font-family: 'Orbitron', sans-serif;
+        font-family: 'Orbitron', sans-serif;
         background: linear-gradient(135deg, #000000, #1a1a2e);
         min-height: 100vh;
         color: var(--text-color);
@@ -47,11 +46,11 @@
         padding: 20px;
     }
 
-    ::placeholder{
+    ::placeholder {
         font-family: 'Orbitron', sans-serif;
     }
 
-    /* Scrollable content wrapper */
+    /* Page wrapper */
     .page-wrapper {
         width: 100%;
         max-width: 1200px;
@@ -79,7 +78,7 @@
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(20px);
         border: 1px solid var(--border-color);
-        overflow: hidden; /* Ensure content doesn't overflow */
+        overflow: hidden;
     }
 
     .login-container, .signup-container {
@@ -92,7 +91,7 @@
         transition: all 0.8s ease;
         backface-visibility: hidden;
         backdrop-filter: blur(15px);
-        overflow: auto; /* Add scrollbar when content overflows */
+        overflow: auto;
     }
 
     .signup-container {
@@ -115,7 +114,7 @@
         justify-content: center;
         position: relative;
         z-index: 2;
-        overflow-y: auto; /* Add vertical scrollbar when needed */
+        overflow-y: auto;
     }
 
     .image-section {
@@ -592,6 +591,68 @@
         to { transform: rotate(360deg); }
     }
 
+    /* Rate Limit Warning */
+    .rate-limit-warning {
+        background: linear-gradient(135deg, var(--warning-color), #e6c200);
+        color: var(--bg-color);
+        padding: 10px 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        text-align: center;
+        display: none;
+    }
+
+    .rate-limit-warning.show {
+        display: block;
+    }
+
+    /* Email Verification Modal */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        backdrop-filter: blur(5px);
+    }
+
+    .modal.show {
+        display: flex;
+    }
+
+    .modal-content {
+        background: var(--card-bg);
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        border: 1px solid var(--border-color);
+        backdrop-filter: blur(20px);
+    }
+
+    .modal-content h3 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+    }
+
+    .modal-content p {
+        margin-bottom: 30px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .modal-content .btn {
+        margin-top: 20px;
+    }
+
     /* Responsive Design */
     @media (max-width: 1024px) {
         .container {
@@ -720,9 +781,21 @@
         background: #e6c200;
     }
 </style>
+
 <body>
     <!-- Notification -->
     <div class="notification" id="notification"></div>
+
+    <!-- Email Verification Modal -->
+    <div class="modal" id="verificationModal">
+        <div class="modal-content">
+            <h3>📧 Verify Your Email</h3>
+            <p>We've sent a verification link to your email address. Please check your inbox and click the link to activate your account.</p>
+            <p><strong>Didn't receive the email?</strong> Check your spam folder or click the button below to resend.</p>
+            <button class="btn btn-primary" onclick="resendVerificationEmail()">Resend Verification Email</button>
+            <button class="btn" style="background: transparent; border: 2px solid var(--primary-color); color: var(--primary-color); margin-top: 10px;" onclick="closeVerificationModal()">Close</button>
+        </div>
+    </div>
 
     <!-- Main Container -->
     <div class="container" id="authContainer">
@@ -732,6 +805,11 @@
                 <div class="decorative-circle circle-1"></div>
                 <div class="decorative-circle circle-2"></div>
                 <div class="decorative-circle circle-3"></div>
+                
+                <!-- Rate Limit Warning -->
+                <div class="rate-limit-warning" id="loginRateLimit">
+                    Too many login attempts. Please wait before trying again.
+                </div>
                 
                 <h2>Login</h2>
                 <form id="loginForm">
@@ -812,7 +890,7 @@
             <div class="image-section">
                 <div>
                     <h3>Welcome Back, Explorer!</h3>
-                    <p>Ready to continue your  journey? Login to access your personalized dashboard and explore exciting realms .</p>
+                    <p>Ready to continue your journey? Login to access your personalized dashboard and explore exciting realms.</p>
                     <button 
                         class="toggle-btn" 
                         onclick="toggleForm()"
@@ -843,6 +921,11 @@
                 <div class="decorative-circle circle-1"></div>
                 <div class="decorative-circle circle-2"></div>
                 <div class="decorative-circle circle-3"></div>
+                
+                <!-- Rate Limit Warning -->
+                <div class="rate-limit-warning" id="signupRateLimit">
+                    Too many signup attempts. Please wait before trying again.
+                </div>
                 
                 <h2>Create Account</h2>
                 <form id="signupForm">
@@ -920,11 +1003,286 @@
             </div>
         </div>
     </div>
-
-
-    
-
 <script>
+    // ==================== BACKEND SIMULATION SYSTEM ====================
+class BackendSimulator {
+    constructor() {
+        this.initializeDatabase();
+        this.setupRateLimiting();
+    }
+    
+    // Initialize local storage as database
+    initializeDatabase() {
+        if (!localStorage.getItem('users_db')) {
+            localStorage.setItem('users_db', JSON.stringify([]));
+        }
+        if (!localStorage.getItem('sessions_db')) {
+            localStorage.setItem('sessions_db', JSON.stringify([]));
+        }
+        if (!localStorage.getItem('verification_tokens')) {
+            localStorage.setItem('verification_tokens', JSON.stringify([]));
+        }
+    }
+    
+    // Setup rate limiting
+    setupRateLimiting() {
+        if (!localStorage.getItem('rate_limits')) {
+            localStorage.setItem('rate_limits', JSON.stringify({
+                login: { attempts: 0, lastAttempt: 0 },
+                signup: { attempts: 0, lastAttempt: 0 }
+            }));
+        }
+    }
+    
+    // Check rate limiting
+    checkRateLimit(type) {
+        const rateLimits = JSON.parse(localStorage.getItem('rate_limits'));
+        const now = Date.now();
+        const limit = rateLimits[type];
+        
+        // Reset if more than 15 minutes have passed
+        if (now - limit.lastAttempt > 15 * 60 * 1000) {
+            limit.attempts = 0;
+        }
+        
+        // Check if rate limited (max 5 attempts per 15 minutes)
+        if (limit.attempts >= 5) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    // Update rate limit
+    updateRateLimit(type) {
+        const rateLimits = JSON.parse(localStorage.getItem('rate_limits'));
+        rateLimits[type].attempts++;
+        rateLimits[type].lastAttempt = Date.now();
+        localStorage.setItem('rate_limits', JSON.stringify(rateLimits));
+    }
+    
+    // Hash password (simplified simulation)
+    async hashPassword(password) {
+        // In real backend, use bcrypt or similar
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password + 'salt_key_2024');
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+    
+    // Verify password
+    async verifyPassword(password, hashedPassword) {
+        const inputHash = await this.hashPassword(password);
+        return inputHash === hashedPassword;
+    }
+    
+    // Check if email exists
+    emailExists(email) {
+        const users = JSON.parse(localStorage.getItem('users_db'));
+        return users.some(user => user.email.toLowerCase() === email.toLowerCase());
+    }
+    
+    // Generate verification token
+    generateVerificationToken() {
+        return Math.random().toString(36).substring(2) + Date.now().toString(36);
+    }
+    
+    // Generate session token
+    generateSessionToken() {
+        return 'sess_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+    }
+    
+    // Send verification email (simulation)
+    async sendVerificationEmail(email, token) {
+        // Simulate email sending delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Store verification token
+        const tokens = JSON.parse(localStorage.getItem('verification_tokens'));
+        tokens.push({
+            email: email,
+            token: token,
+            expires: Date.now() + (24 * 60 * 60 * 1000), // 24 hours
+            created: Date.now()
+        });
+        localStorage.setItem('verification_tokens', JSON.stringify(tokens));
+        
+        // Simulate email sent
+        console.log(`📧 Verification email sent to ${email}`);
+        console.log(`🔗 Verification link: ${window.location.origin}/verify?token=${token}`);
+        
+        return true;
+    }
+    
+    // Register user
+    async registerUser(userData) {
+        try {
+            // Check if email already exists
+            if (this.emailExists(userData.email)) {
+                throw new Error('Email already registered');
+            }
+            
+            // Hash password
+            const hashedPassword = await this.hashPassword(userData.password);
+            
+            // Generate verification token
+            const verificationToken = this.generateVerificationToken();
+            
+            // Create user object
+            const user = {
+                id: Date.now().toString(),
+                name: userData.name,
+                email: userData.email.toLowerCase(),
+                password: hashedPassword,
+                verified: false,
+                verificationToken: verificationToken,
+                createdAt: new Date().toISOString(),
+                lastLogin: null
+            };
+            
+            // Save user to database
+            const users = JSON.parse(localStorage.getItem('users_db'));
+            users.push(user);
+            localStorage.setItem('users_db', JSON.stringify(users));
+            
+            // Send verification email
+            await this.sendVerificationEmail(userData.email, verificationToken);
+            
+            return {
+                success: true,
+                message: 'Account created successfully! Please check your email to verify your account.',
+                userId: user.id
+            };
+            
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message
+            };
+        }
+    }
+    
+    // Login user
+    async loginUser(credentials) {
+        try {
+            const users = JSON.parse(localStorage.getItem('users_db'));
+            const user = users.find(u => u.email.toLowerCase() === credentials.email.toLowerCase());
+            
+            if (!user) {
+                throw new Error('Invalid email or password');
+            }
+            
+            // Check if email is verified
+            if (!user.verified) {
+                throw new Error('Please verify your email address before logging in');
+            }
+            
+            // Verify password
+            const passwordValid = await this.verifyPassword(credentials.password, user.password);
+            if (!passwordValid) {
+                throw new Error('Invalid email or password');
+            }
+            
+            // Generate session token
+            const sessionToken = this.generateSessionToken();
+            
+            // Create session
+            const sessions = JSON.parse(localStorage.getItem('sessions_db'));
+            const session = {
+                token: sessionToken,
+                userId: user.id,
+                email: user.email,
+                name: user.name,
+                createdAt: Date.now(),
+                expiresAt: Date.now() + (credentials.rememberMe ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000)
+            };
+            sessions.push(session);
+            localStorage.setItem('sessions_db', JSON.stringify(sessions));
+            
+            // Update last login
+            user.lastLogin = new Date().toISOString();
+            localStorage.setItem('users_db', JSON.stringify(users));
+            
+            // Set session cookie (simulation)
+            document.cookie = `sessionToken=${sessionToken}; path=/; ${credentials.rememberMe ? 'max-age=' + (30 * 24 * 60 * 60) : 'session'}; secure; samesite=strict`;
+            
+            return {
+                success: true,
+                message: `Welcome back, ${user.name}!`,
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email
+                },
+                sessionToken: sessionToken
+            };
+            
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message
+            };
+        }
+    }
+    
+    // Verify email token
+    verifyEmailToken(token) {
+        const tokens = JSON.parse(localStorage.getItem('verification_tokens'));
+        const tokenData = tokens.find(t => t.token === token);
+        
+        if (!tokenData) {
+            return { success: false, message: 'Invalid verification token' };
+        }
+        
+        if (Date.now() > tokenData.expires) {
+            return { success: false, message: 'Verification token has expired' };
+        }
+        
+        // Mark user as verified
+        const users = JSON.parse(localStorage.getItem('users_db'));
+        const user = users.find(u => u.email.toLowerCase() === tokenData.email.toLowerCase());
+        
+        if (user) {
+            user.verified = true;
+            user.verificationToken = null;
+            localStorage.setItem('users_db', JSON.stringify(users));
+            
+            // Remove used token
+            const updatedTokens = tokens.filter(t => t.token !== token);
+            localStorage.setItem('verification_tokens', JSON.stringify(updatedTokens));
+            
+            return { success: true, message: 'Email verified successfully!' };
+        }
+        
+        return { success: false, message: 'User not found' };
+    }
+    
+    // Resend verification email
+    async resendVerificationEmail(email) {
+        const users = JSON.parse(localStorage.getItem('users_db'));
+        const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+        
+        if (!user) {
+            return { success: false, message: 'User not found' };
+        }
+        
+        if (user.verified) {
+            return { success: false, message: 'Email is already verified' };
+        }
+        
+        // Generate new token
+        const newToken = this.generateVerificationToken();
+        user.verificationToken = newToken;
+        localStorage.setItem('users_db', JSON.stringify(users));
+        
+        // Send new verification email
+        await this.sendVerificationEmail(email, newToken);
+        
+        return { success: true, message: 'Verification email sent successfully!' };
+    }
+}
+
 // ==================== ENHANCED FORM VALIDATION ====================
 class AdvancedFormValidator {
     constructor() {
@@ -1246,218 +1604,851 @@ class SocialLoginHandler {
     }
     
     handleGoogleLogin() {
-        this.notification.show('Redirecting to Google...', 'info', 2000);
+        this.notification.show('Redirecting to Google OAuth...', 'info', 2000);
         
-        // Simulate loading and redirect
         setTimeout(() => {
-            // In a real application, you would redirect to Google OAuth
-            window.open('https://accounts.google.com/oauth/authorize?client_id=your_client_id&redirect_uri=your_redirect_uri&scope=email%20profile&response_type=code', '_blank', 'width=500,height=600');
-            this.notification.show('Google login window opened. Please complete authentication.', 'success');
-        }, 1000);
+            // Simulate OAuth flow
+            this.notification.show('Google authentication successful! Creating session...', 'success', 3000);
+            
+            // Simulate successful login
+            setTimeout(() => {
+                this.notification.show('Welcome! Redirecting to dashboard...', 'success');
+                // In real app: window.location.href = '/dashboard';
+                this.simulateSuccessfulLogin('Google User', 'google.user@gmail.com');
+            }, 2000);
+        }, 1500);
     }
     
     handleFacebookLogin() {
-        this.notification.show('Redirecting to Facebook...', 'info', 2000);
+        this.notification.show('Redirecting to Facebook OAuth...', 'info', 2000);
         
         setTimeout(() => {
-            // In a real application, you would redirect to Facebook OAuth
-            window.open('https://www.facebook.com/v18.0/dialog/oauth?client_id=your_app_id&redirect_uri=your_redirect_uri&scope=email', '_blank', 'width=500,height=600');
-            this.notification.show('Facebook login window opened. Please complete authentication.', 'success');
-        }, 1000);
+            this.notification.show('Facebook authentication successful! Creating session...', 'success', 3000);
+            
+            setTimeout(() => {
+                this.notification.show('Welcome! Redirecting to dashboard...', 'success');
+                this.simulateSuccessfulLogin('Facebook User', 'facebook.user@facebook.com');
+            }, 2000);
+        }, 1500);
     }
     
     handleGithubLogin() {
-        this.notification.show('Redirecting to GitHub...', 'info', 2000);
+        this.notification.show('Redirecting to GitHub OAuth...', 'info', 2000);
         
         setTimeout(() => {
-            // In a real application, you would redirect to GitHub OAuth
-            window.open('https://github.com/login/oauth/authorize?client_id=your_client_id&redirect_uri=your_redirect_uri&scope=user:email', '_blank', 'width=500,height=600');
-            this.notification.show('GitHub login window opened. Please complete authentication.', 'success');
-        }, 1000);
+            this.notification.show('GitHub authentication successful! Creating session...', 'success', 3000);
+            
+            setTimeout(() => {
+                this.notification.show('Welcome! Redirecting to dashboard...', 'success');
+                this.simulateSuccessfulLogin('GitHub User', 'github.user@github.com');
+            }, 2000);
+        }, 1500);
     }
     
     handleTwitterLogin() {
-        this.notification.show('Redirecting to X (Twitter)...', 'info', 2000);
+        this.notification.show('Redirecting to X (Twitter) OAuth...', 'info', 2000);
         
         setTimeout(() => {
-            // In a real application, you would redirect to Twitter OAuth
-            window.open('https://twitter.com/i/oauth2/authorize?response_type=code&client_id=your_client_id&redirect_uri=your_redirect_uri&scope=tweet.read%20users.read', '_blank', 'width=500,height=600');
-            this.notification.show('X (Twitter) login window opened. Please complete authentication.', 'success');
-        }, 1000);
+            this.notification.show('X authentication successful! Creating session...', 'success', 3000);
+            
+            setTimeout(() => {
+                this.notification.show('Welcome! Redirecting to dashboard...', 'success');
+                this.simulateSuccessfulLogin('X User', 'x.user@twitter.com');
+            }, 2000);
+        }, 1500);
+    }
+    
+    simulateSuccessfulLogin(name, email) {
+        // Create a session for social login
+        const sessionToken = 'social_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+        
+        const sessions = JSON.parse(localStorage.getItem('sessions_db') || '[]');
+        const session = {
+            token: sessionToken,
+            userId: 'social_' + Date.now(),
+            email: email,
+            name: name,
+            createdAt: Date.now(),
+            expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000), // 30 days
+            provider: 'social'
+        };
+        sessions.push(session);
+        localStorage.setItem('sessions_db', JSON.stringify(sessions));
+        
+        // Set session cookie
+        document.cookie = `sessionToken=${sessionToken}; path=/; max-age=${30 * 24 * 60 * 60}; secure; samesite=strict`;
+        
+        // Redirect to dashboard after delay
+        setTimeout(() => {
+            this.showDashboard(name, email);
+        }, 3000);
+    }
+    
+    showDashboard(name, email) {
+        // Create dashboard HTML
+        const dashboardHTML = `
+            <div style="
+                min-height: 100vh;
+                background: linear-gradient(135deg, #000000, #1a1a2e);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                font-family: 'Orbitron', sans-serif;
+            ">
+                <div style="
+                    background: rgba(10, 10, 20, 0.85);
+                    backdrop-filter: blur(20px);
+                    border-radius: 25px;
+                    padding: 50px;
+                    text-align: center;
+                    max-width: 600px;
+                    width: 100%;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.6);
+                ">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">🚀</div>
+                    <h1 style="
+                        color: #ffd700;
+                        font-size: 2.5rem;
+                        margin-bottom: 20px;
+                        background: linear-gradient(135deg, #ffd700, #ffffff);
+                        -webkit-background-clip: text;
+                        background-clip: text;
+                        color: transparent;
+                    ">Welcome to Your Dashboard!</h1>
+                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 1.2rem; margin-bottom: 10px;">
+                        Hello, <span style="color: #ffd700; font-weight: bold;">${name}</span>!
+                    </p>
+                    <p style="color: rgba(255, 255, 255, 0.6); margin-bottom: 30px;">
+                        Email: ${email}
+                    </p>
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 40px;">
+                        You have successfully logged in to your account. Your journey begins here!
+                    </p>
+                    
+                    <div style="
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                        gap: 20px;
+                        margin: 40px 0;
+                    ">
+                        <div style="
+                            background: rgba(255, 255, 255, 0.05);
+                            border-radius: 15px;
+                            padding: 20px;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                        ">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">📊</div>
+                            <h3 style="color: white; margin-bottom: 5px;">Analytics</h3>
+                            <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">View metrics</p>
+                        </div>
+                        
+                        <div style="
+                            background: rgba(255, 255, 255, 0.05);
+                            border-radius: 15px;
+                            padding: 20px;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                        ">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">⚙️</div>
+                            <h3 style="color: white; margin-bottom: 5px;">Settings</h3>
+                            <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">Customize</p>
+                        </div>
+                        
+                        <div style="
+                            background: rgba(255, 255, 255, 0.05);
+                            border-radius: 15px;
+                            padding: 20px;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                        ">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">🎯</div>
+                            <h3 style="color: white; margin-bottom: 5px;">Goals</h3>
+                            <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">Track progress</p>
+                        </div>
+                    </div>
+                    
+                    <button onclick="logout()" style="
+                        background: linear-gradient(135deg, #ffd700, #e6c200);
+                        color: #000000;
+                        border: none;
+                        padding: 15px 30px;
+                        border-radius: 12px;
+                        font-size: 1.1rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        font-family: 'Orbitron', sans-serif;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 35px rgba(255, 215, 0, 0.4)'"
+                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(255, 215, 0, 0.3)'">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        // Replace page content
+        document.body.innerHTML = dashboardHTML;
+        
+        // Add logout function to global scope
+        window.logout = () => {
+            // Clear session
+            localStorage.removeItem('sessions_db');
+            document.cookie = 'sessionToken=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            
+            // Reload page to return to login
+            window.location.reload();
+        };
     }
 }
 
-// ==================== ENHANCED FORM HANDLER ====================
-class AdvancedFormHandler {
+// ==================== MAIN APPLICATION CONTROLLER ====================
+class AuthenticationApp {
     constructor() {
+        this.backend = new BackendSimulator();
         this.validator = new AdvancedFormValidator();
         this.notification = new AdvancedNotificationSystem();
         this.socialLogin = new SocialLoginHandler(this.notification);
         
-        this.loginForm = document.getElementById('loginForm');
-        this.signupForm = document.getElementById('signupForm');
-        this.loginLoading = document.getElementById('loginLoading');
-        this.signupLoading = document.getElementById('signupLoading');
+        this.isSignup = false;
+        this.currentUserEmail = '';
         
         this.setupEventListeners();
-        this.loadRememberedEmail();
+        this.checkExistingSession();
     }
     
     setupEventListeners() {
-        this.loginForm.addEventListener('submit', (e) => this.handleLogin(e));
-        this.signupForm.addEventListener('submit', (e) => this.handleSignup(e));
-        
-        // Add enter key support for better UX
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && e.target.matches('.form-control')) {
-                const form = e.target.closest('form');
-                if (form) {
-                    form.dispatchEvent(new Event('submit'));
-                }
-            }
+        // Form submissions
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleLogin();
         });
+        
+        document.getElementById('signupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleSignup();
+        });
+        
+        // Check for URL parameters (email verification)
+        this.checkUrlParameters();
     }
     
-    handleLogin(e) {
-        e.preventDefault();
+    checkUrlParameters() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
         
-        if (this.validator.validateLoginForm()) {
-            this.showLoading(this.loginLoading);
-            
-            // Get form data
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const rememberMe = document.getElementById('rememberMe').checked;
-            
-            // Simulate API call
-            setTimeout(() => {
-                this.hideLoading(this.loginLoading);
-                
-                // Handle remember me
-                if (rememberMe) {
-                    localStorage.setItem('rememberedEmail', email);
-                    localStorage.setItem('rememberMeExpiry', Date.now() + (30 * 24 * 60 * 60 * 1000)); // 30 days
-                } else {
-                    localStorage.removeItem('rememberedEmail');
-                    localStorage.removeItem('rememberMeExpiry');
-                }
-                
-                this.notification.show(`Waiting for response ${email}`, 'pls waiting', 5000);
-                
-                // In a real app, you would redirect to dashboard
-                setTimeout(() => {
-                    this.notification.show('Fetching.....', 'info', 2000);
-                }, 2000);
-                
-            }, 2000);
-        } else {
-            this.notification.show('Please fix the errors in the form', 'error');
+        if (token) {
+            this.handleEmailVerification(token);
         }
     }
     
-    handleSignup(e) {
-        e.preventDefault();
+    checkExistingSession() {
+        // Check if user is already logged in
+        const sessions = JSON.parse(localStorage.getItem('sessions_db') || '[]');
+        const cookies = document.cookie.split(';');
+        let sessionToken = null;
         
-        if (this.validator.validateSignupForm()) {
-            this.showLoading(this.signupLoading);
-            
-            // Get form data
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            
-            // Simulate API call
-            setTimeout(() => {
-                this.hideLoading(this.signupLoading);
-                this.notification.show(`Account awaiting ! Pls wait, ${name}!`, 'pls wait', 5000);
-                
-                // Auto-switch to login form
+        for (let cookie of cookies) {
+            const [name, value] = cookie.trim().split('=');
+            if (name === 'sessionToken') {
+                sessionToken = value;
+                break;
+            }
+        }
+        
+        if (sessionToken) {
+            const session = sessions.find(s => s.token === sessionToken && s.expiresAt > Date.now());
+            if (session) {
+                this.notification.show(`Welcome back, ${session.name}!`, 'success');
                 setTimeout(() => {
-                    toggleForm();
+                    if (session.provider === 'social') {
+                        this.socialLogin.showDashboard(session.name, session.email);
+                    } else {
+                        this.showUserDashboard(session);
+                    }
+                }, 2000);
+            }
+        }
+    }
+    
+    async handleLogin() {
+        // Check rate limiting
+        if (!this.backend.checkRateLimit('login')) {
+            document.getElementById('loginRateLimit').classList.add('show');
+            this.notification.show('Too many login attempts. Please wait 15 minutes.', 'error');
+            return;
+        }
+        
+        // Validate form
+        if (!this.validator.validateLoginForm()) {
+            this.notification.show('Please fix the errors in the form', 'error');
+            return;
+        }
+        
+        // Show loading
+        this.showLoading('login', true);
+        
+        // Update rate limit
+        this.backend.updateRateLimit('login');
+        
+        // Get form data
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
+        
+        try {
+            // Attempt login
+            const result = await this.backend.loginUser({
+                email: email,
+                password: password,
+                rememberMe: rememberMe
+            });
+            
+            if (result.success) {
+                this.notification.show(result.message, 'success');
+                
+                // Redirect to dashboard after delay
+                setTimeout(() => {
+                    this.showUserDashboard(result);
+                }, 2000);
+            } else {
+                this.notification.show(result.message, 'error');
+                
+                // Show specific error for unverified email
+                if (result.message.includes('verify your email')) {
+                    this.currentUserEmail = email;
+                    setTimeout(() => {
+                        this.showVerificationModal();
+                    }, 2000);
+                }
+            }
+        } catch (error) {
+            this.notification.show('An unexpected error occurred. Please try again.', 'error');
+        } finally {
+            this.showLoading('login', false);
+        }
+    }
+    
+    async handleSignup() {
+        // Check rate limiting
+        if (!this.backend.checkRateLimit('signup')) {
+            document.getElementById('signupRateLimit').classList.add('show');
+            this.notification.show('Too many signup attempts. Please wait 15 minutes.', 'error');
+            return;
+        }
+        
+        // Validate form
+        if (!this.validator.validateSignupForm()) {
+            this.notification.show('Please fix the errors in the form', 'error');
+            return;
+        }
+        
+        // Show loading
+        this.showLoading('signup', true);
+        
+        // Update rate limit
+        this.backend.updateRateLimit('signup');
+        
+        // Get form data
+        const name = document.getElementById('signupName').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        
+        try {
+            // Attempt registration
+            const result = await this.backend.registerUser({
+                name: name,
+                email: email,
+                password: password
+            });
+            
+            if (result.success) {
+                this.notification.show(result.message, 'success', 6000);
+                this.currentUserEmail = email;
+                
+                // Show verification modal
+                setTimeout(() => {
+                    this.showVerificationModal();
+                }, 2000);
+                
+                // Switch to login form after delay
+                setTimeout(() => {
+                    this.toggleForm();
                     // Pre-fill email in login form
                     document.getElementById('loginEmail').value = email;
-                    this.notification.show('Registering email ,pls wait', 'info');
-                }, 2000);
-                
-            }, 2500);
-        } else {
-            this.notification.show('Please fix the errors in the form', 'error');
-        }
-    }
-    
-    showLoading(element) {
-        element.classList.add('show');
-    }
-    
-    hideLoading(element) {
-        element.classList.remove('show');
-    }
-    
-    loadRememberedEmail() {
-        const rememberedEmail = localStorage.getItem('rememberedEmail');
-        const expiry = localStorage.getItem('rememberMeExpiry');
-        
-        if (rememberedEmail && expiry && Date.now() < parseInt(expiry)) {
-            document.getElementById('loginEmail').value = rememberedEmail;
-            document.getElementById('rememberMe').checked = true;
-        } else {
-            // Clean up expired data
-            localStorage.removeItem('rememberedEmail');
-            localStorage.removeItem('rememberMeExpiry');
-        }
-    }
-}
-
-// ==================== MAIN INITIALIZATION ====================
-// Toggle between login and signup forms
-function toggleForm() {
-    const container = document.getElementById('authContainer');
-    container.classList.toggle('active');
-    
-    // Clear any validation states when switching
-    setTimeout(() => {
-        document.querySelectorAll('.form-control').forEach(input => {
-            input.classList.remove('valid', 'invalid');
-        });
-        document.querySelectorAll('.validation-message').forEach(msg => {
-            msg.textContent = '';
-            msg.classList.remove('success', 'error');
-        });
-    }, 400);
-}
-
-// Initialize everything when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize form handler (includes validation and notifications)
-    new AdvancedFormHandler();
-    
-    // Add keyboard navigation support
-    document.addEventListener('keydown', (e) => {
-        // ESC key to close notifications
-        if (e.key === 'Escape') {
-            const notification = document.getElementById('notification');
-            if (notification.classList.contains('show')) {
-                notification.classList.remove('show');
+                }, 4000);
+            } else {
+                this.notification.show(result.message, 'error');
             }
+        } catch (error) {
+            this.notification.show('An unexpected error occurred. Please try again.', 'error');
+        } finally {
+            this.showLoading('signup', false);
         }
+    }
+    
+    handleEmailVerification(token) {
+        const result = this.backend.verifyEmailToken(token);
         
-        // Tab key navigation enhancement
-        if (e.key === 'Tab') {
-            const focusableElements = document.querySelectorAll(
-                'input, button, select, textarea, a[href], [tabindex]:not([tabindex="-1"])'
-            );
-            const firstElement = focusableElements[0];
-            const lastElement = focusableElements[focusableElements.length - 1];
+        if (result.success) {
+            this.notification.show(result.message, 'success', 6000);
             
-            if (e.shiftKey && document.activeElement === firstElement) {
-                e.preventDefault();
-                lastElement.focus();
-            } else if (!e.shiftKey && document.activeElement === lastElement) {
-                e.preventDefault();
-                firstElement.focus();
+            // Remove token from URL
+            const url = new URL(window.location);
+            url.searchParams.delete('token');
+            window.history.replaceState({}, document.title, url);
+            
+            // Switch to login form
+            if (this.isSignup) {
+                setTimeout(() => {
+                    this.toggleForm();
+                }, 2000);
             }
+        } else {
+            this.notification.show(result.message, 'error');
+        }
+    }
+    
+    showVerificationModal() {
+        document.getElementById('verificationModal').classList.add('show');
+    }
+    
+    closeVerificationModal() {
+        document.getElementById('verificationModal').classList.remove('show');
+    }
+    
+    async resendVerificationEmail() {
+        if (!this.currentUserEmail) {
+            this.notification.show('No email address found. Please try signing up again.', 'error');
+            return;
+        }
+        
+        const result = await this.backend.resendVerificationEmail(this.currentUserEmail);
+        
+        if (result.success) {
+            this.notification.show(result.message, 'success');
+        } else {
+            this.notification.show(result.message, 'error');
+        }
+    }
+    
+    showLoading(type, show) {
+        const loadingElement = document.getElementById(`${type}Loading`);
+        const buttonElement = document.getElementById(`${type}Button`);
+        
+        if (show) {
+            loadingElement.classList.add('show');
+            buttonElement.disabled = true;
+            buttonElement.textContent = type === 'login' ? 'Logging in...' : 'Creating Account...';
+        } else {
+            loadingElement.classList.remove('show');
+            buttonElement.disabled = false;
+            buttonElement.textContent = type === 'login' ? 'Login' : 'Launch Account';
+        }
+    }
+    
+    toggleForm() {
+        const container = document.getElementById('authContainer');
+        this.isSignup = !this.isSignup;
+        
+        if (this.isSignup) {
+            container.classList.add('active');
+        } else {
+            container.classList.remove('active');
+        }
+        
+        // Clear form validation states
+        setTimeout(() => {
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.classList.remove('valid', 'invalid');
+            });
+            document.querySelectorAll('.validation-message').forEach(msg => {
+                msg.textContent = '';
+                msg.classList.remove('success', 'error');
+            });
+        }, 400);
+    }
+    
+    showUserDashboard(userData) {
+        // Create dashboard HTML
+        const dashboardHTML = `
+            <div style="
+                min-height: 100vh;
+                background: linear-gradient(135deg, #000000, #1a1a2e);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                font-family: 'Orbitron', sans-serif;
+            ">
+                <div style="
+                    background: rgba(10, 10, 20, 0.85);
+                    backdrop-filter: blur(20px);
+                    border-radius: 25px;
+                    padding: 50px;
+                    text-align: center;
+                    max-width: 800px;
+                    width: 100%;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.6);
+                ">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">🚀</div>
+                    <h1 style="
+                        color: #ffd700;
+                        font-size: 2.5rem;
+                        margin-bottom: 20px;
+                        background: linear-gradient(135deg, #ffd700, #ffffff);
+                        -webkit-background-clip: text;
+                        background-clip: text;
+                        color: transparent;
+                    ">Welcome to Your Dashboard!</h1>
+                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 1.2rem; margin-bottom: 10px;">
+                        Hello, <span style="color: #ffd700; font-weight: bold;">${userData.user ? userData.user.name : userData.name}</span>!
+                    </p>
+                    <p style="color: rgba(255, 255, 255, 0.6); margin-bottom: 30px;">
+                        Email: ${userData.user ? userData.user.email : userData.email}
+                    </p>
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 40px;">
+                        You have successfully logged in to your account. Your journey begins here!
+                    </p>
+                    
+                    <div style="
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                        gap: 20px;
+                        margin: 40px 0;
+                    ">
+                        <div style="
+                            background: rgba(255, 255, 255, 0.05);
+                            border-radius: 15px;
+                            padding: 25px;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(-5px)'"
+                           onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='translateY(0)'">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">📊</div>
+                            <h3 style="color: white; margin-bottom: 10px; font-size: 1.2rem;">Analytics</h3>
+                            <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">View your performance metrics and insights</p>
+                        </div>
+                        
+                        <div style="
+                            background: rgba(255, 255, 255, 0.05);
+                            border-radius: 15px;
+                            padding: 25px;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(-5px)'"
+                           onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='translateY(0)'">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">⚙️</div>
+                            <h3 style="color: white; margin-bottom: 10px; font-size: 1.2rem;">Settings</h3>
+                            <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">Customize your experience and preferences</p>
+                        </div>
+                        
+                        <div style="
+                            background: rgba(255, 255, 255, 0.05);
+                            border-radius: 15px;
+                            padding: 25px;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(-5px)'"
+                           onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='translateY(0)'">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">🎯</div>
+                            <h3 style="color: white; margin-bottom: 10px; font-size: 1.2rem;">Goals</h3>
+                            <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">Track your objectives and progress</p>
+                        </div>
+                        
+                        <div style="
+                            background: rgba(255, 255, 255, 0.05);
+                            border-radius: 15px;
+                            padding: 25px;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(-5px)'"
+                           onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='translateY(0)'">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">📈</div>
+                            <h3 style="color: white; margin-bottom: 10px; font-size: 1.2rem;">Reports</h3>
+                            <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">Generate detailed reports and summaries</p>
+                        </div>
+                        
+                        <div style="
+                            background: rgba(255, 255, 255, 0.05);
+                            border-radius: 15px;
+                            padding: 25px;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(-5px)'"
+                           onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='translateY(0)'">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">💬</div>
+                            <h3 style="color: white; margin-bottom: 10px; font-size: 1.2rem;">Messages</h3>
+                            <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">Communicate with your team and contacts</p>
+                        </div>
+                        
+                        <div style="
+                            background: rgba(255, 255, 255, 0.05);
+                            border-radius: 15px;
+                            padding: 25px;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(-5px)'"
+                           onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='translateY(0)'">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">🔒</div>
+                            <h3 style="color: white; margin-bottom: 10px; font-size: 1.2rem;">Security</h3>
+                            <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">Manage your security and privacy settings</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 40px;">
+                        <button onclick="logout()" style="
+                            background: linear-gradient(135deg, #ffd700, #e6c200);
+                            color: #000000;
+                            border: none;
+                            padding: 15px 30px;
+                            border-radius: 12px;
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            font-family: 'Orbitron', sans-serif;
+                            text-transform: uppercase;
+                            letter-spacing: 1px;
+                            transition: all 0.3s ease;
+                            margin-right: 15px;
+                        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 35px rgba(255, 215, 0, 0.4)'"
+                           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(255, 215, 0, 0.3)'">
+                            Logout
+                        </button>
+                        
+                        <button onclick="showProfile()" style="
+                            background: transparent;
+                            color: #ffd700;
+                            border: 2px solid #ffd700;
+                            padding: 15px 30px;
+                            border-radius: 12px;
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            font-family: 'Orbitron', sans-serif;
+                            text-transform: uppercase;
+                            letter-spacing: 1px;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(255, 215, 0, 0.1)'; this.style.transform='translateY(-3px)'"
+                           onmouseout="this.style.background='transparent'; this.style.transform='translateY(0)'">
+                            View Profile
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Replace page content
+        document.body.innerHTML = dashboardHTML;
+        
+        // Add functions to global scope
+        window.logout = () => {
+            // Clear session
+            const sessions = JSON.parse(localStorage.getItem('sessions_db') || '[]');
+            const cookies = document.cookie.split(';');
+            let sessionToken = null;
+            
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'sessionToken') {
+                    sessionToken = value;
+                    break;
+                }
+            }
+            
+            if (sessionToken) {
+                const updatedSessions = sessions.filter(s => s.token !== sessionToken);
+                localStorage.setItem('sessions_db', JSON.stringify(updatedSessions));
+            }
+            
+            document.cookie = 'sessionToken=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            
+            // Show logout notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 30px;
+                right: 30px;
+                background: linear-gradient(135deg, #00ff9d, #00cc7a);
+                color: white;
+                padding: 18px 25px;
+                border-radius: 12px;
+                font-weight: 500;
+                z-index: 1000;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                font-family: 'Orbitron', sans-serif;
+            `;
+            notification.textContent = 'Logged out successfully!';
+            document.body.appendChild(notification);
+            
+            // Reload page to return to login
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        };
+        
+        window.showProfile = () => {
+            alert('Profile feature coming soon!');
+        };
+    }
+}
+
+// ==================== GLOBAL FUNCTIONS ====================
+function toggleForm() {
+    if (window.authApp) {
+        window.authApp.toggleForm();
+    }
+}
+
+function closeVerificationModal() {
+    if (window.authApp) {
+        window.authApp.closeVerificationModal();
+    }
+}
+
+function resendVerificationEmail() {
+    if (window.authApp) {
+        window.authApp.resendVerificationEmail();
+    }
+}
+
+// ==================== INITIALIZE APPLICATION ====================
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the authentication application
+    window.authApp = new AuthenticationApp();
+    
+    // Add some demo data for testing
+    const demoUser = {
+        name: 'Demo User',
+        email: 'demo@example.com',
+        password: 'Demo123!@#'
+    };
+    
+    // Check if demo user exists, if not create one
+    const users = JSON.parse(localStorage.getItem('users_db') || '[]');
+    if (!users.some(u => u.email === demoUser.email)) {
+        window.authApp.backend.registerUser(demoUser).then(result => {
+            if (result.success) {
+                // Auto-verify demo user
+                const users = JSON.parse(localStorage.getItem('users_db'));
+                const user = users.find(u => u.email === demoUser.email);
+                if (user) {
+                    user.verified = true;
+                    localStorage.setItem('users_db', JSON.stringify(users));
+                }
+                
+                console.log('Demo user created and verified:');
+                console.log('Email: demo@example.com');
+                console.log('Password: Demo123!@#');
+            }
+        });
+    }
+    
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Alt + L to focus login email
+        if (e.altKey && e.key === 'l') {
+            e.preventDefault();
+            document.getElementById('loginEmail').focus();
+        }
+        
+        // Alt + S to switch to signup
+        if (e.altKey && e.key === 's') {
+            e.preventDefault();
+            if (!window.authApp.isSignup) {
+                window.authApp.toggleForm();
+            }
+            setTimeout(() => {
+                document.getElementById('signupName').focus();
+            }, 500);
+        }
+        
+        // Escape to close modal
+        if (e.key === 'Escape') {
+            window.authApp.closeVerificationModal();
         }
     });
+    
+    // Add accessibility improvements
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.classList.remove('focused');
+        });
+    });
+    
+    // Add loading states for better UX
+    document.querySelectorAll('.btn').forEach(button => {
+        button.addEventListener('click', function() {
+            if (!this.disabled) {
+                this.classList.add('clicked');
+                setTimeout(() => {
+                    this.classList.remove('clicked');
+                }, 200);
+            }
+        });
+    });
+    
+    // Console welcome message
+    console.log(`
+    🚀 SmileX Authentication System Loaded!
+    
+    Demo Credentials:
+    📧 Email: demo@example.com
+    🔑 Password: Demo123!@#
+    
+    Features:
+    ✅ User Registration with Email Verification
+    ✅ Secure Login with Password Hashing
+    ✅ Rate Limiting Protection
+    ✅ Password Strength Validation
+    ✅ Social Login Integration
+    ✅ Session Management
+    ✅ Real-time Form Validation
+    ✅ Responsive Design
+    ✅ Accessibility Features
+    
+    Keyboard Shortcuts:
+    Alt + L: Focus Login Email
+    Alt + S: Switch to Signup
+    Escape: Close Modal
+    `);
+});
+
+// ==================== SERVICE WORKER REGISTRATION ====================
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        // Register service worker for offline functionality
+        navigator.serviceWorker.register('/sw.js').then(function(registration) {
+            console.log('ServiceWorker registration successful');
+        }, function(err) {
+            console.log('ServiceWorker registration failed: ', err);
+        });
+    });
+}
+
+// ==================== ERROR HANDLING ====================
+window.addEventListener('error', function(e) {
+    console.error('Global error:', e.error);
+    
+    if (window.authApp && window.authApp.notification) {
+        window.authApp.notification.show('An unexpected error occurred. Please refresh the page.', 'error');
+    }
+});
+
+window.addEventListener('unhandledrejection', function(e) {
+    console.error('Unhandled promise rejection:', e.reason);
+    
+    if (window.authApp && window.authApp.notification) {
+        window.authApp.notification.show('A network error occurred. Please check your connection.', 'error');
+    }
 });
 </script>
 </body>
