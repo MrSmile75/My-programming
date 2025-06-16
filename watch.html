@@ -6,7 +6,7 @@
     <title>SMILEX - Movie Player</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; object-src 'none';">
+   
     <style>
         :root {
             --primary-color: #e50914;
@@ -35,7 +35,7 @@
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
-            user-select: none;
+         
         }
 
         /* Header */
@@ -1288,6 +1288,31 @@
                 }, 4000);
             }
         }
+
+                          // Disable F12, Ctrl+U, and Ctrl+Shift+I
+        document.addEventListener("keydown", function(e) {
+            // F12, Ctrl+Shift+I, and Ctrl+U
+            if ((e.key === 'F12') || 
+                (e.ctrlKey && (e.key === 'u' || e.key === 'U')) || 
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i'))) {
+                e.preventDefault();
+              
+            }
+        });
+
+        // Detect DevTools opening (using resize event)
+        let devtoolsOpen = false;
+        setInterval(function() {
+            const width = window.outerWidth - window.innerWidth > 100;
+            const height = window.outerHeight - window.innerHeight > 100;
+            if ((width || height) && !devtoolsOpen) {
+                devtoolsOpen = true;
+               
+            }
+            if (!(width || height) && devtoolsOpen) {
+                devtoolsOpen = false;
+            }
+        }, 1000);
 
         // Initialize the movie player
         const moviePlayer = new MoviePlayer();
