@@ -10,9 +10,766 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
 
-   <link rel="stylesheet" href="tournament.css">
-  
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --success-color: #00b894;
+            --danger-color: #e17055;
+            --warning-color: #fdcb6e;
+            --dark-color: #2d3436;
+            --light-color: #ddd;
+            --gold-color: #f39c12;
+            --silver-color: #95a5a6;
+            --bronze-color: #e67e22;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --premium-gradient: linear-gradient(135deg, #ffd700 0%, #ff6b35 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            color: var(--dark-color);
+        }
+
+        .modal-title {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-color);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 16px;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .premium-badge {
+            background: var(--premium-gradient);
+            color: var(--dark-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Tab Navigation */
+        .tab-navigation {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1rem;
+            background: transparent;
+            border: none;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .quiz-header {
+            margin-bottom: 2rem;
+        }
+
+        .quiz-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 15px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--warning-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Timer */
+        .timer-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .timer {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--warning-color);
+            margin-bottom: 1rem;
+        }
+
+        .timer-progress {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .timer-bar {
+            height: 100%;
+            background: var(--warning-color);
+            transition: width 1s linear;
+        }
+
+        /* Hint System */
+        .hint-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+
+        .hint-trials {
+            font-weight: 600;
+        }
+
+        .hint-refresh {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .hint-btn {
+            padding: 0.5rem 1rem;
+            background: var(--success-color);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hint-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .hint-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Google Ads Container */
+        .google-ads-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 15px;
+            margin: 1rem 0;
+            text-align: center;
+            overflow: hidden;
+            min-height: 250px;
+        }
+
+        .ads-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+        }
+
+        /* Question Container */
+        .question-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .question-number {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .question-category {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+
+        /* Options */
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .option.correct {
+            background: var(--success-color);
+            animation: correctAnswer 0.5s ease;
+        }
+
+        .option.incorrect {
+            background: var(--danger-color);
+            animation: incorrectAnswer 0.5s ease;
+        }
+
+        .option.hint {
+            background: var(--warning-color);
+            color: var(--dark-color);
+            animation: hintGlow 1s ease infinite alternate;
+        }
+
+        @keyframes correctAnswer {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes incorrectAnswer {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes hintGlow {
+            0% { box-shadow: 0 0 10px var(--warning-color); }
+            100% { box-shadow: 0 0 20px var(--warning-color); }
+        }
+
+        /* Feedback */
+        .feedback {
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .feedback.correct {
+            background: var(--success-color);
+        }
+
+        .feedback.incorrect {
+            background: var(--danger-color);
+        }
+
+        /* Tournament Panel */
+        .tournament-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .tournament-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tournament-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .tournament-status {
+            opacity: 0.8;
+        }
+
+        /* Leaderboard */
+        .leaderboard {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .leaderboard-item:hover {
+            transform: translateX(5px);
+        }
+
+        .leaderboard-item.current-user {
+            background: rgba(108, 92, 231, 0.3);
+            border: 2px solid var(--primary-color);
+        }
+
+        .rank {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 1rem;
+            min-width: 50px;
+        }
+
+        .rank.gold { color: var(--gold-color); }
+        .rank.silver { color: var(--silver-color); }
+        .rank.bronze { color: var(--bronze-color); }
+
+        .player-info {
+            flex: 1;
+        }
+
+        .player-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .player-score {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comments-header {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .comment-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .comment-input input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+        }
+
+        .comment-input input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .emoji-picker {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .emoji-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .emoji-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .comments-list {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .comment {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--warning-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-text {
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .comment-time {
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        /* Disco Text Animation for Premium Users */
+        @keyframes discoText {
+            0% { color: #ff0000; text-shadow: 0 0 10px #ff0000; }
+            14% { color: #ff7f00; text-shadow: 0 0 10px #ff7f00; }
+            28% { color: #ffff00; text-shadow: 0 0 10px #ffff00; }
+            42% { color: #00ff00; text-shadow: 0 0 10px #00ff00; }
+            57% { color: #0000ff; text-shadow: 0 0 10px #0000ff; }
+            71% { color: #4b0082; text-shadow: 0 0 10px #4b0082; }
+            85% { color: #9400d3; text-shadow: 0 0 10px #9400d3; }
+            100% { color: #ff0000; text-shadow: 0 0 10px #ff0000; }
+        }
+
+        .disco-text {
+            animation: discoText 2s linear infinite;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Premium Modal */
+        .premium-modal-content {
+            background: linear-gradient(135deg, #2d3436 0%, #000000 100%);
+            color: white;
+            border: 2px solid gold;
+        }
+
+        .premium-features {
+            text-align: left;
+            margin: 1.5rem 0;
+        }
+
+        .premium-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .premium-feature i {
+            color: gold;
+        }
+
+        .premium-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: gold;
+            margin: 1rem 0;
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-premium {
+            background: var(--premium-gradient);
+            color: var(--dark-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .quiz-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hint-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .tab-navigation {
+                flex-direction: column;
+            }
+        }
+
+        /* Online Status */
+        .online-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            z-index: 1001;
+        }
+
+        .online-status.online {
+            background: var(--success-color);
+        }
+
+        .online-status.offline {
+            background: var(--danger-color);
+        }
+
+        /* Active Users Counter */
+        .active-users {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 1001;
+        }
+
+        /* Force Bot Display */
+        .force-display {
+            animation: forceDisplay 0.5s ease-in-out;
+        }
+
+        @keyframes forceDisplay {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
 </head>
 <body>
     <!-- Online Status Indicator -->
@@ -20,14 +777,61 @@
         <i class="fas fa-wifi"></i> Online
     </div>
 
+    <!-- Active Users Counter -->
+    <div class="active-users" id="activeUsers">
+        <i class="fas fa-users"></i> Players: 0
+    </div>
+
     <!-- Name Entry Modal -->
-    <div class="modal-overlay hidden" id="nameEntryModal">
+    <div class="modal-overlay" id="nameEntryModal">
         <div class="modal-content">
             <h2 class="modal-title">Welcome to Quiz Tournament!</h2>
             <p>Enter your name to join the ultimate quiz challenge</p>
             <input type="text" class="modal-input" id="nameInput" placeholder="Your Name" maxlength="20">
             <button class="btn btn-primary" id="submitNameBtn">
                 <i class="fas fa-play"></i> Join Tournament
+            </button>
+        </div>
+    </div>
+
+    <!-- Premium Modal -->
+    <div class="modal-overlay hidden" id="premiumModal">
+        <div class="modal-content premium-modal-content">
+            <h2 class="modal-title" style="color: gold;">
+                <i class="fas fa-crown"></i> Premium Membership
+            </h2>
+            <p>Upgrade to Premium for exclusive benefits!</p>
+            
+            <div class="premium-features">
+                <div class="premium-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>20 daily hints (instead of 10)</span>
+                </div>
+                <div class="premium-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>+5 seconds for each question</span>
+                </div>
+                <div class="premium-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Colorful disco text in comments</span>
+                </div>
+                <div class="premium-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Premium badge next to your name</span>
+                </div>
+                <div class="premium-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Ad-free experience</span>
+                </div>
+            </div>
+            
+            <div class="premium-price">$4.99</div>
+            
+            <button class="btn btn-premium" id="upgradePremiumBtn">
+                <i class="fas fa-crown"></i> Upgrade Now
+            </button>
+            <button class="btn btn-secondary" id="closePremiumBtn" style="margin-top: 1rem;">
+                Maybe Later
             </button>
         </div>
     </div>
@@ -42,12 +846,10 @@
                 <div class="user-profile" id="userProfile">
                     <div class="user-avatar" id="userAvatar">?</div>
                     <div class="user-name" id="userName">Guest</div>
+                    <div class="premium-badge hidden" id="premiumBadge">PREMIUM</div>
                 </div>
-                <button class="btn btn-secondary hidden" id="joinTournamentBtn">
-                    <i class="fas fa-sign-in-alt"></i> Join Tournament
-                </button>
-                <button class="btn btn-danger hidden" id="leaveTournamentBtn">
-                    <i class="fas fa-sign-out-alt"></i> Leave Tournament
+                <button class="btn btn-premium" id="showPremiumBtn">
+                    <i class="fas fa-crown"></i> Go Premium
                 </button>
             </div>
         </div>
@@ -102,33 +904,43 @@
 
                 <!-- Hint System -->
                 <div class="hint-container">
-                    <div class="hint-trials">
-                        <i class="fas fa-lightbulb"></i> Hints Remaining: <span id="hintsRemaining">10</span>
+                    <div>
+                        <div class="hint-trials">
+                            <i class="fas fa-lightbulb"></i> Hints Remaining: <span id="hintsRemaining">10</span>
+                        </div>
+                        <div class="hint-refresh" id="hintRefreshTime">
+                            Hints refresh in: 24:00:00
+                        </div>
                     </div>
                     <button class="hint-btn" id="hintBtn">
                         <i class="fas fa-eye"></i> Use Hint
                     </button>
-                    <button class="hint-btn" id="watchAdBtn">
-                        <i class="fas fa-video"></i> Watch Ad (+1 Hint)
-                    </button>
-                </div>
-
-                <!-- Ad Container -->
-                <div class="ad-container hidden" id="adContainer">
-                    <h3><i class="fas fa-ad"></i> Advertisement</h3>
-                    <div class="ad-video" id="adVideo">
-                        <div class="ad-countdown" id="adCountdown">15</div>
-                        <!-- Replace this with your Google Ads link -->
-                        <iframe id="adFrame" src="YOUR_GOOGLE_ADS_LINK_HERE" allowfullscreen></iframe>
-                        <div class="ad-skip disabled" id="adSkip">Skip Ad in <span id="skipTimer">15</span></div>
-                    </div>
-                    <p>Watch this ad to get +1 hint!</p>
                 </div>
 
                 <!-- Question Container -->
                 <div class="question-container" id="questionContainer">
                     <div class="loading">
                         <div class="spinner"></div>
+                    </div>
+                </div>
+
+                <!-- Google Ads Container (After First Paragraph) -->
+                <div class="google-ads-container" id="googleAdsContainer">
+                    <!-- Google AdSense Code -->
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-XXXXXXXXXX"
+                         data-ad-slot="XXXXXXXXXX"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <div class="ads-placeholder">
+                        <div>
+                            <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <div>Google Ads will appear here</div>
+                            <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.5rem;">
+                                Premium users enjoy ad-free experience
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -193,8 +1005,695 @@
         </div>
     </div>
 
-    <script src="tournament.js">
+    <script>
+        // Firebase Configuration (Replace with your config)
+        const firebaseConfig = {
+            apiKey: "your-api-key",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "your-app-id"
+        };
 
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Global Variables
+        let currentUser = null;
+        let isPremium = false;
+        let currentQuestion = null;
+        let questionIndex = 0;
+        let score = 0;
+        let streak = 0;
+        let timer = null;
+        let timeLeft = 15;
+        let hintsRemaining = 10;
+        let lastHintRefresh = null;
+        let questionsCache = [];
+        let leaderboardData = [];
+        let commentsData = [];
+        let activeUsers = 0;
+
+        // Question Bank with High Force Display
+        const questionBank = [
+            {
+                question: "What is the capital of France?",
+                options: ["London", "Berlin", "Paris", "Madrid"],
+                correct: 2,
+                category: "Geography",
+                difficulty: "Easy"
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Venus", "Mars", "Jupiter", "Saturn"],
+                correct: 1,
+                category: "Science",
+                difficulty: "Easy"
+            },
+            {
+                question: "Who painted the Mona Lisa?",
+                options: ["Van Gogh", "Picasso", "Leonardo da Vinci", "Michelangelo"],
+                correct: 2,
+                category: "Art",
+                difficulty: "Medium"
+            },
+            {
+                question: "What is the largest mammal in the world?",
+                options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
+                correct: 1,
+                category: "Biology",
+                difficulty: "Easy"
+            },
+            {
+                question: "In which year did World War II end?",
+                options: ["1944", "1945", "1946", "1947"],
+                correct: 1,
+                category: "History",
+                difficulty: "Medium"
+            },
+            {
+                question: "What is the chemical symbol for gold?",
+                options: ["Go", "Gd", "Au", "Ag"],
+                correct: 2,
+                category: "Chemistry",
+                difficulty: "Medium"
+            },
+            {
+                question: "Which is the longest river in the world?",
+                options: ["Amazon", "Nile", "Mississippi", "Yangtze"],
+                correct: 1,
+                category: "Geography",
+                difficulty: "Hard"
+            },
+            {
+                question: "Who wrote 'Romeo and Juliet'?",
+                options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+                correct: 1,
+                category: "Literature",
+                difficulty: "Easy"
+            },
+            {
+                question: "What is the speed of light?",
+                options: ["299,792,458 m/s", "300,000,000 m/s", "299,000,000 m/s", "298,792,458 m/s"],
+                correct: 0,
+                category: "Physics",
+                difficulty: "Hard"
+            },
+            {
+                question: "Which country has the most time zones?",
+                options: ["Russia", "USA", "China", "Canada"],
+                correct: 0,
+                category: "Geography",
+                difficulty: "Hard"
+            }
+        ];
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            loadCachedData();
+            startRealTimeUpdates();
+            initializeGoogleAds();
+        });
+
+        function initializeApp() {
+            // Check for existing user data
+            const savedUser = localStorage.getItem('quizUser');
+            const savedPremium = localStorage.getItem('isPremium');
+            
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                isPremium = savedPremium === 'true';
+                hideNameModal();
+                updateUserInterface();
+                loadHintData();
+            }
+
+            // Initialize hint refresh timer
+            updateHintRefreshTimer();
+            setInterval(updateHintRefreshTimer, 1000);
+
+            // Force continuous question display
+            startContinuousQuestionDisplay();
+        }
+
+        function setupEventListeners() {
+            // Name entry
+            document.getElementById('submitNameBtn').addEventListener('click', submitName);
+            document.getElementById('nameInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') submitName();
+            });
+
+            // Premium modal
+            document.getElementById('showPremiumBtn').addEventListener('click', showPremiumModal);
+            document.getElementById('closePremiumBtn').addEventListener('click', hidePremiumModal);
+            document.getElementById('upgradePremiumBtn').addEventListener('click', upgradeToPremium);
+
+            // Tab navigation
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchTab(this.dataset.tab);
+                });
+            });
+
+            // Hint button
+            document.getElementById('hintBtn').addEventListener('click', useHint);
+
+            // Comment system
+            document.getElementById('sendCommentBtn').addEventListener('click', sendComment);
+            document.getElementById('commentInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendComment();
+            });
+
+            // Emoji picker
+            document.querySelectorAll('.emoji-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    addEmoji(this.dataset.emoji);
+                });
+            });
+        }
+
+        function submitName() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (name.length < 2) {
+                alert('Please enter a valid name (at least 2 characters)');
+                return;
+            }
+
+            currentUser = {
+                name: name,
+                id: generateUserId(),
+                joinedAt: Date.now(),
+                score: 0,
+                questionsAnswered: 0
+            };
+
+            localStorage.setItem('quizUser', JSON.stringify(currentUser));
+            hideNameModal();
+            updateUserInterface();
+            loadHintData();
+            startQuiz();
+        }
+
+        function hideNameModal() {
+            document.getElementById('nameEntryModal').classList.add('hidden');
+        }
+
+        function showPremiumModal() {
+            document.getElementById('premiumModal').classList.remove('hidden');
+        }
+
+        function hidePremiumModal() {
+            document.getElementById('premiumModal').classList.add('hidden');
+        }
+
+        function upgradeToPremium() {
+            // Simulate premium upgrade
+            isPremium = true;
+            localStorage.setItem('isPremium', 'true');
+            hintsRemaining = 20; // Premium users get 20 hints
+            updateUserInterface();
+            hidePremiumModal();
+            alert('Welcome to Premium! You now have 20 daily hints, +5 seconds per question, and disco text in comments!');
+        }
+
+        function updateUserInterface() {
+            if (currentUser) {
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+                
+                if (isPremium) {
+                    document.getElementById('premiumBadge').classList.remove('hidden');
+                    document.getElementById('showPremiumBtn').style.display = 'none';
+                    // Hide ads for premium users
+                    document.getElementById('googleAdsContainer').style.display = 'none';
+                }
+            }
+        }
+
+        function loadHintData() {
+            const savedHints = localStorage.getItem('hintsData');
+            if (savedHints) {
+                const hintsData = JSON.parse(savedHints);
+                hintsRemaining = hintsData.remaining;
+                lastHintRefresh = hintsData.lastRefresh;
+            } else {
+                // Initialize hints data
+                hintsRemaining = isPremium ? 20 : 10;
+                lastHintRefresh = Date.now();
+                saveHintData();
+            }
+            
+            updateHintsDisplay();
+        }
+
+        function saveHintData() {
+            const hintsData = {
+                remaining: hintsRemaining,
+                lastRefresh: lastHintRefresh
+            };
+            localStorage.setItem('hintsData', JSON.stringify(hintsData));
+        }
+
+        function updateHintsDisplay() {
+            document.getElementById('hintsRemaining').textContent = hintsRemaining;
+            document.getElementById('hintBtn').disabled = hintsRemaining <= 0;
+        }
+
+        function updateHintRefreshTimer() {
+            if (!lastHintRefresh) return;
+
+            const now = Date.now();
+            const timeSinceRefresh = now - lastHintRefresh;
+            const timeUntilRefresh = (24 * 60 * 60 * 1000) - timeSinceRefresh; // 24 hours in milliseconds
+
+            if (timeUntilRefresh <= 0) {
+                // Refresh hints
+                hintsRemaining = isPremium ? 20 : 10;
+                lastHintRefresh = now;
+                saveHintData();
+                updateHintsDisplay();
+            }
+
+            // Display countdown
+            const hours = Math.floor(timeUntilRefresh / (1000 * 60 * 60));
+            const minutes = Math.floor((timeUntilRefresh % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeUntilRefresh % (1000 * 60)) / 1000);
+
+            if (hours >= 0 && minutes >= 0 && seconds >= 0) {
+                document.getElementById('hintRefreshTime').textContent = 
+                    `Hints refresh in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+
+        function loadCachedData() {
+            // Load cached questions
+            const cachedQuestions = localStorage.getItem('cachedQuestions');
+            if (cachedQuestions) {
+                questionsCache = JSON.parse(cachedQuestions);
+            } else {
+                questionsCache = [...questionBank];
+                localStorage.setItem('cachedQuestions', JSON.stringify(questionsCache));
+            }
+        }
+
+        function startContinuousQuestionDisplay() {
+            // Force display questions continuously with high priority
+            if (currentUser) {
+                displayNextQuestion();
+            }
+        }
+
+        function startQuiz() {
+            questionIndex = 0;
+            score = 0;
+            streak = 0;
+            updateStats();
+            displayNextQuestion();
+        }
+
+        function displayNextQuestion() {
+            if (questionsCache.length === 0) {
+                // Reload questions if cache is empty
+                questionsCache = [...questionBank];
+                localStorage.setItem('cachedQuestions', JSON.stringify(questionsCache));
+            }
+
+            // Get random question with high force
+            const randomIndex = Math.floor(Math.random() * questionsCache.length);
+            currentQuestion = questionsCache[randomIndex];
+            
+            // Force display with animation
+            const container = document.getElementById('questionContainer');
+            container.classList.add('force-display');
+            
+            container.innerHTML = `
+                <div class="question-number">Question ${questionIndex + 1}</div>
+                <div class="question-text">${currentQuestion.question}</div>
+                <div class="question-category">${currentQuestion.category} - ${currentQuestion.difficulty}</div>
+            `;
+
+            displayOptions();
+            startTimer();
+            
+            // Remove force display class after animation
+            setTimeout(() => {
+                container.classList.remove('force-display');
+            }, 500);
+        }
+
+        function displayOptions() {
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+
+            currentQuestion.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', () => selectAnswer(index));
+                container.appendChild(optionElement);
+            });
+        }
+
+        function startTimer() {
+            timeLeft = isPremium ? 20 : 15; // Premium users get +5 seconds
+            document.getElementById('timer').textContent = timeLeft;
+            document.getElementById('timerBar').style.width = '100%';
+
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+                document.getElementById('timerBar').style.width = `${(timeLeft / (isPremium ? 20 : 15)) * 100}%`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    selectAnswer(-1); // Time's up
+                }
+            }, 1000);
+        }
+
+        function selectAnswer(selectedIndex) {
+            clearInterval(timer);
+            
+            const options = document.querySelectorAll('.option');
+            const isCorrect = selectedIndex === currentQuestion.correct;
+
+            // Show correct/incorrect answers
+            options.forEach((option, index) => {
+                if (index === currentQuestion.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex && !isCorrect) {
+                    option.classList.add('incorrect');
+                }
+                option.style.pointerEvents = 'none';
+            });
+
+            // Update score and stats
+            if (isCorrect) {
+                const points = calculatePoints();
+                score += points;
+                streak++;
+                showFeedback(`Correct! +${points} points`, 'correct');
+            } else {
+                streak = 0;
+                showFeedback(`Wrong! The correct answer was: ${currentQuestion.options[currentQuestion.correct]}`, 'incorrect');
+            }
+
+            updateStats();
+            updateLeaderboard();
+
+            // Continue to next question after delay
+            setTimeout(() => {
+                questionIndex++;
+                displayNextQuestion();
+            }, 3000);
+        }
+
+        function calculatePoints() {
+            let basePoints = 100;
+            
+            // Difficulty multiplier
+            switch (currentQuestion.difficulty) {
+                case 'Easy': basePoints *= 1; break;
+                case 'Medium': basePoints *= 1.5; break;
+                case 'Hard': basePoints *= 2; break;
+            }
+
+            // Time bonus
+            const timeBonus = Math.floor(timeLeft * 5);
+            
+            // Streak bonus
+            const streakBonus = streak * 10;
+
+            return Math.floor(basePoints + timeBonus + streakBonus);
+        }
+
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.className = `feedback ${type}`;
+            feedback.classList.remove('hidden');
+
+            setTimeout(() => {
+                feedback.classList.add('hidden');
+            }, 3000);
+        }
+
+        function updateStats() {
+            document.getElementById('currentScore').textContent = score;
+            document.getElementById('questionNumber').textContent = questionIndex + 1;
+            document.getElementById('streak').textContent = streak;
+
+            // Update user data
+            if (currentUser) {
+                currentUser.score = score;
+                currentUser.questionsAnswered = questionIndex;
+                localStorage.setItem('quizUser', JSON.stringify(currentUser));
+            }
+        }
+
+        function useHint() {
+            if (hintsRemaining <= 0) return;
+
+            hintsRemaining--;
+            saveHintData();
+            updateHintsDisplay();
+
+            // Remove two wrong answers
+            const options = document.querySelectorAll('.option');
+            const wrongIndices = [];
+            
+            options.forEach((option, index) => {
+                if (index !== currentQuestion.correct) {
+                    wrongIndices.push(index);
+                }
+            });
+
+            // Randomly select 2 wrong answers to remove
+            const toRemove = wrongIndices.sort(() => 0.5 - Math.random()).slice(0, 2);
+            
+            toRemove.forEach(index => {
+                options[index].style.opacity = '0.3';
+                options[index].style.pointerEvents = 'none';
+            });
+
+            // Highlight remaining options
+            options.forEach((option, index) => {
+                if (!toRemove.includes(index)) {
+                    option.classList.add('hint');
+                }
+            });
+        }
+
+        function switchTab(tabId) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+
+            // Load specific tab data
+            if (tabId === 'leaderboardTab') {
+                loadLeaderboard();
+            } else if (tabId === 'commentsTab') {
+                loadComments();
+            }
+        }
+
+        function startRealTimeUpdates() {
+            // Simulate real-time updates
+            setInterval(() => {
+                updateActiveUsers();
+                updateLeaderboard();
+                loadComments();
+            }, 5000);
+        }
+
+        function updateActiveUsers() {
+            // Simulate active users count
+            activeUsers = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('activeUsers').innerHTML = `<i class="fas fa-users"></i> Players: ${activeUsers}`;
+        }
+
+        function updateLeaderboard() {
+            // Add current user to leaderboard
+            if (currentUser) {
+                const existingIndex = leaderboardData.findIndex(player => player.id === currentUser.id);
+                if (existingIndex >= 0) {
+                    leaderboardData[existingIndex] = { ...currentUser };
+                } else {
+                    leaderboardData.push({ ...currentUser });
+                }
+            }
+
+            // Add some mock players for demonstration
+            if (leaderboardData.length < 10) {
+                const mockPlayers = [
+                    { name: "QuizMaster", score: 15420, id: "mock1" },
+                    { name: "BrainBox", score: 14890, id: "mock2" },
+                    { name: "Genius", score: 13750, id: "mock3" },
+                    { name: "SmartCookie", score: 12980, id: "mock4" },
+                    { name: "WiseOwl", score: 11650, id: "mock5" }
+                ];
+
+                mockPlayers.forEach(player => {
+                    if (!leaderboardData.find(p => p.id === player.id)) {
+                        leaderboardData.push(player);
+                    }
+                });
+            }
+
+            // Sort by score
+            leaderboardData.sort((a, b) => b.score - a.score);
+
+            // Update user rank
+            const userRank = leaderboardData.findIndex(player => player.id === currentUser?.id) + 1;
+            document.getElementById('userRank').textContent = userRank > 0 ? userRank : '-';
+        }
+
+        function loadLeaderboard() {
+            const container = document.getElementById('leaderboard');
+            container.innerHTML = '';
+
+            leaderboardData.slice(0, 20).forEach((player, index) => {
+                const item = document.createElement('div');
+                item.className = `leaderboard-item ${player.id === currentUser?.id ? 'current-user' : ''}`;
+                
+                let rankClass = '';
+                if (index === 0) rankClass = 'gold';
+                else if (index === 1) rankClass = 'silver';
+                else if (index === 2) rankClass = 'bronze';
+
+                item.innerHTML = `
+                    <div class="rank ${rankClass}">#${index + 1}</div>
+                    <div class="player-info">
+                        <div class="player-name">${player.name} ${isPremium && player.id === currentUser?.id ? '<span class="premium-badge">PREMIUM</span>' : ''}</div>
+                        <div class="player-score">${player.score} points • ${player.questionsAnswered || 0} questions</div>
+                    </div>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+
+        function sendComment() {
+            const input = document.getElementById('commentInput');
+            const message = input.value.trim();
+            
+            if (!message || !currentUser) return;
+
+            const comment = {
+                id: Date.now(),
+                author: currentUser.name,
+                text: message,
+                timestamp: Date.now(),
+                isPremium: isPremium
+            };
+
+            commentsData.unshift(comment);
+            input.value = '';
+            displayComments();
+
+            // Simulate sending to server
+            // In real implementation, send to Firebase
+        }
+
+        function addEmoji(emoji) {
+            const input = document.getElementById('commentInput');
+            input.value += emoji;
+            input.focus();
+        }
+
+        function loadComments() {
+            // Simulate loading comments from server
+            if (commentsData.length < 5) {
+                const mockComments = [
+                    { author: "QuizMaster", text: "Great questions today! 🔥", timestamp: Date.now() - 60000, isPremium: true },
+                    { author: "BrainBox", text: "That geography question was tough!", timestamp: Date.now() - 120000, isPremium: false },
+                    { author: "Genius", text: "Love the new premium features! ✨", timestamp: Date.now() - 180000, isPremium: true }
+                ];
+
+                mockComments.forEach(comment => {
+                    if (!commentsData.find(c => c.author === comment.author && c.text === comment.text)) {
+                        commentsData.push({ ...comment, id: Date.now() + Math.random() });
+                    }
+                });
+            }
+
+            displayComments();
+        }
+
+        function displayComments() {
+            const container = document.getElementById('commentsList');
+            container.innerHTML = '';
+
+            commentsData.slice(0, 50).forEach(comment => {
+                const item = document.createElement('div');
+                item.className = 'comment';
+                
+                const timeAgo = getTimeAgo(comment.timestamp);
+                const textClass = comment.isPremium ? 'disco-text' : '';
+                
+                item.innerHTML = `
+                    <div class="comment-author">${comment.author} ${comment.isPremium ? '<span class="premium-badge">PREMIUM</span>' : ''}</div>
+                    <div class="comment-text ${textClass}">${comment.text}</div>
+                    <div class="comment-time">${timeAgo}</div>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+
+        function getTimeAgo(timestamp) {
+            const now = Date.now();
+            const diff = now - timestamp;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+
+            if (days > 0) return `${days}d ago`;
+            if (hours > 0) return `${hours}h ago`;
+            if (minutes > 0) return `${minutes}m ago`;
+            return 'Just now';
+        }
+
+        function generateUserId() {
+            return 'user_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+        }
+
+        function initializeGoogleAds() {
+            // Initialize Google AdSense
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+                console.log('AdSense not loaded');
+            }
+
+            // Show ads only for non-premium users
+            if (!isPremium) {
+                document.getElementById('googleAdsContainer').style.display = 'block';
+            }
+        }
+
+        // Network status monitoring
+        window.addEventListener('online', function() {
+            document.getElementById('onlineStatus').className = 'online-status online';
+            document.getElementById('onlineStatus').innerHTML = '<i class="fas fa-wifi"></i> Online';
+        });
+
+        window.addEventListener('offline', function() {
+            document.getElementById('onlineStatus').className = 'online-status offline';
+            document.getElementById('onlineStatus').innerHTML = '<i class="fas fa-wifi-slash"></i> Offline';
+        });
     </script>
 </body>
 </html>

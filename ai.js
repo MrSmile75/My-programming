@@ -112,7 +112,7 @@
                 return analyses[Math.floor(Math.random() * analyses.length)];
             }
             
-            static async applyWatermark(videoPath, watermarkText = "SmileX AI") {
+            static async applyWatermark(videoPath, watermarkText = "SmileX ") {
                 console.log('AI: Applying watermark to video');
                 
                 // Simulate Python watermark processing

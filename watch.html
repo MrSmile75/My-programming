@@ -836,7 +836,7 @@
     </div>
 
     <script>
-        class MoviePlayer {
+ class MoviePlayer {
             constructor() {
                 this.API_KEY = '48ea0449a84effd8baed92d45fa6175f';
                 this.BASE_URL = 'https://api.themoviedb.org/3';
@@ -855,7 +855,12 @@
                 this.volumeBtn = document.getElementById('volume-btn');
                 this.volumeSlider = document.getElementById('volume-slider');
                 this.fullscreenBtn = document.getElementById('fullscreen-btn');
-                
+                this.videoOverlay = document.getElementById('video-overlay');
+                this.loadingOverlay = document.getElementById('loading-overlay');
+                this.downloadProgress = document.getElementById('download-progress');
+                this.downloadProgressFill = document.getElementById('download-progress-fill');
+                this.downloadProgressText = document.getElementById('download-progress-text');
+
                 this.init();
             }
 
@@ -863,7 +868,7 @@
                 try {
                     const movieData = this.getMovieData();
                     if (!movieData) {
-                        this.showError('No movie selected', 'Please go back and select a movie to watch.');
+                        this.showNotification('error', 'No movie selected. Please go back and select a movie to watch.');
                         return;
                     }
 
@@ -872,7 +877,7 @@
                     
                 } catch (error) {
                     console.error('Error initializing player:', error);
-                    this.showError('Failed to load movie', 'There was an error loading the movie. Please try again.');
+                    this.showNotification('error', 'Failed to load movie. There was an error loading the movie. Please try again.');
                 }
             }
 
@@ -881,7 +886,7 @@
                 if (stored) {
                     try {
                         const data = JSON.parse(stored);
-                        if (Date.now() - data.timestamp < 3600000) {
+                        if (Date.now() - data.timestamp < 3600000) { // Data valid for 1 hour
                             return data;
                         }
                     } catch (e) {
@@ -894,13 +899,14 @@
                 const title = urlParams.get('title');
                 
                 if (id && title) {
-                    return { id: parseInt(id), title: decodeURIComponent(title) };
+                    return { id: parseInt(id), title: decodeURIComponent(title), timestamp: Date.now() };
                 }
 
                 return null;
             }
 
             async loadMovieDetails(movieId) {
+                this.loadingOverlay.style.display = 'flex';
                 try {
                     const response = await fetch(`${this.BASE_URL}/movie/${movieId}?api_key=${this.API_KEY}&append_to_response=videos,credits`);
                     
@@ -910,10 +916,13 @@
 
                     this.movieData = await response.json();
                     this.renderMovieDetails();
+                    this.setVideoSource();
                     
                 } catch (error) {
                     console.error('Error loading movie details:', error);
-                    this.showError('Failed to load movie details', 'Could not fetch movie information from the database.');
+                    this.showNotification('error', 'Failed to load movie details. Could not fetch movie information from the database.');
+                } finally {
+                    this.loadingOverlay.style.display = 'none';
                 }
             }
 
@@ -935,18 +944,41 @@
                 }
             }
 
+            setVideoSource() {
+                // In a real application, you would fetch actual movie stream URLs
+                // For this example, we'll use a placeholder or a common video source
+                // based on the selected server and premium status.
+                // This is a simplified representation.
+                const qualities = {
+                    1: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4', // Example low quality
+                    2: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_10mb.mp4', // Example medium quality
+                    3: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_10mb.mp4', // Example medium quality (for stable)
+                    4: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4' // Example low quality (backup)
+                };
+
+                // Premium might get a higher quality source if available
+                if (this.isPremium && this.currentServer === 2) { // Assuming Server 2 is for 4K quality
+                    this.videoElement.src = 'https://sample-videos.com/video123/mp4/480/big_buck_bunny_480p_10mb.mp4'; // Placeholder for 4K
+                    // this.videoElement.src = qualities[2]; // Use high quality if it exists
+                } else {
+                    this.videoElement.src = qualities[this.currentServer] || qualities[1]; // Default to server 1 if not found
+                }
+                this.videoElement.load();
+            }
+
             setupVideoControls() {
                 const video = this.videoElement;
                 
                 // Play/Pause button
-                this.playPauseBtn.addEventListener('click', () => {
-                    if (video.paused) {
-                        video.play();
-                        this.playPauseBtn.className = 'fas fa-pause control-icon';
-                    } else {
-                        video.pause();
-                        this.playPauseBtn.className = 'fas fa-play control-icon';
-                    }
+                this.playPauseBtn.addEventListener('click', () => this.togglePlayPause());
+                video.addEventListener('play', () => {
+                    this.playPauseBtn.className = 'fas fa-pause control-icon';
+                    this.videoOverlay.classList.remove('show');
+                    this.isPlaying = true;
+                });
+                video.addEventListener('pause', () => {
+                    this.playPauseBtn.className = 'fas fa-play control-icon';
+                    this.isPlaying = false;
                 });
                 
                 // Progress bar
@@ -973,236 +1005,77 @@
                 // Volume control
                 this.volumeSlider.addEventListener('input', () => {
                     video.volume = this.volumeSlider.value;
-                    this.updateVolumeIcon();
+                    if (video.volume === 0) {
+                        this.volumeBtn.className = 'fas fa-volume-mute control-icon';
+                    } else if (video.volume < 0.5) {
+                        this.volumeBtn.className = 'fas fa-volume-down control-icon';
+                    } else {
+                        this.volumeBtn.className = 'fas fa-volume-up control-icon';
+                    }
                 });
-                
-                // Mute/unmute
+
                 this.volumeBtn.addEventListener('click', () => {
                     if (video.volume > 0) {
-                        this.lastVolume = video.volume;
+                        video.muted = true;
                         video.volume = 0;
                         this.volumeSlider.value = 0;
+                        this.volumeBtn.className = 'fas fa-volume-mute control-icon';
                     } else {
-                        video.volume = this.lastVolume || 1;
-                        this.volumeSlider.value = video.volume;
-                    }
-                    this.updateVolumeIcon();
-                });
-                
-                // Fullscreen
-                this.fullscreenBtn.addEventListener('click', () => {
-                    this.toggleFullscreen();
-                });
-                
-                // Video ended event
-                video.addEventListener('ended', () => {
-                    this.playPauseBtn.className = 'fas fa-play control-icon';
-                    this.progressBar.style.width = '0%';
-                    this.progressHandle.style.left = '0%';
-                    document.getElementById('video-overlay').classList.add('show');
-                });
-                
-                // Video click to play/pause
-                video.addEventListener('click', () => {
-                    if (video.paused) {
-                        video.play();
-                        this.playPauseBtn.className = 'fas fa-pause control-icon';
-                    } else {
-                        video.pause();
-                        this.playPauseBtn.className = 'fas fa-play control-icon';
+                        video.muted = false;
+                        video.volume = 1; // Restore to full or previous volume
+                        this.volumeSlider.value = 1;
+                        this.volumeBtn.className = 'fas fa-volume-up control-icon';
                     }
                 });
+
+                // Fullscreen button
+                this.fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
 
                 // Keyboard controls
                 document.addEventListener('keydown', (e) => {
-                    if (e.target.tagName.toLowerCase() === 'input') return;
-                    
-                    switch(e.code) {
-                        case 'Space':
-                            e.preventDefault();
-                            if (video.paused) {
-                                video.play();
-                                this.playPauseBtn.className = 'fas fa-pause control-icon';
-                            } else {
-                                video.pause();
-                                this.playPauseBtn.className = 'fas fa-play control-icon';
-                            }
-                            break;
-                        case 'ArrowLeft':
-                            video.currentTime = Math.max(0, video.currentTime - 10);
-                            break;
-                        case 'ArrowRight':
-                            video.currentTime = Math.min(video.duration, video.currentTime + 10);
-                            break;
-                        case 'ArrowUp':
-                            e.preventDefault();
-                            video.volume = Math.min(1, video.volume + 0.1);
-                            this.volumeSlider.value = video.volume;
-                            this.updateVolumeIcon();
-                            break;
-                        case 'ArrowDown':
-                            e.preventDefault();
-                            video.volume = Math.max(0, video.volume - 0.1);
-                            this.volumeSlider.value = video.volume;
-                            this.updateVolumeIcon();
-                            break;
-                        case 'KeyF':
-                            this.toggleFullscreen();
-                            break;
+                    if (e.code === 'Space') {
+                        this.togglePlayPause();
+                    } else if (e.code === 'KeyF') {
+                        this.toggleFullscreen();
+                    } else if (e.code === 'ArrowRight') {
+                        video.currentTime += 5;
+                    } else if (e.code === 'ArrowLeft') {
+                        video.currentTime -= 5;
                     }
                 });
             }
 
-            updateVolumeIcon() {
-                const video = this.videoElement;
-                if (video.volume === 0) {
-                    this.volumeBtn.className = 'fas fa-volume-mute control-icon';
-                } else if (video.volume < 0.5) {
-                    this.volumeBtn.className = 'fas fa-volume-down control-icon';
-                } else {
-                    this.volumeBtn.className = 'fas fa-volume-up control-icon';
-                }
-            }
-
-            selectServer(serverNumber, buttonElement) {
-                document.querySelectorAll('.server-btn').forEach(btn => btn.classList.remove('active'));
-                buttonElement.classList.add('active');
-                
-                this.currentServer = serverNumber;
-                this.showNotification(`Switched to Server ${serverNumber}`, 'success');
-                
-                if (this.isPlaying) {
-                    this.loadMovieStream();
-                }
-            }
-
             playMovie() {
-                if (!this.movieData) {
-                    this.showNotification('Movie data not loaded', 'error');
-                    return;
+                if (this.videoElement.paused) {
+                    this.loadingOverlay.style.display = 'flex';
+                    // Simulate loading delay
+                    setTimeout(() => {
+                        this.videoElement.play().then(() => {
+                            this.videoOverlay.classList.remove('show');
+                            this.loadingOverlay.style.display = 'none';
+                            this.isPlaying = true;
+                        }).catch(error => {
+                            console.error('Error playing video:', error);
+                            this.showNotification('error', 'Failed to play movie. Please try again.');
+                            this.loadingOverlay.style.display = 'none';
+                            this.videoOverlay.classList.add('show'); // Show play button again
+                        });
+                    }, 1000); // Simulate network delay
                 }
-
-                this.loadMovieStream();
             }
 
-            loadMovieStream() {
-                const videoElement = this.videoElement;
-                const videoOverlay = document.getElementById('video-overlay');
-                const loadingOverlay = document.getElementById('loading-overlay');
-
-                loadingOverlay.style.display = 'flex';
-                videoOverlay.classList.remove('show');
-
-                setTimeout(() => {
-                    const streamUrl = this.generateStreamUrl();
-                    
-                    videoElement.src = streamUrl;
-                    videoElement.load();
-                    
-                    videoElement.oncanplay = () => {
-                        videoElement.play()
-                            .then(() => {
-                                this.playPauseBtn.className = 'fas fa-pause control-icon';
-                                this.isPlaying = true;
-                            })
-                            .catch(error => {
-                                console.error('Error playing video:', error);
-                                this.showNotification('Error playing video. Try another server.', 'error');
-                            });
-                        
-                        loadingOverlay.style.display = 'none';
-                    };
-                    
-                    this.showNotification('Full movie loaded successfully!', 'success');
-                }, 1500);
-            }
-
-            generateStreamUrl() {
-                // Real full-length movie URLs (these are actual full movies available for free)
-                const movieStreams = {
-                    1: "https://api.themoviedb.org"
-                  
-                };
-                
-                return movieStreams[this.currentServer] || movieStreams[1];
-            }
-
-            downloadMovie(quality) {
-                if (!this.movieData) return;
-                
-                if (quality === 'premium' && !this.isPremium) {
-                    // Redirect to premium subscription page
-                    window.location.href = 'mpremi';
-                    return;
-                }
-                
-                // Start immediate download
-                this.startDownload(quality);
-            }
-
-            startDownload(quality) {
-                const progressElement = document.getElementById('download-progress');
-                const progressFill = document.getElementById('download-progress-fill');
-                const progressText = document.getElementById('download-progress-text');
-                
-                // Show download progress
-                progressElement.classList.add('show');
-                
-                // Get download URL based on quality
-                let downloadUrl, fileName, fileSize;
-                
-                if (quality === 'standard') {
-                    downloadUrl = this.generateStreamUrl();
-                    fileName = `${this.movieData.title.replace(/\s+/g, '_')}_720p.mp4`;
-                    fileSize = '1.2GB';
+            togglePlayPause() {
+                if (this.videoElement.paused) {
+                    this.videoElement.play();
                 } else {
-                    downloadUrl = this.generateStreamUrl(); // In real app, this would be 4K version
-                    fileName = `${this.movieData.title.replace(/\s+/g, '_')}_4K.mkv`;
-                    fileSize = '8GB';
+                    this.videoElement.pause();
                 }
-                
-                // Simulate download progress
-                let progress = 0;
-                const downloadInterval = setInterval(() => {
-                    progress += Math.random() * 15;
-                    if (progress > 100) progress = 100;
-                    
-                    progressFill.style.width = `${progress}%`;
-                    progressText.textContent = `${Math.round(progress)}% - ${fileSize} - ${fileName}`;
-                    
-                    if (progress >= 100) {
-                        clearInterval(downloadInterval);
-                        progressText.textContent = `Download complete! - ${fileName}`;
-                        
-                        // Create actual download link
-                        const downloadLink = document.createElement('a');
-                        downloadLink.href = downloadUrl;
-                        downloadLink.download = fileName;
-                        downloadLink.style.display = 'none';
-                        document.body.appendChild(downloadLink);
-                        downloadLink.click();
-                        document.body.removeChild(downloadLink);
-                        
-                        this.showNotification(`${quality === 'premium' ? 'Premium' : 'Standard'} download started!`, 'success');
-                        
-                        // Hide progress after 3 seconds
-                        setTimeout(() => {
-                            progressElement.classList.remove('show');
-                        }, 3000);
-                    }
-                }, 200);
-            }
-
-            hideDownloadProgress() {
-                document.getElementById('download-progress').classList.remove('show');
             }
 
             toggleFullscreen() {
-                const videoWrapper = document.querySelector('.video-wrapper');
-                
                 if (!document.fullscreenElement) {
-                    videoWrapper.requestFullscreen().catch(err => {
-                        this.showNotification('Fullscreen not supported', 'warning');
+                    this.videoElement.requestFullscreen().catch(err => {
+                        this.showNotification('warning', `Error attempting to enable fullscreen mode: ${err.message}`);
                     });
                 } else {
                     document.exitFullscreen();
@@ -1210,120 +1083,120 @@
             }
 
             shareMovie() {
-                if (!this.movieData) return;
-
-                const shareData = {
-                    title: `Watch ${this.movieData.title} on CinemaVerse`,
-                    text: `Check out this amazing movie: ${this.movieData.title}`,
-                    url: window.location.href
-                };
-
                 if (navigator.share) {
-                    navigator.share(shareData);
+                    navigator.share({
+                        title: this.movieData.title,
+                        text: `Check out ${this.movieData.title} on SMILEX!`,
+                        url: window.location.href,
+                    }).then(() => {
+                        this.showNotification('success', 'Movie shared successfully!');
+                    }).catch(error => {
+                        console.error('Error sharing:', error);
+                        this.showNotification('error', 'Failed to share movie.');
+                    });
                 } else {
-                    navigator.clipboard.writeText(window.location.href).then(() => {
-                        this.showNotification('Link copied to clipboard!', 'success');
-                    }).catch(() => {
-                        this.showNotification('Could not copy link', 'error');
+                    // Fallback for browsers that do not support the Web Share API
+                    const movieUrl = window.location.href;
+                    navigator.clipboard.writeText(movieUrl).then(() => {
+                        this.showNotification('success', 'Movie link copied to clipboard!');
+                    }).catch(err => {
+                        this.showNotification('error', 'Failed to copy link.');
                     });
                 }
             }
 
             addToWatchlist() {
-                if (!this.movieData) return;
-
-                let watchlist = JSON.parse(localStorage.getItem('watchlist') || '[]');
-                
-                const exists = watchlist.some(movie => movie.id === this.movieData.id);
-                
-                if (exists) {
-                    this.showNotification('Already in watchlist', 'warning');
-                    return;
-                }
-
-                watchlist.push({
+                const watchlist = JSON.parse(localStorage.getItem('watchlist') || '[]');
+                const movieToAdd = {
                     id: this.movieData.id,
                     title: this.movieData.title,
                     poster_path: this.movieData.poster_path,
-                    added_date: new Date().toISOString()
-                });
+                    release_date: this.movieData.release_date
+                };
 
-                localStorage.setItem('watchlist', JSON.stringify(watchlist));
-                this.showNotification('Added to watchlist!', 'success');
-            }
-
-            reportIssue() {
-                const issue = prompt('Please describe the issue you encountered:');
-                if (issue) {
-                    console.log('Issue reported:', issue);
-                    this.showNotification('Thank you for your report!', 'success');
+                if (!watchlist.some(movie => movie.id === movieToAdd.id)) {
+                    watchlist.push(movieToAdd);
+                    localStorage.setItem('watchlist', JSON.stringify(watchlist));
+                    this.showNotification('success', `${this.movieData.title} added to watchlist!`);
+                } else {
+                    this.showNotification('warning', `${this.movieData.title} is already in your watchlist.`);
                 }
             }
 
-            showError(title, message) {
-                const playerContainer = document.querySelector('.player-container');
-                playerContainer.innerHTML = `
-                    <div style="text-align: center; padding: 50px; color: var(--text-secondary);">
-                        <div style="font-size: 60px; margin-bottom: 20px; color: var(--error-color);">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <h2 style="font-size: 24px; margin-bottom: 10px; color: var(--text-primary);">${title}</h2>
-                        <p style="margin-bottom: 25px; line-height: 1.6;">${message}</p>
-                        <button class="action-button primary" onclick="window.location.href='movie.html'">
-                            <i class="fas fa-home"></i> Go Home
-                        </button>
-                    </div>
-                `;
+            reportIssue() {
+                // In a real application, this would send data to a backend
+                console.log(`Reporting issue for movie: ${this.movieData.title} (ID: ${this.movieData.id})`);
+                this.showNotification('info', 'Issue reported. Thanks for your feedback!');
             }
 
-            showNotification(message, type = 'success') {
+            downloadMovie(quality) {
+                if (quality === 'premium' && !this.isPremium) {
+                    this.showNotification('warning', 'Premium download requires a premium subscription.');
+                    // In a real app, redirect to a subscription page
+                    return;
+                }
+
+                this.showNotification('info', `Starting ${quality} download...`);
+                this.showDownloadProgress();
+
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.floor(Math.random() * 10) + 1; // Simulate progress
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                        this.downloadProgressFill.style.width = '100%';
+                        this.downloadProgressText.textContent = 'Download complete!';
+                        this.showNotification('success', `"${this.movieData.title}" download finished!`);
+                        setTimeout(() => this.hideDownloadProgress(), 2000);
+                        // In a real app, trigger the actual file download
+                        console.log(`Download complete for ${this.movieData.title} (${quality})`);
+                    } else {
+                        this.downloadProgressFill.style.width = `${progress}%`;
+                        this.downloadProgressText.textContent = `Downloading... ${progress}%`;
+                    }
+                }, 500); // Update every 0.5 seconds
+            }
+
+            showDownloadProgress() {
+                this.downloadProgress.classList.add('show');
+                this.downloadProgressFill.style.width = '0%';
+                this.downloadProgressText.textContent = 'Preparing download...';
+            }
+
+            hideDownloadProgress() {
+                this.downloadProgress.classList.remove('show');
+            }
+
+            selectServer(serverNumber, buttonElement) {
+                this.currentServer = serverNumber;
+                document.querySelectorAll('.server-btn').forEach(btn => btn.classList.remove('active'));
+                buttonElement.classList.add('active');
+                this.setVideoSource();
+                this.playMovie(); // Attempt to play on new server
+                this.showNotification('info', `Switched to Server ${serverNumber}.`);
+            }
+
+            showNotification(type, message) {
                 const notification = document.createElement('div');
-                notification.className = `notification ${type}`;
+                notification.classList.add('notification');
+                notification.classList.add(type);
                 notification.textContent = message;
-                
                 document.body.appendChild(notification);
-                
+
                 setTimeout(() => {
                     notification.remove();
-                }, 4000);
+                }, 3000); // Notification disappears after 3 seconds
             }
         }
 
-                          // Disable F12, Ctrl+U, and Ctrl+Shift+I
-        document.addEventListener("keydown", function(e) {
-            // F12, Ctrl+Shift+I, and Ctrl+U
-            if ((e.key === 'F12') || 
-                (e.ctrlKey && (e.key === 'u' || e.key === 'U')) || 
-                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i'))) {
-                e.preventDefault();
-              
-            }
+        // Initialize the player once the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.moviePlayer = new MoviePlayer();
         });
-
-        // Detect DevTools opening (using resize event)
-        let devtoolsOpen = false;
-        setInterval(function() {
-            const width = window.outerWidth - window.innerWidth > 100;
-            const height = window.outerHeight - window.innerHeight > 100;
-            if ((width || height) && !devtoolsOpen) {
-                devtoolsOpen = true;
-               
-            }
-            if (!(width || height) && devtoolsOpen) {
-                devtoolsOpen = false;
-            }
-        }, 1000);
-
-        // Initialize the movie player
-        const moviePlayer = new MoviePlayer();
-
-        // Prevent right-click context menu
-        document.addEventListener('contextmenu', e => e.preventDefault());
-
-        // Handle browser back button
-        window.addEventListener('beforeunload', () => {
-            localStorage.removeItem('selectedMovie');
-        });
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
