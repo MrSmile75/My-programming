@@ -3,544 +3,560 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Gaming Hub - Ultimate Gaming Platform</title>
+    <title>SmileX Gaming Hub - Ultimate Gaming Platform</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="game.css">
-
-
 </head>
+
 <style>
-      :root {
-            --primary-color: #6a11cb;
-            --secondary-color: #00f5d4;
-            --game-bg: #1a1a2e;
-            --card-bg: #16213e;
-            --premium-gold: #ffd700;
-            --trial-red: #ff4757;
-            --success-green: #2ed573;
-            --gradient-primary: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            --gradient-secondary: linear-gradient(135deg, #00f5d4 0%, #00d2ff 100%);
-            --gradient-premium: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-        }
+    :root {
+        --primary-color: #6a11cb;
+        --secondary-color: #00f5d4;
+        --game-bg: #1a1a2e;
+        --card-bg: #16213e;
+        --premium-gold: #ffd700;
+        --trial-red: #ff4757;
+        --success-green: #2ed573;
+        --gradient-primary: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        --gradient-secondary: linear-gradient(135deg, #00f5d4 0%, #00d2ff 100%);
+        --gradient-premium: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-            color: white;
-           font-family: 'Orbitron', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-              
-            
-        }
+    body {
+        background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+        color: white;
+        font-family: 'Orbitron', sans-serif;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
 
-        /* Navigation Styles */
-        .navbar {
-            background: linear-gradient(90deg, #6a11cb, #1a1a2e, #6a11cb) !important;
-            backdrop-filter: blur(15px);
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+    /* Navigation Styles */
+    .navbar {
+        background: linear-gradient(90deg, #6a11cb, #1a1a2e, #6a11cb) !important;
+        backdrop-filter: blur(15px);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .navbar-brand {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        font-size: 1.8rem;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        background: var(--gradient-premium);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Status Bar Styles */
+    .status-bar {
+        background: var(--gradient-primary);
+        padding: 12px 0;
+        text-align: center;
+        font-weight: 600;
+        animation: pulse 2s infinite;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .status-bar.premium {
+        background: var(--gradient-premium);
+        color: #000;
+    }
+
+    .cache-status {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: rgba(106, 17, 203, 0.9);
+        padding: 10px 15px;
+        border-radius: 20px;
+        border: 1px solid var(--primary-color);
+        backdrop-filter: blur(10px);
+        z-index: 999;
+        font-size: 0.9rem;
+        animation: slideInRight 0.5s ease;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.9; }
+    }
+
+    @keyframes slideInRight {
+        from { transform: translateX(100%); }
+        to { transform: translateX(0); }
+    }
+
+    /* Game Card Styles */
+    .game-card {
+        background: var(--card-bg);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        transition: all 0.4s ease;
+        overflow: hidden;
+        position: relative;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .game-card:hover {
+        transform: translateY(-15px) scale(1.03);
+        box-shadow: 0 25px 50px rgba(106, 17, 203, 0.4);
+        border-color: var(--primary-color);
+    }
+
+    .game-card-img {
+        height: 280px;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+        width: 100%;
+    }
+
+    .game-card:hover .game-card-img {
+        transform: scale(1.1);
+    }
+
+    .platform-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: var(--gradient-primary);
+        padding: 8px 12px;
+        border-radius: 25px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        backdrop-filter: blur(10px);
+    }
+
+    .cached-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: var(--gradient-secondary);
+        color: #000;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.7rem;
+        font-weight: 600;
+    }
+
+    /* Modal Styles */
+    .game-preview-modal, .play-platform-modal, .play-options-modal {
+        background: rgba(0, 0, 0, 0.95);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1500;
+        overflow-y: auto;
+        backdrop-filter: blur(10px);
+        animation: fadeIn 0.3s ease;
+        display: none;
+    }
+
+    .preview-content, .platform-content, .play-options-content {
+        background: linear-gradient(135deg, var(--card-bg), var(--game-bg));
+        max-width: 1200px;
+        margin: 50px auto;
+        border-radius: 25px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        animation: slideInUp 0.4s ease;
+        padding: 40px;
+    }
+
+    .platform-content, .play-options-content {
+        max-width: 600px;
+        text-align: center;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideInUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Platform Selection Modal */
+    .platform-option-btn {
+        display: block;
+        width: 100%;
+        margin: 20px 0;
+        padding: 20px;
+        border: 3px solid var(--primary-color);
+        border-radius: 15px;
+        background: transparent;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .platform-option-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--gradient-primary);
+        transition: left 0.3s ease;
+        z-index: -1;
+    }
+
+    .platform-option-btn:hover::before {
+        left: 0;
+    }
+
+    .platform-option-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(106, 17, 203, 0.4);
+    }
+
+    .platform-option-btn.steam {
+        border-color: #1b2838;
+        color: #66c0f4;
+    }
+
+    .platform-option-btn.steam::before {
+        background: linear-gradient(135deg, #1b2838, #66c0f4);
+    }
+
+    /* Genre Filter Styles */
+    .genre-filter {
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 30px;
+        padding: 20px;
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .genre-btn {
+        margin: 8px;
+        padding: 12px 24px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 30px;
+        background: transparent;
+        color: white;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .genre-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--gradient-primary);
+        transition: left 0.3s ease;
+        z-index: -1;
+    }
+
+    .genre-btn:hover::before,
+    .genre-btn.active::before {
+        left: 0;
+    }
+
+    .genre-btn:hover,
+    .genre-btn.active {
+        border-color: transparent;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(106, 17, 203, 0.4);
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        backdrop-filter: blur(10px);
+    }
+
+    .loading-spinner {
+        width: 80px;
+        height: 80px;
+        border: 6px solid rgba(255, 255, 255, 0.1);
+        border-left: 6px solid var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Game Timer Styles */
+    .game-timer {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--gradient-primary);
+        padding: 15px 25px;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 1.3rem;
+        z-index: 1200;
+        box-shadow: 0 15px 35px rgba(255, 71, 87, 0.4);
+        display: none;
+        animation: bounceIn 0.5s ease;
+    }
+
+    @keyframes bounceIn {
+        0% { transform: scale(0.3); opacity: 0; }
+        50% { transform: scale(1.05); }
+        70% { transform: scale(0.9); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Play Options Modal */
+    .play-option-btn {
+        display: block;
+        width: 100%;
+        margin: 20px 0;
+        padding: 20px;
+        border: 3px solid var(--primary-color);
+        border-radius: 15px;
+        background: transparent;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .play-option-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--gradient-primary);
+        transition: left 0.3s ease;
+        z-index: -1;
+    }
+
+    .play-option-btn:hover::before {
+        left: 0;
+    }
+
+    .play-option-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(106, 17, 203, 0.4);
+    }
+
+    .play-option-btn.premium {
+        border-color: var(--premium-gold);
+        color: var(--premium-gold);
+    }
+
+    .play-option-btn.premium::before {
+        background: var(--gradient-premium);
+    }
+
+    .play-option-btn.premium:hover {
+        color: #000;
+    }
+
+    /* Search Styles */
+    .search-container {
+        position: relative;
+    }
+
+    .search-input {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 30px;
+        padding: 12px 25px;
+        color: white;
+        backdrop-filter: blur(10px);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .search-input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .search-input:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 25px rgba(106, 17, 203, 0.4);
+        outline: none;
+        transform: scale(1.02);
+    }
+
+    /* Premium Page Styles */
+    .premium-page {
+        background: linear-gradient(135deg, #000000, #1a1a2e, #000000);
+        min-height: 100vh;
+        padding: 50px 0;
+        z-index: 10000;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: black;
+        overflow-y: auto;
+        z-index: 1000;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .premium-card {
+        background: linear-gradient(135deg, var(--card-bg), var(--game-bg));
+        border: 2px solid var(--premium-gold);
+        border-radius: 25px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 30px 60px rgba(255, 215, 0, 0.2);
+    }
+
+    .premium-features {
+        list-style: none;
+        padding: 0;
+    }
+
+    .premium-features li {
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 1.1rem;
+    }
+
+    .premium-features li:last-child {
+        border-bottom: none;
+    }
+
+    /* Notification Styles */
+    .notification {
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        padding: 20px 30px;
+        border-radius: 15px;
+        color: white;
+        font-weight: 600;
+        z-index: 2500;
+        min-width: 350px;
+        animation: slideInRight 0.4s ease;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .notification.success { background: linear-gradient(45deg, var(--success-green), #27ae60); }
+    .notification.warning { background: linear-gradient(45deg, #f39c12, #e67e22); }
+    .notification.error { background: linear-gradient(45deg, var(--trial-red), #c0392b); }
+    .notification.info { background: var(--gradient-primary); }
+
+    /* Progress Bar */
+    .progress-container {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 15px 0;
+    }
+
+    .progress-bar {
+        height: 10px;
+        background: var(--gradient-secondary);
+        transition: width 0.3s ease;
+        border-radius: 10px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .game-card-img {
+            height: 220px;
+        }
+        
+        .preview-content, .platform-content, .play-options-content {
+            margin: 20px;
+            padding: 30px;
         }
 
         .navbar-brand {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 1.8rem;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            background: var(--gradient-premium);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Status Bar Styles */
-        .status-bar {
-            background: var(--gradient-primary);
-            padding: 12px 0;
-            text-align: center;
-            font-weight: 600;
-            animation: pulse 2s infinite;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .status-bar.premium {
-            background: var(--gradient-premium);
-            color: #000;
+            font-size: 1.4rem;
         }
 
         .cache-status {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            background: rgba(106, 17, 203, 0.9);
-            padding: 10px 15px;
-            border-radius: 20px;
-            border: 1px solid var(--primary-color);
-            backdrop-filter: blur(10px);
-            z-index: 999;
-            font-size: 0.9rem;
-            animation: slideInRight 0.5s ease;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.9; }
-        }
-
-        @keyframes slideInRight {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
-        }
-
-        /* Game Card Styles */
-        .game-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            transition: all 0.4s ease;
-            overflow: hidden;
             position: relative;
-            height: 100%;
-            cursor: pointer;
+            top: auto;
+            right: auto;
+            margin: 10px auto;
+            width: fit-content;
         }
+    }
 
-        .game-card:hover {
-            transform: translateY(-15px) scale(1.03);
-            box-shadow: 0 25px 50px rgba(106, 17, 203, 0.4);
-            border-color: var(--primary-color);
-        }
+    /* Error Message */
+    .error-message {
+        background: linear-gradient(45deg, var(--trial-red), #c0392b);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        margin: 30px 0;
+        font-weight: 600;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+    }
 
-        .game-card-img {
-            height: 280px;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-            width: 100%;
-        }
+    /* Game Rating */
+    .rating-stars {
+        color: var(--premium-gold);
+        margin: 0 5px;
+    }
 
-        .game-card:hover .game-card-img {
-            transform: scale(1.1);
-        }
+    /* Scroll to top button */
+    .scroll-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--gradient-primary);
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        display: none;
+    }
 
-        .platform-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--gradient-primary);
-            padding: 8px 12px;
-            border-radius: 25px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
-        }
-
-        .cached-badge {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: var(--gradient-secondary);
-            color: #000;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
-        /* Modal Styles */
-        .game-preview-modal {
-            background: rgba(0, 0, 0, 0.95);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1500;
-            overflow-y: auto;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .preview-content {
-            background: linear-gradient(135deg, var(--card-bg), var(--game-bg));
-            max-width: 1200px;
-            margin: 50px auto;
-            border-radius: 25px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            animation: slideInUp 0.4s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideInUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* Genre Filter Styles */
-        .genre-filter {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 30px;
-            padding: 20px;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .genre-btn {
-            margin: 8px;
-            padding: 12px 24px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
-            background: transparent;
-            color: white;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .genre-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-primary);
-            transition: left 0.3s ease;
-            z-index: -1;
-        }
-
-        .genre-btn:hover::before,
-        .genre-btn.active::before {
-            left: 0;
-        }
-
-        .genre-btn:hover,
-        .genre-btn.active {
-            border-color: transparent;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(106, 17, 203, 0.4);
-        }
-
-        /* Loading Overlay */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            backdrop-filter: blur(10px);
-        }
-
-        .loading-spinner {
-            width: 80px;
-            height: 80px;
-            border: 6px solid rgba(255, 255, 255, 0.1);
-            border-left: 6px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Game Timer Styles */
-        .game-timer {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--gradient-primary);
-            padding: 15px 25px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1.3rem;
-            z-index: 1200;
-            box-shadow: 0 15px 35px rgba(255, 71, 87, 0.4);
-            display: none;
-            animation: bounceIn 0.5s ease;
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.05); }
-            70% { transform: scale(0.9); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Play Options Modal */
-        .play-options-modal {
-            background: rgba(0, 0, 0, 0.95);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1600;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .play-options-content {
-            background: linear-gradient(135deg, var(--card-bg), var(--game-bg));
-            padding: 50px;
-            border-radius: 25px;
-            text-align: center;
-            max-width: 600px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            animation: zoomIn 0.4s ease;
-        }
-
-        @keyframes zoomIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .play-option-btn {
-            display: block;
-            width: 100%;
-            margin: 20px 0;
-            padding: 20px;
-            border: 3px solid var(--primary-color);
-            border-radius: 15px;
-            background: transparent;
-            color: white;
-            font-size: 1.2rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .play-option-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-primary);
-            transition: left 0.3s ease;
-            z-index: -1;
-        }
-
-        .play-option-btn:hover::before {
-            left: 0;
-        }
-
-        .play-option-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(106, 17, 203, 0.4);
-        }
-
-        .play-option-btn.premium {
-            border-color: var(--premium-gold);
-            color: var(--premium-gold);
-        }
-
-        .play-option-btn.premium::before {
-            background: var(--gradient-premium);
-        }
-
-        .play-option-btn.premium:hover {
-            color: #000;
-        }
-
-        /* Search Styles */
-        .search-container {
-            position: relative;
-        }
-
-        .search-input {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
-            padding: 12px 25px;
-            color: white;
-            backdrop-filter: blur(10px);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .search-input:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--primary-color);
-            box-shadow: 0 0 25px rgba(106, 17, 203, 0.4);
-            outline: none;
-            transform: scale(1.02);
-        }
-
-        /* Premium Page Styles */
-        .premium-page {
-            background: linear-gradient(135deg, #000000, #1a1a2e, #000000);
-            min-height: 100vh;
-            padding: 50px 0;
-            z-index: 10000;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            overflow-y: auto;
-            z-index: 1000;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .premium-card {
-            background: linear-gradient(135deg, var(--card-bg), var(--game-bg));
-            border: 2px solid var(--premium-gold);
-            border-radius: 25px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(255, 215, 0, 0.2);
-        }
-
-        .premium-features {
-            list-style: none;
-            padding: 0;
-        }
-
-        .premium-features li {
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 1.1rem;
-        }
-
-        .premium-features li:last-child {
-            border-bottom: none;
-        }
-
-        /* Notification Styles */
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            padding: 20px 30px;
-            border-radius: 15px;
-            color: white;
-            font-weight: 600;
-            z-index: 2500;
-            min-width: 350px;
-            animation: slideInRight 0.4s ease;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        }
-
-        .notification.success { background: linear-gradient(45deg, var(--success-green), #27ae60); }
-        .notification.warning { background: linear-gradient(45deg, #f39c12, #e67e22); }
-        .notification.error { background: linear-gradient(45deg, var(--trial-red), #c0392b); }
-        .notification.info { background: var(--gradient-primary); }
-
-        /* Progress Bar */
-        .progress-container {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 15px 0;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background: var(--gradient-secondary);
-            transition: width 0.3s ease;
-            border-radius: 10px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .game-card-img {
-                height: 220px;
-            }
-            
-            .preview-content {
-                margin: 20px;
-                padding: 30px;
-            }
-            
-            .play-options-content {
-                margin: 20px;
-                padding: 30px;
-            }
-
-            .navbar-brand {
-                font-size: 1.4rem;
-            }
-
-            .cache-status {
-                position: relative;
-                top: auto;
-                right: auto;
-                margin: 10px auto;
-                width: fit-content;
-            }
-        }
-
-        /* Error Message */
-        .error-message {
-            background: linear-gradient(45deg, var(--trial-red), #c0392b);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            margin: 30px 0;
-            font-weight: 600;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Game Rating */
-        .rating-stars {
-            color: var(--premium-gold);
-            margin: 0 5px;
-        }
-
-        /* Scroll to top button */
-        .scroll-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--gradient-primary);
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            display: none;
-        }
-
-        .scroll-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(106, 17, 203, 0.4);
-        }
+    .scroll-top:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(106, 17, 203, 0.4);
+    }
 </style>
 
 <body>
@@ -548,7 +564,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="#" onclick="showMainPage()">
-                <i class="fas fa-gamepad me-2"></i> GAMING HUB
+                <i class="fas fa-gamepad me-2"></i> SMILEX GAMING HUB
             </a>
             <div class="d-flex align-items-center">
                 <div class="search-container me-3">
@@ -647,7 +663,7 @@
                                 <li><i class="fas fa-infinity text-warning me-3"></i>Unlimited gaming sessions - No time limits!</li>
                                 <li><i class="fas fa-rocket text-warning me-3"></i>Priority access to new features</li>
                                 <li><i class="fas fa-hdd text-warning me-3"></i>Enhanced cache storage</li>
-                                <li><i class="fas fa-star text-warning me-3"></i>Exclusive premium features </li>
+                                <li><i class="fas fa-star text-warning me-3"></i>Exclusive premium features</li>
                                 <li><i class="fas fa-headset text-warning me-3"></i>24/7 Premium support</li>
                                 <li><i class="fas fa-download text-warning me-3"></i>Instant play with no ads</li>
                                 <li><i class="fas fa-trophy text-warning me-3"></i>Achievement tracking</li>
@@ -678,13 +694,12 @@
                                         <div class="card-body text-center">
                                             <h5 class="text-warning">Legend</h5>
                                             <h2 class="text-white">$99.99</h2>
-                                              <p class="text-muted">per month</p>
+                                            <p class="text-muted">per month</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                          
                             <button class="btn btn-outline-light btn-lg" onclick="showMainPage()">
                                 <i class="fas fa-arrow-left me-2"></i>Back to Games
                             </button>
@@ -705,8 +720,8 @@
     </div>
 
     <!-- Game Preview Modal -->
-    <div id="gamePreviewModal" class="game-preview-modal" style="display:none;">
-        <div class="preview-content p-5">
+    <div id="gamePreviewModal" class="game-preview-modal">
+        <div class="preview-content">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="mb-0">Game Details</h2>
                 <button id="closePreviewBtn" class="btn btn-outline-light btn-lg">
@@ -722,22 +737,60 @@
         </div>
     </div>
 
+    <!-- Platform Selection Modal -->
+    <div id="playPlatformModal" class="play-platform-modal">
+        <div class="platform-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">
+                    <i class="fas fa-gamepad me-3"></i>Choose Platform
+                </h2>
+                <button id="closePlatformBtn" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p class="lead mb-4">How would you like to play this game?</p>
+            
+            <button id="playSteamBtn" class="platform-option-btn steam">
+                <i class="fab fa-steam me-3"></i>Play on Steam
+                <small class="d-block mt-2">Launch game through Steam platform</small>
+            </button>
+            
+            <button id="playWebBtn" class="platform-option-btn">
+                <i class="fas fa-globe me-3"></i>Play in Web
+                <small class="d-block mt-2">Play directly in your browser</small>
+            </button>
+            
+            <button id="cancelPlatformBtn" class="btn btn-outline-light btn-lg mt-4">
+                <i class="fas fa-arrow-left me-2"></i>Back to Game Details
+            </button>
+        </div>
+    </div>
+
     <!-- Play Options Modal -->
-    <div id="playOptionsModal" class="play-options-modal" style="display:none;">
+    <div id="playOptionsModal" class="play-options-modal">
         <div class="play-options-content">
-            <h2 class="mb-4">
-                <i class="fas fa-gamepad me-3"></i>Choose Your Gaming Mode
-            </h2>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">
+                    <i class="fas fa-clock me-3"></i>Choose Gaming Time
+                </h2>
+                <button id="closeOptionsBtn" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p class="lead mb-4">Select your gaming session duration</p>
+            
             <button id="play2HoursBtn" class="play-option-btn">
                 <i class="fas fa-clock me-3"></i>Free Gaming Session
                 <small class="d-block mt-2">2 Hours of Gaming Time</small>
             </button>
+            
             <button id="playUnlimitedBtn" class="play-option-btn premium">
                 <i class="fas fa-infinity me-3"></i>Premium Unlimited
                 <small class="d-block mt-2">No Time Limits - Premium Feature</small>
             </button>
+            
             <button id="cancelPlayBtn" class="btn btn-outline-light btn-lg mt-4">
-                <i class="fas fa-arrow-left me-2"></i>Back to Game
+                <i class="fas fa-arrow-left me-2"></i>Back to Platform Selection
             </button>
         </div>
     </div>
@@ -747,8 +800,8 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <script src="game.js">
-         class SmileXGamingHub {
+    <script>
+        class SmileXGamingHub {
             constructor() {
                 this.initializeProperties();
                 this.setupEventListeners();
@@ -796,14 +849,28 @@
                 this.searchButton = document.getElementById('searchButton');
                 this.genreButtons = document.querySelectorAll('.genre-btn');
                 this.loadingOverlay = document.getElementById('loadingOverlay');
+                
+                // Game Preview Modal
                 this.previewModal = document.getElementById('gamePreviewModal');
                 this.previewContent = document.getElementById('previewContent');
                 this.closePreviewBtn = document.getElementById('closePreviewBtn');
                 this.playGameBtn = document.getElementById('playGameBtn');
+                
+                // Platform Selection Modal
+                this.platformModal = document.getElementById('playPlatformModal');
+                this.closePlatformBtn = document.getElementById('closePlatformBtn');
+                this.playSteamBtn = document.getElementById('playSteamBtn');
+                this.playWebBtn = document.getElementById('playWebBtn');
+                this.cancelPlatformBtn = document.getElementById('cancelPlatformBtn');
+                
+                // Play Options Modal
                 this.playOptionsModal = document.getElementById('playOptionsModal');
+                this.closeOptionsBtn = document.getElementById('closeOptionsBtn');
                 this.play2HoursBtn = document.getElementById('play2HoursBtn');
                 this.playUnlimitedBtn = document.getElementById('playUnlimitedBtn');
                 this.cancelPlayBtn = document.getElementById('cancelPlayBtn');
+                
+                // Other elements
                 this.gameTimerElement = document.getElementById('gameTimer');
                 this.timerDisplay = document.getElementById('timerDisplay');
                 this.statusBar = document.getElementById('statusBar');
@@ -840,14 +907,21 @@
                     btn.addEventListener('click', () => this.selectGenre(btn));
                 });
 
-                // Modal controls
+                // Game Preview Modal
                 this.closePreviewBtn.addEventListener('click', () => this.closePreview());
-                this.playGameBtn.addEventListener('click', () => this.showPlayOptions());
-                this.cancelPlayBtn.addEventListener('click', () => this.hidePlayOptions());
+                this.playGameBtn.addEventListener('click', () => this.showPlatformSelection());
 
-                // Play options
+                // Platform Selection Modal
+                this.closePlatformBtn.addEventListener('click', () => this.closePlatformSelection());
+                this.playSteamBtn.addEventListener('click', () => this.playOnSteam());
+                this.playWebBtn.addEventListener('click', () => this.showPlayOptions());
+                this.cancelPlatformBtn.addEventListener('click', () => this.backToGameDetails());
+
+                // Play Options Modal
+                this.closeOptionsBtn.addEventListener('click', () => this.closePlayOptions());
                 this.play2HoursBtn.addEventListener('click', () => this.startGame(2));
                 this.playUnlimitedBtn.addEventListener('click', () => this.startGame(0));
+                this.cancelPlayBtn.addEventListener('click', () => this.backToPlatformSelection());
 
                 // Premium controls
                 this.premiumBtn.addEventListener('click', () => this.showPremiumPage());
@@ -1174,19 +1248,49 @@
                 this.previewModal.style.display = 'block';
             }
 
+            // Platform Selection Methods
+            showPlatformSelection() {
+                this.previewModal.style.display = 'none';
+                this.platformModal.style.display = 'block';
+            }
+
+            closePlatformSelection() {
+                this.platformModal.style.display = 'none';
+            }
+
+            backToGameDetails() {
+                this.platformModal.style.display = 'none';
+                this.previewModal.style.display = 'block';
+            }
+
+            playOnSteam() {
+                if (this.currentGame) {
+                    // Create Steam search URL
+                    const steamSearchUrl = `https://store.steampowered.com/search/?term=${encodeURIComponent(this.currentGame.name)}`;
+                    window.open(steamSearchUrl, '_blank');
+                    this.closePlatformSelection();
+                    this.showNotification(`Redirecting to Steam to find "${this.currentGame.name}"...`, 'success');
+                }
+            }
+
+            // Play Options Methods
             showPlayOptions() {
                 if (!this.userData.isPremium && this.userData.sessionsRemaining <= 0) {
                     this.showNotification('No gaming sessions remaining today! Upgrade to Premium for unlimited gaming.', 'warning');
                     return;
                 }
                 
-                this.previewModal.style.display = 'none';
-                this.playOptionsModal.style.display = 'flex';
+                this.platformModal.style.display = 'none';
+                this.playOptionsModal.style.display = 'block';
             }
 
-            hidePlayOptions() {
+            closePlayOptions() {
                 this.playOptionsModal.style.display = 'none';
-                this.previewModal.style.display = 'block';
+            }
+
+            backToPlatformSelection() {
+                this.playOptionsModal.style.display = 'none';
+                this.platformModal.style.display = 'block';
             }
 
             startGame(hours) {
@@ -1220,9 +1324,12 @@
                 
                 localStorage.setItem('currentGameSession', JSON.stringify(gameSession));
                 
-                // Redirect to game page
+                // Create a game player page URL
                 const gameSlug = this.currentGame.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                window.location.href = `play.html?id=${this.currentGame.id}&slug=${gameSlug}&hours=${hours}`;
+                const playerUrl = `game-player.html?id=${this.currentGame.id}&slug=${gameSlug}&hours=${hours}`;
+                
+                // Redirect to game player page
+                window.location.href = playerUrl;
             }
 
             // Search Functionality
@@ -1328,7 +1435,7 @@
             }
         }
 
- 
+        // Global function to show main page
         function showMainPage() {
             if (window.gamingHub) {
                 window.gamingHub.showMainPage();
@@ -1340,34 +1447,29 @@
             window.gamingHub = new SmileXGamingHub();
         });
 
-        // Prevent right-click (optional)
+        // Security measures
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-                     // Disable F12, Ctrl+U, and Ctrl+Shift+I
         document.addEventListener("keydown", function(e) {
-            // F12, Ctrl+Shift+I, and Ctrl+U
             if ((e.key === 'F12') || 
                 (e.ctrlKey && (e.key === 'u' || e.key === 'U')) || 
                 (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i'))) {
                 e.preventDefault();
-              
             }
         });
 
-        // Detect DevTools opening (using resize event)
+        // Detect DevTools
         let devtoolsOpen = false;
         setInterval(function() {
             const width = window.outerWidth - window.innerWidth > 100;
             const height = window.outerHeight - window.innerHeight > 100;
             if ((width || height) && !devtoolsOpen) {
                 devtoolsOpen = true;
-               
             }
             if (!(width || height) && devtoolsOpen) {
                 devtoolsOpen = false;
             }
         }, 1000);
-
     </script>
 </body>
 </html>
