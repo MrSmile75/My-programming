@@ -10,6 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
 
     <style>
@@ -769,6 +770,18 @@
             0% { opacity: 0; transform: scale(0.9); }
             100% { opacity: 1; transform: scale(1); }
         }
+
+        /* API Status */
+        .api-status {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            z-index: 1001;
+            background: var(--success-color);
+        }
     </style>
 </head>
 <body>
@@ -780,6 +793,11 @@
     <!-- Active Users Counter -->
     <div class="active-users" id="activeUsers">
         <i class="fas fa-users"></i> Players: 0
+    </div>
+
+    <!-- API Status -->
+    <div class="api-status" id="apiStatus">
+        <i class="fas fa-database"></i> API Ready
     </div>
 
     <!-- Name Entry Modal -->
@@ -805,7 +823,7 @@
             <div class="premium-features">
                 <div class="premium-feature">
                     <i class="fas fa-check-circle"></i>
-                    <span>20 daily hints (instead of 10)</span>
+                    <span>20 daily hints (refreshes every 24 hours)</span>
                 </div>
                 <div class="premium-feature">
                     <i class="fas fa-check-circle"></i>
@@ -822,6 +840,10 @@
                 <div class="premium-feature">
                     <i class="fas fa-check-circle"></i>
                     <span>Ad-free experience</span>
+                </div>
+                <div class="premium-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Real-time live rankings</span>
                 </div>
             </div>
             
@@ -862,7 +884,7 @@
                 <i class="fas fa-question-circle"></i> Quiz
             </button>
             <button class="tab-btn" data-tab="leaderboardTab">
-                <i class="fas fa-trophy"></i> Leaderboard
+                <i class="fas fa-trophy"></i> Live Rankings
             </button>
             <button class="tab-btn" data-tab="commentsTab">
                 <i class="fas fa-comments"></i> Live Chat
@@ -889,7 +911,7 @@
                         </div>
                         <div class="stat-item">
                             <div class="stat-value" id="userRank">-</div>
-                            <div class="stat-label">Rank</div>
+                            <div class="stat-label">Live Rank</div>
                         </div>
                     </div>
                 </div>
@@ -921,6 +943,7 @@
                 <div class="question-container" id="questionContainer">
                     <div class="loading">
                         <div class="spinner"></div>
+                        <div style="margin-left: 1rem;">Loading questions from OpenTDB...</div>
                     </div>
                 </div>
 
@@ -956,13 +979,14 @@
         <div class="tab-content" id="leaderboardTab">
             <div class="tournament-panel">
                 <div class="tournament-header">
-                    <div class="tournament-title">🏆 Live Tournament Leaderboard</div>
-                    <div class="tournament-status" id="tournamentStatus">Competing with players worldwide!</div>
+                    <div class="tournament-title">🏆 Live Tournament Rankings</div>
+                    <div class="tournament-status" id="tournamentStatus">Real-time rankings updated live!</div>
                 </div>
                 
                 <div class="leaderboard" id="leaderboard">
                     <div class="loading">
                         <div class="spinner"></div>
+                        <div style="margin-left: 1rem;">Loading live rankings...</div>
                     </div>
                 </div>
             </div>
@@ -973,6 +997,9 @@
             <div class="comments-section">
                 <div class="comments-header">
                     <i class="fas fa-comments"></i> Live Chat
+                    <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;">
+                        Real-time chat with all players
+                    </div>
                 </div>
                 
                 <!-- Emoji Picker -->
@@ -999,6 +1026,7 @@
                 <div class="comments-list" id="commentsList">
                     <div class="loading">
                         <div class="spinner"></div>
+                        <div style="margin-left: 1rem;">Loading live chat...</div>
                     </div>
                 </div>
             </div>
@@ -1006,10 +1034,11 @@
     </div>
 
     <script>
-        // Firebase Configuration (Replace with your config)
+        // Firebase Configuration (Replace with your actual config)
         const firebaseConfig = {
-            apiKey: "your-api-key",
+            apiKey: "your-api-key-here",
             authDomain: "your-project.firebaseapp.com",
+            databaseURL: "https://your-project-default-rtdb.firebaseio.com/",
             projectId: "your-project-id",
             storageBucket: "your-project.appspot.com",
             messagingSenderId: "123456789",
@@ -1019,6 +1048,7 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const realtimeDb = firebase.database();
 
         // Global Variables
         let currentUser = null;
@@ -1035,91 +1065,22 @@
         let leaderboardData = [];
         let commentsData = [];
         let activeUsers = 0;
+        let sessionToken = '';
 
-        // Question Bank with High Force Display
-        const questionBank = [
-            {
-                question: "What is the capital of France?",
-                options: ["London", "Berlin", "Paris", "Madrid"],
-                correct: 2,
-                category: "Geography",
-                difficulty: "Easy"
-            },
-            {
-                question: "Which planet is known as the Red Planet?",
-                options: ["Venus", "Mars", "Jupiter", "Saturn"],
-                correct: 1,
-                category: "Science",
-                difficulty: "Easy"
-            },
-            {
-                question: "Who painted the Mona Lisa?",
-                options: ["Van Gogh", "Picasso", "Leonardo da Vinci", "Michelangelo"],
-                correct: 2,
-                category: "Art",
-                difficulty: "Medium"
-            },
-            {
-                question: "What is the largest mammal in the world?",
-                options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
-                correct: 1,
-                category: "Biology",
-                difficulty: "Easy"
-            },
-            {
-                question: "In which year did World War II end?",
-                options: ["1944", "1945", "1946", "1947"],
-                correct: 1,
-                category: "History",
-                difficulty: "Medium"
-            },
-            {
-                question: "What is the chemical symbol for gold?",
-                options: ["Go", "Gd", "Au", "Ag"],
-                correct: 2,
-                category: "Chemistry",
-                difficulty: "Medium"
-            },
-            {
-                question: "Which is the longest river in the world?",
-                options: ["Amazon", "Nile", "Mississippi", "Yangtze"],
-                correct: 1,
-                category: "Geography",
-                difficulty: "Hard"
-            },
-            {
-                question: "Who wrote 'Romeo and Juliet'?",
-                options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
-                correct: 1,
-                category: "Literature",
-                difficulty: "Easy"
-            },
-            {
-                question: "What is the speed of light?",
-                options: ["299,792,458 m/s", "300,000,000 m/s", "299,000,000 m/s", "298,792,458 m/s"],
-                correct: 0,
-                category: "Physics",
-                difficulty: "Hard"
-            },
-            {
-                question: "Which country has the most time zones?",
-                options: ["Russia", "USA", "China", "Canada"],
-                correct: 0,
-                category: "Geography",
-                difficulty: "Hard"
-            }
-        ];
+        // OpenTDB API Configuration
+        const OPENTDB_BASE_URL = 'https://opentdb.com/api.php';
+        const OPENTDB_TOKEN_URL = 'https://opentdb.com/api_token.php?command=request';
 
         // Initialize Application
         document.addEventListener('DOMContentLoaded', function() {
             initializeApp();
             setupEventListeners();
-            loadCachedData();
+            initializeOpenTDB();
             startRealTimeUpdates();
             initializeGoogleAds();
         });
 
-        function initializeApp() {
+        async function initializeApp() {
             // Check for existing user data
             const savedUser = localStorage.getItem('quizUser');
             const savedPremium = localStorage.getItem('isPremium');
@@ -1130,14 +1091,174 @@
                 hideNameModal();
                 updateUserInterface();
                 loadHintData();
+                await initializeUserInDatabase();
             }
 
             // Initialize hint refresh timer
             updateHintRefreshTimer();
             setInterval(updateHintRefreshTimer, 1000);
+        }
 
-            // Force continuous question display
-            startContinuousQuestionDisplay();
+        async function initializeUserInDatabase() {
+            if (!currentUser) return;
+
+            try {
+                // Add user to real-time database
+                await realtimeDb.ref(`users/${currentUser.id}`).set({
+                    name: currentUser.name,
+                    score: currentUser.score || 0,
+                    questionsAnswered: currentUser.questionsAnswered || 0,
+                    isPremium: isPremium,
+                    lastActive: firebase.database.ServerValue.TIMESTAMP,
+                    online: true
+                });
+
+                // Set up presence system
+                const userStatusRef = realtimeDb.ref(`users/${currentUser.id}/online`);
+                const connectedRef = realtimeDb.ref('.info/connected');
+                
+                connectedRef.on('value', (snapshot) => {
+                    if (snapshot.val() === true) {
+                        userStatusRef.onDisconnect().set(false);
+                        userStatusRef.set(true);
+                    }
+                });
+            } catch (error) {
+                console.error('Error initializing user in database:', error);
+            }
+        }
+
+        async function initializeOpenTDB() {
+            try {
+                // Get session token to avoid duplicate questions
+                const tokenResponse = await fetch(OPENTDB_TOKEN_URL);
+                const tokenData = await tokenResponse.json();
+                
+                if (tokenData.response_code === 0) {
+                    sessionToken = tokenData.token;
+                    document.getElementById('apiStatus').innerHTML = '<i class="fas fa-database"></i> OpenTDB Connected';
+                } else {
+                    throw new Error('Failed to get session token');
+                }
+                
+                // Load initial questions
+                await loadQuestionsFromAPI();
+            } catch (error) {
+                console.error('Error initializing OpenTDB:', error);
+                document.getElementById('apiStatus').innerHTML = '<i class="fas fa-exclamation-triangle"></i> API Error';
+                document.getElementById('apiStatus').style.background = 'var(--danger-color)';
+                
+                // Fallback to local questions
+                loadFallbackQuestions();
+            }
+        }
+
+        async function loadQuestionsFromAPI() {
+            try {
+                const difficulties = ['easy', 'medium', 'hard'];
+                const categories = [9, 11, 12, 15, 17, 18, 19, 20, 21, 22]; // Various categories
+                
+                questionsCache = [];
+                
+                // Load questions from different categories and difficulties
+                for (let i = 0; i < 3; i++) {
+                    const difficulty = difficulties[i % difficulties.length];
+                    const category = categories[Math.floor(Math.random() * categories.length)];
+                    
+                    const url = `${OPENTDB_BASE_URL}?amount=10&category=${category}&difficulty=${difficulty}&type=multiple&token=${sessionToken}`;
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    if (data.response_code === 0) {
+                        const formattedQuestions = data.results.map(q => ({
+                            question: decodeHTMLEntities(q.question),
+                            options: shuffleArray([
+                                decodeHTMLEntities(q.correct_answer),
+                                ...q.incorrect_answers.map(a => decodeHTMLEntities(a))
+                            ]),
+                            correct: 0, // Will be set after shuffling
+                            category: decodeHTMLEntities(q.category),
+                            difficulty: q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1),
+                            correctAnswer: decodeHTMLEntities(q.correct_answer)
+                        }));
+                        
+                        // Set correct answer index after shuffling
+                        formattedQuestions.forEach(q => {
+                            q.correct = q.options.indexOf(q.correctAnswer);
+                        });
+                        
+                        questionsCache.push(...formattedQuestions);
+                    }
+                }
+                
+                if (questionsCache.length > 0) {
+                    localStorage.setItem('cachedQuestions', JSON.stringify(questionsCache));
+                    console.log(`Loaded ${questionsCache.length} questions from OpenTDB`);
+                } else {
+                    throw new Error('No questions loaded from API');
+                }
+                
+            } catch (error) {
+                console.error('Error loading questions from API:', error);
+                loadFallbackQuestions();
+            }
+        }
+
+        function loadFallbackQuestions() {
+            // Fallback question bank
+            questionsCache = [
+                {
+                    question: "What is the capital of France?",
+                    options: ["London", "Berlin", "Paris", "Madrid"],
+                    correct: 2,
+                    category: "Geography",
+                    difficulty: "Easy"
+                },
+                {
+                    question: "Which planet is known as the Red Planet?",
+                    options: ["Venus", "Mars", "Jupiter", "Saturn"],
+                    correct: 1,
+                    category: "Science",
+                    difficulty: "Easy"
+                },
+                {
+                    question: "Who painted the Mona Lisa?",
+                    options: ["Van Gogh", "Picasso", "Leonardo da Vinci", "Michelangelo"],
+                    correct: 2,
+                    category: "Art",
+                    difficulty: "Medium"
+                },
+                {
+                    question: "What is the largest mammal in the world?",
+                    options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
+                    correct: 1,
+                    category: "Biology",
+                    difficulty: "Easy"
+                },
+                {
+                    question: "In which year did World War II end?",
+                    options: ["1944", "1945", "1946", "1947"],
+                    correct: 1,
+                    category: "History",
+                    difficulty: "Medium"
+                }
+            ];
+            localStorage.setItem('cachedQuestions', JSON.stringify(questionsCache));
+        }
+
+        function decodeHTMLEntities(text) {
+            const textArea = document.createElement('textarea');
+            textArea.innerHTML = text;
+            return textArea.value;
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
         }
 
         function setupEventListeners() {
@@ -1176,7 +1297,7 @@
             });
         }
 
-        function submitName() {
+        async function submitName() {
             const name = document.getElementById('nameInput').value.trim();
             if (name.length < 2) {
                 alert('Please enter a valid name (at least 2 characters)');
@@ -1195,6 +1316,7 @@
             hideNameModal();
             updateUserInterface();
             loadHintData();
+            await initializeUserInDatabase();
             startQuiz();
         }
 
@@ -1210,13 +1332,21 @@
             document.getElementById('premiumModal').classList.add('hidden');
         }
 
-        function upgradeToPremium() {
+        async function upgradeToPremium() {
             // Simulate premium upgrade
             isPremium = true;
             localStorage.setItem('isPremium', 'true');
             hintsRemaining = 20; // Premium users get 20 hints
+            lastHintRefresh = Date.now(); // Reset hint timer
             updateUserInterface();
             hidePremiumModal();
+            
+            // Update user in database
+            if (currentUser) {
+                await realtimeDb.ref(`users/${currentUser.id}/isPremium`).set(true);
+            }
+            
+            saveHintData();
             alert('Welcome to Premium! You now have 20 daily hints, +5 seconds per question, and disco text in comments!');
         }
 
@@ -1240,6 +1370,15 @@
                 const hintsData = JSON.parse(savedHints);
                 hintsRemaining = hintsData.remaining;
                 lastHintRefresh = hintsData.lastRefresh;
+                
+                // Check if 24 hours have passed
+                const now = Date.now();
+                const timeSinceRefresh = now - lastHintRefresh;
+                if (timeSinceRefresh >= 24 * 60 * 60 * 1000) {
+                    hintsRemaining = isPremium ? 20 : 10;
+                    lastHintRefresh = now;
+                    saveHintData();
+                }
             } else {
                 // Initialize hints data
                 hintsRemaining = isPremium ? 20 : 10;
@@ -1289,24 +1428,6 @@
             }
         }
 
-        function loadCachedData() {
-            // Load cached questions
-            const cachedQuestions = localStorage.getItem('cachedQuestions');
-            if (cachedQuestions) {
-                questionsCache = JSON.parse(cachedQuestions);
-            } else {
-                questionsCache = [...questionBank];
-                localStorage.setItem('cachedQuestions', JSON.stringify(questionsCache));
-            }
-        }
-
-        function startContinuousQuestionDisplay() {
-            // Force display questions continuously with high priority
-            if (currentUser) {
-                displayNextQuestion();
-            }
-        }
-
         function startQuiz() {
             questionIndex = 0;
             score = 0;
@@ -1315,16 +1436,22 @@
             displayNextQuestion();
         }
 
-        function displayNextQuestion() {
-            if (questionsCache.length === 0) {
-                // Reload questions if cache is empty
-                questionsCache = [...questionBank];
-                localStorage.setItem('cachedQuestions', JSON.stringify(questionsCache));
+        async function displayNextQuestion() {
+            // Check if we need to load more questions
+            if (questionsCache.length < 5) {
+                await loadQuestionsFromAPI();
             }
 
-            // Get random question with high force
+            if (questionsCache.length === 0) {
+                loadFallbackQuestions();
+            }
+
+            // Get random question
             const randomIndex = Math.floor(Math.random() * questionsCache.length);
             currentQuestion = questionsCache[randomIndex];
+            
+            // Remove used question to avoid repetition
+            questionsCache.splice(randomIndex, 1);
             
             // Force display with animation
             const container = document.getElementById('questionContainer');
@@ -1375,7 +1502,7 @@
             }, 1000);
         }
 
-        function selectAnswer(selectedIndex) {
+        async function selectAnswer(selectedIndex) {
             clearInterval(timer);
             
             const options = document.querySelectorAll('.option');
@@ -1403,7 +1530,7 @@
             }
 
             updateStats();
-            updateLeaderboard();
+            await updateUserInDatabase();
 
             // Continue to next question after delay
             setTimeout(() => {
@@ -1452,6 +1579,20 @@
                 currentUser.score = score;
                 currentUser.questionsAnswered = questionIndex;
                 localStorage.setItem('quizUser', JSON.stringify(currentUser));
+            }
+        }
+
+        async function updateUserInDatabase() {
+            if (!currentUser) return;
+
+            try {
+                await realtimeDb.ref(`users/${currentUser.id}`).update({
+                    score: score,
+                    questionsAnswered: questionIndex,
+                    lastActive: firebase.database.ServerValue.TIMESTAMP
+                });
+            } catch (error) {
+                console.error('Error updating user in database:', error);
             }
         }
 
@@ -1510,59 +1651,72 @@
         }
 
         function startRealTimeUpdates() {
-            // Simulate real-time updates
-            setInterval(() => {
-                updateActiveUsers();
-                updateLeaderboard();
-                loadComments();
-            }, 5000);
-        }
-
-        function updateActiveUsers() {
-            // Simulate active users count
-            activeUsers = Math.floor(Math.random() * 500) + 100;
-            document.getElementById('activeUsers').innerHTML = `<i class="fas fa-users"></i> Players: ${activeUsers}`;
-        }
-
-        function updateLeaderboard() {
-            // Add current user to leaderboard
-            if (currentUser) {
-                const existingIndex = leaderboardData.findIndex(player => player.id === currentUser.id);
-                if (existingIndex >= 0) {
-                    leaderboardData[existingIndex] = { ...currentUser };
-                } else {
-                    leaderboardData.push({ ...currentUser });
-                }
-            }
-
-            // Add some mock players for demonstration
-            if (leaderboardData.length < 10) {
-                const mockPlayers = [
-                    { name: "QuizMaster", score: 15420, id: "mock1" },
-                    { name: "BrainBox", score: 14890, id: "mock2" },
-                    { name: "Genius", score: 13750, id: "mock3" },
-                    { name: "SmartCookie", score: 12980, id: "mock4" },
-                    { name: "WiseOwl", score: 11650, id: "mock5" }
-                ];
-
-                mockPlayers.forEach(player => {
-                    if (!leaderboardData.find(p => p.id === player.id)) {
-                        leaderboardData.push(player);
+            // Listen for real-time leaderboard updates
+            realtimeDb.ref('users').orderByChild('score').limitToLast(50).on('value', (snapshot) => {
+                leaderboardData = [];
+                snapshot.forEach((childSnapshot) => {
+                    const userData = childSnapshot.val();
+                    if (userData.online) {
+                        leaderboardData.push({
+                            id: childSnapshot.key,
+                            name: userData.name,
+                            score: userData.score || 0,
+                            questionsAnswered: userData.questionsAnswered || 0,
+                            isPremium: userData.isPremium || false
+                        });
                     }
                 });
-            }
+                
+                // Sort by score (descending)
+                leaderboardData.sort((a, b) => b.score - a.score);
+                
+                // Update user rank
+                const userRank = leaderboardData.findIndex(player => player.id === currentUser?.id) + 1;
+                document.getElementById('userRank').textContent = userRank > 0 ? userRank : '-';
+                
+                // Update active users count
+                activeUsers = leaderboardData.length;
+                document.getElementById('activeUsers').innerHTML = `<i class="fas fa-users"></i> Players: ${activeUsers}`;
+                
+                // Update leaderboard if currently viewing
+                if (document.getElementById('leaderboardTab').classList.contains('active')) {
+                    displayLeaderboard();
+                }
+            });
 
-            // Sort by score
-            leaderboardData.sort((a, b) => b.score - a.score);
-
-            // Update user rank
-            const userRank = leaderboardData.findIndex(player => player.id === currentUser?.id) + 1;
-            document.getElementById('userRank').textContent = userRank > 0 ? userRank : '-';
+            // Listen for real-time comments
+            realtimeDb.ref('comments').orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
+                commentsData = [];
+                snapshot.forEach((childSnapshot) => {
+                    const commentData = childSnapshot.val();
+                    commentsData.push({
+                        id: childSnapshot.key,
+                        ...commentData
+                    });
+                });
+                
+                // Sort by timestamp (newest first)
+                commentsData.sort((a, b) => b.timestamp - a.timestamp);
+                
+                // Update comments if currently viewing
+                if (document.getElementById('commentsTab').classList.contains('active')) {
+                    displayComments();
+                }
+            });
         }
 
         function loadLeaderboard() {
+            displayLeaderboard();
+        }
+
+        function displayLeaderboard() {
             const container = document.getElementById('leaderboard');
             container.innerHTML = '';
+
+            if (leaderboardData.length === 0) {
+                container.innerHTML = '<div class="loading"><div class="spinner"></div><div style="margin-left: 1rem;">Loading live rankings...</div></div>';
+                return;
+            }
 
             leaderboardData.slice(0, 20).forEach((player, index) => {
                 const item = document.createElement('div');
@@ -1576,8 +1730,8 @@
                 item.innerHTML = `
                     <div class="rank ${rankClass}">#${index + 1}</div>
                     <div class="player-info">
-                        <div class="player-name">${player.name} ${isPremium && player.id === currentUser?.id ? '<span class="premium-badge">PREMIUM</span>' : ''}</div>
-                        <div class="player-score">${player.score} points • ${player.questionsAnswered || 0} questions</div>
+                        <div class="player-name">${player.name} ${player.isPremium ? '<span class="premium-badge">PREMIUM</span>' : ''}</div>
+                        <div class="player-score">${player.score} points • ${player.questionsAnswered} questions</div>
                     </div>
                 `;
                 
@@ -1585,26 +1739,25 @@
             });
         }
 
-        function sendComment() {
+        async function sendComment() {
             const input = document.getElementById('commentInput');
             const message = input.value.trim();
             
             if (!message || !currentUser) return;
 
-            const comment = {
-                id: Date.now(),
-                author: currentUser.name,
-                text: message,
-                timestamp: Date.now(),
-                isPremium: isPremium
-            };
-
-            commentsData.unshift(comment);
-            input.value = '';
-            displayComments();
-
-            // Simulate sending to server
-            // In real implementation, send to Firebase
+            try {
+                await realtimeDb.ref('comments').push({
+                    author: currentUser.name,
+                    text: message,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP,
+                    isPremium: isPremium,
+                    userId: currentUser.id
+                });
+                
+                input.value = '';
+            } catch (error) {
+                console.error('Error sending comment:', error);
+            }
         }
 
         function addEmoji(emoji) {
@@ -1614,27 +1767,17 @@
         }
 
         function loadComments() {
-            // Simulate loading comments from server
-            if (commentsData.length < 5) {
-                const mockComments = [
-                    { author: "QuizMaster", text: "Great questions today! 🔥", timestamp: Date.now() - 60000, isPremium: true },
-                    { author: "BrainBox", text: "That geography question was tough!", timestamp: Date.now() - 120000, isPremium: false },
-                    { author: "Genius", text: "Love the new premium features! ✨", timestamp: Date.now() - 180000, isPremium: true }
-                ];
-
-                mockComments.forEach(comment => {
-                    if (!commentsData.find(c => c.author === comment.author && c.text === comment.text)) {
-                        commentsData.push({ ...comment, id: Date.now() + Math.random() });
-                    }
-                });
-            }
-
             displayComments();
         }
 
         function displayComments() {
             const container = document.getElementById('commentsList');
             container.innerHTML = '';
+
+            if (commentsData.length === 0) {
+                container.innerHTML = '<div class="loading"><div class="spinner"></div><div style="margin-left: 1rem;">Loading live chat...</div></div>';
+                return;
+            }
 
             commentsData.slice(0, 50).forEach(comment => {
                 const item = document.createElement('div');
@@ -1693,6 +1836,24 @@
         window.addEventListener('offline', function() {
             document.getElementById('onlineStatus').className = 'online-status offline';
             document.getElementById('onlineStatus').innerHTML = '<i class="fas fa-wifi-slash"></i> Offline';
+        });
+
+        // Auto-refresh questions periodically
+        setInterval(async () => {
+            if (questionsCache.length < 10) {
+                await loadQuestionsFromAPI();
+            }
+        }, 300000); // Refresh every 5 minutes
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', async () => {
+            if (currentUser) {
+                try {
+                    await realtimeDb.ref(`users/${currentUser.id}/online`).set(false);
+                } catch (error) {
+                    console.error('Error updating user status on unload:', error);
+                }
+            }
         });
     </script>
 </body>
