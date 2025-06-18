@@ -361,6 +361,38 @@
         margin-bottom: 0;
     }
 
+        .watch-options {
+        text-align: center;
+    }
+
+    .watch-option-btn1 {
+  pointer-events: none;       /* disables mouse/tap clicks */
+  opacity: 0.6;               /* visual cue for "disabled" */
+  user-select: none;          /* prevents text selection */
+    background: var(--secondary-bg);
+        color: var(--text-color);
+        border: 2px solid var(--accent-color);
+        padding: 15px 30px;
+        border-radius: var(--border-radius);
+        font-size: 16px;
+          font-family: 'Orbitron', sans-serif;
+        font-weight: 600;
+        width: 100%;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .watch-option-btn1:focus {
+  outline: none;              /* removes keyboard focus */
+}
+    .watch-option-btn1 [aria-disabled="true"] {
+  cursor: not-allowed;        /* show disabled cursor */
+}
+
+
     /* Error Handling Styles */
     .error-overlay {
         position: fixed;
@@ -773,9 +805,9 @@
                 <div class="watch-options">
                     <button class="watch-option-btn" id="watch-tubi-btn">
                         <i class="fas fa-external-link-alt"></i>
-                        Watch Full Movie at Tubi.com
+                        Watch Full Movie at Netflix.com
                     </button>
-                    <button class="watch-option-btn" id="watch-web-btn">
+                    <button class="watch-option-btn1" id="watch-web-btn" tabindex="-1" aria-disabled="true">
                         <i class="fas fa-play-circle"></i>
                         Watch in Web
                     </button>
@@ -1074,7 +1106,7 @@
                                 <i class="fas fa-play"></i> Preview
                             </button>
                             <button class="action-btn watch-btn" onclick="cinemaApp.watchFullMovie(${movie.id})">
-                                <i class="fas fa-film"></i> Watch Full
+                                <i class="fas fa-info-circle"></i> See more
                             </button>
                         </div>
                     </div>
@@ -1158,8 +1190,8 @@
 
             watchOnTubi() {
                 if (this.currentMovie) {
-                    // Create Tubi search URL
-                    const tubiUrl = `https://tubitv.com/search/${encodeURIComponent(this.currentMovie.title)}`;
+                    // Create netflix search URL
+                    const tubiUrl = `https://netflix.com/search/${encodeURIComponent(this.currentMovie.title)}`;
                     window.open(tubiUrl, '_blank');
                     this.closeAllModals();
                     this.showNotification('Redirecting to Tubi.com...', 'success');
@@ -1169,7 +1201,7 @@
             watchInWeb() {
                 if (this.currentMovie) {
                     // Create a movie player page URL (you can customize this)
-                    const playerUrl = `movie-player.html?id=${this.currentMovie.id}&title=${encodeURIComponent(this.currentMovie.title)}`;
+                    const playerUrl = `watch.html?id=${this.currentMovie.id}&title=${encodeURIComponent(this.currentMovie.title)}`;
                     
                     // Store movie data for the player page
                     localStorage.setItem('selectedMovie', JSON.stringify({

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmileX Gaming Hub - Ultimate Gaming Platform</title>
+    <title>Game Store - Ultimate Game Platform</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -60,17 +60,19 @@
 
     /* Status Bar Styles */
     .status-bar {
-        background: var(--gradient-primary);
+        background:transparent;
+        color: transparent;
         padding: 12px 0;
         text-align: center;
         font-weight: 600;
         animation: pulse 2s infinite;
         border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  user-select: none;  
     }
 
     .status-bar.premium {
-        background: var(--gradient-premium);
-        color: #000;
+        background: transparent;
+        color:transparent;
     }
 
     .cache-status {
@@ -239,6 +241,40 @@
         background: linear-gradient(135deg, #1b2838, #66c0f4);
     }
 
+
+            /* Play Options Modal */
+     .platform-option-btn1 {
+      display: block;
+        width: 100%;
+        margin: 20px 0;
+        padding: 20px;
+        border: 3px solid var(--primary-color);
+        border-radius: 15px;
+        background: transparent;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 600;
+        position: relative;
+      
+        position: relative;
+          pointer-events: none;       /* disables mouse/tap clicks */
+  opacity: 0.6;               /* visual cue for "disabled" */
+  user-select: none;  
+      
+    }
+
+     .platform-option-btn1:focus {
+  outline: none;              /* removes keyboard focus */
+}
+
+ .platform-option-btn1[aria-disabled="true"] {
+  cursor: not-allowed;        /* show disabled cursor */
+}
+
+
+
+
+
     /* Genre Filter Styles */
     .genre-filter {
         background: rgba(0, 0, 0, 0.4);
@@ -388,6 +424,8 @@
     .play-option-btn.premium:hover {
         color: #000;
     }
+
+
 
     /* Search Styles */
     .search-container {
@@ -557,6 +595,10 @@
         transform: translateY(-5px);
         box-shadow: 0 15px 30px rgba(106, 17, 203, 0.4);
     }
+
+    h4{
+        font-size:12px;
+    }
 </style>
 
 <body>
@@ -564,7 +606,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="#" onclick="showMainPage()">
-                <i class="fas fa-gamepad me-2"></i> SMILEX GAMING HUB
+                <i class="fas fa-gamepad me-2"></i>GAME STORE
             </a>
             <div class="d-flex align-items-center">
                 <div class="search-container me-3">
@@ -578,7 +620,7 @@
                 <button id="searchButton" class="btn btn-outline-light me-3">
                     <i class="fas fa-search"></i>
                 </button>
-                <button id="premiumBtn" class="btn btn-warning">
+                <button id="premiumBtn" class="btn btn-warning" style="background: transparent; color: transparent; border: 1px solid transparent;">
                     <i class="fas fa-crown me-1"></i>Premium
                 </button>
             </div>
@@ -595,8 +637,8 @@
     <div id="statusBar" class="status-bar">
         <div class="container">
             <span id="statusText">Free User: 3 gaming sessions remaining today</span>
-            <button id="upgradeBtn" class="btn btn-sm btn-light ms-3">
-                <i class="fas fa-arrow-up me-1"></i>Upgrade to Premium
+            <button id="upgradeBtn" class="btn btn-sm btn-transparent ms-3">
+               
             </button>
         </div>
     </div>
@@ -655,7 +697,7 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
                         <div class="premium-card">
-                            <h1 class="mb-4" style="background: linear-gradient(45deg, #ffd700, #ffed4e); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                            <h1 class="mb-4" style="background: gold; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                                 <i class="fas fa-crown me-3"></i>Premium Gaming Experience
                             </h1>
                             <p class="lead mb-4">Unlock unlimited gaming with our premium subscription!</p>
@@ -731,7 +773,7 @@
             <div id="previewContent"></div>
             <div class="text-center mt-5">
                 <button id="playGameBtn" class="btn btn-success btn-lg">
-                    <i class="fas fa-play me-2"></i>Play Game
+                      <i class="fas fa-eye me-1"></i>View 
                 </button>
             </div>
         </div>
@@ -755,9 +797,10 @@
                 <small class="d-block mt-2">Launch game through Steam platform</small>
             </button>
             
-            <button id="playWebBtn" class="platform-option-btn">
+            <button id="playWebBtn" class="platform-option-btn1">
                 <i class="fas fa-globe me-3"></i>Play in Web
-                <small class="d-block mt-2">Play directly in your browser</small>
+                <br>
+                <h4><i class="fas fa-info-circle"></i> Disable due to some reasons. ( legal )</h4>
             </button>
             
             <button id="cancelPlatformBtn" class="btn btn-outline-light btn-lg mt-4">
