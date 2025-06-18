@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmileX AI - Professional Video Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-video"></i>
+                <h2>SmileX AI</h2>
+            </div>
+            <div class="loading-spinner"></div>
+            <p>Initializing secure AI systems...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <div>
+                    <div>SmileX AI</div>
+                    <div class="logo-subtitle">Professional Video Generator</div>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#dashboard" class="nav-link" id="dashboardLink" style="display: none;">Dashboard</a>
+            </nav>
+            
+            <div class="nav-actions">
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span id="userName"></span>
+                    <div class="user-status" id="userStatus"></div>
+                </div>
+                <button class="btn btn-secondary" id="loginBtn" onclick="showAuthModal('login')">Login</button>
+                <button class="btn btn-primary" id="signupBtn" onclick="showAuthModal('signup')">Sign Up</button>
+                <button class="btn btn-premium" id="premiumBtn" onclick="showPremiumModal()" style="display: none;">
+                    <i class="fas fa-crown"></i>
+                    Go Premium
+                </button>
+                <button class="btn btn-secondary" id="logoutBtn" onclick="logout()" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-background">
+                <div class="hero-particles"></div>
+            </div>
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    Enterprise-Grade Security & AI Technology
+                </div>
+                <h1 class="hero-title">Create Professional Videos with AI</h1>
+                <p class="hero-subtitle">
+                    Transform your ideas into stunning, professional-quality videos using our advanced AI technology. 
+                    Secure, fast, and incredibly powerful.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-lg" onclick="scrollToGenerator()">
+                        <i class="fas fa-rocket"></i>
+                        Start Creating
+                    </button>
+                    <button class="btn btn-secondary btn-lg" onclick="showDemo()">
+                        <i class="fas fa-play"></i>
+                        Watch Demo
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">2.5M+</div>
+                        <div class="stat-label">Videos Generated</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">150K+</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Generator Section -->
+        <section id="generator" class="generator-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>AI Video Generator</h2>
+                    <p>Create professional videos with advanced AI technology</p>
+                </div>
+
+                <!-- Content Guidelines -->
+                <div class="content-guidelines">
+                    <div class="guidelines-header">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Content Guidelines & Security</h3>
+                    </div>
+                    <div class="guidelines-content">
+                        <div class="guideline-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>All content is automatically screened by our AI moderation system</span>
+                        </div>
+                        <div class="guideline-item">
+                            <i class="fas fa-lock"></i>
+                            <span>Your data is encrypted and never stored without consent</span>
+                        </div>
+                        <div class="guideline-item">
+                            <i class="fas fa-ban"></i>
+                            <span>Prohibited: Hate speech, violence, adult content, misinformation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generator Form -->
+                <div class="generator-form" id="generatorForm">
+                    <div class="auth-required" id="authRequired">
+                        <div class="auth-message">
+                            <i class="fas fa-lock"></i>
+                            <h3>Authentication Required</h3>
+                            <p>Please log in to access the AI video generator</p>
+                            <button class="btn btn-primary" onclick="showAuthModal('login')">Login</button>
+                            <button class="btn btn-secondary" onclick="showAuthModal('signup')">Sign Up</button>
+                        </div>
+                    </div>
+
+                    <div class="generator-content" id="generatorContent" style="display: none;">
+                        <!-- Input Tabs -->
+                        <div class="input-tabs">
+                            <button class="tab-btn active" onclick="switchTab('text')" data-tab="text">
+                                <i class="fas fa-keyboard"></i>
+                                Text Description
+                            </button>
+                            <button class="tab-btn" onclick="switchTab('image')" data-tab="image">
+                                <i class="fas fa-image"></i>
+                                Image + Text
+                            </button>
+                        </div>
+
+                        <!-- Text Tab -->
+                        <div class="tab-content active" id="textTab">
+                            <div class="form-group">
+                                <label class="form-label">Describe your video vision</label>
+                                <textarea 
+                                    id="videoPrompt" 
+                                    class="form-textarea" 
+                                    placeholder="A majestic dragon soaring through a mystical forest at golden hour, with magical particles floating in the air, cinematic lighting, smooth camera movements..."
+                                    maxlength="2000"
+                                ></textarea>
+                                <div class="input-info">
+                                    <span id="charCount">0/2000 characters</span>
+                                    <span id="wordCount">0 words</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image Tab -->
+                        <div class="tab-content" id="imageTab">
+                            <div class="image-upload-section">
+                                <div class="upload-area" id="uploadArea">
+                                    <div class="upload-content" id="uploadContent">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <h3>Upload Reference Image</h3>
+                                        <p>PNG, JPG, GIF up to 10MB</p>
+                                        <button class="btn btn-secondary" onclick="document.getElementById('imageInput').click()">
+                                            Choose File
+                                        </button>
+                                    </div>
+                                    <div class="image-preview" id="imagePreview" style="display: none;">
+                                        <img id="previewImg" alt="Preview">
+                                        <div class="preview-actions">
+                                            <button class="btn btn-sm btn-secondary" onclick="removeImage()">
+                                                <i class="fas fa-trash"></i>
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Additional Description</label>
+                                    <textarea 
+                                        id="imagePrompt" 
+                                        class="form-textarea" 
+                                        placeholder="Describe how you want the video to look based on your image..."
+                                    ></textarea>
+                                </div>
+
+                                <div class="ai-analysis" id="aiAnalysis" style="display: none;">
+                                    <div class="analysis-header">
+                                        <i class="fas fa-brain"></i>
+                                        <span>AI Image Analysis</span>
+                                    </div>
+                                    <div class="analysis-content" id="analysisContent"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Generation Settings -->
+                        <div class="generation-settings">
+                            <div class="settings-grid">
+                                <div class="setting-group">
+                                    <label class="form-label">Video Style</label>
+                                    <select id="videoStyle" class="form-select">
+                                        <option value="realistic">Realistic</option>
+                                        <option value="animated">Animated</option>
+                                        <option value="cinematic">Cinematic</option>
+                                        <option value="artistic">Artistic</option>
+                                        <option value="fantasy">Fantasy</option>
+                                        <option value="sci-fi">Sci-Fi</option>
+                                    </select>
+                                </div>
+                                <div class="setting-group">
+                                    <label class="form-label">Duration</label>
+                                    <select id="videoDuration" class="form-select">
+                                        <option value="15">15 seconds</option>
+                                        <option value="30">30 seconds</option>
+                                        <option value="60" class="premium-option">60 seconds (Premium)</option>
+                                        <option value="120" class="premium-option">120 seconds (Premium)</option>
+                                    </select>
+                                </div>
+                                <div class="setting-group">
+                                    <label class="form-label">Quality</label>
+                                    <div class="quality-display" id="qualityDisplay">1080p HD</div>
+                                </div>
+                                <div class="setting-group">
+                                    <label class="form-label">Generations Left</label>
+                                    <div class="generations-display" id="generationsDisplay">3 remaining</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Generate Button -->
+                        <div class="generate-section">
+                            <button class="btn btn-primary btn-lg btn-generate" id="generateBtn" onclick="generateVideo()">
+                                <i class="fas fa-magic"></i>
+                                <span>Generate Video</span>
+                            </button>
+                            <div class="generation-info">
+                                <i class="fas fa-info-circle"></i>
+                                <span id="generationInfo">Free users get 3 daily generations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Result -->
+                <div class="video-result" id="videoResult" style="display: none;">
+                    <div class="result-header">
+                        <h3>Your AI-Generated Video</h3>
+                        <div class="result-actions">
+                            <button class="btn btn-secondary" onclick="regenerateVideo()">
+                                <i class="fas fa-redo"></i>
+                                Regenerate
+                            </button>
+                        </div>
+                    </div>
+                    <div class="video-container">
+                        <video id="resultVideo" controls>
+                            <source src="/placeholder.svg" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-watermark" id="videoWatermark">SmileX AI</div>
+                    </div>
+                    <div class="video-actions">
+                        <button class="btn btn-success" onclick="downloadVideo()">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                        <button class="btn btn-secondary" onclick="shareVideo()">
+                            <i class="fas fa-share"></i>
+                            Share
+                        </button>
+                        <button class="btn btn-secondary" onclick="addToFavorites()">
+                            <i class="fas fa-heart"></i>
+                            Favorite
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="authTitle">Login</h2>
+                <button class="modal-close" onclick="closeModal('authModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="authForm">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="authEmail" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="authPassword" class="form-input" required>
+                    </div>
+                    <div class="form-group" id="nameGroup" style="display: none;">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" id="authName" class="form-input">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span id="authSubmitText">Login</span>
+                    </button>
+                </form>
+                <div class="auth-switch">
+                    <span id="authSwitchText">Don't have an account?</span>
+                    <button class="btn-link" id="authSwitchBtn" onclick="toggleAuthMode()">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generation Modal -->
+    <div class="modal" id="generationModal">
+        <div class="modal-content generation-modal-content">
+            <div class="generation-progress">
+                <div class="progress-spinner">
+                    <div class="spinner"></div>
+                </div>
+                <h3 id="generationStatus">Initializing AI...</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Prompt:</span>
+                        <span class="detail-value" id="promptDetail">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Style:</span>
+                        <span class="detail-value" id="styleDetail">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Duration:</span>
+                        <span class="detail-value" id="durationDetail">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Modal -->
+    <div class="modal" id="premiumModal">
+        <div class="modal-content premium-modal-content">
+            <div class="modal-header">
+                <h2>
+                    <i class="fas fa-crown"></i>
+                    SmileX Premium
+                </h2>
+                <button class="modal-close" onclick="closeModal('premiumModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="premium-features">
+                    <div class="feature-item">
+                        <i class="fas fa-infinity"></i>
+                        <span>Unlimited video generations</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-gem"></i>
+                        <span>4K Ultra HD quality</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>No watermarks</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Extended video lengths</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-rocket"></i>
+                        <span>Priority processing</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-headset"></i>
+                        <span>24/7 premium support</span>
+                    </div>
+                </div>
+                <div class="premium-pricing">
+                    <div class="price-display">
+                        <span class="price-amount">$19.99</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <button class="btn btn-premium btn-full" onclick="subscribeToPremium()">
+                        <i class="fas fa-crown"></i>
+                        Subscribe to Premium
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
