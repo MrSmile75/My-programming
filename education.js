@@ -196,8 +196,8 @@
             }
 
             startInfiniteLoading() {
-                console.log('📚 Starting infinite book loading with embed validation...');
-                this.updateSearchInfo('Continuously loading books with embed validation...');
+                console.log('📚 Loading books with embed validation...');
+                this.updateSearchInfo('Loading books with embed validation...');
                 
                 // Load initial batch
                 this.loadBooksFromAllAPIs();
