@@ -26,8 +26,6 @@
         background: var(--background-color);
         color: white;
         overflow-x: hidden;
-         
-           
     }
 
     /* Navigation Styles */
@@ -213,7 +211,7 @@
         font-weight: 600;
     }
 
-    /* CENTERED MODAL OVERLAYS - ENHANCED */
+    /* CENTERED MODAL OVERLAYS */
     .modal-overlay {
         position: fixed;
         top: 0;
@@ -331,6 +329,28 @@
         border-radius: 15px;
         font-size: 0.9rem;
         font-weight: 600;
+    }
+
+    .video-error {
+        background: rgba(231, 76, 60, 0.1);
+        border: 2px solid var(--error-color);
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        color: white;
+    }
+
+    .video-error h4 {
+        color: var(--error-color);
+        margin-bottom: 15px;
+    }
+
+    .video-fallback {
+        background: rgba(243, 156, 18, 0.1);
+        border: 2px solid var(--warning-color);
+        border-radius: 15px;
+        padding: 20px;
+        margin-top: 15px;
     }
 
     /* CENTERED CONTENT PREVIEW */
@@ -711,6 +731,24 @@
         transform: translateY(-2px);
     }
 
+    /* Category Buttons */
+    .category-btn {
+        transition: all 0.3s ease;
+        border-radius: 25px;
+        font-weight: 500;
+    }
+
+    .category-btn.active {
+        background: linear-gradient(45deg, var(--primary-color), #5dade2);
+        border-color: var(--primary-color);
+        transform: scale(1.05);
+    }
+
+    .category-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
         .news-headline-bar {
@@ -755,25 +793,3 @@
             width: 100%;
         }
     }
-
-    /* Category Buttons */
-    .category-btn {
-        transition: all 0.3s ease;
-        border-radius: 25px;
-        font-weight: 500;
-    }
-
-    .category-btn.active {
-        background: linear-gradient(45deg, var(--primary-color), #5dade2);
-        border-color: var(--primary-color);
-        transform: scale(1.05);
-    }
-
-    .category-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-    }
-
-
-
-    

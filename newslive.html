@@ -3,62 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Shorts - Infinite Scroll with Auto Pause</title>
+    <title>ShortsHub - Legal YouTube Shorts Experience</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-      <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-   <link rel="stylesheet" href="newslive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX"
+            crossorigin="anonymous"></script>
+
+            <link rel="stylesheet" href="newslive.css">
 
 </head>
 <body>
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fab fa-youtube"></i>
+                <h2>ShortsHub</h2>
+            </div>
+            <div class="loading-spinner"></div>
+            <p>Loading YouTube Shorts legally...</p>
+        </div>
     </div>
 
-    <div class="cache-info" id="cacheInfo">
-        <i class="fas fa-signal"></i> Loading...
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fab fa-youtube"></i>
+                </div>
+                <div class="logo-text">ShortsHub</div>
+            </div>
+            
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search YouTube Shorts...">
+            </div>
+            
+            <div class="header-actions">
+                <button class="premium-btn" id="premiumBtn" onclick="showPremiumModal()">
+                    <i class="fas fa-crown"></i>
+                    <span id="premiumBtnText">Go Premium</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Discover</div>
+                <div class="sidebar-item active" onclick="loadCategory('trending')">
+                    <i class="fas fa-fire"></i>
+                    <span>Trending Shorts</span>
+                </div>
+                <div class="sidebar-item" onclick="loadCategory('music')">
+                    <i class="fas fa-music"></i>
+                    <span>Music</span>
+                </div>
+                <div class="sidebar-item" onclick="loadCategory('gaming')">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Gaming</span>
+                </div>
+                <div class="sidebar-item" onclick="loadCategory('comedy')">
+                    <i class="fas fa-laugh"></i>
+                    <span>Comedy</span>
+                </div>
+                <div class="sidebar-item" onclick="loadCategory('education')">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Education</span>
+                </div>
+                <div class="sidebar-item" onclick="loadCategory('sports')">
+                    <i class="fas fa-football-ball"></i>
+                    <span>Sports</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Your Library</div>
+                <div class="sidebar-item" onclick="loadFavorites()">
+                    <i class="fas fa-heart"></i>
+                    <span>Favorites</span>
+                </div>
+                <div class="sidebar-item" onclick="loadWatchHistory()">
+                    <i class="fas fa-history"></i>
+                    <span>Watch History</span>
+                </div>
+                <div class="sidebar-item" onclick="loadWatchLater()">
+                    <i class="fas fa-clock"></i>
+                    <span>Watch Later</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    Playlists
+                    <button style="float: right; background: none; border: none; color: var(--accent-color); cursor: pointer;" onclick="showCreatePlaylistModal()">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div id="playlistsList">
+                    <!-- Playlists will be loaded here -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Shorts Container -->
+        <main class="shorts-container" id="shortsContainer">
+            <!-- YouTube Shorts will be loaded here -->
+        </main>
+
+        <!-- Navigation Controls -->
+        <div class="nav-controls">
+            <button class="nav-btn" id="prevBtn" onclick="navigateShort(-1)">
+                <i class="fas fa-chevron-up"></i>
+            </button>
+            <button class="nav-btn" id="nextBtn" onclick="navigateShort(1)">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
     </div>
 
-    <div class="infinite-indicator" id="infiniteIndicator">
-        <i class="fas fa-infinity"></i> Infinite Mode
+    <!-- Premium Modal -->
+    <div class="modal" id="premiumModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <i class="fas fa-crown"></i>
+                    ShortsHub Premium
+                </h2>
+                <button class="modal-close" onclick="closePremiumModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="premium-features">
+                <div class="feature-item">
+                    <i class="fas fa-ad feature-icon"></i>
+                    <span>Ad-free browsing experience (our site ads, not YouTube's)</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-list feature-icon"></i>
+                    <span>Unlimited custom playlists</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-download feature-icon"></i>
+                    <span>Enhanced discovery algorithms</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-palette feature-icon"></i>
+                    <span>Custom themes and layouts</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-chart-line feature-icon"></i>
+                    <span>Advanced analytics and insights</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-users feature-icon"></i>
+                    <span>Social features and community</span>
+                </div>
+            </div>
+
+            <div class="premium-pricing">
+                <div class="price-display">WHAT ARE YOU WAITING FOR</div>
+                <div class="price-period"> <i class="fas fa-crown"></i> SUBSCRIBE TO HAVE MUCH FUN</div>
+          
+            </div>
+
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">
+                ✅ All YouTube videos remain free and publicly accessible<br>
+                ✅ Premium enhances your browsing experience only
+            </p>
+        </div>
     </div>
 
-    <div class="offline-indicator" id="offlineIndicator">
-        <i class="fas fa-wifi-slash"></i> Offline Mode
+    <!-- Create Playlist Modal -->
+    <div class="modal playlist-modal" id="createPlaylistModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <i class="fas fa-plus"></i>
+                    Create Playlist
+                </h2>
+                <button class="modal-close" onclick="closeCreatePlaylistModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="createPlaylistForm">
+                <div class="form-group">
+                    <label class="form-label">Playlist Name</label>
+                    <input type="text" class="form-input" id="playlistName" placeholder="My Awesome Shorts" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description (Optional)</label>
+                    <input type="text" class="form-input" id="playlistDescription" placeholder="Collection of my favorite shorts">
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeCreatePlaylistModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Playlist</button>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div class="auto-loading" id="autoLoading">
-        <div class="spinner-small"></div>
-        <span>Loading more shorts...</span>
-    </div>
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
 
-    <!-- Audio Control -->
-    <button class="audio-control" id="audioControl" onclick="toggleAudio()">
-        <i class="fas fa-volume-up"></i>
-    </button>
-
-    <!-- Navigation Arrows -->
-    <div class="nav-arrows">
-        <button class="nav-arrow" id="upArrow" onclick="scrollUp()">
-            <i class="fas fa-chevron-up"></i>
-        </button>
-        <button class="nav-arrow" id="downArrow" onclick="scrollDown()">
-            <i class="fas fa-chevron-down"></i>
-        </button>
-    </div>
-
-    <!-- Search Bar -->
-    <div class="search-container">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" class="search-bar" id="searchBar" placeholder="Search news, topics, or keywords...">
-    </div>
-
-    <!-- Plus Button for More News -->
-    <button class="plus-btn" id="plusBtn" onclick="fetchMoreNews()">
-        <i class="fas fa-plus"></i>
-    </button>
-
-    <div class="shorts-container" id="shortsContainer">
-        <!-- News shorts will be inserted here -->
+    <!-- Legal Notice -->
+    <div class="legal-notice">
+        ✅ All videos powered by YouTube API - Fully compliant with YouTube ToS
     </div>
 
     <script src="newslive.js">

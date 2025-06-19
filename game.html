@@ -3,657 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Store - Ultimate Game Platform</title>
+    <title>GameHub Pro - Premium Gaming Platform</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 
-<style>
-    :root {
-        --primary-color: #6a11cb;
-        --secondary-color: #00f5d4;
-        --game-bg: #1a1a2e;
-        --card-bg: #16213e;
-        --premium-gold: #ffd700;
-        --trial-red: #ff4757;
-        --success-green: #2ed573;
-        --gradient-primary: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-        --gradient-secondary: linear-gradient(135deg, #00f5d4 0%, #00d2ff 100%);
-        --gradient-premium: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-    }
+<link rel="stylesheet" href="game.css">
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
 
-    body {
-        background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-        color: white;
-        font-family: 'Orbitron', sans-serif;
-        min-height: 100vh;
-        overflow-x: hidden;
-    }
-
-    /* Navigation Styles */
-    .navbar {
-        background: linear-gradient(90deg, #6a11cb, #1a1a2e, #6a11cb) !important;
-        backdrop-filter: blur(15px);
-        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-    }
-
-    .navbar-brand {
-        font-family: 'Orbitron', sans-serif;
-        font-weight: 700;
-        font-size: 1.8rem;
-        text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-        background: var(--gradient-premium);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    /* Status Bar Styles */
-    .status-bar {
-        background:transparent;
-        color: transparent;
-        padding: 12px 0;
-        text-align: center;
-        font-weight: 600;
-        animation: pulse 2s infinite;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  user-select: none;  
-    }
-
-    .status-bar.premium {
-        background: transparent;
-        color:transparent;
-    }
-
-    .cache-status {
-        position: fixed;
-        top: 80px;
-        right: 20px;
-        background: rgba(106, 17, 203, 0.9);
-        padding: 10px 15px;
-        border-radius: 20px;
-        border: 1px solid var(--primary-color);
-        backdrop-filter: blur(10px);
-        z-index: 999;
-        font-size: 0.9rem;
-        animation: slideInRight 0.5s ease;
-    }
-
-    @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.9; }
-    }
-
-    @keyframes slideInRight {
-        from { transform: translateX(100%); }
-        to { transform: translateX(0); }
-    }
-
-    /* Game Card Styles */
-    .game-card {
-        background: var(--card-bg);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        transition: all 0.4s ease;
-        overflow: hidden;
-        position: relative;
-        height: 100%;
-        cursor: pointer;
-    }
-
-    .game-card:hover {
-        transform: translateY(-15px) scale(1.03);
-        box-shadow: 0 25px 50px rgba(106, 17, 203, 0.4);
-        border-color: var(--primary-color);
-    }
-
-    .game-card-img {
-        height: 280px;
-        object-fit: cover;
-        transition: transform 0.4s ease;
-        width: 100%;
-    }
-
-    .game-card:hover .game-card-img {
-        transform: scale(1.1);
-    }
-
-    .platform-badge {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: var(--gradient-primary);
-        padding: 8px 12px;
-        border-radius: 25px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        backdrop-filter: blur(10px);
-    }
-
-    .cached-badge {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        background: var(--gradient-secondary);
-        color: #000;
-        padding: 5px 10px;
-        border-radius: 15px;
-        font-size: 0.7rem;
-        font-weight: 600;
-    }
-
-    /* Modal Styles */
-    .game-preview-modal, .play-platform-modal, .play-options-modal {
-        background: rgba(0, 0, 0, 0.95);
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1500;
-        overflow-y: auto;
-        backdrop-filter: blur(10px);
-        animation: fadeIn 0.3s ease;
-        display: none;
-    }
-
-    .preview-content, .platform-content, .play-options-content {
-        background: linear-gradient(135deg, var(--card-bg), var(--game-bg));
-        max-width: 1200px;
-        margin: 50px auto;
-        border-radius: 25px;
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        animation: slideInUp 0.4s ease;
-        padding: 40px;
-    }
-
-    .platform-content, .play-options-content {
-        max-width: 600px;
-        text-align: center;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    @keyframes slideInUp {
-        from { transform: translateY(50px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-    }
-
-    /* Platform Selection Modal */
-    .platform-option-btn {
-        display: block;
-        width: 100%;
-        margin: 20px 0;
-        padding: 20px;
-        border: 3px solid var(--primary-color);
-        border-radius: 15px;
-        background: transparent;
-        color: white;
-        font-size: 1.2rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .platform-option-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: var(--gradient-primary);
-        transition: left 0.3s ease;
-        z-index: -1;
-    }
-
-    .platform-option-btn:hover::before {
-        left: 0;
-    }
-
-    .platform-option-btn:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(106, 17, 203, 0.4);
-    }
-
-    .platform-option-btn.steam {
-        border-color: #1b2838;
-        color: #66c0f4;
-    }
-
-    .platform-option-btn.steam::before {
-        background: linear-gradient(135deg, #1b2838, #66c0f4);
-    }
-
-
-            /* Play Options Modal */
-     .platform-option-btn1 {
-      display: block;
-        width: 100%;
-        margin: 20px 0;
-        padding: 20px;
-        border: 3px solid var(--primary-color);
-        border-radius: 15px;
-        background: transparent;
-        color: white;
-        font-size: 1.2rem;
-        font-weight: 600;
-        position: relative;
-      
-        position: relative;
-          pointer-events: none;       /* disables mouse/tap clicks */
-  opacity: 0.6;               /* visual cue for "disabled" */
-  user-select: none;  
-      
-    }
-
-     .platform-option-btn1:focus {
-  outline: none;              /* removes keyboard focus */
-}
-
- .platform-option-btn1[aria-disabled="true"] {
-  cursor: not-allowed;        /* show disabled cursor */
-}
-
-
-
-
-
-    /* Genre Filter Styles */
-    .genre-filter {
-        background: rgba(0, 0, 0, 0.4);
-        border-radius: 30px;
-        padding: 20px;
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .genre-btn {
-        margin: 8px;
-        padding: 12px 24px;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        border-radius: 30px;
-        background: transparent;
-        color: white;
-        transition: all 0.3s ease;
-        font-weight: 600;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .genre-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: var(--gradient-primary);
-        transition: left 0.3s ease;
-        z-index: -1;
-    }
-
-    .genre-btn:hover::before,
-    .genre-btn.active::before {
-        left: 0;
-    }
-
-    .genre-btn:hover,
-    .genre-btn.active {
-        border-color: transparent;
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(106, 17, 203, 0.4);
-    }
-
-    /* Loading Overlay */
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 2000;
-        backdrop-filter: blur(10px);
-    }
-
-    .loading-spinner {
-        width: 80px;
-        height: 80px;
-        border: 6px solid rgba(255, 255, 255, 0.1);
-        border-left: 6px solid var(--primary-color);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    /* Game Timer Styles */
-    .game-timer {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: var(--gradient-primary);
-        padding: 15px 25px;
-        border-radius: 30px;
-        font-weight: 700;
-        font-size: 1.3rem;
-        z-index: 1200;
-        box-shadow: 0 15px 35px rgba(255, 71, 87, 0.4);
-        display: none;
-        animation: bounceIn 0.5s ease;
-    }
-
-    @keyframes bounceIn {
-        0% { transform: scale(0.3); opacity: 0; }
-        50% { transform: scale(1.05); }
-        70% { transform: scale(0.9); }
-        100% { transform: scale(1); opacity: 1; }
-    }
-
-    /* Play Options Modal */
-    .play-option-btn {
-        display: block;
-        width: 100%;
-        margin: 20px 0;
-        padding: 20px;
-        border: 3px solid var(--primary-color);
-        border-radius: 15px;
-        background: transparent;
-        color: white;
-        font-size: 1.2rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .play-option-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: var(--gradient-primary);
-        transition: left 0.3s ease;
-        z-index: -1;
-    }
-
-    .play-option-btn:hover::before {
-        left: 0;
-    }
-
-    .play-option-btn:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(106, 17, 203, 0.4);
-    }
-
-    .play-option-btn.premium {
-        border-color: var(--premium-gold);
-        color: var(--premium-gold);
-    }
-
-    .play-option-btn.premium::before {
-        background: var(--gradient-premium);
-    }
-
-    .play-option-btn.premium:hover {
-        color: #000;
-    }
-
-
-
-    /* Search Styles */
-    .search-container {
-        position: relative;
-    }
-
-    .search-input {
-        background: rgba(255, 255, 255, 0.1);
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        border-radius: 30px;
-        padding: 12px 25px;
-        color: white;
-        backdrop-filter: blur(10px);
-        font-size: 1rem;
-        transition: all 0.3s ease;
-    }
-
-    .search-input::placeholder {
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    .search-input:focus {
-        background: rgba(255, 255, 255, 0.15);
-        border-color: var(--primary-color);
-        box-shadow: 0 0 25px rgba(106, 17, 203, 0.4);
-        outline: none;
-        transform: scale(1.02);
-    }
-
-    /* Premium Page Styles */
-    .premium-page {
-        background: linear-gradient(135deg, #000000, #1a1a2e, #000000);
-        min-height: 100vh;
-        padding: 50px 0;
-        z-index: 10000;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: black;
-        overflow-y: auto;
-        z-index: 1000;
-        padding: 20px;
-        box-sizing: border-box;
-    }
-
-    .premium-card {
-        background: linear-gradient(135deg, var(--card-bg), var(--game-bg));
-        border: 2px solid var(--premium-gold);
-        border-radius: 25px;
-        padding: 40px;
-        text-align: center;
-        box-shadow: 0 30px 60px rgba(255, 215, 0, 0.2);
-    }
-
-    .premium-features {
-        list-style: none;
-        padding: 0;
-    }
-
-    .premium-features li {
-        padding: 15px 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        font-size: 1.1rem;
-    }
-
-    .premium-features li:last-child {
-        border-bottom: none;
-    }
-
-    /* Notification Styles */
-    .notification {
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        padding: 20px 30px;
-        border-radius: 15px;
-        color: white;
-        font-weight: 600;
-        z-index: 2500;
-        min-width: 350px;
-        animation: slideInRight 0.4s ease;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    }
-
-    .notification.success { background: linear-gradient(45deg, var(--success-green), #27ae60); }
-    .notification.warning { background: linear-gradient(45deg, #f39c12, #e67e22); }
-    .notification.error { background: linear-gradient(45deg, var(--trial-red), #c0392b); }
-    .notification.info { background: var(--gradient-primary); }
-
-    /* Progress Bar */
-    .progress-container {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        overflow: hidden;
-        margin: 15px 0;
-    }
-
-    .progress-bar {
-        height: 10px;
-        background: var(--gradient-secondary);
-        transition: width 0.3s ease;
-        border-radius: 10px;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .game-card-img {
-            height: 220px;
-        }
-        
-        .preview-content, .platform-content, .play-options-content {
-            margin: 20px;
-            padding: 30px;
-        }
-
-        .navbar-brand {
-            font-size: 1.4rem;
-        }
-
-        .cache-status {
-            position: relative;
-            top: auto;
-            right: auto;
-            margin: 10px auto;
-            width: fit-content;
-        }
-    }
-
-    /* Error Message */
-    .error-message {
-        background: linear-gradient(45deg, var(--trial-red), #c0392b);
-        padding: 30px;
-        border-radius: 15px;
-        text-align: center;
-        margin: 30px 0;
-        font-weight: 600;
-        border: 2px solid rgba(255, 255, 255, 0.1);
-    }
-
-    /* Game Rating */
-    .rating-stars {
-        color: var(--premium-gold);
-        margin: 0 5px;
-    }
-
-    /* Scroll to top button */
-    .scroll-top {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        background: var(--gradient-primary);
-        border: none;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        color: white;
-        font-size: 1.5rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        z-index: 1000;
-        display: none;
-    }
-
-    .scroll-top:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(106, 17, 203, 0.4);
-    }
-
-    h4{
-        font-size:12px;
-    }
-</style>
 
 <body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark" id="mainNavbar">
         <div class="container">
-            <a class="navbar-brand" href="#" onclick="showMainPage()">
-                <i class="fas fa-gamepad me-2"></i>GAME STORE
+            <a class="navbar-brand" href="#" onclick="showSection('home')">
+                <i class="fas fa-gamepad me-2"></i>GameHub Pro
             </a>
             <div class="d-flex align-items-center">
                 <div class="search-container me-3">
-                    <input 
-                        type="text" 
-                        id="searchInput" 
-                        class="form-control search-input" 
-                        placeholder="Search any game..."
-                    >
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search games...">
+                    <button id="searchBtn" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
-                <button id="searchButton" class="btn btn-outline-light me-3">
-                    <i class="fas fa-search"></i>
-                </button>
-                <button id="premiumBtn" class="btn btn-warning" style="background: transparent; color: transparent; border: 1px solid transparent;">
-                    <i class="fas fa-crown me-1"></i>Premium
+                <div class="dropdown me-3">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user me-1"></i>Account
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" href="#" onclick="showSection('dashboard')">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" onclick="showSection('favorites')">
+                            <i class="fas fa-heart me-2"></i>Favorites
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" onclick="showSection('collections')">
+                            <i class="fas fa-folder me-2"></i>Collections
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" onclick="showSection('recommendations')">
+                            <i class="fas fa-magic me-2"></i>AI Recommendations
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" onclick="showPremiumMenu()">
+                            <i class="fas fa-crown me-2"></i>Premium Features
+                        </a></li>
+                    </ul>
+                </div>
+                <button id="upgradeBtn" class="premium-upgrade-btn" onclick="togglePremium()">
+                    <i class="fas fa-crown me-2"></i>Go Premium
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- Cache Status -->
-    <div id="cacheStatus" class="cache-status">
-        <i class="fas fa-database me-2"></i>
-        <span id="cacheText">Cache: Ready</span>
-    </div>
-
     <!-- Status Bar -->
     <div id="statusBar" class="status-bar">
         <div class="container">
-            <span id="statusText">Free User: 3 gaming sessions remaining today</span>
-            <button id="upgradeBtn" class="btn btn-sm btn-transparent ms-3">
-               
-            </button>
+            <span id="statusText">
+                <i class="fas fa-gamepad me-2"></i>Free User - Discover Amazing Games | Upgrade to Premium for Unlimited Features
+            </span>
         </div>
     </div>
 
-    <!-- Game Timer -->
-    <div id="gameTimer" class="game-timer">
-        <i class="fas fa-clock me-2"></i>
-        <span id="timerDisplay">02:00:00</span>
+    <!-- RAWG Attribution -->
+    <div class="container">
+        <div class="rawg-attribution">
+            <div class="d-flex align-items-center justify-content-center flex-wrap">
+                <span class="me-3">
+                    <i class="fas fa-database me-2"></i>Game data powered by
+                </span>
+                <a href="https://rawg.io" target="_blank" class="rawg-logo">
+                    RAWG
+                </a>
+                <span class="ms-3">- The largest video game database</span>
+            </div>
+            <small class="d-block mt-3 text-muted">
+                All game information is freely accessible. Premium features enhance your gaming experience.
+            </small>
+        </div>
     </div>
 
     <!-- Main Content -->
-    <div id="mainContent">
-        <!-- Genre Filters -->
-        <div class="container mt-4">
-            <div class="genre-filter text-center">
+    <div class="container">
+        <!-- Premium Features Menu -->
+        <div id="premiumMenu" class="premium-menu" style="display: none;">
+            <div class="text-center mb-5">
+                <h2 class="mb-4">
+                    <i class="fas fa-crown me-3 text-warning"></i>
+                    Premium Features
+                </h2>
+                <p class="lead text-secondary">Unlock the full potential of your gaming experience</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="premium-feature-card locked">
+                        <div class="feature-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h5 class="text-center mb-3">Unlimited Favorites</h5>
+                        <p class="text-center text-muted">Save unlimited games to your personal favorites list. Never lose track of games you want to play!</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Unlimited storage</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Quick access</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Sync across devices</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="premium-feature-card locked">
+                        <div class="feature-icon">
+                            <i class="fas fa-sticky-note"></i>
+                        </div>
+                        <h5 class="text-center mb-3">Personal Notes & Reviews</h5>
+                        <p class="text-center text-muted">Write detailed reviews and personal notes for every game. Rate games and track your gaming journey!</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Personal ratings</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Detailed notes</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Review history</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="premium-feature-card locked">
+                        <div class="feature-icon">
+                            <i class="fas fa-folder"></i>
+                        </div>
+                        <h5 class="text-center mb-3">Custom Collections</h5>
+                        <p class="text-center text-muted">Organize your games into custom collections. Create themed lists like "RPGs to Play" or "Completed Games"!</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Unlimited collections</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Custom categories</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Easy management</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="premium-feature-card locked">
+                        <div class="feature-icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <h5 class="text-center mb-3">AI Recommendations</h5>
+                        <p class="text-center text-muted">Get personalized game recommendations based on your preferences, favorites, and gaming history!</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Smart algorithms</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Personalized picks</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Discovery engine</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="premium-feature-card locked">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h5 class="text-center mb-3">Advanced Analytics</h5>
+                        <p class="text-center text-muted">Track your gaming statistics, play time, favorite genres, and discover your gaming patterns!</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Gaming statistics</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Time tracking</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Detailed insights</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="premium-feature-card locked">
+                        <div class="feature-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h5 class="text-center mb-3">Daily Game Picks</h5>
+                        <p class="text-center text-muted">Receive personalized daily game recommendations via email. Never miss out on amazing games!</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Daily emails</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Curated content</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Personalized picks</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="text-warning mb-4">
+                                    <i class="fas fa-crown me-2"></i>Premium Subscription
+                                </h3>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="text-center p-3">
+                                            <h4>Monthly</h4>
+                                            <div class="display-6 text-warning">$9.99</div>
+                                            <small class="text-muted">per month</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="text-center p-3 bg-warning text-dark rounded">
+                                            <h4>Yearly <span class="badge bg-success">Save 40%</span></h4>
+                                            <div class="display-6">$59.99</div>
+                                            <small>per year</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="text-center p-3">
+                                            <h4>Lifetime</h4>
+                                            <div class="display-6 text-warning">$199.99</div>
+                                            <small class="text-muted">one-time</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-warning btn-lg mt-4" onclick="togglePremium()">
+                                    <i class="fas fa-crown me-2"></i>Upgrade to Premium Now
+                                </button>
+                                <p class="text-muted mt-3 mb-0">
+                                    <i class="fas fa-shield-alt me-1"></i>30-day money-back guarantee • Cancel anytime
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Home Section -->
+        <div id="homeSection" class="content-section">
+            <!-- Ad Banner (Free Users Only) -->
+            <div id="adBanner" class="ad-banner">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4><i class="fas fa-star me-2"></i>Unlock Premium Gaming Experience</h4>
+                        <p class="mb-0">Remove ads, get unlimited features, and enhance your gaming journey with Premium!</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <button class="btn btn-warning btn-lg" onclick="showPremiumMenu()">
+                            <i class="fas fa-crown me-2"></i>Go Premium
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Genre Filters -->
+            <div class="genre-filter-container text-center">
+                <h4 class="mb-4"><i class="fas fa-filter me-2"></i>Explore by Genre</h4>
                 <button class="btn genre-btn active" data-genre="action">
                     <i class="fas fa-fist-raised me-2"></i>Action
                 </button>
@@ -679,162 +280,127 @@
                     <i class="fas fa-puzzle-piece me-2"></i>Puzzle
                 </button>
             </div>
-        </div>
 
-        <!-- Games Container -->
-        <div class="container mt-4">
-            <div id="gamesContainer" class="row g-4"></div>
-            
-            <!-- Error Message Container -->
-            <div id="errorContainer"></div>
-        </div>
-    </div>
-
-    <!-- Premium Page -->
-    <div id="premiumContent" style="display: none;">
-        <div class="premium-page">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="premium-card">
-                            <h1 class="mb-4" style="background: gold; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                                <i class="fas fa-crown me-3"></i>Premium Gaming Experience
-                            </h1>
-                            <p class="lead mb-4">Unlock unlimited gaming with our premium subscription!</p>
-                            <ul class="premium-features mb-5">
-                                <li><i class="fas fa-infinity text-warning me-3"></i>Unlimited gaming sessions - No time limits!</li>
-                                <li><i class="fas fa-rocket text-warning me-3"></i>Priority access to new features</li>
-                                <li><i class="fas fa-hdd text-warning me-3"></i>Enhanced cache storage</li>
-                                <li><i class="fas fa-star text-warning me-3"></i>Exclusive premium features</li>
-                                <li><i class="fas fa-headset text-warning me-3"></i>24/7 Premium support</li>
-                                <li><i class="fas fa-download text-warning me-3"></i>Instant play with no ads</li>
-                                <li><i class="fas fa-trophy text-warning me-3"></i>Achievement tracking</li>
-                                <li><i class="fas fa-users text-warning me-3"></i>Recommended for everyone</li>
-                            </ul>
-
-                            <div class="row mb-4">
-                                <div class="col-md-4">
-                                    <div class="card bg-dark border-warning mb-3">
-                                        <div class="card-body text-center">
-                                            <h5 class="text-warning">Beginner</h5>
-                                            <h2 class="text-white">$9.99</h2>
-                                            <p class="text-muted">per month</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card bg-warning text-dark mb-3">
-                                        <div class="card-body text-center">
-                                            <h5>Pro <span class="badge bg-success">SAVE 40%</span></h5>
-                                            <h2>$46.99</h2>
-                                            <p>per month</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card bg-dark border-warning mb-3">
-                                        <div class="card-body text-center">
-                                            <h5 class="text-warning">Legend</h5>
-                                            <h2 class="text-white">$99.99</h2>
-                                            <p class="text-muted">per month</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button class="btn btn-outline-light btn-lg" onclick="showMainPage()">
-                                <i class="fas fa-arrow-left me-2"></i>Back to Games
-                            </button>
-                        </div>
+            <!-- Games Grid -->
+            <div id="gamesContainer" class="row g-4">
+                <div class="col-12">
+                    <div class="loading-container">
+                        <div class="loading-spinner"></div>
+                        <h4>Loading Games...</h4>
+                        <p class="text-muted">Discovering the best games for you</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay" style="display:none;">
-        <div class="text-center">
-            <div class="loading-spinner mb-4"></div>
-            <h3>Loading Epic Games...</h3>
-            <p>Fetching the latest and greatest games for you</p>
-        </div>
-    </div>
-
-    <!-- Game Preview Modal -->
-    <div id="gamePreviewModal" class="game-preview-modal">
-        <div class="preview-content">
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="content-section" style="display: none;">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="mb-0">Game Details</h2>
-                <button id="closePreviewBtn" class="btn btn-outline-light btn-lg">
-                    <i class="fas fa-times"></i>
+                <h2><i class="fas fa-tachometer-alt me-3"></i>Gaming Dashboard</h2>
+                <button class="btn btn-outline-light" onclick="showPremiumMenu()">
+                    <i class="fas fa-crown me-2"></i>Unlock Premium Stats
                 </button>
             </div>
-            <div id="previewContent"></div>
-            <div class="text-center mt-5">
-                <button id="playGameBtn" class="btn btn-success btn-lg">
-                      <i class="fas fa-eye me-1"></i>View 
-                </button>
+            
+            <div class="row mb-5">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalGames">0</div>
+                        <div class="stat-label">Games Discovered</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalFavorites">0</div>
+                        <div class="stat-label">Favorites</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCollections">0</div>
+                        <div class="stat-label">Collections</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalHours">0</div>
+                        <div class="stat-label">Hours Tracked</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-clock me-2"></i>Recent Activity</h5>
+                </div>
+                <div class="card-body" id="recentActivity">
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-history fa-3x mb-3"></i>
+                        <p>No recent activity. Start exploring games to see your activity here!</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Platform Selection Modal -->
-    <div id="playPlatformModal" class="play-platform-modal">
-        <div class="platform-content">
+        <!-- Favorites Section -->
+        <div id="favoritesSection" class="content-section" style="display: none;">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="mb-0">
-                    <i class="fas fa-gamepad me-3"></i>Choose Platform
-                </h2>
-                <button id="closePlatformBtn" class="btn btn-outline-light btn-lg">
-                    <i class="fas fa-times"></i>
-                </button>
+                <h2><i class="fas fa-heart me-3"></i>Your Favorite Games</h2>
+                <span class="badge bg-danger fs-6" id="favoritesCount">0 games</span>
             </div>
-            <p class="lead mb-4">How would you like to play this game?</p>
-            
-            <button id="playSteamBtn" class="platform-option-btn steam">
-                <i class="fab fa-steam me-3"></i>Play on Steam
-                <small class="d-block mt-2">Launch game through Steam platform</small>
-            </button>
-            
-            <button id="playWebBtn" class="platform-option-btn1">
-                <i class="fas fa-globe me-3"></i>Play in Web
-                <br>
-                <h4><i class="fas fa-info-circle"></i> Disable due to some reasons. ( legal )</h4>
-            </button>
-            
-            <button id="cancelPlatformBtn" class="btn btn-outline-light btn-lg mt-4">
-                <i class="fas fa-arrow-left me-2"></i>Back to Game Details
-            </button>
+            <div id="favoritesContainer" class="row g-4">
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <i class="fas fa-heart fa-4x mb-4 text-danger"></i>
+                        <h4>No Favorite Games Yet</h4>
+                        <p class="text-muted">Start exploring and click the heart icon on games you love!</p>
+                        <button class="btn btn-primary" onclick="showSection('home')">
+                            <i class="fas fa-search me-2"></i>Discover Games
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <!-- Play Options Modal -->
-    <div id="playOptionsModal" class="play-options-modal">
-        <div class="play-options-content">
+        <!-- Collections Section -->
+        <div id="collectionsSection" class="content-section" style="display: none;">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="mb-0">
-                    <i class="fas fa-clock me-3"></i>Choose Gaming Time
-                </h2>
-                <button id="closeOptionsBtn" class="btn btn-outline-light btn-lg">
-                    <i class="fas fa-times"></i>
+                <h2><i class="fas fa-folder me-3"></i>Game Collections</h2>
+                <button class="btn btn-primary" onclick="createCollection()" id="createCollectionBtn">
+                    <i class="fas fa-plus me-2"></i>Create Collection
                 </button>
             </div>
-            <p class="lead mb-4">Select your gaming session duration</p>
-            
-            <button id="play2HoursBtn" class="play-option-btn">
-                <i class="fas fa-clock me-3"></i>Free Gaming Session
-                <small class="d-block mt-2">2 Hours of Gaming Time</small>
-            </button>
-            
-            <button id="playUnlimitedBtn" class="play-option-btn premium">
-                <i class="fas fa-infinity me-3"></i>Premium Unlimited
-                <small class="d-block mt-2">No Time Limits - Premium Feature</small>
-            </button>
-            
-            <button id="cancelPlayBtn" class="btn btn-outline-light btn-lg mt-4">
-                <i class="fas fa-arrow-left me-2"></i>Back to Platform Selection
-            </button>
+            <div id="collectionsContainer">
+                <div class="text-center py-5">
+                    <i class="fas fa-folder-open fa-4x mb-4 text-primary"></i>
+                    <h4>No Collections Yet</h4>
+                    <p class="text-muted">Create custom collections to organize your games by theme, genre, or any way you like!</p>
+                    <button class="btn btn-primary" onclick="createCollection()">
+                        <i class="fas fa-plus me-2"></i>Create Your First Collection
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations Section -->
+        <div id="recommendationsSection" class="content-section" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-magic me-3"></i>AI-Powered Recommendations</h2>
+                <button class="btn btn-warning" onclick="showPremiumMenu()">
+                    <i class="fas fa-crown me-2"></i>Unlock AI Features
+                </button>
+            </div>
+            <div id="recommendationsContainer">
+                <div class="text-center py-5">
+                    <i class="fas fa-robot fa-4x mb-4 text-warning"></i>
+                    <h4>AI Recommendations Available with Premium</h4>
+                    <p class="text-muted">Get personalized game recommendations based on your preferences and gaming history!</p>
+                    <button class="btn btn-warning" onclick="showPremiumMenu()">
+                        <i class="fas fa-crown me-2"></i>Upgrade to Premium
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -843,676 +409,94 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <script>
-        class SmileXGamingHub {
-            constructor() {
-                this.initializeProperties();
-                this.setupEventListeners();
-                this.loadUserData();
-                this.loadInitialGames();
-                this.setupDailyReset();
-            }
+    <!-- Game Details Modal -->
+    <div class="modal fade" id="gameModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="gameModalTitle">Game Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="gameModalBody">
+                    <!-- Game details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="favoriteModalBtn">
+                        <i class="fas fa-heart me-1"></i>Add to Favorites
+                    </button>
+                    <button type="button" class="btn btn-primary" id="addToCollectionBtn">
+                        <i class="fas fa-folder-plus me-1"></i>Add to Collection
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            initializeProperties() {
-                // Core properties
-                this.page = 1;
-                this.currentGenre = 'action';
-                this.isLoading = false;
-                this.currentGame = null;
-                this.gameTimer = null;
-                this.gameStartTime = null;
-                this.gameTimeLimit = null;
-                this.searchQuery = '';
-
-                // API Configuration - RAWG API
-                this.apiKey = 'e8a2d63c9df84ddbbdbde50f0163b1a1';
-                this.baseUrl = 'https://api.rawg.io/api';
-                this.requestCount = 0;
-                this.maxRequestsPerMinute = 20;
-                this.requestQueue = [];
-
-                // User Data
-                this.userData = {
-                    isPremium: false,
-                    sessionsRemaining: 3,
-                    lastReset: new Date().toDateString(),
-                    gameProgress: {},
-                    cachedGames: {},
-                    lastCacheUpdate: null,
-                    totalPlayTime: 0
-                };
-
-                // DOM Elements
-                this.initializeDOMElements();
-            }
-
-            initializeDOMElements() {
-                this.gamesContainer = document.getElementById('gamesContainer');
-                this.searchInput = document.getElementById('searchInput');
-                this.searchButton = document.getElementById('searchButton');
-                this.genreButtons = document.querySelectorAll('.genre-btn');
-                this.loadingOverlay = document.getElementById('loadingOverlay');
-                
-                // Game Preview Modal
-                this.previewModal = document.getElementById('gamePreviewModal');
-                this.previewContent = document.getElementById('previewContent');
-                this.closePreviewBtn = document.getElementById('closePreviewBtn');
-                this.playGameBtn = document.getElementById('playGameBtn');
-                
-                // Platform Selection Modal
-                this.platformModal = document.getElementById('playPlatformModal');
-                this.closePlatformBtn = document.getElementById('closePlatformBtn');
-                this.playSteamBtn = document.getElementById('playSteamBtn');
-                this.playWebBtn = document.getElementById('playWebBtn');
-                this.cancelPlatformBtn = document.getElementById('cancelPlatformBtn');
-                
-                // Play Options Modal
-                this.playOptionsModal = document.getElementById('playOptionsModal');
-                this.closeOptionsBtn = document.getElementById('closeOptionsBtn');
-                this.play2HoursBtn = document.getElementById('play2HoursBtn');
-                this.playUnlimitedBtn = document.getElementById('playUnlimitedBtn');
-                this.cancelPlayBtn = document.getElementById('cancelPlayBtn');
-                
-                // Other elements
-                this.gameTimerElement = document.getElementById('gameTimer');
-                this.timerDisplay = document.getElementById('timerDisplay');
-                this.statusBar = document.getElementById('statusBar');
-                this.statusText = document.getElementById('statusText');
-                this.premiumBtn = document.getElementById('premiumBtn');
-                this.upgradeBtn = document.getElementById('upgradeBtn');
-                this.errorContainer = document.getElementById('errorContainer');
-                this.cacheStatus = document.getElementById('cacheStatus');
-                this.cacheText = document.getElementById('cacheText');
-                this.mainContent = document.getElementById('mainContent');
-                this.premiumContent = document.getElementById('premiumContent');
-                this.scrollTopBtn = document.getElementById('scrollTopBtn');
-            }
-
-            setupEventListeners() {
-                // Search functionality
-                this.searchButton.addEventListener('click', () => this.performSearch());
-                this.searchInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.performSearch();
-                });
-
-                // Real-time search
-                this.searchInput.addEventListener('input', () => {
-                    clearTimeout(this.searchTimeout);
-                    this.searchTimeout = setTimeout(() => {
-                        if (this.searchInput.value.trim()) {
-                            this.performSearch();
-                        }
-                    }, 500);
-                });
-
-                // Genre filters
-                this.genreButtons.forEach(btn => {
-                    btn.addEventListener('click', () => this.selectGenre(btn));
-                });
-
-                // Game Preview Modal
-                this.closePreviewBtn.addEventListener('click', () => this.closePreview());
-                this.playGameBtn.addEventListener('click', () => this.showPlatformSelection());
-
-                // Platform Selection Modal
-                this.closePlatformBtn.addEventListener('click', () => this.closePlatformSelection());
-                this.playSteamBtn.addEventListener('click', () => this.playOnSteam());
-                this.playWebBtn.addEventListener('click', () => this.showPlayOptions());
-                this.cancelPlatformBtn.addEventListener('click', () => this.backToGameDetails());
-
-                // Play Options Modal
-                this.closeOptionsBtn.addEventListener('click', () => this.closePlayOptions());
-                this.play2HoursBtn.addEventListener('click', () => this.startGame(2));
-                this.playUnlimitedBtn.addEventListener('click', () => this.startGame(0));
-                this.cancelPlayBtn.addEventListener('click', () => this.backToPlatformSelection());
-
-                // Premium controls
-                this.premiumBtn.addEventListener('click', () => this.showPremiumPage());
-                this.upgradeBtn.addEventListener('click', () => this.showPremiumPage());
-
-                // Infinite scroll
-                window.addEventListener('scroll', () => this.handleScroll());
-
-                // Scroll to top
-                this.scrollTopBtn.addEventListener('click', () => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-
-                window.addEventListener('scroll', () => {
-                    if (window.pageYOffset > 300) {
-                        this.scrollTopBtn.style.display = 'block';
-                    } else {
-                        this.scrollTopBtn.style.display = 'none';
-                    }
-                });
-            }
-
-            // User Data Management
-            loadUserData() {
-                const saved = localStorage.getItem('smileXGamingData');
-                if (saved) {
-                    this.userData = { ...this.userData, ...JSON.parse(saved) };
-                }
-                this.updateStatusDisplay();
-                this.checkDailyReset();
-                this.updateCacheStatus();
-            }
-
-            saveUserData() {
-                localStorage.setItem('smileXGamingData', JSON.stringify(this.userData));
-                this.updateCacheStatus();
-            }
-
-            checkDailyReset() {
-                const today = new Date().toDateString();
-                if (this.userData.lastReset !== today && !this.userData.isPremium) {
-                    this.userData.sessionsRemaining = 3;
-                    this.userData.lastReset = today;
-                    this.saveUserData();
-                    this.updateStatusDisplay();
-                    this.showNotification('Daily gaming sessions reset! You have 3 new sessions.', 'success');
-                }
-            }
-
-            setupDailyReset() {
-                setInterval(() => this.checkDailyReset(), 60000);
-            }
-
-            updateStatusDisplay() {
-                if (this.userData.isPremium) {
-                    this.statusBar.className = 'status-bar premium';
-                    this.statusText.innerHTML = '<i class="fas fa-crown me-2"></i>Premium User - Unlimited Gaming Power!';
-                    this.upgradeBtn.style.display = 'none';
-                } else {
-                    this.statusBar.className = 'status-bar';
-                    this.statusText.innerHTML = `<i class="fas fa-user me-2"></i>Free User: ${this.userData.sessionsRemaining} gaming sessions remaining today`;
-                    this.upgradeBtn.style.display = 'inline-block';
-                }
-            }
-
-            updateCacheStatus() {
-                const cacheCount = Object.keys(this.userData.cachedGames).length;
-                this.cacheText.textContent = `Cache: ${cacheCount} games stored`;
-            }
-
-            // API Rate Limiting and Caching
-            async makeAPIRequest(url) {
-                return new Promise((resolve, reject) => {
-                    const now = Date.now();
-                    
-                    this.requestQueue = this.requestQueue.filter(time => now - time < 60000);
-                    
-                    if (this.requestQueue.length >= this.maxRequestsPerMinute) {
-                        setTimeout(() => this.makeAPIRequest(url).then(resolve).catch(reject), 3000);
-                        return;
-                    }
-
-                    this.requestQueue.push(now);
-                    
-                    fetch(url)
-                        .then(response => {
-                            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                            return response.json();
-                        })
-                        .then(resolve)
-                        .catch(reject);
-                });
-            }
-
-            getCachedData(key) {
-                const cached = this.userData.cachedGames[key];
-                if (cached && Date.now() - cached.timestamp < 600000) { // 10 minutes cache
-                    return cached.data;
-                }
-                return null;
-            }
-
-            setCachedData(key, data) {
-                // Limit cache size
-                const cacheKeys = Object.keys(this.userData.cachedGames);
-                if (cacheKeys.length >= 100) {
-                    const oldestKey = cacheKeys.reduce((oldest, key) => 
-                        this.userData.cachedGames[key].timestamp < this.userData.cachedGames[oldest].timestamp ? key : oldest
-                    );
-                    delete this.userData.cachedGames[oldestKey];
-                }
-
-                this.userData.cachedGames[key] = {
-                    data: data,
-                    timestamp: Date.now()
-                };
-                this.saveUserData();
-            }
-
-            // Game Loading
-            async loadInitialGames() {
-                this.gamesContainer.innerHTML = '';
-                this.page = 1;
-                await this.fetchGames();
-            }
-
-            async fetchGames() {
-                if (this.isLoading) return;
-                
-                this.isLoading = true;
-                this.showLoadingOverlay();
-                this.clearErrorMessage();
-
-                const cacheKey = this.searchQuery ? 
-                    `search_${this.searchQuery}_${this.page}` : 
-                    `${this.currentGenre}_${this.page}`;
-                
-                const cachedData = this.getCachedData(cacheKey);
-
-                if (cachedData) {
-                    this.displayGames(cachedData, true);
-                    this.isLoading = false;
-                    this.hideLoadingOverlay();
-                    return;
-                }
-
-                try {
-                    let url;
-                    if (this.searchQuery) {
-                        url = `${this.baseUrl}/games?key=${this.apiKey}&search=${encodeURIComponent(this.searchQuery)}&page=${this.page}&page_size=12`;
-                    } else {
-                        url = `${this.baseUrl}/games?key=${this.apiKey}&genres=${this.currentGenre}&page=${this.page}&page_size=12`;
-                    }
-                    
-                    const data = await this.makeAPIRequest(url);
-                    
-                    this.setCachedData(cacheKey, data.results);
-                    this.displayGames(data.results, false);
-                    
-                    if (this.searchQuery) {
-                        this.showNotification(`Found ${data.results.length} games for "${this.searchQuery}"`, 'success');
-                    }
-                } catch (error) {
-                    console.error('Games fetch error:', error);
-                    this.showErrorMessage('Unable to load games. Please check your connection and try again.');
-                } finally {
-                    this.isLoading = false;
-                    this.hideLoadingOverlay();
-                }
-            }
-
-            displayGames(games, fromCache = false) {
-                games.forEach(game => {
-                    const gameCard = this.createGameCard(game, fromCache);
-                    this.gamesContainer.appendChild(gameCard);
-                });
-            }
-
-            createGameCard(game, fromCache = false) {
-                const gameCard = document.createElement('div');
-                gameCard.className = 'col-lg-4 col-md-6 col-sm-12';
-                
-                const progress = this.userData.gameProgress[game.id] || 0;
-                const rating = game.rating ? parseFloat(game.rating).toFixed(1) : 'N/A';
-                
-                gameCard.innerHTML = `
-                    <div class="card game-card h-100 text-white">
-                        ${fromCache ? '<div class="cached-badge"><i class="fas fa-database me-1"></i>Cached</div>' : ''}
-                        <img 
-                            src="${game.background_image || '/placeholder.svg?height=280&width=400'}" 
-                            class="card-img-top game-card-img" 
-                            alt="${game.name}"
-                            onerror="this.src='/placeholder.svg?height=280&width=400'"
-                        >
-                        <span class="platform-badge">
-                            <i class="fas fa-desktop me-1"></i>
-                            ${game.platforms ? game.platforms[0]?.platform.name || 'PC' : 'Multi-Platform'}
-                        </span>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">${this.truncateText(game.name, 45)}</h5>
-                            <p class="card-text flex-grow-1">${this.truncateText(game.description_raw || 'An amazing gaming experience awaits! Dive into this incredible world of adventure and excitement.', 120)}</p>
-                            
-                            ${progress > 0 ? `
-                                <div class="progress-container">
-                                    <div class="progress-bar" style="width: ${progress}%"></div>
-                                </div>
-                                <small class="text-muted mb-2">Progress: ${progress}%</small>
-                            ` : ''}
-                            
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div>
-                                    <span class="badge bg-primary me-2">
-                                        <i class="fas fa-star me-1"></i>${rating}
-                                    </span>
-                                    ${game.metacritic ? `<span class="badge bg-success">MC: ${game.metacritic}</span>` : ''}
-                                </div>
-                                <button class="btn btn-outline-light preview-btn">
-                                    <i class="fas fa-eye me-1"></i>Preview
-                                </button>
-                            </div>
-                        </div>
+    <!-- Collection Modal -->
+    <div class="modal fade" id="collectionModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Collection</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="collectionName" class="form-label">Collection Name</label>
+                        <input type="text" class="form-control" id="collectionName" placeholder="Enter collection name">
                     </div>
-                `;
-
-                const previewBtn = gameCard.querySelector('.preview-btn');
-                previewBtn.addEventListener('click', () => this.showPreview(game));
-
-                return gameCard;
-            }
-
-            async showPreview(game) {
-                this.currentGame = game;
-                
-                let detailedGame = game;
-                try {
-                    const detailCacheKey = `detail_${game.id}`;
-                    const cachedDetail = this.getCachedData(detailCacheKey);
-                    
-                    if (cachedDetail) {
-                        detailedGame = cachedDetail;
-                    } else {
-                        const url = `${this.baseUrl}/games/${game.id}?key=${this.apiKey}`;
-                        detailedGame = await this.makeAPIRequest(url);
-                        this.setCachedData(detailCacheKey, detailedGame);
-                    }
-                } catch (error) {
-                    console.warn('Could not fetch detailed game info:', error);
-                }
-
-                const progress = this.userData.gameProgress[game.id] || 0;
-                const rating = detailedGame.rating ? parseFloat(detailedGame.rating).toFixed(1) : 'N/A';
-
-                this.previewContent.innerHTML = `
-                    <div class="row">
-                        <div class="col-md-8">
-                            <img 
-                                src="${detailedGame.background_image || '/placeholder.svg?height=400&width=700'}" 
-                                class="img-fluid rounded mb-4"
-                                alt="${detailedGame.name}"
-                                style="width: 100%; height: 400px; object-fit: cover;"
-                                onerror="this.src='/placeholder.svg?height=400&width=700'"
-                            >
-                        </div>
-                        <div class="col-md-4">
-                            <h2 class="mb-3">${detailedGame.name}</h2>
-                            <div class="mb-4">
-                                <span class="badge bg-primary me-2 p-2">
-                                    <i class="fas fa-star me-1"></i>Rating: ${rating}
-                                </span>
-                                ${detailedGame.metacritic ? `
-                                    <span class="badge bg-success p-2">
-                                        <i class="fas fa-trophy me-1"></i>Metacritic: ${detailedGame.metacritic}
-                                    </span>
-                                ` : ''}
-                            </div>
-                            
-                            ${progress > 0 ? `
-                                <div class="mb-4">
-                                    <h6><i class="fas fa-chart-line me-2"></i>Your Progress</h6>
-                                    <div class="progress-container">
-                                        <div class="progress-bar" style="width: ${progress}%"></div>
-                                    </div>
-                                    <small class="text-muted">${progress}% Complete</small>
-                                </div>
-                            ` : ''}
-                            
-                            <h6><i class="fas fa-gamepad me-2"></i>Available Platforms</h6>
-                            <div class="mb-4">
-                                ${detailedGame.platforms ? detailedGame.platforms.slice(0, 4).map(p => 
-                                    `<span class="badge bg-secondary me-1 mb-2 p-2">${p.platform.name}</span>`
-                                ).join('') : '<span class="badge bg-secondary p-2">Multi-Platform</span>'}
-                            </div>
-                            
-                            ${detailedGame.genres ? `
-                                <h6><i class="fas fa-tags me-2"></i>Game Genres</h6>
-                                <div class="mb-4">
-                                    ${detailedGame.genres.slice(0, 4).map(g => 
-                                        `<span class="badge bg-info me-1 mb-2 p-2">${g.name}</span>`
-                                    ).join('')}
-                                </div>
-                            ` : ''}
-                        </div>
+                    <div class="mb-3">
+                        <label for="collectionDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="collectionDescription" rows="3" placeholder="Describe your collection"></textarea>
                     </div>
-                    <div class="mt-4">
-                        <h4><i class="fas fa-info-circle me-2"></i>About This Game</h4>
-                        <p class="lead">${detailedGame.description_raw || detailedGame.description || 'Embark on an incredible gaming adventure! This game offers hours of entertainment with stunning graphics, engaging gameplay, and immersive storytelling that will keep you coming back for more. Experience cutting-edge gaming technology and join millions of players worldwide in this epic journey.'}</p>
-                        
-                        <div class="row mt-4">
-                            ${detailedGame.released ? `
-                                <div class="col-md-6">
-                                    <p><strong><i class="fas fa-calendar me-2"></i>Release Date:</strong> ${new Date(detailedGame.released).toLocaleDateString()}</p>
-                                </div>
-                            ` : ''}
-                            
-                            ${detailedGame.developers && detailedGame.developers.length > 0 ? `
-                                <div class="col-md-6">
-                                    <p><strong><i class="fas fa-code me-2"></i>Developer:</strong> ${detailedGame.developers[0].name}</p>
-                                </div>
-                            ` : ''}
-                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveCollection()">Create Collection</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notes Modal -->
+    <div class="modal fade" id="notesModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Game Notes & Review</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="gameRating" class="form-label">Your Rating</label>
+                        <select class="form-select" id="gameRating">
+                            <option value="">Select Rating</option>
+                            <option value="5"><i class="fas fa-star"></i> Excellent (5/5)</option>
+                            <option value="4"><i class="fas fa-star"></i> Very Good (4/5)</option>
+                            <option value="3"><i class="fas fa-star"></i> Good (3/5)</option>
+                            <option value="2"><i class="fas fa-star"></i> Fair (2/5)</option>
+                            <option value="1"><i class="fas fa-star"></i> Poor (1/5)</option>
+                        </select>
                     </div>
-                `;
-                
-                this.previewModal.style.display = 'block';
-            }
-
-            // Platform Selection Methods
-            showPlatformSelection() {
-                this.previewModal.style.display = 'none';
-                this.platformModal.style.display = 'block';
-            }
-
-            closePlatformSelection() {
-                this.platformModal.style.display = 'none';
-            }
-
-            backToGameDetails() {
-                this.platformModal.style.display = 'none';
-                this.previewModal.style.display = 'block';
-            }
-
-            playOnSteam() {
-                if (this.currentGame) {
-                    // Create Steam search URL
-                    const steamSearchUrl = `https://store.steampowered.com/search/?term=${encodeURIComponent(this.currentGame.name)}`;
-                    window.open(steamSearchUrl, '_blank');
-                    this.closePlatformSelection();
-                    this.showNotification(`Redirecting to Steam to find "${this.currentGame.name}"...`, 'success');
-                }
-            }
-
-            // Play Options Methods
-            showPlayOptions() {
-                if (!this.userData.isPremium && this.userData.sessionsRemaining <= 0) {
-                    this.showNotification('No gaming sessions remaining today! Upgrade to Premium for unlimited gaming.', 'warning');
-                    return;
-                }
-                
-                this.platformModal.style.display = 'none';
-                this.playOptionsModal.style.display = 'block';
-            }
-
-            closePlayOptions() {
-                this.playOptionsModal.style.display = 'none';
-            }
-
-            backToPlatformSelection() {
-                this.playOptionsModal.style.display = 'none';
-                this.platformModal.style.display = 'block';
-            }
-
-            startGame(hours) {
-                if (!this.userData.isPremium) {
-                    if (hours === 0) {
-                        this.showNotification('Unlimited gaming is a Premium feature! Upgrade now for endless fun.', 'warning');
-                        return;
-                    }
-                    
-                    if (this.userData.sessionsRemaining <= 0) {
-                        this.showNotification('No gaming sessions remaining today! Come back tomorrow or upgrade to Premium.', 'warning');
-                        return;
-                    }
-                    
-                    this.userData.sessionsRemaining--;
-                    this.saveUserData();
-                    this.updateStatusDisplay();
-                }
-
-                this.playOptionsModal.style.display = 'none';
-                
-                // Save game session data to localStorage
-                const gameSession = {
-                    gameId: this.currentGame.id,
-                    gameName: this.currentGame.name,
-                    gameImage: this.currentGame.background_image,
-                    timeLimit: hours * 3600, // Convert to seconds
-                    startTime: Date.now(),
-                    isPremium: this.userData.isPremium
-                };
-                
-                localStorage.setItem('currentGameSession', JSON.stringify(gameSession));
-                
-                // Create a game player page URL
-                const gameSlug = this.currentGame.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                const playerUrl = `game-player.html?id=${this.currentGame.id}&slug=${gameSlug}&hours=${hours}`;
-                
-                // Redirect to game player page
-                window.location.href = playerUrl;
-            }
-
-            // Search Functionality
-            performSearch() {
-                const searchTerm = this.searchInput.value.trim();
-                if (!searchTerm) {
-                    this.showNotification('Please enter a game name to search', 'warning');
-                    return;
-                }
-                
-                this.searchQuery = searchTerm;
-                this.currentGenre = '';
-                this.gamesContainer.innerHTML = '';
-                this.page = 1;
-                
-                // Update genre buttons
-                this.genreButtons.forEach(btn => btn.classList.remove('active'));
-                
-                this.fetchGames();
-            }
-
-            // Genre Selection
-            selectGenre(btn) {
-                this.genreButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                this.currentGenre = btn.dataset.genre;
-                this.searchQuery = '';
-                this.searchInput.value = '';
-                this.loadInitialGames();
-                this.showNotification(`Loading ${btn.textContent.trim()} games...`, 'info');
-            }
-
-            // Premium Management
-            showPremiumPage() {
-                this.mainContent.style.display = 'none';
-                this.premiumContent.style.display = 'block';
-                window.scrollTo(0, 0);
-            }
-
-            showMainPage() {
-                this.mainContent.style.display = 'block';
-                this.premiumContent.style.display = 'none';
-                window.scrollTo(0, 0);
-            }
-
-            // Utility Methods
-            truncateText(text, length) {
-                if (!text) return '';
-                return text.length > length ? text.substring(0, length) + '...' : text;
-            }
-
-            showLoadingOverlay() {
-                this.loadingOverlay.style.display = 'flex';
-            }
-
-            hideLoadingOverlay() {
-                this.loadingOverlay.style.display = 'none';
-            }
-
-            showErrorMessage(message) {
-                this.errorContainer.innerHTML = `
-                    <div class="error-message">
-                        <i class="fas fa-exclamation-triangle me-3"></i>
-                        <strong>Oops!</strong> ${message}
-                        <button class="btn btn-light ms-3" onclick="location.reload()">
-                            <i class="fas fa-redo me-2"></i>Retry
-                        </button>
+                    <div class="mb-3">
+                        <label for="gameNotes" class="form-label">Your Notes</label>
+                        <textarea class="form-control" id="gameNotes" rows="5" placeholder="Write your thoughts about this game..."></textarea>
                     </div>
-                `;
-            }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveNotes()">Save Notes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            clearErrorMessage() {
-                this.errorContainer.innerHTML = '';
-            }
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-            closePreview() {
-                this.previewModal.style.display = 'none';
-            }
+    <script src="game.js">
 
-            handleScroll() {
-                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
-                    if (!this.isLoading && (this.currentGenre || this.searchQuery)) {
-                        this.page++;
-                        this.fetchGames();
-                    }
-                }
-            }
-
-            showNotification(message, type = 'info') {
-                const notification = document.createElement('div');
-                notification.className = `notification ${type}`;
-                notification.innerHTML = `
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : type === 'error' ? 'times-circle' : 'info-circle'} me-3"></i>
-                    ${message}
-                `;
-                
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.style.animation = 'slideInRight 0.4s ease reverse';
-                    setTimeout(() => notification.remove(), 400);
-                }, 4000);
-            }
-        }
-
-        // Global function to show main page
-        function showMainPage() {
-            if (window.gamingHub) {
-                window.gamingHub.showMainPage();
-            }
-        }
-
-        // Initialize the SmileX Gaming Hub
-        document.addEventListener('DOMContentLoaded', () => {
-            window.gamingHub = new SmileXGamingHub();
-        });
-
-        // Security measures
-        document.addEventListener('contextmenu', e => e.preventDefault());
-
-        document.addEventListener("keydown", function(e) {
-            if ((e.key === 'F12') || 
-                (e.ctrlKey && (e.key === 'u' || e.key === 'U')) || 
-                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i'))) {
-                e.preventDefault();
-            }
-        });
-
-        // Detect DevTools
-        let devtoolsOpen = false;
-        setInterval(function() {
-            const width = window.outerWidth - window.innerWidth > 100;
-            const height = window.outerHeight - window.innerHeight > 100;
-            if ((width || height) && !devtoolsOpen) {
-                devtoolsOpen = true;
-            }
-            if (!(width || height) && devtoolsOpen) {
-                devtoolsOpen = false;
-            }
-        }, 1000);
     </script>
 </body>
 </html>

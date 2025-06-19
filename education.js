@@ -1,4 +1,4 @@
-       class InfiniteStoryHub {
+        class SmartStoryHub {
             constructor() {
                 // Configuration
                 this.CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
@@ -12,6 +12,8 @@
                     openLibrary: {
                         name: 'Open Library',
                         searchUrl: 'https://openlibrary.org/search.json',
+                        worksUrl: 'https://openlibrary.org/works',
+                        editionsUrl: 'https://openlibrary.org/works',
                         embedUrl: 'https://openlibrary.org/embed',
                         transform: this.transformOpenLibraryBook.bind(this),
                         status: 'ready',
@@ -47,10 +49,11 @@
                 
                 // State management
                 this.cache = new Map();
+                this.embedValidationCache = new Map();
                 this.lastRequestTime = 0;
                 this.isLoading = false;
-                this.allBooks = new Map(); // All loaded books
-                this.searchResults = new Map(); // Search-specific results
+                this.allBooks = new Map();
+                this.searchResults = new Map();
                 this.currentBook = null;
                 this.bookCount = 0;
                 this.currentTopicIndex = 0;
@@ -62,12 +65,12 @@
             }
 
             async init() {
-                console.log('🚀 Initializing Infinite Story Hub...');
+                console.log('🚀 Initializing Smart Story Hub with Open Library validation...');
                 this.setupEventListeners();
                 this.createStarBackground();
                 this.updateAPIStatus();
                 this.startInfiniteLoading();
-                console.log('✅ Infinite Story Hub initialized successfully!');
+                console.log('✅ Smart Story Hub initialized successfully!');
             }
 
             setupEventListeners() {
@@ -193,8 +196,8 @@
             }
 
             startInfiniteLoading() {
-                console.log('📚 Starting infinite book loading...');
-                this.updateSearchInfo('Continuously loading books from all sources...');
+                console.log('📚 Starting infinite book loading with embed validation...');
+                this.updateSearchInfo('Continuously loading books with embed validation...');
                 
                 // Load initial batch
                 this.loadBooksFromAllAPIs();
@@ -319,6 +322,84 @@
                     console.error('❌ Project Gutenberg loading error:', error);
                     this.setAPIStatus('gutenberg', 'error');
                     return [];
+                }
+            }
+
+            // ✅ ENHANCED OPEN LIBRARY EMBED VALIDATION
+            async checkOpenLibraryEmbedAvailability(book) {
+                const cacheKey = `embed_${book.id}`;
+                
+                // Check cache first
+                if (this.embedValidationCache.has(cacheKey)) {
+                    return this.embedValidationCache.get(cacheKey);
+                }
+
+                try {
+                    // Only validate Open Library books
+                    if (book.source !== 'Open Library' || !book.rawData?.key) {
+                        this.embedValidationCache.set(cacheKey, false);
+                        return false;
+                    }
+
+                    const workId = book.rawData.key.replace('/works/', '');
+                    
+                    // Step 1: Check if work exists and has basic info
+                    const workUrl = `${this.APIs.openLibrary.worksUrl}/${workId}.json`;
+                    const workData = await this.makeAPIRequest(workUrl);
+                    
+                    if (!workData || (!workData.description && !workData.covers && !workData.subjects)) {
+                        console.log(`❌ Work ${workId} lacks basic info for embedding`);
+                        this.embedValidationCache.set(cacheKey, false);
+                        return false;
+                    }
+
+                    // Step 2: Check editions for borrowable or readable status
+                    const editionsUrl = `${this.APIs.openLibrary.editionsUrl}/${workId}/editions.json`;
+                    const editionsData = await this.makeAPIRequest(editionsUrl);
+                    
+                    if (!editionsData || !editionsData.entries || editionsData.entries.length === 0) {
+                        console.log(`❌ No editions found for work ${workId}`);
+                        this.embedValidationCache.set(cacheKey, false);
+                        return false;
+                    }
+
+                    // Step 3: Check if any edition is borrowable or has full preview
+                    let isEmbeddable = false;
+                    
+                    for (const edition of editionsData.entries) {
+                        // Check for borrowable status
+                        if (edition.availability && edition.availability.status === "borrowable") {
+                            console.log(`✅ Found borrowable edition for ${workId}`);
+                            isEmbeddable = true;
+                            break;
+                        }
+                        
+                        // Check for full preview
+                        if (edition.preview === "full") {
+                            console.log(`✅ Found full preview edition for ${workId}`);
+                            isEmbeddable = true;
+                            break;
+                        }
+                        
+                        // Check for readable status in ocaid (Internet Archive ID)
+                        if (edition.ocaid) {
+                            console.log(`✅ Found Internet Archive edition for ${workId}`);
+                            isEmbeddable = true;
+                            break;
+                        }
+                    }
+
+                    if (!isEmbeddable) {
+                        console.log(`❌ No embeddable editions found for work ${workId}`);
+                    }
+
+                    this.embedValidationCache.set(cacheKey, isEmbeddable);
+                    return isEmbeddable;
+                    
+                } catch (error) {
+                    console.error(`❌ Embed validation error for ${book.id}:`, error);
+                    this.embedValidationCache.set(cacheKey, false);
+                    return false;
                 }
             }
 
@@ -542,7 +623,8 @@
                     sourceUrl: book.key ? `https://openlibrary.org${book.key}` : null,
                     embedUrl: book.key ? `https://openlibrary.org/embed${book.key}` : null,
                     archiveUrl: null,
-                    rawData: book
+                    rawData: book,
+                    embedStatus: 'unchecked' // Will be checked when user tries to read
                 };
             }
 
@@ -565,7 +647,8 @@
                     sourceUrl: `https://archive.org/details/${book.identifier}`,
                     embedUrl: `https://archive.org/embed/${book.identifier}`,
                     archiveUrl: `https://archive.org/details/${book.identifier}`,
-                    rawData: book
+                    rawData: book,
+                    embedStatus: 'available' // Internet Archive generally supports embedding
                 };
             }
 
@@ -587,10 +670,11 @@
                         `https://via.placeholder.com/300x400/1a1a1a/2575fc?text=${encodeURIComponent(book.title?.substring(0, 20) || 'Classic')}`,
                     source: 'Project Gutenberg',
                     sourceUrl: `https://www.gutenberg.org/ebooks/${book.id}`,
-                    embedUrl: null,
+                    embedUrl: null, // Gutenberg doesn't support embedding
                     archiveUrl: null,
                     textUrl: book.formats?.['text/plain'] || book.formats?.['text/html'],
-                    rawData: book
+                    rawData: book,
+                    embedStatus: 'unavailable' // Gutenberg doesn't support embedding
                 };
             }
 
@@ -625,11 +709,94 @@
 
                 const bookCard = this.createBookCard(book);
                 container.appendChild(bookCard);
+                
+                // Start embed validation for Open Library books
+                if (book.source === 'Open Library' && book.embedStatus === 'unchecked') {
+                    this.validateAndUpdateEmbedStatus(book.id);
+                }
+            }
+
+            async validateAndUpdateEmbedStatus(bookId) {
+                const book = this.allBooks.get(bookId) || this.searchResults.get(bookId);
+                if (!book) return;
+
+                // Update UI to show checking status
+                this.updateEmbedStatusBadge(bookId, 'checking');
+                
+                try {
+                    const isEmbeddable = await this.checkOpenLibraryEmbedAvailability(book);
+                    
+                    // Update book object
+                    book.embedStatus = isEmbeddable ? 'available' : 'unavailable';
+                    
+                    // Update UI
+                    this.updateEmbedStatusBadge(bookId, book.embedStatus);
+                    this.updateReadButton(bookId, book.embedStatus);
+                    
+                    console.log(`📚 Embed validation for "${book.title}": ${book.embedStatus}`);
+                    
+                } catch (error) {
+                    console.error(`❌ Embed validation failed for ${bookId}:`, error);
+                    book.embedStatus = 'unavailable';
+                    this.updateEmbedStatusBadge(bookId, 'unavailable');
+                    this.updateReadButton(bookId, 'unavailable');
+                }
+            }
+
+            updateEmbedStatusBadge(bookId, status) {
+                const bookCard = document.querySelector(`[data-book-id="${bookId}"]`);
+                if (!bookCard) return;
+
+                let badge = bookCard.querySelector('.embed-status-badge');
+                if (!badge) {
+                    badge = document.createElement('div');
+                    badge.className = 'embed-status-badge';
+                    bookCard.querySelector('.story-card').appendChild(badge);
+                }
+
+                switch (status) {
+                    case 'checking':
+                        badge.className = 'embed-status-badge embed-checking';
+                        badge.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking';
+                        break;
+                    case 'available':
+                        badge.className = 'embed-status-badge embed-available';
+                        badge.innerHTML = '<i class="fas fa-check"></i> Embeddable';
+                        break;
+                    case 'unavailable':
+                        badge.className = 'embed-status-badge embed-unavailable';
+                        badge.innerHTML = '<i class="fas fa-times"></i> No Embed';
+                        break;
+                }
+            }
+
+            updateReadButton(bookId, embedStatus) {
+                const bookCard = document.querySelector(`[data-book-id="${bookId}"]`);
+                if (!bookCard) return;
+
+                const readBtn = bookCard.querySelector('.read-btn');
+                if (!readBtn) return;
+
+                if (embedStatus === 'unavailable') {
+                    readBtn.disabled = true;
+                    readBtn.innerHTML = '<i class="fas fa-ban"></i> No Embed';
+                    readBtn.title = 'This book cannot be embedded. Use other reading options.';
+                } else {
+                    readBtn.disabled = false;
+                    readBtn.innerHTML = '<i class="fas fa-book-open"></i> Read';
+                    readBtn.title = 'Click to see reading options';
+                }
             }
 
             createBookCard(book) {
                 const col = document.createElement('div');
                 col.className = 'col-lg-3 col-md-4 col-sm-6 mb-4';
+                col.setAttribute('data-book-id', book.id);
+                
+                // Determine if read button should be disabled initially
+                const isReadDisabled = book.embedStatus === 'unavailable';
+                const readBtnClass = isReadDisabled ? 'action-btn read-btn' : 'action-btn read-btn';
+                const readBtnContent = isReadDisabled ? '<i class="fas fa-ban"></i> No Embed' : '<i class="fas fa-book-open"></i> Read';
                 
                 col.innerHTML = `
                     <div class="story-card fade-in">
@@ -652,8 +819,8 @@
                                 <button class="action-btn preview-btn" onclick="storyHub.previewBook('${book.id}')">
                                     <i class="fas fa-eye"></i> Preview
                                 </button>
-                                <button class="action-btn read-btn" onclick="storyHub.showReadOptions('${book.id}')">
-                                    <i class="fas fa-book-open"></i> Read
+                                <button class="${readBtnClass}" onclick="storyHub.showReadOptions('${book.id}')" ${isReadDisabled ? 'disabled' : ''}>
+                                    ${readBtnContent}
                                 </button>
                             </div>
                         </div>
@@ -664,7 +831,7 @@
                 return col;
             }
 
-            showReadOptions(bookId) {
+            async showReadOptions(bookId) {
                 const book = this.allBooks.get(bookId) || this.searchResults.get(bookId);
                 if (!book) return;
 
@@ -676,12 +843,47 @@
                     titleElement.textContent = `"${book.title}"`;
                 }
                 
-                // Show/hide options based on availability
+                // Configure read options based on embed availability
                 const embedBtn = document.getElementById('read-embed-btn');
                 const archiveBtn = document.getElementById('read-archive-btn');
                 
                 if (embedBtn) {
-                    embedBtn.style.display = book.embedUrl ? 'flex' : 'none';
+                    if (book.embedStatus === 'available' || book.source === 'Internet Archive') {
+                        embedBtn.style.display = 'flex';
+                        embedBtn.disabled = false;
+                        embedBtn.innerHTML = `
+                            <div class="read-option-icon">
+                                <i class="fas fa-book-reader"></i>
+                            </div>
+                            <div class="read-option-text">
+                                <div class="read-option-title">Read with Embed</div>
+                                <div class="read-option-desc">Read using embedded reader - verified as available</div>
+                            </div>
+                        `;
+                    } else if (book.embedStatus === 'checking') {
+                        embedBtn.style.display = 'flex';
+                        embedBtn.disabled = true;
+                        embedBtn.innerHTML = `
+                            <div class="read-option-icon">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                            <div class="read-option-text">
+                                <div class="read-option-title">Checking Embed Availability...</div>
+                                <div class="read-option-desc">Please wait while we verify if this book can be embedded</div>
+                            </div>
+                        `;
+                        
+                        // Re-check embed availability
+                        this.validateAndUpdateEmbedStatus(bookId).then(() => {
+                            // Refresh modal if still open
+                            if (this.currentBook && this.currentBook.id === bookId) {
+                                this.showReadOptions(bookId);
+                            }
+                        });
+                    } else {
+                        // Hide embed option for unavailable books
+                        embedBtn.style.display = 'none';
+                    }
                 }
                 
                 if (archiveBtn) {
@@ -695,7 +897,7 @@
                     document.body.style.overflow = 'hidden';
                 }
                 
-                console.log(`📖 Showing read options for: ${book.title}`);
+                console.log(`📖 Showing read options for: ${book.title} (Embed: ${book.embedStatus})`);
             }
 
             closeReadOptions() {
@@ -707,8 +909,19 @@
             }
 
             readWithEmbed() {
-                if (!this.currentBook || !this.currentBook.embedUrl) {
-                    this.showStatus('Embed reading not available for this book', 'warning');
+                if (!this.currentBook) {
+                    this.showStatus('No book selected', 'error');
+                    return;
+                }
+
+                // Double-check embed availability
+                if (this.currentBook.embedStatus !== 'available' && this.currentBook.source !== 'Internet Archive') {
+                    this.showStatus('This book is not available to embed', 'warning');
+                    return;
+                }
+
+                if (!this.currentBook.embedUrl) {
+                    this.showStatus('Embed URL not available for this book', 'warning');
                     return;
                 }
 
@@ -722,8 +935,8 @@
                     embedReader.classList.add('active');
                     document.body.style.overflow = 'hidden';
                     
-                    this.showStatus(`Opening embedded reader for "${this.currentBook.title}"`, 'success');
-                    console.log(`📚 Opening embed reader: ${this.currentBook.embedUrl}`);
+                    this.showStatus(`Opening verified embedded reader for "${this.currentBook.title}"`, 'success');
+                    console.log(`📚 Opening validated embed reader: ${this.currentBook.embedUrl}`);
                 }
                 
                 this.closeReadOptions();
@@ -826,7 +1039,7 @@
                 try {
                     let content = '';
                     
-                    if (book.textUrl) {
+                    if (book.textUrl && book.source === 'Project Gutenberg') {
                         // Try to fetch text content for Gutenberg books
                         try {
                             const response = await fetch(book.textUrl);
@@ -846,12 +1059,12 @@
                     contentDiv.innerHTML = `
                         <div class="chapter">
                             <h3>Content Loading Error</h3>
-                            <p>Unable to load the full content. Please try reading from the source or using the embed option.</p>
+                            <p>Unable to load the full content. Please try reading from the source or using the embed option if available.</p>
                             <p><strong>Available options:</strong></p>
                             <ul>
                                 <li>Click "Back to Books" and try "Read from Source"</li>
-                                <li>Use the embedded reader if available</li>
-                                <li>Visit the Internet Archive link</li>
+                                ${book.embedStatus === 'available' ? '<li>Use the embedded reader if available</li>' : ''}
+                                <li>Visit the Internet Archive link if available</li>
                             </ul>
                         </div>
                     `;
@@ -882,6 +1095,10 @@
             }
 
             generateSampleContent(book) {
+                const embedInfo = book.embedStatus === 'available' 
+                    ? '<li><strong>Embedded Reader:</strong> Use the built-in reader (verified as available)</li>'
+                    : '';
+
                 return `
                     <div class="chapter">
                         <h3>About This Book</h3>
@@ -889,12 +1106,13 @@
                         <p>${book.description}</p>
                         <p><strong>Genre:</strong> ${book.genre}</p>
                         <p><strong>Published:</strong> ${book.publishYear}</p>
+                        <p><strong>Embed Status:</strong> ${book.embedStatus === 'available' ? '✅ Available for embedding' : '❌ Not available for embedding'}</p>
                         
                         <h3>Reading Options</h3>
                         <p>To read the complete content of this book, please use one of the following options:</p>
                         <ul>
                             <li><strong>Read from Source:</strong> Visit the original ${book.source} page</li>
-                            ${book.embedUrl ? '<li><strong>Embedded Reader:</strong> Use the built-in reader for the best experience</li>' : ''}
+                            ${embedInfo}
                             ${book.archiveUrl ? '<li><strong>Internet Archive:</strong> Access the archived version with additional features</li>' : ''}
                         </ul>
                         
@@ -916,10 +1134,12 @@
             previewBook(bookId) {
                 const book = this.allBooks.get(bookId) || this.searchResults.get(bookId);
                 if (book) {
-                    this.showStatus(`Preview: "${book.title}" by ${book.author} - ${book.genre} (${book.source})`, 'success');
+                    const embedStatusText = book.embedStatus === 'available' ? ' (Embeddable)' : 
+                                          book.embedStatus === 'unavailable' ? ' (No Embed)' : ' (Checking...)';
+                    this.showStatus(`Preview: "${book.title}" by ${book.author} - ${book.genre} (${book.source})${embedStatusText}`, 'success');
                     
                     // Scroll to the book card
-                    const bookElement = document.querySelector(`[data-book-data*='"id":"${bookId}"']`);
+                    const bookElement = document.querySelector(`[data-book-id="${bookId}"]`);
                     if (bookElement) {
                         bookElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
@@ -947,13 +1167,14 @@
                         <div class="col-12">
                             <div class="no-results">
                                 <i class="fas fa-search"></i>
-                                <h3>No exact matches found for "${query}"</h3>
-                                <p>Try searching with different keywords or check your spelling.</p>
+                                <h3>No matches found for "${query}"</h3>
+                                <p>Try searching for different terms or browse our collection.</p>
                                 <p><strong>Search tips:</strong></p>
                                 <ul style="text-align: left; display: inline-block;">
-                                    <li>Try partial titles or author names</li>
-                                    <li>Search by genre or subject</li>
-                                    <li>Use simpler, more common terms</li>
+                                    <li>Try searching for classic literature or well-known authors</li>
+                                    <li>Search by genre like "adventure", "mystery", or "romance"</li>
+                                    <li>Use broader terms like "fiction" or "history"</li>
+                                    <li>Check spelling and try different variations</li>
                                 </ul>
                             </div>
                         </div>
@@ -1052,35 +1273,30 @@
             }
         }
 
-        // Initialize the Infinite Story Hub
-        const storyHub = new InfiniteStoryHub();
+        // Initialize the Smart Story Hub
+        const storyHub = new SmartStoryHub();
 
-        console.log("🚀 Discover and explore infinite Stories!");
+        console.log("🚀 Smart Story Hub: Discover books with Open Library embed validation!");
 
-                     // Disable F12, Ctrl+U, and Ctrl+Shift+I
+        // Security measures
         document.addEventListener("keydown", function(e) {
-            // F12, Ctrl+Shift+I, and Ctrl+U
             if ((e.key === 'F12') || 
                 (e.ctrlKey && (e.key === 'u' || e.key === 'U')) || 
                 (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i'))) {
                 e.preventDefault();
-              
             }
         });
 
-        // Detect DevTools opening (using resize event)
         let devtoolsOpen = false;
         setInterval(function() {
             const width = window.outerWidth - window.innerWidth > 100;
             const height = window.outerHeight - window.innerHeight > 100;
             if ((width || height) && !devtoolsOpen) {
                 devtoolsOpen = true;
-               
             }
             if (!(width || height) && devtoolsOpen) {
                 devtoolsOpen = false;
             }
         }, 1000);
 
-           // Prevent right-click (optional)
         document.addEventListener('contextmenu', e => e.preventDefault());
