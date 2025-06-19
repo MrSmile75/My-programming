@@ -95,7 +95,7 @@
         .tmdb-homepage-banner {
             background: linear-gradient(135deg, #01d277, #00b359);
             color: white;
-            padding: 15px 20px;
+            padding: 20px;
             text-align: center;
             margin: 20px 0;
             border-radius: var(--border-radius);
@@ -648,6 +648,55 @@
             margin-bottom: 50px;
         }
 
+        /* CRITICAL: Non-Intrusive TMDB Attribution for Individual Movies */
+        .tmdb-movie-attribution {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(1, 210, 119, 0.95);
+            padding: 6px 10px;
+            border-radius: 20px;
+            z-index: 15;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(1, 210, 119, 0.7);
+            pointer-events: auto;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            /* CRITICAL: Prevent interference with movie card transforms */
+            transform-origin: center;
+            will-change: opacity, transform;
+        }
+
+        .tmdb-movie-attribution:hover {
+            background: rgba(1, 210, 119, 1);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(1, 210, 119, 0.4);
+        }
+
+        .tmdb-logo-small {
+            height: 14px;
+            width: auto;
+            opacity: 0.95;
+            transition: var(--transition);
+        }
+
+        .tmdb-link {
+            color: white;
+            text-decoration: none;
+            font-size: 9px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: var(--transition);
+            /* CRITICAL: Prevent event bubbling */
+            cursor: pointer;
+        }
+
+        .tmdb-link:hover {
+            color: #f0f0f0;
+        }
+
+        /* Movie Card Styles - ISOLATED from TMDB attribution */
         .movie-card {
             background: var(--secondary-bg);
             border-radius: var(--border-radius);
@@ -656,12 +705,24 @@
             transition: var(--transition);
             border: 2px solid transparent;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            /* CRITICAL: Establish stacking context */
+            transform-style: preserve-3d;
         }
 
+        /* Movie card hover effects - TMDB attribution is isolated */
         .movie-card:hover {
             transform: translateY(-10px) scale(1.02);
             border-color: var(--accent-color);
             box-shadow: 0 20px 40px rgba(229, 9, 20, 0.2);
+        }
+
+        /* CRITICAL: Prevent TMDB attribution from being affected by movie card transforms */
+        .movie-card:hover .tmdb-movie-attribution {
+            /* Reset any inherited transforms */
+            transform: scale(1) !important;
         }
 
         .movie-poster {
@@ -684,6 +745,7 @@
             padding: 20px;
             transform: translateY(100%);
             transition: var(--transition);
+            z-index: 10;
         }
 
         .movie-card:hover .movie-overlay {
@@ -1075,6 +1137,20 @@
                 margin: 0 0 10px 0;
                 text-align: center;
             }
+
+            .tmdb-movie-attribution {
+                top: 6px;
+                right: 6px;
+                padding: 4px 8px;
+            }
+
+            .tmdb-link {
+                font-size: 8px;
+            }
+
+            .tmdb-logo-small {
+                height: 12px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1326,13 +1402,6 @@
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content" id="main-content" style="display: none;">
-        <!-- TMDB Attribution Banner (Prominent Homepage Display) -->
-        <div class="tmdb-homepage-banner">
-            <span class="tmdb-logo-large">TMDB</span>
-            <p>This product uses the TMDB API but is not endorsed or certified by TMDB. All movie data is provided by The Movie Database.</p>
-        </div>
 
         <!-- Ad Banner (Hidden for Premium Users) -->
         <div class="ad-banner" id="top-ad-banner">
@@ -1384,7 +1453,7 @@
             <div class="loading-spinner"></div>
             <div class="loading-text">Loading amazing movies...</div>
         </div>
-    </div>
+
 
     <!-- Notification -->
     <div class="notification" id="notification"></div>
@@ -1393,7 +1462,7 @@
         /**
          * SmileX - TMDB Compliant Movie Platform
          * Enhanced for Full TMDB Terms of Service Compliance
-         * Version 2.0 - Fully Compliant & Error-Free
+         * Version 3.2 - Debugged Non-Intrusive Individual Movie Attribution
          */
         class SmileXApp {
             constructor() {
@@ -1520,14 +1589,14 @@
                     })
                 }
 
-                // Watch movie button - Updated text for clarity
+                // Watch movie button
                 if (watchMovieBtn) {
                     watchMovieBtn.addEventListener("click", () => {
                         this.showWatchOptions()
                     })
                 }
 
-                // Watch options - All clearly labeled as external searches
+                // Watch options
                 if (watchNetflixBtn) {
                     watchNetflixBtn.addEventListener("click", () => {
                         this.watchOnPlatform("netflix")
@@ -1573,7 +1642,7 @@
                     return
                 }
 
-                // Initialize AdSense for free users
+                // Initialize AdSense
                 try {
                     ;(window.adsbygoogle = window.adsbygoogle || []).push({})
                     ;(window.adsbygoogle = window.adsbygoogle || []).push({})
@@ -1804,6 +1873,19 @@
                             }
                         </div>
                     </div>
+                    <!-- CRITICAL: Non-Intrusive TMDB Attribution for each movie -->
+                    <div class="tmdb-movie-attribution">
+                        <a href="https://www.themoviedb.org/movie/${movie.id}" 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           class="tmdb-link"
+                           onclick="event.stopPropagation();">
+                            <img src="https://www.themoviedb.org/assets/2/v4/logos/stacked-blue-2c61b105ef7b58b68ccead4754a17f8d8c2348b07d.svg" 
+                                 alt="TMDB Logo" 
+                                 class="tmdb-logo-small">
+                            TMDB
+                        </a>
+                    </div>
                 `
 
                 return movieCard
@@ -1850,8 +1932,19 @@
 
                 if (!modal || !title || !poster || !meta || !description) return
 
-                // Set movie title
-                title.textContent = movie.title
+                // Set movie title with TMDB attribution
+                title.innerHTML = `
+                    ${movie.title}
+                    <a href="https://www.themoviedb.org/movie/${movie.id}" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       style="margin-left: 15px; color: #01d277; text-decoration: none; font-size: 14px;">
+                        <img src="https://www.themoviedb.org/assets/2/v4/logos/stacked-blue-2c61b105ef7b58b68ccead4754a17f8d8c2348b07d.svg" 
+                             alt="TMDB Logo" 
+                             style="height: 16px; vertical-align: middle; margin-right: 5px;">
+                        View on TMDB
+                    </a>
+                `
 
                 // Set movie poster
                 poster.src = `${this.IMG_BASE_URL}${movie.poster_path}`
@@ -1871,7 +1964,17 @@
                 `
 
                 // Set movie description (from TMDB)
-                description.textContent = movie.overview || "No description available for this movie."
+                description.innerHTML = `
+                    <p>${movie.overview || "No description available for this movie."}</p>
+                    <div style="margin-top: 15px; padding: 10px; background: rgba(1, 210, 119, 0.1); border-radius: 8px; border: 1px solid rgba(1, 210, 119, 0.3);">
+                        <small style="color: var(--text-secondary);">
+                            <img src="https://www.themoviedb.org/assets/2/v4/logos/stacked-blue-2c61b105ef7b58b68ccead4754a17f8d8c2348b07d.svg" 
+                                 alt="TMDB Logo" 
+                                 style="height: 14px; vertical-align: middle; margin-right: 5px;">
+                            Movie data provided by The Movie Database (TMDB)
+                        </small>
+                    </div>
+                `
 
                 // Update favorite button (Premium feature)
                 const isFavorite = this.favorites.includes(movie.id)
@@ -2233,6 +2336,7 @@
 
             console.log("🎬 SmileX - TMDB Compliant Movie Platform Loaded")
             console.log("✅ Fully compliant with TMDB Terms of Service")
+            console.log("✅ Non-intrusive individual movie TMDB attribution")
             console.log("✅ Proper TMDB attribution displayed prominently")
             console.log("✅ Premium features add value beyond TMDB data")
             console.log("✅ All TMDB data remains freely accessible")

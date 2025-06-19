@@ -41,7 +41,7 @@
     body {
         background: var(--bg-primary);
         color: white;
-        font-family: 'Inter', sans-serif;
+        font-family: 'Orbitron', sans-serif;
         min-height: 100vh;
         overflow-x: hidden;
         position: relative;
@@ -50,6 +50,10 @@
 
     p,h4{
         color: white;
+    }
+
+    a{
+        color:gold
     }
 
     /* Subtle Animated Background */
@@ -257,6 +261,8 @@
         overflow: hidden;
     }
 
+  
+
     .status-bar.premium {
         background: var(--premium-gradient);
         color: white;
@@ -316,6 +322,7 @@
         height: 100%;
         cursor: pointer;
         box-shadow: var(--shadow-md);
+        color:#7c3aed;
     }
 
     .game-card:hover {
@@ -427,12 +434,14 @@
         border-bottom: 1px solid var(--glass-border);
         background: var(--glass-bg);
         border-radius: 16px 16px 0 0;
+        color: white;
     }
 
     .modal-footer {
         border-top: 1px solid var(--glass-border);
         background: var(--glass-bg);
         border-radius: 0 0 16px 16px;
+        color: white;
     }
 
     /* Collections */
@@ -773,7 +782,11 @@
         background: var(--glass-bg);
         border: 1px solid var(--glass-border);
         border-radius: 8px;
-        color: var(--text-primary);
+        color: GREY;
+    }
+
+    option{
+        color:black
     }
 
     .form-select:focus {
@@ -889,6 +902,7 @@
         border: 1px solid var(--glass-border);
         border-radius: 12px;
         backdrop-filter: blur(10px);
+        color: white;
     }
 
     .card-header {
@@ -899,8 +913,17 @@
 
     .card-body {
         background: transparent;
+        color: white;
     }
 
+      .card-body1 {
+        background: grey;
+        color: white;
+      
+        
+    }
+
+     
     /* Alert Styles */
     .alert {
         background: var(--glass-bg);
