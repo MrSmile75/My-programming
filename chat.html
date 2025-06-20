@@ -27,6 +27,7 @@
             --success-color: #10b981;
             --error-color: #ef4444;
             --warning-color: #f59e0b;
+            --premium-color: #ffd700;
             
             /* Spacing Variables */
             --spacing-xs: 0.25rem;
@@ -210,7 +211,7 @@
             padding: var(--spacing-xl);
             border-radius: var(--radius-xl);
             width: 90%;
-            max-width: 500px;
+            max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: var(--shadow-xl);
@@ -231,6 +232,107 @@
             font-size: var(--font-size-2xl);
             margin-bottom: var(--spacing-sm);
             color: var(--primary-color);
+        }
+
+        /* Profile Picture Upload */
+        .profile-pic-section {
+            text-align: center;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .profile-pic-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .profile-pic-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-3xl);
+            color: white;
+            border: 4px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .profile-pic-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-pic-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+        }
+
+        .profile-pic-options {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: center;
+        }
+
+        /* Username Validation */
+        .username-container {
+            position: relative;
+        }
+
+        .username-status {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: var(--font-size-sm);
+        }
+
+        .username-status.checking {
+            color: var(--warning-color);
+        }
+
+        .username-status.available {
+            color: var(--success-color);
+        }
+
+        .username-status.taken {
+            color: var(--error-color);
+        }
+
+        .username-suggestions {
+            margin-top: var(--spacing-xs);
+            font-size: var(--font-size-xs);
+            color: var(--text-muted);
+        }
+
+        .username-suggestion {
+            display: inline-block;
+            background: var(--surface-secondary);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            margin-right: var(--spacing-xs);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .username-suggestion:hover {
+            background: var(--primary-color);
+            color: white;
         }
 
         /* Form Styles */
@@ -263,6 +365,14 @@
 
         .form-control::placeholder {
             color: var(--text-muted);
+        }
+
+        .form-control.error {
+            border-color: var(--error-color);
+        }
+
+        .form-control.success {
+            border-color: var(--success-color);
         }
 
         /* Consent Section */
@@ -327,6 +437,17 @@
             color: var(--text-primary);
         }
 
+        .btn-premium {
+            background: linear-gradient(45deg, var(--premium-color), #ffed4e);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+        }
+
         .btn:disabled {
             background: var(--border-color);
             cursor: not-allowed;
@@ -380,7 +501,7 @@
         }
 
         .nav-search input {
-            width: 300px;
+            width: 400px;
             padding: 8px 12px 8px 40px;
             background: var(--surface-color);
             border: 1px solid var(--border-color);
@@ -405,10 +526,25 @@
             background: var(--surface-color);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            max-height: 300px;
+            max-height: 400px;
             overflow-y: auto;
             z-index: 100;
             margin-top: 4px;
+        }
+
+        .search-result-item {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .search-result-item:hover {
+            background: var(--surface-secondary);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
         }
 
         .nav-actions {
@@ -430,11 +566,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
         .nav-button:hover {
             background: var(--surface-secondary);
             color: var(--primary-color);
+        }
+
+        .nav-button .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: var(--error-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .user-avatar {
@@ -448,6 +600,14 @@
             color: white;
             font-weight: bold;
             font-size: var(--font-size-sm);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         /* Main Layout */
@@ -784,6 +944,7 @@
             display: flex;
             gap: var(--spacing-sm);
             margin-bottom: var(--spacing-md);
+            align-items: center;
         }
 
         .comment-input input {
@@ -795,11 +956,27 @@
             color: var(--text-primary);
         }
 
+        .emoji-picker-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: var(--font-size-lg);
+            cursor: pointer;
+            padding: var(--spacing-xs);
+            border-radius: var(--radius-sm);
+            transition: var(--transition-fast);
+        }
+
+        .emoji-picker-btn:hover {
+            color: var(--primary-color);
+        }
+
         .comment {
             background: var(--surface-secondary);
             padding: var(--spacing-sm) var(--spacing-md);
             border-radius: var(--radius-md);
             margin-bottom: var(--spacing-sm);
+            position: relative;
         }
 
         .comment-author {
@@ -812,6 +989,52 @@
         .comment-text {
             color: var(--text-secondary);
             font-size: var(--font-size-sm);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .comment-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .comment-action {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 11px;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition-fast);
+        }
+
+        .comment-action:hover {
+            color: var(--primary-color);
+        }
+
+        /* Nested Comments */
+        .comment-replies {
+            margin-left: var(--spacing-lg);
+            margin-top: var(--spacing-sm);
+            border-left: 2px solid var(--border-color);
+            padding-left: var(--spacing-md);
+        }
+
+        .reply-input {
+            display: none;
+            margin-top: var(--spacing-sm);
+        }
+
+        .reply-input.active {
+            display: flex;
         }
 
         /* Modal Styles */
@@ -1230,6 +1453,75 @@
             text-align: center;
         }
 
+        /* Premium Features */
+        .premium-badge {
+            background: linear-gradient(45deg, var(--premium-color), #ffed4e);
+            color: #000;
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: var(--spacing-xs);
+        }
+
+        .premium-modal {
+            max-width: 800px;
+        }
+
+        .premium-packages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .premium-package {
+            background: var(--surface-secondary);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            text-align: center;
+            border: 2px solid transparent;
+            transition: var(--transition-normal);
+        }
+
+        .premium-package.featured {
+            border-color: var(--premium-color);
+            transform: scale(1.05);
+        }
+
+        .premium-package:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .package-name {
+            font-size: var(--font-size-xl);
+            font-weight: bold;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .package-price {
+            font-size: var(--font-size-3xl);
+            font-weight: bold;
+            color: var(--premium-color);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .package-features {
+            list-style: none;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .package-features li {
+            padding: var(--spacing-xs) 0;
+            color: var(--text-secondary);
+        }
+
+        .package-features li i {
+            color: var(--success-color);
+            margin-right: var(--spacing-sm);
+        }
+
         /* Community Colors */
         .bg-blue-500 { background-color: #3b82f6; }
         .bg-red-500 { background-color: #ef4444; }
@@ -1282,6 +1574,10 @@
             .modal-content {
                 width: 95%;
                 margin: var(--spacing-md);
+            }
+
+            .nav-search input {
+                width: 250px;
             }
         }
 
@@ -1456,6 +1752,120 @@
             from { text-shadow: 0 0 5px var(--warning-color); }
             to { text-shadow: 0 0 20px var(--warning-color), 0 0 30px var(--warning-color); }
         }
+
+        /* Emoji Picker */
+        .emoji-picker {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            display: none;
+            z-index: 100;
+            width: 300px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .emoji-picker.active {
+            display: block;
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: var(--spacing-xs);
+        }
+
+        .emoji-item {
+            padding: var(--spacing-xs);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            text-align: center;
+            transition: var(--transition-fast);
+        }
+
+        .emoji-item:hover {
+            background: var(--surface-secondary);
+        }
+
+        /* Camera Modal */
+        .camera-modal .modal-content {
+            max-width: 500px;
+        }
+
+        .camera-container {
+            position: relative;
+            background: #000;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .camera-video {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .camera-controls {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+        }
+
+        .capture-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--error-color);
+            border: 4px solid white;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .capture-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Advanced Search */
+        .search-filters {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .search-filters.active {
+            display: block;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .filter-chip {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            background: var(--surface-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .filter-chip.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .filter-chip:hover {
+            border-color: var(--primary-color);
+        }
     </style>
 </head>
 <body>
@@ -1484,6 +1894,27 @@
             </header>
 
             <form id="registrationForm" novalidate>
+                <!-- Profile Picture Section -->
+                <div class="profile-pic-section">
+                    <div class="profile-pic-container">
+                        <div class="profile-pic-preview" id="profilePicPreview">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <button type="button" class="profile-pic-upload" id="profilePicUploadBtn" aria-label="Upload profile picture">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                    <div class="profile-pic-options">
+                        <button type="button" class="btn btn-secondary" id="uploadFromDevice">
+                            <i class="fas fa-upload"></i> Upload
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="takePhoto">
+                            <i class="fas fa-camera"></i> Camera
+                        </button>
+                    </div>
+                    <input type="file" id="profilePicInput" accept="image/*" style="display: none;">
+                </div>
+
                 <div class="form-group">
                     <label for="fullName" class="form-label">
                         <i class="fas fa-user" aria-hidden="true"></i> Full Name
@@ -1496,6 +1927,24 @@
                            required 
                            aria-describedby="fullName-error">
                     <div id="fullName-error" class="sr-only" role="alert"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username" class="form-label">
+                        <i class="fas fa-at" aria-hidden="true"></i> Username
+                    </label>
+                    <div class="username-container">
+                        <input type="text" 
+                               id="username" 
+                               name="username" 
+                               class="form-control" 
+                               placeholder="Choose a unique username" 
+                               required 
+                               aria-describedby="username-error">
+                        <div class="username-status" id="usernameStatus"></div>
+                    </div>
+                    <div id="username-error" class="sr-only" role="alert"></div>
+                    <div class="username-suggestions" id="usernameSuggestions"></div>
                 </div>
 
                 <div class="form-group">
@@ -1570,6 +2019,33 @@
         </div>
     </div>
 
+    <!-- Camera Modal -->
+    <div id="camera-modal" class="modal camera-modal" role="dialog" aria-labelledby="camera-title" aria-modal="true">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h3 id="camera-title">Take Profile Photo</h3>
+                <button id="closeCameraModal" class="modal-close" aria-label="Close camera modal">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </header>
+            <div class="modal-body">
+                <div class="camera-container">
+                    <video id="cameraVideo" class="camera-video" autoplay muted></video>
+                    <canvas id="cameraCanvas" style="display: none;"></canvas>
+                </div>
+                <div class="camera-controls">
+                    <button id="captureBtn" class="capture-btn" aria-label="Capture photo">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button type="button" id="cancelCamera" class="btn btn-secondary">Cancel</button>
+                <button type="button" id="usePhoto" class="btn btn-primary" style="display: none;">Use Photo</button>
+            </footer>
+        </div>
+    </div>
+
     <!-- Main Navigation -->
     <nav role="navigation" aria-label="Main navigation">
         <div class="nav-container">
@@ -1579,13 +2055,23 @@
             </a>
 
             <div class="nav-search" role="search">
-                <label for="searchInput" class="sr-only">Search Communities</label>
+                <label for="searchInput" class="sr-only">Search Everything</label>
                 <input type="text" 
                        id="searchInput" 
-                       placeholder="Search Communities..." 
+                       placeholder="Search posts, communities, users..." 
                        aria-describedby="search-results">
                 <i class="fas fa-search" aria-hidden="true"></i>
-                <div id="searchResults" class="search-results hidden" role="listbox" aria-label="Search results"></div>
+                <div id="searchResults" class="search-results hidden" role="listbox" aria-label="Search results">
+                    <div class="search-filters" id="searchFilters">
+                        <div class="filter-group">
+                            <div class="filter-chip active" data-filter="all">All</div>
+                            <div class="filter-chip" data-filter="posts">Posts</div>
+                            <div class="filter-chip" data-filter="communities">Communities</div>
+                            <div class="filter-chip" data-filter="users">Users</div>
+                        </div>
+                    </div>
+                    <div id="searchResultsList"></div>
+                </div>
             </div>
 
             <div class="nav-actions">
@@ -1594,11 +2080,13 @@
                         aria-label="View notifications"
                         title="Notifications">
                     <i class="fas fa-bell" aria-hidden="true"></i>
+                    <span class="notification-badge" id="notificationBadge">3</span>
                 </button>
                 <div class="user-avatar" 
                      id="userAvatar" 
                      role="img" 
-                     aria-label="User avatar">
+                     aria-label="User avatar"
+                     title="Profile menu">
                     <span id="userInitial">U</span>
                 </div>
             </div>
@@ -1670,7 +2158,7 @@
                             class="form-control" 
                             style="text-align: left; cursor: pointer; border: none;"
                             aria-label="Create a new post">
-                        Create a post...
+                        What's on your mind?
                     </button>
                 </div>
                 <div class="post-type-buttons" role="group" aria-label="Post type options">
@@ -1764,15 +2252,15 @@
                 <div style="display: flex; flex-direction: column; gap: var(--spacing-sm); font-size: var(--font-size-sm);">
                     <div style="display: flex; justify-content: space-between;">
                         <span>Online Users:</span>
-                        <span id="onlineUsers" style="color: var(--success-color); font-weight: bold;">1,247</span>
+                        <span id="onlineUsers" style="color: var(--success-color); font-weight: bold;">127,543</span>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
                         <span>Active Polls:</span>
-                        <span id="activePolls" style="color: var(--primary-color); font-weight: bold;">23</span>
+                        <span id="activePolls" style="color: var(--primary-color); font-weight: bold;">1,247</span>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
                         <span>Posts Today:</span>
-                        <span id="postsToday" style="color: var(--warning-color); font-weight: bold;">456</span>
+                        <span id="postsToday" style="color: var(--warning-color); font-weight: bold;">45,678</span>
                     </div>
                 </div>
             </section>
@@ -1783,9 +2271,9 @@
                     <i class="fas fa-crown" style="margin-right: var(--spacing-sm);" aria-hidden="true"></i>
                     <h4>SmileX Premium</h4>
                 </div>
-                <p style="font-size: var(--font-size-sm); margin-bottom: var(--spacing-md);">Get ad-free browsing, exclusive awards, and support SmileX.</p>
-                <button id="premiumBtn" class="btn" style="width: 100%; background: white; color: var(--primary-color);">
-                    TRY PREMIUM
+                <p style="font-size: var(--font-size-sm); margin-bottom: var(--spacing-md);">Unlock exclusive features, ad-free browsing, and premium communities.</p>
+                <button id="premiumBtn" class="btn btn-premium" style="width: 100%;">
+                    <i class="fas fa-star" aria-hidden="true"></i> UPGRADE NOW
                 </button>
             </section>
         </aside>
@@ -1927,7 +2415,7 @@
                                required 
                                aria-describedby="community-name-help">
                         <p id="community-name-help" style="font-size: var(--font-size-xs); color: var(--text-muted); margin-top: var(--spacing-xs);">
-                            Community names can't contain spaces. Use 3-21 characters.
+                            Community names can't contain spaces or be "smile" or "smilex". Use 3-21 characters.
                         </p>
                     </div>
 
@@ -2105,6 +2593,77 @@
         </div>
     </div>
 
+    <!-- Premium Modal -->
+    <div id="premium-modal" class="modal premium-modal" role="dialog" aria-labelledby="premium-title" aria-modal="true">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h3 id="premium-title">
+                    <i class="fas fa-crown" style="color: var(--premium-color);" aria-hidden="true"></i>
+                    SmileX Premium
+                </h3>
+                <button id="closePremiumModal" 
+                        class="modal-close" 
+                        aria-label="Close premium modal">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </header>
+
+            <div class="modal-body">
+                <div class="text-center" style="margin-bottom: var(--spacing-xl);">
+                    <h4 style="color: var(--premium-color); margin-bottom: var(--spacing-sm);">Unlock the Full SmileX Experience</h4>
+                    <p style="color: var(--text-secondary);">Join thousands of premium members and enjoy exclusive features</p>
+                </div>
+
+                <div class="premium-packages">
+                    <div class="premium-package">
+                        <div class="package-name">Basic</div>
+                        <div class="package-price">$4.99<span style="font-size: var(--font-size-sm); color: var(--text-muted);">/month</span></div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> Ad-free browsing</li>
+                            <li><i class="fas fa-check"></i> Custom themes</li>
+                            <li><i class="fas fa-check"></i> Priority support</li>
+                            <li><i class="fas fa-check"></i> Extended media uploads</li>
+                        </ul>
+                        <button class="btn btn-premium" style="width: 100%;">Choose Basic</button>
+                    </div>
+
+                    <div class="premium-package featured">
+                        <div class="package-name">Pro <span class="premium-badge">POPULAR</span></div>
+                        <div class="package-price">$9.99<span style="font-size: var(--font-size-sm); color: var(--text-muted);">/month</span></div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> Everything in Basic</li>
+                            <li><i class="fas fa-check"></i> Exclusive communities</li>
+                            <li><i class="fas fa-check"></i> Advanced analytics</li>
+                            <li><i class="fas fa-check"></i> Custom badges</li>
+                            <li><i class="fas fa-check"></i> Early feature access</li>
+                        </ul>
+                        <button class="btn btn-premium" style="width: 100%;">Choose Pro</button>
+                    </div>
+
+                    <div class="premium-package">
+                        <div class="package-name">Elite</div>
+                        <div class="package-price">$19.99<span style="font-size: var(--font-size-sm); color: var(--text-muted);">/month</span></div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> Everything in Pro</li>
+                            <li><i class="fas fa-check"></i> VIP support</li>
+                            <li><i class="fas fa-check"></i> Unlimited storage</li>
+                            <li><i class="fas fa-check"></i> API access</li>
+                            <li><i class="fas fa-check"></i> White-label options</li>
+                        </ul>
+                        <button class="btn btn-premium" style="width: 100%;">Choose Elite</button>
+                    </div>
+                </div>
+
+                <div class="text-center" style="margin-top: var(--spacing-xl); padding-top: var(--spacing-lg); border-top: 1px solid var(--border-color);">
+                    <p style="color: var(--text-muted); font-size: var(--font-size-sm);">
+                        <i class="fas fa-shield-alt" style="color: var(--success-color);"></i>
+                        30-day money-back guarantee • Cancel anytime • Secure payment
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Media Viewer Modal -->
     <div id="media-viewer-modal" class="modal" role="dialog" aria-labelledby="media-viewer-title" aria-modal="true">
         <div class="modal-content" style="max-width: 90vw; max-height: 90vh; padding: 0; background: transparent; box-shadow: none;">
@@ -2200,7 +2759,7 @@
          style="position: fixed; top: 20px; right: 20px; z-index: 1001;"></div>
 
     <script>
-        // Advanced Social Media Platform - Complete Implementation
+        // Enhanced SmileX Social Media Platform - Complete Implementation
         
         // Global Configuration
         const CONFIG = {
@@ -2211,7 +2770,9 @@
             LIVE_UPDATE_INTERVAL: 5000, // 5 seconds
             MAX_POLL_OPTIONS: 6,
             MAX_POST_LENGTH: 10000,
-            MAX_COMMENT_LENGTH: 1000
+            MAX_COMMENT_LENGTH: 1000,
+            RESTRICTED_COMMUNITY_NAMES: ['smile', 'smilex', 'admin', 'moderator', 'official'],
+            EMOJI_LIST: ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😬', '🙄', '😯', '😦', '😧', '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐', '🥴', '🤢', '🤮', '🤧', '😷', '🤒', '🤕', '🤑', '🤠', '😈', '👿', '👹', '👺', '🤡', '💩', '👻', '💀', '☠️', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾']
         };
 
         // Global State Management
@@ -2229,10 +2790,13 @@
                     currentFeedFilter: 'all',
                     currentCommunityTab: 'all',
                     currentCommunity: null,
-                    onlineUsers: 1247,
-                    activePolls: 23,
-                    postsToday: 456,
-                    isLiveMode: true
+                    onlineUsers: 127543,
+                    activePolls: 1247,
+                    postsToday: 45678,
+                    isLiveMode: true,
+                    searchHistory: [],
+                    notifications: [],
+                    premiumFeatures: false
                 };
                 
                 this.subscribers = [];
@@ -2287,6 +2851,266 @@
 
         // Initialize State Manager
         const stateManager = new StateManager();
+
+        // Username Validation System
+        class UsernameValidator {
+            constructor() {
+                this.existingUsernames = new Set([
+                    'admin', 'moderator', 'smilex', 'smile', 'official', 'support',
+                    'help', 'team', 'staff', 'user', 'guest', 'anonymous'
+                ]);
+                this.checkTimeout = null;
+            }
+
+            async checkAvailability(username) {
+                return new Promise((resolve) => {
+                    // Simulate API call delay
+                    setTimeout(() => {
+                        const isAvailable = !this.existingUsernames.has(username.toLowerCase()) && 
+                                          username.length >= 3 && 
+                                          username.length <= 21 &&
+                                          /^[a-zA-Z0-9_]+$/.test(username);
+                        resolve(isAvailable);
+                    }, 500);
+                });
+            }
+
+            generateSuggestions(username) {
+                const suggestions = [];
+                const baseUsername = username.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+                
+                if (baseUsername.length >= 3) {
+                    for (let i = 1; i <= 5; i++) {
+                        suggestions.push(`${baseUsername}${Math.floor(Math.random() * 1000)}`);
+                        suggestions.push(`${baseUsername}_${i}`);
+                    }
+                }
+                
+                return suggestions.slice(0, 3);
+            }
+
+            async validateUsername(username, statusElement, suggestionsElement) {
+                if (!username || username.length < 3) {
+                    statusElement.innerHTML = '';
+                    suggestionsElement.innerHTML = '';
+                    return false;
+                }
+
+                statusElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                statusElement.className = 'username-status checking';
+
+                const isAvailable = await this.checkAvailability(username);
+
+                if (isAvailable) {
+                    statusElement.innerHTML = '<i class="fas fa-check"></i>';
+                    statusElement.className = 'username-status available';
+                    suggestionsElement.innerHTML = '';
+                    return true;
+                } else {
+                    statusElement.innerHTML = '<i class="fas fa-times"></i>';
+                    statusElement.className = 'username-status taken';
+                    
+                    const suggestions = this.generateSuggestions(username);
+                    suggestionsElement.innerHTML = `
+                        <div>Try these suggestions:</div>
+                        ${suggestions.map(suggestion => 
+                            `<span class="username-suggestion" onclick="selectUsernameSuggestion('${suggestion}')">${suggestion}</span>`
+                        ).join('')}
+                    `;
+                    return false;
+                }
+            }
+        }
+
+        // Initialize Username Validator
+        const usernameValidator = new UsernameValidator();
+
+        // Camera System
+        class CameraSystem {
+            constructor() {
+                this.stream = null;
+                this.video = null;
+                this.canvas = null;
+                this.capturedImage = null;
+            }
+
+            async startCamera() {
+                try {
+                    this.stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { 
+                            width: { ideal: 640 },
+                            height: { ideal: 480 }
+                        } 
+                    });
+                    
+                    this.video = document.getElementById('cameraVideo');
+                    this.canvas = document.getElementById('cameraCanvas');
+                    
+                    if (this.video) {
+                        this.video.srcObject = this.stream;
+                        return true;
+                    }
+                } catch (error) {
+                    console.error('Error accessing camera:', error);
+                    utils.showNotification('Unable to access camera. Please check permissions.', 'error');
+                    return false;
+                }
+            }
+
+            capturePhoto() {
+                if (!this.video || !this.canvas) return null;
+
+                const context = this.canvas.getContext('2d');
+                this.canvas.width = this.video.videoWidth;
+                this.canvas.height = this.video.videoHeight;
+                
+                context.drawImage(this.video, 0, 0);
+                
+                this.capturedImage = this.canvas.toDataURL('image/jpeg', 0.8);
+                return this.capturedImage;
+            }
+
+            stopCamera() {
+                if (this.stream) {
+                    this.stream.getTracks().forEach(track => track.stop());
+                    this.stream = null;
+                }
+            }
+
+            getCapturedImage() {
+                return this.capturedImage;
+            }
+        }
+
+        // Initialize Camera System
+        const cameraSystem = new CameraSystem();
+
+        // Advanced Search System
+        class SearchSystem {
+            constructor() {
+                this.searchHistory = [];
+                this.searchFilters = {
+                    type: 'all', // all, posts, communities, users
+                    timeRange: 'all', // all, today, week, month
+                    sortBy: 'relevance' // relevance, recent, popular
+                };
+            }
+
+            async performSearch(query, filters = {}) {
+                const state = stateManager.getState();
+                const searchFilters = { ...this.searchFilters, ...filters };
+                
+                if (!query.trim()) return [];
+
+                // Add to search history
+                this.addToHistory(query);
+
+                let results = [];
+
+                // Search posts
+                if (searchFilters.type === 'all' || searchFilters.type === 'posts') {
+                    const postResults = state.posts.filter(post => 
+                        post.title.toLowerCase().includes(query.toLowerCase()) ||
+                        post.content.toLowerCase().includes(query.toLowerCase()) ||
+                        post.author.toLowerCase().includes(query.toLowerCase())
+                    ).map(post => ({
+                        type: 'post',
+                        id: post.id,
+                        title: post.title,
+                        content: post.content.substring(0, 100) + '...',
+                        author: post.author,
+                        timestamp: post.timestamp,
+                        votes: post.votes,
+                        comments: post.comments
+                    }));
+                    results.push(...postResults);
+                }
+
+                // Search communities
+                if (searchFilters.type === 'all' || searchFilters.type === 'communities') {
+                    const communityResults = state.communities.filter(community =>
+                        community.name.toLowerCase().includes(query.toLowerCase()) ||
+                        community.displayName.toLowerCase().includes(query.toLowerCase()) ||
+                        (community.description && community.description.toLowerCase().includes(query.toLowerCase())) ||
+                        (community.topics && community.topics.some(topic => topic.toLowerCase().includes(query.toLowerCase())))
+                    ).map(community => ({
+                        type: 'community',
+                        id: community.id,
+                        name: community.name,
+                        displayName: community.displayName,
+                        description: community.description,
+                        memberCount: community.memberCount,
+                        type: community.type
+                    }));
+                    results.push(...communityResults);
+                }
+
+                // Simulate web search for external content
+                if (searchFilters.type === 'all' || searchFilters.type === 'web') {
+                    const webResults = await this.simulateWebSearch(query);
+                    results.push(...webResults);
+                }
+
+                return this.sortResults(results, searchFilters.sortBy);
+            }
+
+            async simulateWebSearch(query) {
+                // Simulate external web search results
+                return [
+                    {
+                        type: 'web',
+                        title: `${query} - Wikipedia`,
+                        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(query)}`,
+                        description: `Learn more about ${query} on Wikipedia...`,
+                        source: 'Wikipedia'
+                    },
+                    {
+                        type: 'web',
+                        title: `${query} - Latest News`,
+                        url: `https://news.google.com/search?q=${encodeURIComponent(query)}`,
+                        description: `Latest news and updates about ${query}...`,
+                        source: 'Google News'
+                    }
+                ];
+            }
+
+            sortResults(results, sortBy) {
+                switch (sortBy) {
+                    case 'recent':
+                        return results.sort((a, b) => {
+                            if (a.timestamp && b.timestamp) {
+                                return new Date(b.timestamp) - new Date(a.timestamp);
+                            }
+                            return 0;
+                        });
+                    case 'popular':
+                        return results.sort((a, b) => {
+                            const aScore = (a.votes || 0) + (a.memberCount || 0);
+                            const bScore = (b.votes || 0) + (b.memberCount || 0);
+                            return bScore - aScore;
+                        });
+                    case 'relevance':
+                    default:
+                        return results; // Already sorted by relevance
+                }
+            }
+
+            addToHistory(query) {
+                if (!this.searchHistory.includes(query)) {
+                    this.searchHistory.unshift(query);
+                    if (this.searchHistory.length > 10) {
+                        this.searchHistory.pop();
+                    }
+                }
+            }
+
+            getSearchHistory() {
+                return this.searchHistory;
+            }
+        }
+
+        // Initialize Search System
+        const searchSystem = new SearchSystem();
 
         // Utility Functions
         const utils = {
@@ -2468,6 +3292,25 @@
                     clearTimeout(timeout);
                     timeout = setTimeout(later, wait);
                 };
+            },
+
+            sanitizeInput(input) {
+                const div = document.createElement('div');
+                div.textContent = input;
+                return div.innerHTML;
+            },
+
+            createEmojiPicker() {
+                const picker = document.createElement('div');
+                picker.className = 'emoji-picker';
+                picker.innerHTML = `
+                    <div class="emoji-grid">
+                        ${CONFIG.EMOJI_LIST.map(emoji => 
+                            `<div class="emoji-item" onclick="insertEmoji('${emoji}')">${emoji}</div>`
+                        ).join('')}
+                    </div>
+                `;
+                return picker;
             }
         };
 
@@ -2558,8 +3401,8 @@
 
                 const newPost = {
                     id: utils.generateId(),
-                    title: postData.title,
-                    content: postData.content || "",
+                    title: utils.sanitizeInput(postData.title),
+                    content: utils.sanitizeInput(postData.content || ""),
                     author: state.currentUser ? state.currentUser.fullName : "Anonymous",
                     authorId: state.currentUser ? state.currentUser.userId : "anonymous",
                     visibility: postData.visibility,
@@ -2569,7 +3412,8 @@
                     type: this.determinePostType(postData.postType, mediaData),
                     media: mediaData,
                     userVotes: [], // Track who voted
-                    commentsData: []
+                    commentsData: [],
+                    isDefaultMessage: false
                 };
 
                 if (postData.visibility === 'community' && postData.community) {
@@ -2606,8 +3450,8 @@
                 const pollId = utils.generateId();
                 const newPost = {
                     id: utils.generateId(),
-                    title: pollData.title,
-                    content: pollData.content || "",
+                    title: utils.sanitizeInput(pollData.title),
+                    content: utils.sanitizeInput(pollData.content || ""),
                     author: state.currentUser ? state.currentUser.fullName : "Anonymous",
                     authorId: state.currentUser ? state.currentUser.userId : "anonymous",
                     visibility: pollData.visibility,
@@ -2621,7 +3465,8 @@
                     pollActive: true,
                     totalVotes: 0,
                     userVotes: [],
-                    commentsData: []
+                    commentsData: [],
+                    isDefaultMessage: false
                 };
 
                 if (pollData.visibility === 'community' && pollData.community) {
@@ -2666,7 +3511,7 @@
                 while (pollData[`option${optionIndex}`]) {
                     if (pollData[`option${optionIndex}`].trim()) {
                         options.push({
-                            text: pollData[`option${optionIndex}`].trim(),
+                            text: utils.sanitizeInput(pollData[`option${optionIndex}`].trim()),
                             votes: 0,
                             percentage: 0,
                             voters: []
@@ -2680,7 +3525,7 @@
                 pollInputs.forEach(input => {
                     if (input.value.trim() && !options.find(opt => opt.text === input.value.trim())) {
                         options.push({
-                            text: input.value.trim(),
+                            text: utils.sanitizeInput(input.value.trim()),
                             votes: 0,
                             percentage: 0,
                             voters: []
@@ -2781,32 +3626,66 @@
                 this.renderPosts();
             }
 
-            addComment(postId, commentText) {
+            addComment(postId, commentText, parentCommentId = null) {
                 const state = stateManager.getState();
                 const post = state.posts.find(p => p.id === postId);
                 
                 if (!post || !commentText.trim()) return;
 
+                // Check if this is a default message post and prevent commenting
+                if (post.isDefaultMessage) {
+                    utils.showNotification('Comments are disabled on default messages', 'warning');
+                    return;
+                }
+
                 const newComment = {
                     id: utils.generateId(),
                     author: state.currentUser ? state.currentUser.fullName : "Anonymous",
                     authorId: state.currentUser ? state.currentUser.userId : "anonymous",
-                    text: commentText.trim(),
+                    text: utils.sanitizeInput(commentText.trim()),
                     timestamp: new Date(),
-                    votes: 0
+                    votes: 0,
+                    parentId: parentCommentId,
+                    replies: []
                 };
 
                 if (!post.commentsData) {
                     post.commentsData = [];
                 }
                 
-                post.commentsData.push(newComment);
+                if (parentCommentId) {
+                    // This is a reply to another comment
+                    const parentComment = this.findCommentById(post.commentsData, parentCommentId);
+                    if (parentComment) {
+                        if (!parentComment.replies) {
+                            parentComment.replies = [];
+                        }
+                        parentComment.replies.push(newComment);
+                    }
+                } else {
+                    // This is a top-level comment
+                    post.commentsData.push(newComment);
+                }
+                
                 post.comments++;
 
                 stateManager.setState({ posts: state.posts });
                 utils.showNotification('Comment added!', 'success');
                 
                 return newComment;
+            }
+
+            findCommentById(comments, commentId) {
+                for (const comment of comments) {
+                    if (comment.id === commentId) {
+                        return comment;
+                    }
+                    if (comment.replies) {
+                        const found = this.findCommentById(comment.replies, commentId);
+                        if (found) return found;
+                    }
+                }
+                return null;
             }
 
             updatePostVoteDisplay(postId, newVoteCount) {
@@ -2939,6 +3818,7 @@
                                     <time datetime="${post.timestamp.toISOString()}">${timeAgo}</time>
                                     ${post.type === 'poll' ? '<span>• <i class="fas fa-poll" aria-hidden="true"></i> Live Poll</span>' : ''}
                                     ${this.isTrending(post) ? '<span class="feature-badge trending-indicator">🔥 TRENDING</span>' : ''}
+                                    ${post.isDefaultMessage ? '<span class="feature-badge">📌 DEFAULT</span>' : ''}
                                 </div>
                                 
                                 <h2 class="post-title" id="post-title-${post.id}">${post.title}</h2>
@@ -2972,19 +3852,25 @@
                         </div>
                         
                         <div class="comments-section" id="comments-${post.id}" aria-label="Comments for ${post.title}">
-                            <div class="comment-input">
-                                <input type="text" 
-                                       placeholder="Add a comment..." 
-                                       onkeypress="if(event.key==='Enter') addComment('${post.id}', this.value, this)"
-                                       aria-label="Add a comment">
-                                <button onclick="addComment('${post.id}', this.previousElementSibling.value, this.previousElementSibling)" 
-                                        class="btn btn-primary"
-                                        aria-label="Post comment">
-                                    Post
-                                </button>
-                            </div>
+                            ${post.isDefaultMessage ? 
+                                '<div style="text-align: center; padding: 1rem; color: #666;"><i class="fas fa-lock"></i> Comments are disabled on default messages</div>' :
+                                `<div class="comment-input">
+                                    <input type="text" 
+                                           placeholder="Add a comment..." 
+                                           onkeypress="if(event.key==='Enter') addComment('${post.id}', this.value, this)"
+                                           aria-label="Add a comment">
+                                    <button class="emoji-picker-btn" onclick="toggleEmojiPicker(this)" aria-label="Add emoji">
+                                        <i class="far fa-smile"></i>
+                                    </button>
+                                    <button onclick="addComment('${post.id}', this.parentElement.querySelector('input').value, this.parentElement.querySelector('input'))" 
+                                            class="btn btn-primary"
+                                            aria-label="Post comment">
+                                        Post
+                                    </button>
+                                </div>`
+                            }
                             <div id="comments-list-${post.id}" role="list" aria-label="Comments list">
-                                ${this.renderComments(post.commentsData || [])}
+                                ${this.renderComments(post.commentsData || [], post.id)}
                             </div>
                         </div>
                     </article>
@@ -3086,16 +3972,39 @@
                 `;
             }
 
-            renderComments(comments) {
+            renderComments(comments, postId, level = 0) {
                 if (!comments || comments.length === 0) {
-                    return '<p style="color: #666; text-align: center; padding: 1rem;">No comments yet. Be the first to comment!</p>';
+                    return level === 0 ? '<p style="color: #666; text-align: center; padding: 1rem;">No comments yet. Be the first to comment!</p>' : '';
                 }
 
                 return comments.map(comment => `
-                    <div class="comment" role="listitem">
+                    <div class="comment" role="listitem" style="margin-left: ${level * 20}px;">
                         <div class="comment-author">${comment.author}</div>
                         <div class="comment-text">${comment.text}</div>
-                        <div class="comment-time">${utils.getTimeAgo(comment.timestamp)}</div>
+                        <div class="comment-meta">
+                            <span class="comment-time">${utils.getTimeAgo(comment.timestamp)}</span>
+                            <div class="comment-actions">
+                                <button class="comment-action" onclick="toggleReplyInput('${comment.id}')">
+                                    <i class="fas fa-reply"></i> Reply
+                                </button>
+                                <button class="comment-action" onclick="voteOnComment('${comment.id}', 'up')">
+                                    <i class="fas fa-arrow-up"></i> ${comment.votes || 0}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="reply-input" id="reply-${comment.id}">
+                            <input type="text" 
+                                   placeholder="Write a reply..." 
+                                   onkeypress="if(event.key==='Enter') addReply('${postId}', '${comment.id}', this.value, this)"
+                                   style="flex: 1; margin-right: 8px;">
+                            <button onclick="addReply('${postId}', '${comment.id}', this.previousElementSibling.value, this.previousElementSibling)" 
+                                    class="btn btn-primary btn-sm">Reply</button>
+                        </div>
+                        ${comment.replies && comment.replies.length > 0 ? 
+                            `<div class="comment-replies">
+                                ${this.renderComments(comment.replies, postId, level + 1)}
+                            </div>` : ''
+                        }
                     </div>
                 `).join('');
             }
@@ -3121,6 +4030,12 @@
                 
                 // Validate community name
                 const communityName = communityData.name.replace(/\s+/g, '').toLowerCase();
+                
+                // Check for restricted names
+                if (CONFIG.RESTRICTED_COMMUNITY_NAMES.includes(communityName)) {
+                    throw new Error('This community name is reserved and cannot be used!');
+                }
+                
                 if (state.communities.find(c => c.name.toLowerCase() === communityName)) {
                     throw new Error('Community name already exists!');
                 }
@@ -3128,14 +4043,14 @@
                 const newCommunity = {
                     id: utils.generateId(),
                     name: communityName,
-                    displayName: communityData.displayName,
-                    description: communityData.description,
+                    displayName: utils.sanitizeInput(communityData.displayName),
+                    description: utils.sanitizeInput(communityData.description),
                     type: communityData.type,
                     createdBy: state.currentUser ? state.currentUser.fullName : "Anonymous",
                     createdByUserId: state.currentUser ? state.currentUser.userId : "anonymous",
                     createdAt: new Date().toISOString(),
                     memberCount: 1,
-                    topics: communityData.topics ? communityData.topics.split(',').map(t => t.trim()) : [],
+                    topics: communityData.topics ? communityData.topics.split(',').map(t => utils.sanitizeInput(t.trim())) : [],
                     members: [state.currentUser ? state.currentUser.userId : "anonymous"]
                 };
 
@@ -3399,7 +4314,7 @@
                 const userMessage = {
                     id: utils.generateId(),
                     sender: state.currentUser ? state.currentUser.fullName : "You",
-                    text: messageText.trim(),
+                    text: utils.sanitizeInput(messageText.trim()),
                     timestamp: new Date(),
                     type: 'user'
                 };
@@ -3469,13 +4384,13 @@
             performLiveUpdates() {
                 const state = stateManager.getState();
                 
-                // Simulate live user activity
-                const newOnlineUsers = state.onlineUsers + Math.floor(Math.random() * 20) - 10;
-                const newActivePolls = Math.max(0, state.activePolls + Math.floor(Math.random() * 3) - 1);
-                const newPostsToday = state.postsToday + Math.floor(Math.random() * 5);
+                // Simulate live user activity with realistic numbers
+                const newOnlineUsers = state.onlineUsers + Math.floor(Math.random() * 200) - 100;
+                const newActivePolls = Math.max(0, state.activePolls + Math.floor(Math.random() * 10) - 5);
+                const newPostsToday = state.postsToday + Math.floor(Math.random() * 50);
 
                 stateManager.setState({
-                    onlineUsers: Math.max(100, newOnlineUsers),
+                    onlineUsers: Math.max(100000, newOnlineUsers), // Keep minimum at 100k
                     activePolls: newActivePolls,
                     postsToday: newPostsToday
                 });
@@ -3496,7 +4411,7 @@
                 const postsTodayEl = document.getElementById('postsToday');
 
                 if (onlineUsersEl) onlineUsersEl.textContent = utils.formatNumber(state.onlineUsers);
-                if (activePollsEl) activePollsEl.textContent = state.activePolls.toString();
+                if (activePollsEl) activePollsEl.textContent = utils.formatNumber(state.activePolls);
                 if (postsTodayEl) postsTodayEl.textContent = utils.formatNumber(state.postsToday);
             }
 
@@ -3515,6 +4430,14 @@
         const liveUpdatesSystem = new LiveUpdatesSystem();
 
         // Global Functions (accessible from HTML)
+        window.selectUsernameSuggestion = function(suggestion) {
+            const usernameInput = document.getElementById('username');
+            if (usernameInput) {
+                usernameInput.value = suggestion;
+                usernameInput.dispatchEvent(new Event('input'));
+            }
+        };
+
         window.toggleComments = function(postId) {
             const commentsSection = document.getElementById(`comments-${postId}`);
             const button = document.querySelector(`[onclick="toggleComments('${postId}')"]`);
@@ -3538,14 +4461,10 @@
                 // Update comments display
                 const commentsList = document.getElementById(`comments-list-${postId}`);
                 if (commentsList) {
-                    const commentHTML = `
-                        <div class="comment" role="listitem">
-                            <div class="comment-author">${comment.author}</div>
-                            <div class="comment-text">${comment.text}</div>
-                            <div class="comment-time">${utils.getTimeAgo(comment.timestamp)}</div>
-                        </div>
-                    `;
-                    commentsList.insertAdjacentHTML('beforeend', commentHTML);
+                    const post = stateManager.getState().posts.find(p => p.id === postId);
+                    if (post) {
+                        commentsList.innerHTML = postManager.renderComments(post.commentsData || [], postId);
+                    }
                 }
 
                 // Update comment count in button
@@ -3556,6 +4475,77 @@
                         commentButton.textContent = `${utils.formatNumber(post.comments)} Comments`;
                     }
                 }
+            }
+        };
+
+        window.addReply = function(postId, parentCommentId, replyText, inputElement) {
+            if (!replyText.trim()) return;
+
+            const reply = postManager.addComment(postId, replyText, parentCommentId);
+            if (reply) {
+                inputElement.value = '';
+                
+                // Hide reply input
+                const replyInput = document.getElementById(`reply-${parentCommentId}`);
+                if (replyInput) {
+                    replyInput.classList.remove('active');
+                }
+                
+                // Update comments display
+                const commentsList = document.getElementById(`comments-list-${postId}`);
+                if (commentsList) {
+                    const post = stateManager.getState().posts.find(p => p.id === postId);
+                    if (post) {
+                        commentsList.innerHTML = postManager.renderComments(post.commentsData || [], postId);
+                    }
+                }
+            }
+        };
+
+        window.toggleReplyInput = function(commentId) {
+            const replyInput = document.getElementById(`reply-${commentId}`);
+            if (replyInput) {
+                replyInput.classList.toggle('active');
+                if (replyInput.classList.contains('active')) {
+                    const input = replyInput.querySelector('input');
+                    if (input) input.focus();
+                }
+            }
+        };
+
+        window.voteOnComment = function(commentId, direction) {
+            // Implement comment voting logic
+            utils.showNotification('Comment vote recorded!', 'success');
+        };
+
+        window.toggleEmojiPicker = function(button) {
+            const existingPicker = button.parentElement.querySelector('.emoji-picker');
+            
+            if (existingPicker) {
+                existingPicker.remove();
+            } else {
+                const picker = utils.createEmojiPicker();
+                button.parentElement.style.position = 'relative';
+                button.parentElement.appendChild(picker);
+                picker.classList.add('active');
+            }
+        };
+
+        window.insertEmoji = function(emoji) {
+            const activeInput = document.activeElement;
+            if (activeInput && (activeInput.tagName === 'INPUT' || activeInput.tagName === 'TEXTAREA')) {
+                const start = activeInput.selectionStart;
+                const end = activeInput.selectionEnd;
+                const text = activeInput.value;
+                activeInput.value = text.substring(0, start) + emoji + text.substring(end);
+                activeInput.selectionStart = activeInput.selectionEnd = start + emoji.length;
+                activeInput.focus();
+            }
+            
+            // Close emoji picker
+            const picker = document.querySelector('.emoji-picker.active');
+            if (picker) {
+                picker.remove();
             }
         };
 
@@ -3633,14 +4623,14 @@
                     {
                         id: utils.generateId(),
                         title: "🎉 WELCOME EVERYONE TO SMILEX! 🎉",
-                        content: "Welcome, everyone and those viewing this message to explore and have fun on this page, but remember the rules and regulations. This is a fully functional social media platform with real-time features, live polls, media sharing, and community management!",
+                        content: "Welcome, everyone and those viewing this message to explore and have fun on this page, but remember the rules and regulations. This is a fully functional social media platform with real-time features, live polls, media sharing, and community management! Enjoy your experience and connect with amazing people from around the world.",
                         author: "SmileX Team",
                         authorId: "system",
                         community: "SmileX Official",
                         communityId: "c1",
                         visibility: "general",
-                        votes: 5400,
-                        comments: 1400,
+                        votes: 15420,
+                        comments: 3247,
                         timestamp: new Date(Date.now() - 3600000),
                         type: "text",
                         media: [],
@@ -3650,31 +4640,43 @@
                                 id: utils.generateId(),
                                 author: "TechEnthusiast",
                                 authorId: "user1",
-                                text: "This platform looks amazing! Love the real-time features.",
+                                text: "This platform looks amazing! Love the real-time features and the clean interface. 🚀",
                                 timestamp: new Date(Date.now() - 1800000),
-                                votes: 0
+                                votes: 45,
+                                replies: [
+                                    {
+                                        id: utils.generateId(),
+                                        author: "SmileX Team",
+                                        authorId: "system",
+                                        text: "Thank you! We're constantly working to improve the user experience. 😊",
+                                        timestamp: new Date(Date.now() - 1700000),
+                                        votes: 12
+                                    }
+                                ]
                             },
                             {
                                 id: utils.generateId(),
                                 author: "DesignGuru",
                                 authorId: "user2",
-                                text: "The UI is so clean and modern. Great work!",
+                                text: "The UI is so clean and modern. Great work on the accessibility features too! 🎨",
                                 timestamp: new Date(Date.now() - 900000),
-                                votes: 0
+                                votes: 32,
+                                replies: []
                             }
-                        ]
+                        ],
+                        isDefaultMessage: true
                     },
                     {
                         id: utils.generateId(),
-                        title: "🎮 New Gaming Setup Showcase",
-                        content: "Check out my latest gaming setup! What do you think? Spent months putting this together.",
+                        title: "🎮 New Gaming Setup Showcase - RTX 4090 Build",
+                        content: "Finally completed my dream gaming setup! Featuring RTX 4090, AMD Ryzen 9 7950X, 64GB DDR5 RAM, and custom water cooling. Spent 6 months planning and building this beast. What do you think? Any suggestions for improvements?",
                         author: "GamerPro",
                         authorId: "user_gamer",
                         community: "Gaming Zone",
                         communityId: "c2",
                         visibility: "community",
-                        votes: 2700,
-                        comments: 423,
+                        votes: 8743,
+                        comments: 1247,
                         timestamp: new Date(Date.now() - 7200000),
                         type: "image",
                         media: [
@@ -3685,44 +4687,47 @@
                             }
                         ],
                         userVotes: [],
-                        commentsData: []
+                        commentsData: [],
+                        isDefaultMessage: false
                     },
                     {
                         id: utils.generateId(),
-                        title: "🚀 What programming language should I learn next?",
-                        content: "I'm looking to expand my programming skills. What would you recommend for someone interested in web development and AI?",
+                        title: "🚀 What programming language should I learn next for AI/ML?",
+                        content: "I'm a web developer with 3 years of experience in JavaScript and React. Now I want to dive into AI and machine learning. Which language would you recommend and why?",
                         author: "CodeNewbie",
                         authorId: "user_coder",
                         community: "Tech Talks",
                         communityId: "c3",
                         visibility: "community",
-                        votes: 1850,
-                        comments: 234,
+                        votes: 5621,
+                        comments: 892,
                         timestamp: new Date(Date.now() - 10800000),
                         type: "poll",
                         media: [],
                         pollOptions: [
-                            { text: "Python 🐍", votes: 450, percentage: 35, voters: [] },
-                            { text: "JavaScript 🌐", votes: 380, percentage: 30, voters: [] },
-                            { text: "Rust ⚡", votes: 260, percentage: 20, voters: [] },
-                            { text: "Go 🚀", votes: 190, percentage: 15, voters: [] }
+                            { text: "Python 🐍 (TensorFlow, PyTorch)", votes: 2847, percentage: 45, voters: [] },
+                            { text: "R 📊 (Statistical Analysis)", votes: 1265, percentage: 20, voters: [] },
+                            { text: "Julia ⚡ (High Performance)", votes: 948, percentage: 15, voters: [] },
+                            { text: "JavaScript 🌐 (TensorFlow.js)", votes: 632, percentage: 10, voters: [] },
+                            { text: "C++ ⚙️ (Performance Critical)", votes: 632, percentage: 10, voters: [] }
                         ],
                         pollId: "poll_1",
                         pollActive: true,
-                        totalVotes: 1280,
+                        totalVotes: 6324,
                         userVotes: [],
-                        commentsData: []
+                        commentsData: [],
+                        isDefaultMessage: false
                     },
                     {
                         id: utils.generateId(),
-                        title: "🌟 Amazing Nature Documentary",
-                        content: "Just watched this incredible nature documentary. The cinematography is breathtaking! Highly recommend for anyone who loves wildlife.",
+                        title: "🌟 Amazing Nature Documentary: Planet Earth III",
+                        content: "Just finished watching the latest Planet Earth documentary series. The cinematography is absolutely breathtaking! The way they captured the wildlife behavior in 8K is mind-blowing. Highly recommend for anyone who loves nature and wildlife photography.",
                         author: "NatureLover",
                         authorId: "user_nature",
                         community: "General",
                         visibility: "general",
-                        votes: 890,
-                        comments: 67,
+                        votes: 3247,
+                        comments: 456,
                         timestamp: new Date(Date.now() - 14400000),
                         type: "video",
                         media: [
@@ -3733,7 +4738,26 @@
                             }
                         ],
                         userVotes: [],
-                        commentsData: []
+                        commentsData: [],
+                        isDefaultMessage: false
+                    },
+                    {
+                        id: utils.generateId(),
+                        title: "💡 Startup Idea: AI-Powered Personal Finance Assistant",
+                        content: "Working on a new startup idea - an AI assistant that helps people manage their finances better. It would analyze spending patterns, suggest budget optimizations, and provide personalized investment advice. What features would you want to see?",
+                        author: "Entrepreneur",
+                        authorId: "user_entrepreneur",
+                        community: "Tech Talks",
+                        communityId: "c3",
+                        visibility: "community",
+                        votes: 2156,
+                        comments: 324,
+                        timestamp: new Date(Date.now() - 18000000),
+                        type: "text",
+                        media: [],
+                        userVotes: [],
+                        commentsData: [],
+                        isDefaultMessage: false
                     }
                 ];
 
@@ -3742,52 +4766,65 @@
                         id: "c1",
                         name: "smilex",
                         displayName: "SmileX Official",
-                        description: "The official community for SmileX platform updates, announcements, and general discussions. Stay updated with the latest features and connect with the team!",
+                        description: "The official community for SmileX platform updates, announcements, and general discussions. Stay updated with the latest features, connect with the team, and share your feedback to help us improve the platform!",
                         type: "public",
                         createdBy: "SmileX Team",
                         createdByUserId: "system",
                         createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-                        memberCount: 15420,
-                        topics: ["news", "updates", "announcements", "feedback"],
+                        memberCount: 127543,
+                        topics: ["news", "updates", "announcements", "feedback", "support"],
                         members: ["system"]
                     },
                     {
                         id: "c2",
                         name: "gaming",
                         displayName: "Gaming Zone",
-                        description: "A community for all gamers to share their experiences, tips, discuss the latest releases, and connect with fellow gaming enthusiasts.",
+                        description: "A vibrant community for all gamers to share their experiences, tips, discuss the latest releases, showcase setups, and connect with fellow gaming enthusiasts from around the world.",
                         type: "public",
                         createdBy: "GameMaster",
                         createdByUserId: "system",
                         createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-                        memberCount: 8763,
-                        topics: ["games", "esports", "console", "pc", "mobile"],
+                        memberCount: 89763,
+                        topics: ["games", "esports", "console", "pc", "mobile", "reviews"],
                         members: ["system"]
                     },
                     {
                         id: "c3",
                         name: "techtalks",
                         displayName: "Tech Talks",
-                        description: "Discuss the latest in technology, programming, AI developments, and share knowledge with fellow tech enthusiasts.",
+                        description: "Discuss the latest in technology, programming, AI developments, startups, and share knowledge with fellow tech enthusiasts. From coding tutorials to industry insights.",
                         type: "public",
                         createdBy: "TechGuru",
                         createdByUserId: "system",
                         createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-                        memberCount: 6214,
-                        topics: ["technology", "programming", "ai", "gadgets", "startups"],
+                        memberCount: 76214,
+                        topics: ["technology", "programming", "ai", "gadgets", "startups", "coding"],
                         members: ["system"]
                     },
                     {
                         id: "c4",
                         name: "artistslounge",
                         displayName: "Artists Lounge",
-                        description: "A private community for artists to share their work, get constructive feedback, and collaborate on creative projects.",
+                        description: "A private community for artists to share their work, get constructive feedback, collaborate on creative projects, and connect with other creative minds.",
                         type: "private",
                         createdBy: "ArtMaster",
                         createdByUserId: "system",
                         createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-                        memberCount: 842,
-                        topics: ["art", "drawing", "design", "critiques", "collaboration"],
+                        memberCount: 12842,
+                        topics: ["art", "drawing", "design", "photography", "creative", "portfolio"],
+                        members: ["system"]
+                    },
+                    {
+                        id: "c5",
+                        name: "fitness",
+                        displayName: "Fitness & Health",
+                        description: "Share your fitness journey, workout routines, healthy recipes, and motivate each other to achieve health and wellness goals together.",
+                        type: "public",
+                        createdBy: "FitnessCoach",
+                        createdByUserId: "system",
+                        createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                        memberCount: 54321,
+                        topics: ["fitness", "health", "workout", "nutrition", "wellness", "motivation"],
                         members: ["system"]
                     }
                 ];
@@ -3795,174 +4832,667 @@
                 stateManager.setState({
                     posts: samplePosts,
                     communities: sampleCommunities,
-                    userMemberships: ["c1"] // Auto-join SmileX official
+                    onlineUsers: 127543,
+                    activePolls: 1247,
+                    postsToday: 45678
                 });
             }
         }
 
-        // Event Listeners and Initialization
-        document.addEventListener('DOMContentLoaded', function() {
-            // Hide preloader after a short delay
-            setTimeout(() => {
-                const preloader = document.getElementById('preloader');
-                if (preloader) {
+        // Show Community Detail Modal
+        function showCommunityDetailModal(community) {
+            const modal = document.getElementById('community-detail-modal');
+            const state = stateManager.getState();
+            
+            // Update modal content
+            const header = document.getElementById('communityDetailHeader');
+            const description = document.getElementById('communityDetailDescription');
+            const creator = document.getElementById('communityCreator');
+            const creationDate = document.getElementById('communityCreationDate');
+            const memberCount = document.getElementById('communityMemberCount');
+            const communityType = document.getElementById('communityType');
+            const topics = document.getElementById('communityTopics');
+            const joinLeaveButton = document.getElementById('joinLeaveButton');
+            const deleteButton = document.getElementById('deleteCommunityButton');
+            const communityPosts = document.getElementById('communityPosts');
+
+            header.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span class="community-icon ${utils.getCommunityColor(community.name)}" style="width: 60px; height: 60px; font-size: 24px;">
+                        ${community.name.charAt(0)}
+                    </span>
+                    <div>
+                        <h3 id="community-detail-title">${community.displayName}</h3>
+                        <p style="color: #999; margin: 0;">c/${community.name}</p>
+                    </div>
+                </div>
+                <button id="closeCommunityDetailModal" class="modal-close" onclick="closeCommunityDetailModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+            description.textContent = community.description || 'No description available';
+            creator.textContent = community.createdBy;
+            creationDate.textContent = new Date(community.createdAt).toLocaleDateString();
+            memberCount.textContent = utils.formatNumber(community.memberCount);
+            communityType.innerHTML = `
+                <span style="background: ${community.type === 'private' ? '#ef4444' : '#10b981'}; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px;">
+                    ${community.type}
+                </span>
+            `;
+
+            // Topics
+            if (community.topics && community.topics.length > 0) {
+                topics.innerHTML = community.topics.map(topic => 
+                    `<span style="background: #333; color: #ccc; padding: 4px 8px; border-radius: 12px; font-size: 12px; margin: 2px;">#${topic}</span>`
+                ).join('');
+            } else {
+                topics.innerHTML = '<span style="color: #666;">No topics specified</span>';
+            }
+
+            // Join/Leave button
+            const isMember = state.userMemberships.includes(community.id);
+            const isCreator = state.userCreatedCommunities.includes(community.id);
+            
+            if (isCreator) {
+                joinLeaveButton.style.display = 'none';
+                deleteButton.style.display = 'inline-block';
+                deleteButton.onclick = () => {
+                    communityManager.deleteCommunity(community.id);
+                    closeCommunityDetailModal();
+                };
+            } else {
+                joinLeaveButton.style.display = 'inline-block';
+                deleteButton.style.display = 'none';
+                joinLeaveButton.textContent = isMember ? 'Leave' : 'Join';
+                joinLeaveButton.className = isMember ? 'btn btn-secondary' : 'btn btn-primary';
+                joinLeaveButton.onclick = () => {
+                    if (isMember) {
+                        communityManager.leaveCommunity(community.id);
+                    } else {
+                        communityManager.joinCommunity(community.id);
+                    }
+                    closeCommunityDetailModal();
+                };
+            }
+
+            // Recent posts from this community
+            const communityPostsList = state.posts.filter(p => p.communityId === community.id).slice(0, 3);
+            if (communityPostsList.length > 0) {
+                communityPosts.innerHTML = communityPostsList.map(post => `
+                    <div style="background: #333; padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem; cursor: pointer;" 
+                         onclick="viewPost('${post.id}')">
+                        <h5 style="margin: 0 0 0.5rem 0; font-size: 0.9rem;">${post.title}</h5>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: #999;">
+                            <span>by ${post.author}</span>
+                            <span>${utils.getTimeAgo(post.timestamp)}</span>
+                        </div>
+                        <div style="display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.75rem; color: #999;">
+                            <span><i class="fas fa-arrow-up"></i> ${utils.formatNumber(post.votes)}</span>
+                            <span><i class="fas fa-comment"></i> ${utils.formatNumber(post.comments)}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                communityPosts.innerHTML = '<p style="color: #666; text-align: center; padding: 2rem;">No posts in this community yet</p>';
+            }
+
+            modal.classList.add('active');
+        }
+
+        window.closeCommunityDetailModal = function() {
+            const modal = document.getElementById('community-detail-modal');
+            modal.classList.remove('active');
+        };
+
+        window.viewPost = function(postId) {
+            // In a real app, this would navigate to the specific post
+            closeCommunityDetailModal();
+            utils.showNotification('Post view feature coming soon!', 'info');
+        };
+
+        // Event Listeners Setup
+        function setupEventListeners() {
+            // Preloader
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    const preloader = document.getElementById('preloader');
                     preloader.style.opacity = '0';
                     setTimeout(() => {
                         preloader.style.display = 'none';
                     }, 500);
-                }
-            }, 2000);
-
-            // Check if user is registered
-            const isRegistered = localStorage.getItem('smilex_registered');
-            if (isRegistered === 'true') {
-                const userData = localStorage.getItem('smilex_user');
-                if (userData) {
-                    const user = JSON.parse(userData);
-                    stateManager.setState({ currentUser: user });
-                    hideOnboarding();
-                    initializeApp();
-                }
-            } else {
-                showOnboarding();
-            }
-
-            // Initialize sample data
-            initializeSampleData();
-
-            // Set up event listeners
-            setupEventListeners();
-
-            // Start live updates
-            liveUpdatesSystem.start();
-        });
-
-        function showOnboarding() {
-            const overlay = document.getElementById('onboardingOverlay');
-            if (overlay) {
-                overlay.classList.add('active');
-            }
-        }
-
-        function hideOnboarding() {
-            const overlay = document.getElementById('onboardingOverlay');
-            if (overlay) {
-                overlay.classList.remove('active');
-            }
-        }
-
-        function initializeApp() {
-            const state = stateManager.getState();
-            
-            // Update user avatar
-            const userInitials = document.querySelectorAll('#userInitial, #createPostUserInitial');
-            userInitials.forEach(el => {
-                if (state.currentUser) {
-                    el.textContent = state.currentUser.fullName.charAt(0).toUpperCase();
-                }
+                }, 1500);
             });
 
-            // Render initial content
-            postManager.renderPosts();
-            communityManager.updateCommunityLists();
-            liveUpdatesSystem.updateLiveStats();
-
-            // Update community options in create post modal
-            updateCommunityOptions();
-        }
-
-        function setupEventListeners() {
-            // Registration form
+            // Registration Form
             const registrationForm = document.getElementById('registrationForm');
             if (registrationForm) {
-                registrationForm.addEventListener('submit', handleRegistration);
-                
-                // Enable/disable submit button based on form validity
-                const formInputs = registrationForm.querySelectorAll('input, select');
-                formInputs.forEach(input => {
-                    input.addEventListener('change', validateRegistrationForm);
+                registrationForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(registrationForm);
+                    const userData = Object.fromEntries(formData.entries());
+                    
+                    // Validate required fields
+                    const requiredFields = ['fullName', 'username', 'email', 'gender', 'country'];
+                    const missingFields = requiredFields.filter(field => !userData[field]);
+                    
+                    if (missingFields.length > 0) {
+                        utils.showNotification(`Please fill in all required fields: ${missingFields.join(', ')}`, 'error');
+                        return;
+                    }
+
+                    // Check consents
+                    if (!userData.ageConsent || !userData.termsConsent || !userData.privacyConsent) {
+                        utils.showNotification('Please accept all required consents to continue', 'error');
+                        return;
+                    }
+
+                    // Final username validation
+                    const isUsernameValid = await usernameValidator.checkAvailability(userData.username);
+                    if (!isUsernameValid) {
+                        utils.showNotification('Please choose a different username', 'error');
+                        return;
+                    }
+
+                    // Create user profile
+                    const newUser = {
+                        userId: utils.generateId(),
+                        fullName: userData.fullName,
+                        username: userData.username,
+                        email: userData.email,
+                        gender: userData.gender,
+                        country: userData.country,
+                        profilePicture: cameraSystem.getCapturedImage() || null,
+                        joinedAt: new Date().toISOString(),
+                        isActive: true
+                    };
+
+                    stateManager.setState({ currentUser: newUser });
+                    
+                    // Update UI with user info
+                    updateUserInterface(newUser);
+                    
+                    // Close onboarding modal
+                    document.getElementById('onboardingOverlay').classList.remove('active');
+                    
+                    utils.showNotification(`Welcome to SmileX, ${newUser.fullName}! 🎉`, 'success');
+                    
+                    // Initialize sample data and render
+                    initializeSampleData();
+                    postManager.renderPosts();
+                    communityManager.updateCommunityLists();
+                    liveUpdatesSystem.start();
+                });
+
+                // Real-time form validation
+                const usernameInput = document.getElementById('username');
+                const usernameStatus = document.getElementById('usernameStatus');
+                const usernameSuggestions = document.getElementById('usernameSuggestions');
+                const submitBtn = document.getElementById('submitBtn');
+
+                if (usernameInput) {
+                    const debouncedValidation = utils.debounce(async (username) => {
+                        const isValid = await usernameValidator.validateUsername(username, usernameStatus, usernameSuggestions);
+                        updateSubmitButton();
+                    }, 500);
+
+                    usernameInput.addEventListener('input', (e) => {
+                        debouncedValidation(e.target.value);
+                    });
+                }
+
+                // Form validation for submit button
+                function updateSubmitButton() {
+                    const formData = new FormData(registrationForm);
+                    const userData = Object.fromEntries(formData.entries());
+                    
+                    const isFormValid = userData.fullName && 
+                                       userData.username && 
+                                       userData.email && 
+                                       userData.gender && 
+                                       userData.country &&
+                                       userData.ageConsent &&
+                                       userData.termsConsent &&
+                                       userData.privacyConsent &&
+                                       usernameStatus.classList.contains('available');
+
+                    submitBtn.disabled = !isFormValid;
+                }
+
+                // Add event listeners to all form inputs
+                registrationForm.addEventListener('change', updateSubmitButton);
+                registrationForm.addEventListener('input', updateSubmitButton);
+            }
+
+            // Profile Picture Upload
+            const profilePicInput = document.getElementById('profilePicInput');
+            const uploadFromDevice = document.getElementById('uploadFromDevice');
+            const takePhoto = document.getElementById('takePhoto');
+            const profilePicPreview = document.getElementById('profilePicPreview');
+
+            if (uploadFromDevice) {
+                uploadFromDevice.addEventListener('click', () => {
+                    profilePicInput.click();
                 });
             }
 
-            // Create post modal
-            const createPostInput = document.getElementById('createPostInput');
-            if (createPostInput) {
-                createPostInput.addEventListener('click', () => showModal('create-post-modal'));
+            if (profilePicInput) {
+                profilePicInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        try {
+                            utils.validateFile(file);
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                profilePicPreview.innerHTML = `<img src="${e.target.result}" alt="Profile preview">`;
+                            };
+                            reader.readAsDataURL(file);
+                        } catch (error) {
+                            utils.showNotification(error.message, 'error');
+                        }
+                    }
+                });
             }
 
+            if (takePhoto) {
+                takePhoto.addEventListener('click', () => {
+                    document.getElementById('camera-modal').classList.add('active');
+                    cameraSystem.startCamera();
+                });
+            }
+
+            // Camera Modal
+            const cameraModal = document.getElementById('camera-modal');
+            const closeCameraModal = document.getElementById('closeCameraModal');
+            const cancelCamera = document.getElementById('cancelCamera');
+            const captureBtn = document.getElementById('captureBtn');
+            const usePhoto = document.getElementById('usePhoto');
+
+            if (closeCameraModal) {
+                closeCameraModal.addEventListener('click', () => {
+                    cameraModal.classList.remove('active');
+                    cameraSystem.stopCamera();
+                });
+            }
+
+            if (cancelCamera) {
+                cancelCamera.addEventListener('click', () => {
+                    cameraModal.classList.remove('active');
+                    cameraSystem.stopCamera();
+                });
+            }
+
+            if (captureBtn) {
+                captureBtn.addEventListener('click', () => {
+                    const capturedImage = cameraSystem.capturePhoto();
+                    if (capturedImage) {
+                        usePhoto.style.display = 'inline-block';
+                        captureBtn.style.display = 'none';
+                    }
+                });
+            }
+
+            if (usePhoto) {
+                usePhoto.addEventListener('click', () => {
+                    const capturedImage = cameraSystem.getCapturedImage();
+                    if (capturedImage) {
+                        profilePicPreview.innerHTML = `<img src="${capturedImage}" alt="Captured profile photo">`;
+                        cameraModal.classList.remove('active');
+                        cameraSystem.stopCamera();
+                    }
+                });
+            }
+
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            const searchResultsList = document.getElementById('searchResultsList');
+            const searchFilters = document.getElementById('searchFilters');
+
+            if (searchInput) {
+                const debouncedSearch = utils.debounce(async (query) => {
+                    if (query.trim().length < 2) {
+                        searchResults.classList.add('hidden');
+                        return;
+                    }
+
+                    const results = await searchSystem.performSearch(query, {
+                        type: document.querySelector('.filter-chip.active')?.dataset.filter || 'all'
+                    });
+
+                    displaySearchResults(results);
+                    searchResults.classList.remove('hidden');
+                }, 300);
+
+                searchInput.addEventListener('input', (e) => {
+                    debouncedSearch(e.target.value);
+                });
+
+                searchInput.addEventListener('focus', () => {
+                    if (searchInput.value.trim().length >= 2) {
+                        searchResults.classList.remove('hidden');
+                    }
+                });
+
+                // Close search results when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                        searchResults.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Search filters
+            if (searchFilters) {
+                searchFilters.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('filter-chip')) {
+                        // Update active filter
+                        searchFilters.querySelectorAll('.filter-chip').forEach(chip => {
+                            chip.classList.remove('active');
+                        });
+                        e.target.classList.add('active');
+
+                        // Re-run search with new filter
+                        if (searchInput.value.trim().length >= 2) {
+                            searchSystem.performSearch(searchInput.value, {
+                                type: e.target.dataset.filter
+                            }).then(displaySearchResults);
+                        }
+                    }
+                });
+            }
+
+            // Create Post Modal
+            const createPostModal = document.getElementById('create-post-modal');
+            const createPostInput = document.getElementById('createPostInput');
+            const closeCreatePostModal = document.getElementById('closeCreatePostModal');
+            const cancelCreatePost = document.getElementById('cancelCreatePost');
+            const createPostForm = document.getElementById('createPostForm');
             const postTypeButtons = document.querySelectorAll('.post-type-button');
+            const mobileCreatePost = document.getElementById('mobileCreatePost');
+
+            // Open create post modal
+            [createPostInput, mobileCreatePost].forEach(element => {
+                if (element) {
+                    element.addEventListener('click', () => {
+                        createPostModal.classList.add('active');
+                        setupCreatePostModal();
+                    });
+                }
+            });
+
             postTypeButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const postType = e.currentTarget.dataset.postType;
-                    document.getElementById('postType').value = postType;
-                    showModal('create-post-modal');
+                button.addEventListener('click', () => {
+                    const postType = button.dataset.postType;
+                    createPostModal.classList.add('active');
+                    setupCreatePostModal(postType);
                 });
             });
 
-            // Create post form
-            const createPostForm = document.getElementById('createPostForm');
+            // Close create post modal
+            [closeCreatePostModal, cancelCreatePost].forEach(element => {
+                if (element) {
+                    element.addEventListener('click', () => {
+                        createPostModal.classList.remove('active');
+                        resetCreatePostForm();
+                    });
+                }
+            });
+
+            // Create post form submission
             if (createPostForm) {
-                createPostForm.addEventListener('submit', handleCreatePost);
+                createPostForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(createPostForm);
+                    const postData = Object.fromEntries(formData.entries());
+                    
+                    try {
+                        await postManager.createPost(postData);
+                        createPostModal.classList.remove('active');
+                        resetCreatePostForm();
+                        postManager.renderPosts();
+                    } catch (error) {
+                        utils.showNotification(error.message, 'error');
+                    }
+                });
             }
 
-            // Post type change
+            // Post type change handler
             const postTypeSelect = document.getElementById('postType');
             if (postTypeSelect) {
-                postTypeSelect.addEventListener('change', handlePostTypeChange);
+                postTypeSelect.addEventListener('change', (e) => {
+                    updateCreatePostForm(e.target.value);
+                });
             }
 
-            // Post visibility change
+            // Post visibility change handler
             const postVisibilitySelect = document.getElementById('postVisibility');
             if (postVisibilitySelect) {
-                postVisibilitySelect.addEventListener('change', handleVisibilityChange);
+                postVisibilitySelect.addEventListener('change', (e) => {
+                    const communityContainer = document.getElementById('postCommunityContainer');
+                    if (e.target.value === 'community') {
+                        communityContainer.classList.remove('hidden');
+                        populateCommunitySelect();
+                    } else {
+                        communityContainer.classList.add('hidden');
+                    }
+                });
             }
 
-            // Media upload
+            // Media upload handling
             const mediaUploadArea = document.getElementById('mediaUploadArea');
             const mediaInput = document.getElementById('mediaInput');
-            
+
             if (mediaUploadArea && mediaInput) {
-                mediaUploadArea.addEventListener('click', () => mediaInput.click());
-                mediaUploadArea.addEventListener('dragover', handleDragOver);
-                mediaUploadArea.addEventListener('drop', handleDrop);
-                mediaInput.addEventListener('change', handleMediaSelect);
+                // Click to upload
+                mediaUploadArea.addEventListener('click', () => {
+                    mediaInput.click();
+                });
+
+                // Keyboard accessibility
+                mediaUploadArea.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        mediaInput.click();
+                    }
+                });
+
+                // File input change
+                mediaInput.addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        mediaManager.handleFiles(Array.from(e.target.files));
+                    }
+                });
+
+                // Drag and drop
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    mediaUploadArea.addEventListener(eventName, preventDefaults, false);
+                });
+
+                function preventDefaults(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    mediaUploadArea.addEventListener(eventName, () => {
+                        mediaUploadArea.classList.add('dragover');
+                    });
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    mediaUploadArea.addEventListener(eventName, () => {
+                        mediaUploadArea.classList.remove('dragover');
+                    });
+                });
+
+                mediaUploadArea.addEventListener('drop', (e) => {
+                    const files = Array.from(e.dataTransfer.files);
+                    if (files.length > 0) {
+                        mediaManager.handleFiles(files);
+                    }
+                });
             }
 
-            // Poll options
-            const addPollOptionBtn = document.getElementById('addPollOption');
-            if (addPollOptionBtn) {
-                addPollOptionBtn.addEventListener('click', addPollOption);
+            // Poll option management
+            const addPollOption = document.getElementById('addPollOption');
+            if (addPollOption) {
+                addPollOption.addEventListener('click', () => {
+                    const pollOptions = document.getElementById('pollOptions');
+                    const optionCount = pollOptions.children.length + 1;
+                    
+                    if (optionCount <= CONFIG.MAX_POLL_OPTIONS) {
+                        const newOption = document.createElement('input');
+                        newOption.type = 'text';
+                        newOption.className = 'form-control poll-option-input';
+                        newOption.placeholder = `Option ${optionCount}`;
+                        newOption.style.marginBottom = 'var(--spacing-sm)';
+                        pollOptions.appendChild(newOption);
+                    } else {
+                        utils.showNotification(`Maximum ${CONFIG.MAX_POLL_OPTIONS} options allowed`, 'warning');
+                    }
+                });
             }
 
-            // Create community
+            // Community Management
             const createCommunityBtn = document.getElementById('createCommunityBtn');
-            if (createCommunityBtn) {
-                createCommunityBtn.addEventListener('click', () => showModal('create-community-modal'));
-            }
-
+            const createCommunityModal = document.getElementById('create-community-modal');
+            const closeCreateCommunityModal = document.getElementById('closeCreateCommunityModal');
+            const cancelCreateCommunity = document.getElementById('cancelCreateCommunity');
             const createCommunityForm = document.getElementById('createCommunityForm');
+            const mobileCreateCommunity = document.getElementById('mobileCreateCommunity');
+
+            // Open create community modal
+            [createCommunityBtn, mobileCreateCommunity].forEach(element => {
+                if (element) {
+                    element.addEventListener('click', () => {
+                        createCommunityModal.classList.add('active');
+                    });
+                }
+            });
+
+            // Close create community modal
+            [closeCreateCommunityModal, cancelCreateCommunity].forEach(element => {
+                if (element) {
+                    element.addEventListener('click', () => {
+                        createCommunityModal.classList.remove('active');
+                        createCommunityForm.reset();
+                    });
+                }
+            });
+
+            // Create community form submission
             if (createCommunityForm) {
-                createCommunityForm.addEventListener('submit', handleCreateCommunity);
+                createCommunityForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(createCommunityForm);
+                    const communityData = Object.fromEntries(formData.entries());
+                    
+                    try {
+                        await communityManager.createCommunity(communityData);
+                        createCommunityModal.classList.remove('active');
+                        createCommunityForm.reset();
+                        communityManager.updateCommunityLists();
+                    } catch (error) {
+                        utils.showNotification(error.message, 'error');
+                    }
+                });
             }
 
-            // Browse communities
+            // Browse Communities
             const browseCommunityBtn = document.getElementById('browseCommunityBtn');
-            if (browseCommunityBtn) {
-                browseCommunityBtn.addEventListener('click', () => showModal('browse-communities-modal'));
+            const browseCommunityModal = document.getElementById('browse-communities-modal');
+            const closeBrowseCommunitiesModal = document.getElementById('closeBrowseCommunitiesModal');
+            const communitySearchInput = document.getElementById('communitySearchInput');
+            const mobileBrowseBtn = document.getElementById('mobileBrowseBtn');
+
+            // Open browse communities modal
+            [browseCommunityBtn, mobileBrowseBtn].forEach(element => {
+                if (element) {
+                    element.addEventListener('click', () => {
+                        browseCommunityModal.classList.add('active');
+                        displayBrowseCommunities();
+                    });
+                }
+            });
+
+            // Close browse communities modal
+            if (closeBrowseCommunitiesModal) {
+                closeBrowseCommunitiesModal.addEventListener('click', () => {
+                    browseCommunityModal.classList.remove('active');
+                });
             }
 
             // Community search
-            const communitySearchInput = document.getElementById('communitySearchInput');
             if (communitySearchInput) {
-                communitySearchInput.addEventListener('input', utils.debounce(handleCommunitySearch, 300));
+                const debouncedCommunitySearch = utils.debounce((query) => {
+                    displayBrowseCommunities(query);
+                }, 300);
+
+                communitySearchInput.addEventListener('input', (e) => {
+                    debouncedCommunitySearch(e.target.value);
+                });
             }
 
-            // Sort buttons
-            const sortButtons = document.querySelectorAll('.sort-button[data-sort]');
+            // Community tabs in browse modal
+            const communityTabs = document.querySelectorAll('#browse-communities-modal .sort-button');
+            communityTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Update active tab
+                    communityTabs.forEach(t => {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-selected', 'false');
+                    });
+                    tab.classList.add('active');
+                    tab.setAttribute('aria-selected', 'true');
+                    
+                    // Update display
+                    displayBrowseCommunities(communitySearchInput.value, tab.dataset.tab);
+                });
+            });
+
+            // Community tabs in sidebar
+            const sidebarCommunityTabs = document.querySelectorAll('.my-communities-tabs .sort-button');
+            sidebarCommunityTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Update active tab
+                    sidebarCommunityTabs.forEach(t => {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-selected', 'false');
+                    });
+                    tab.classList.add('active');
+                    tab.setAttribute('aria-selected', 'true');
+                    
+                    // Show/hide content
+                    const tabContent = document.querySelectorAll('.communities-tab-content');
+                    tabContent.forEach(content => content.classList.add('hidden'));
+                    
+                    const targetContent = document.getElementById(`${tab.dataset.tab}CommunitiesList`);
+                    if (targetContent) {
+                        targetContent.classList.remove('hidden');
+                    }
+                });
+            });
+
+            // Post sorting
+            const sortButtons = document.querySelectorAll('.sort-buttons .sort-button');
             sortButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const sortType = e.currentTarget.dataset.sort;
-                    handleSortChange(sortType);
+                button.addEventListener('click', () => {
+                    // Update active button
+                    sortButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-pressed', 'false');
+                    });
+                    button.classList.add('active');
+                    button.setAttribute('aria-pressed', 'true');
+                    
+                    // Update sort type and re-render
+                    const sortType = button.dataset.sort;
+                    stateManager.setState({ currentSort: sortType });
+                    postManager.renderPosts();
                 });
             });
 
@@ -3982,16 +5512,20 @@
             const chatSendBtn = document.getElementById('chat-send-btn');
 
             if (chatToggleBtn) {
-                chatToggleBtn.addEventListener('click', () => chatSystem.toggleChat());
+                chatToggleBtn.addEventListener('click', () => {
+                    chatSystem.toggleChat();
+                });
             }
 
             if (chatCloseBtn) {
-                chatCloseBtn.addEventListener('click', () => chatSystem.toggleChat());
+                chatCloseBtn.addEventListener('click', () => {
+                    chatSystem.toggleChat();
+                });
             }
 
             if (chatInput) {
                 chatInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === 'Enter' && chatInput.value.trim()) {
                         chatSystem.sendMessage(chatInput.value);
                         chatInput.value = '';
                     }
@@ -4000,709 +5534,385 @@
 
             if (chatSendBtn) {
                 chatSendBtn.addEventListener('click', () => {
-                    chatSystem.sendMessage(chatInput.value);
-                    chatInput.value = '';
+                    if (chatInput.value.trim()) {
+                        chatSystem.sendMessage(chatInput.value);
+                        chatInput.value = '';
+                    }
                 });
             }
 
-            // Modal close buttons
-            const modalCloseButtons = document.querySelectorAll('.modal-close, [id^="close"][id$="Modal"]');
-            modalCloseButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const modal = e.target.closest('.modal');
-                    if (modal) {
-                        hideModal(modal.id);
-                    }
+            // Premium modal
+            const premiumBtn = document.getElementById('premiumBtn');
+            const premiumModal = document.getElementById('premium-modal');
+            const closePremiumModal = document.getElementById('closePremiumModal');
+
+            if (premiumBtn) {
+                premiumBtn.addEventListener('click', () => {
+                    premiumModal.classList.add('active');
+                });
+            }
+
+            if (closePremiumModal) {
+                closePremiumModal.addEventListener('click', () => {
+                    premiumModal.classList.remove('active');
+                });
+            }
+
+            // Premium package selection
+            const premiumPackages = document.querySelectorAll('.premium-package .btn-premium');
+            premiumPackages.forEach(button => {
+                button.addEventListener('click', () => {
+                    utils.showNotification('Premium upgrade feature coming soon!', 'info');
+                    premiumModal.classList.remove('active');
                 });
             });
 
-            // Cancel buttons
-            const cancelButtons = document.querySelectorAll('[id^="cancel"]');
-            cancelButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const modal = e.target.closest('.modal');
-                    if (modal) {
-                        hideModal(modal.id);
-                    }
+            // Media viewer modal
+            const closeMediaViewer = document.getElementById('closeMediaViewer');
+            const mediaViewerModal = document.getElementById('media-viewer-modal');
+
+            if (closeMediaViewer) {
+                closeMediaViewer.addEventListener('click', () => {
+                    mediaViewerModal.classList.remove('active');
                 });
-            });
+            }
 
             // Close modals when clicking outside
             document.addEventListener('click', (e) => {
-                if (e.target.classList.contains('modal') || e.target.classList.contains('overlay')) {
-                    hideModal(e.target.id);
+                const modals = document.querySelectorAll('.modal.active, .overlay.active');
+                modals.forEach(modal => {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                        
+                        // Special handling for camera modal
+                        if (modal.id === 'camera-modal') {
+                            cameraSystem.stopCamera();
+                        }
+                    }
+                });
+            });
+
+            // Keyboard navigation for modals
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const activeModal = document.querySelector('.modal.active, .overlay.active');
+                    if (activeModal) {
+                        activeModal.classList.remove('active');
+                        
+                        // Special handling for camera modal
+                        if (activeModal.id === 'camera-modal') {
+                            cameraSystem.stopCamera();
+                        }
+                    }
                 }
             });
 
+            // Load more posts
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', () => {
+                    // In a real app, this would load more posts from the server
+                    utils.showNotification('All posts loaded!', 'info');
+                    loadMoreBtn.style.display = 'none';
+                });
+            }
+
             // Mobile navigation
-            const mobileCreatePost = document.getElementById('mobileCreatePost');
-            const mobileCreateCommunity = document.getElementById('mobileCreateCommunity');
-            const mobileBrowseBtn = document.getElementById('mobileBrowseBtn');
-
-            if (mobileCreatePost) {
-                mobileCreatePost.addEventListener('click', (e) => {
+            const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+            mobileNavItems.forEach(item => {
+                item.addEventListener('click', (e) => {
                     e.preventDefault();
-                    showModal('create-post-modal');
-                });
-            }
-
-            if (mobileCreateCommunity) {
-                mobileCreateCommunity.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    showModal('create-community-modal');
-                });
-            }
-
-            if (mobileBrowseBtn) {
-                mobileBrowseBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    showModal('browse-communities-modal');
-                });
-            }
-
-            // Community tabs
-            const communityTabButtons = document.querySelectorAll('.my-communities-tabs button');
-            communityTabButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const tabType = e.currentTarget.dataset.tab;
-                    switchCommunityTab(tabType);
+                    
+                    // Update active state
+                    mobileNavItems.forEach(navItem => {
+                        navItem.classList.remove('active');
+                        navItem.removeAttribute('aria-current');
+                    });
+                    item.classList.add('active');
+                    item.setAttribute('aria-current', 'page');
                 });
             });
-
-            // Search functionality
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-                searchInput.addEventListener('input', utils.debounce(handleGlobalSearch, 300));
-            }
-
-            // Keyboard navigation
-            document.addEventListener('keydown', handleKeyboardNavigation);
-
-            // Auto-save functionality
-            setInterval(() => {
-                stateManager.saveToStorage();
-            }, CONFIG.AUTO_SAVE_INTERVAL);
         }
 
-        // Event Handlers
-        function handleRegistration(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(e.target);
-            const userData = {
-                userId: utils.generateId(),
-                fullName: formData.get('fullName'),
-                email: formData.get('email'),
-                gender: formData.get('gender'),
-                country: formData.get('country'),
-                createdAt: new Date().toISOString()
-            };
+        // Helper Functions for UI Updates
+        function updateUserInterface(user) {
+            // Update user avatar and initials
+            const userAvatars = document.querySelectorAll('.user-avatar span, #userInitial, #createPostUserInitial');
+            userAvatars.forEach(avatar => {
+                avatar.textContent = user.fullName.charAt(0).toUpperCase();
+            });
 
-            // Validate consent
-            if (!formData.get('ageConsent') || !formData.get('termsConsent') || !formData.get('privacyConsent')) {
-                utils.showNotification('Please accept all consent requirements', 'error');
-                return;
-            }
-
-            // Save user data
-            localStorage.setItem('smilex_user', JSON.stringify(userData));
-            localStorage.setItem('smilex_registered', 'true');
-            
-            stateManager.setState({ currentUser: userData });
-            
-            hideOnboarding();
-            initializeApp();
-            
-            utils.showNotification('Welcome to SmileX! Your profile is now complete.', 'success');
-        }
-
-        function validateRegistrationForm() {
-            const form = document.getElementById('registrationForm');
-            const submitBtn = document.getElementById('submitBtn');
-            
-            const fullName = form.fullName.value.trim();
-            const email = form.email.value.trim();
-            const gender = form.gender.value;
-            const country = form.country.value;
-            const ageConsent = form.ageConsent.checked;
-            const termsConsent = form.termsConsent.checked;
-            const privacyConsent = form.privacyConsent.checked;
-
-            const isValid = fullName && email && gender && country && ageConsent && termsConsent && privacyConsent;
-            
-            submitBtn.disabled = !isValid;
-        }
-
-        function handleCreatePost(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(e.target);
-            const postData = {
-                title: formData.get('title'),
-                content: formData.get('content'),
-                postType: formData.get('postType'),
-                visibility: formData.get('visibility'),
-                community: formData.get('community')
-            };
-
-            // Add poll options if it's a poll
-            if (postData.postType === 'poll') {
-                const pollInputs = document.querySelectorAll('.poll-option-input');
-                pollInputs.forEach((input, index) => {
-                    if (input.value.trim()) {
-                        postData[`option${index + 1}`] = input.value.trim();
-                    }
+            // Update profile pictures if available
+            if (user.profilePicture) {
+                const avatarContainers = document.querySelectorAll('.user-avatar, .profile-pic-preview');
+                avatarContainers.forEach(container => {
+                    container.innerHTML = `<img src="${user.profilePicture}" alt="${user.fullName}'s profile picture">`;
                 });
             }
-
-            try {
-                postManager.createPost(postData);
-                hideModal('create-post-modal');
-                resetCreatePostForm();
-            } catch (error) {
-                utils.showNotification(error.message, 'error');
-            }
         }
 
-        function handleCreateCommunity(e) {
-            e.preventDefault();
+        function setupCreatePostModal(defaultType = 'text') {
+            const postTypeSelect = document.getElementById('postType');
+            if (postTypeSelect) {
+                postTypeSelect.value = defaultType;
+                updateCreatePostForm(defaultType);
+            }
             
-            const formData = new FormData(e.target);
-            const communityData = {
-                name: formData.get('name'),
-                displayName: formData.get('displayName'),
-                description: formData.get('description'),
-                type: formData.get('type'),
-                topics: formData.get('topics')
-            };
-
-            try {
-                communityManager.createCommunity(communityData);
-                hideModal('create-community-modal');
-                resetCreateCommunityForm();
-                communityManager.updateCommunityLists();
-                updateCommunityOptions();
-            } catch (error) {
-                utils.showNotification(error.message, 'error');
-            }
+            populateCommunitySelect();
         }
 
-        function handlePostTypeChange(e) {
-            const postType = e.target.value;
+        function updateCreatePostForm(postType) {
             const contentContainer = document.getElementById('contentContainer');
             const pollOptionsContainer = document.getElementById('pollOptionsContainer');
             const mediaUploadContainer = document.getElementById('mediaUploadContainer');
 
-            // Show/hide relevant sections
-            if (postType === 'poll') {
-                contentContainer.classList.add('hidden');
-                pollOptionsContainer.classList.remove('hidden');
-                mediaUploadContainer.classList.add('hidden');
-            } else {
-                contentContainer.classList.remove('hidden');
-                pollOptionsContainer.classList.add('hidden');
-                
-                if (postType === 'text') {
+            // Reset visibility
+            contentContainer.classList.remove('hidden');
+            pollOptionsContainer.classList.add('hidden');
+            mediaUploadContainer.classList.remove('hidden');
+
+            switch (postType) {
+                case 'poll':
+                    pollOptionsContainer.classList.remove('hidden');
                     mediaUploadContainer.classList.add('hidden');
-                } else {
-                    mediaUploadContainer.classList.remove('hidden');
-                }
+                    break;
+                case 'text':
+                    mediaUploadContainer.classList.add('hidden');
+                    break;
+                case 'image':
+                case 'video':
+                    // Media upload is already visible
+                    break;
             }
         }
 
-        function handleVisibilityChange(e) {
-            const visibility = e.target.value;
-            const communityContainer = document.getElementById('postCommunityContainer');
+        function populateCommunitySelect() {
+            const communitySelect = document.getElementById('postCommunity');
+            if (!communitySelect) return;
+
+            const state = stateManager.getState();
+            const userCommunities = state.communities.filter(c => 
+                state.userMemberships.includes(c.id) || state.userCreatedCommunities.includes(c.id)
+            );
+
+            communitySelect.innerHTML = '<option value="">Select a community</option>' +
+                userCommunities.map(community => 
+                    `<option value="${community.id}">${community.displayName}</option>`
+                ).join('');
+        }
+
+        function resetCreatePostForm() {
+            const createPostForm = document.getElementById('createPostForm');
+            if (createPostForm) {
+                createPostForm.reset();
+            }
             
-            if (visibility === 'community') {
-                communityContainer.classList.remove('hidden');
-            } else {
+            mediaManager.clearAll();
+            updateCreatePostForm('text');
+            
+            const communityContainer = document.getElementById('postCommunityContainer');
+            if (communityContainer) {
                 communityContainer.classList.add('hidden');
             }
         }
 
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.currentTarget.classList.add('dragover');
-        }
+        function displaySearchResults(results) {
+            const searchResultsList = document.getElementById('searchResultsList');
+            if (!searchResultsList) return;
 
-        function handleDrop(e) {
-            e.preventDefault();
-            e.currentTarget.classList.remove('dragover');
-            
-            const files = Array.from(e.dataTransfer.files);
-            mediaManager.handleFiles(files);
-        }
-
-        function handleMediaSelect(e) {
-            const files = Array.from(e.target.files);
-            mediaManager.handleFiles(files);
-        }
-
-        function addPollOption() {
-            const pollOptions = document.getElementById('pollOptions');
-            const currentOptions = pollOptions.querySelectorAll('.poll-option-input');
-            
-            if (currentOptions.length >= CONFIG.MAX_POLL_OPTIONS) {
-                utils.showNotification(`Maximum ${CONFIG.MAX_POLL_OPTIONS} poll options allowed`, 'warning');
+            if (results.length === 0) {
+                searchResultsList.innerHTML = '<div class="search-result-item">No results found</div>';
                 return;
             }
 
-            const newOption = document.createElement('input');
-            newOption.type = 'text';
-            newOption.className = 'form-control poll-option-input';
-            newOption.placeholder = `Option ${currentOptions.length + 1}`;
-            newOption.style.marginBottom = 'var(--spacing-sm)';
-            
-            pollOptions.appendChild(newOption);
-            newOption.focus();
+            searchResultsList.innerHTML = results.map(result => {
+                switch (result.type) {
+                    case 'post':
+                        return `
+                            <div class="search-result-item" onclick="viewPost('${result.id}')">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                                    <i class="fas fa-file-alt" style="color: #666;"></i>
+                                    <strong>${result.title}</strong>
+                                </div>
+                                <div style="font-size: 0.8rem; color: #999; margin-bottom: 0.25rem;">
+                                    by ${result.author} • ${utils.getTimeAgo(result.timestamp)}
+                                </div>
+                                <div style="font-size: 0.8rem; color: #ccc;">${result.content}</div>
+                            </div>
+                        `;
+                    case 'community':
+                        return `
+                            <div class="search-result-item" onclick="viewCommunityDetails('${result.id}')">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                                    <i class="fas fa-users" style="color: #666;"></i>
+                                    <strong>c/${result.name}</strong>
+                                    <span style="background: ${result.type === 'private' ? '#ef4444' : '#10b981'}; color: white; padding: 1px 4px; border-radius: 4px; font-size: 10px;">
+                                        ${result.type}
+                                    </span>
+                                </div>
+                                <div style="font-size: 0.8rem; color: #999; margin-bottom: 0.25rem;">
+                                    ${utils.formatNumber(result.memberCount)} members
+                                </div>
+                                <div style="font-size: 0.8rem; color: #ccc;">${result.description || 'No description'}</div>
+                            </div>
+                        `;
+                    case 'web':
+                        return `
+                            <div class="search-result-item" onclick="window.open('${result.url}', '_blank')">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                                    <i class="fas fa-external-link-alt" style="color: #666;"></i>
+                                    <strong>${result.title}</strong>
+                                </div>
+                                <div style="font-size: 0.8rem; color: #999; margin-bottom: 0.25rem;">
+                                    ${result.source}
+                                </div>
+                                <div style="font-size: 0.8rem; color: #ccc;">${result.description}</div>
+                            </div>
+                        `;
+                    default:
+                        return '';
+                }
+            }).join('');
         }
 
-        function handleSortChange(sortType) {
-            // Update active button
-            document.querySelectorAll('.sort-button[data-sort]').forEach(btn => {
-                btn.classList.remove('active');
-                btn.setAttribute('aria-pressed', 'false');
-            });
-            
-            document.querySelector(`[data-sort="${sortType}"]`).classList.add('active');
-            document.querySelector(`[data-sort="${sortType}"]`).setAttribute('aria-pressed', 'true');
-            
-            stateManager.setState({ currentSort: sortType });
-            postManager.renderPosts();
-        }
-
-        function handleCommunitySearch(e) {
-            const query = e.target.value.trim();
+        function displayBrowseCommunities(searchQuery = '', filterType = 'all') {
             const state = stateManager.getState();
-            
-            let filteredCommunities = state.communities;
-            
-            if (query) {
-                filteredCommunities = communityManager.searchCommunities(query);
+            let communities = state.communities;
+
+            // Apply search filter
+            if (searchQuery) {
+                communities = communityManager.searchCommunities(searchQuery);
             }
-            
-            // Apply current tab filter
-            const activeTab = document.querySelector('.sort-button[role="tab"][aria-selected="true"]');
-            if (activeTab) {
-                const tabType = activeTab.dataset.tab;
-                filteredCommunities = communityManager.filterCommunities(filteredCommunities, tabType);
-            }
-            
-            displayBrowseCommunities(filteredCommunities);
-        }
 
-        function handleGlobalSearch(e) {
-            const query = e.target.value.trim();
-            // Implement global search functionality
-            // This could search through posts, communities, users, etc.
-            console.log('Global search:', query);
-        }
+            // Apply type filter
+            communities = communityManager.filterCommunities(communities, filterType);
 
-        function handleKeyboardNavigation(e) {
-            // Implement keyboard shortcuts
-            if (e.ctrlKey || e.metaKey) {
-                switch (e.key) {
-                    case 'k':
-                        e.preventDefault();
-                        document.getElementById('searchInput')?.focus();
-                        break;
-                    case 'n':
-                        e.preventDefault();
-                        showModal('create-post-modal');
-                        break;
-                }
-            }
-            
-            // Escape key to close modals
-            if (e.key === 'Escape') {
-                const activeModal = document.querySelector('.modal.active');
-                if (activeModal) {
-                    hideModal(activeModal.id);
-                }
-            }
-        }
-
-        // Utility Functions
-        function showModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.add('active');
-                
-                // Focus first input
-                const firstInput = modal.querySelector('input, textarea, select');
-                if (firstInput) {
-                    setTimeout(() => firstInput.focus(), 100);
-                }
-            }
-        }
-
-        function hideModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.remove('active');
-            }
-        }
-
-        function resetCreatePostForm() {
-            const form = document.getElementById('createPostForm');
-            if (form) {
-                form.reset();
-                mediaManager.clearAll();
-                
-                // Reset visibility
-                document.getElementById('contentContainer').classList.remove('hidden');
-                document.getElementById('pollOptionsContainer').classList.add('hidden');
-                document.getElementById('mediaUploadContainer').classList.remove('hidden');
-                document.getElementById('postCommunityContainer').classList.add('hidden');
-                
-                // Reset poll options to default 2
-                const pollOptions = document.getElementById('pollOptions');
-                if (pollOptions) {
-                    const inputs = pollOptions.querySelectorAll('.poll-option-input');
-                    inputs.forEach((input, index) => {
-                        if (index < 2) {
-                            input.value = '';
-                        } else {
-                            input.remove();
-                        }
-                    });
-                }
-            }
-        }
-
-        function resetCreateCommunityForm() {
-            const form = document.getElementById('createCommunityForm');
-            if (form) {
-                form.reset();
-            }
-        }
-
-        function updateCommunityOptions() {
-            const state = stateManager.getState();
-            const select = document.getElementById('postCommunity');
-            
-            if (!select) return;
-            
-            const userCommunities = state.communities.filter(c => state.userMemberships.includes(c.id));
-            
-            select.innerHTML = '<option value="">Select a community</option>' +
-                userCommunities.map(c => `<option value="${c.id}">${c.displayName}</option>`).join('');
-        }
-
-        function switchCommunityTab(tabType) {
-            // Update tab buttons
-            document.querySelectorAll('.my-communities-tabs button').forEach(btn => {
-                btn.classList.remove('active');
-                btn.setAttribute('aria-selected', 'false');
-            });
-            
-            document.querySelector(`[data-tab="${tabType}"]`).classList.add('active');
-            document.querySelector(`[data-tab="${tabType}"]`).setAttribute('aria-selected', 'true');
-            
-            // Show/hide tab content
-            document.querySelectorAll('.communities-tab-content').forEach(content => {
-                content.classList.add('hidden');
-            });
-            
-            document.getElementById(`${tabType}CommunitiesList`).classList.remove('hidden');
-        }
-
-        function displayBrowseCommunities(communities) {
-            const container = document.getElementById('communitiesBrowseList');
+            const communitiesList = document.getElementById('communitiesBrowseList');
             const noCommunitiesMessage = document.getElementById('noCommunitiesMessage');
-            
-            if (!container) return;
-            
+
             if (communities.length === 0) {
-                container.innerHTML = '';
+                communitiesList.innerHTML = '';
                 noCommunitiesMessage.classList.remove('hidden');
                 return;
             }
-            
+
             noCommunitiesMessage.classList.add('hidden');
-            
-            const state = stateManager.getState();
-            
-            container.innerHTML = communities.map(community => {
+            communitiesList.innerHTML = communities.map(community => {
                 const isMember = state.userMemberships.includes(community.id);
                 const isCreator = state.userCreatedCommunities.includes(community.id);
-                
+
                 return `
-                    <div style="background: #2a2a2a; border-radius: 12px; padding: 1rem; border: 1px solid #404040;">
-                        <div style="display: flex; align-items: start; justify-content: space-between; margin-bottom: 0.75rem;">
-                            <div style="display: flex; align-items: center;">
-                                <span class="community-icon ${utils.getCommunityColor(community.name)}" style="margin-right: 0.75rem; width: 40px; height: 40px; font-size: 18px;">
+                    <div style="background: #2a2a2a; border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease; border: 1px solid #404040;" 
+                         onclick="viewCommunityDetails('${community.id}')"
+                         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span class="community-icon ${utils.getCommunityColor(community.name)}" style="width: 48px; height: 48px; font-size: 20px;">
                                     ${community.name.charAt(0)}
                                 </span>
                                 <div>
-                                    <h3 style="font-size: 1rem; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-                                        ${community.displayName}
-                                        ${isCreator ? '<i class="fas fa-crown" style="color: #ffd700; font-size: 12px;" title="You created this community"></i>' : ''}
-                                    </h3>
-                                    <p style="font-size: 0.8rem; color: #999; margin: 0;">
-                                        ${utils.formatNumber(community.memberCount)} members • Created by ${community.createdBy}
-                                    </p>
+                                    <h4 style="margin: 0; font-size: 1.1rem;">${community.displayName}</h4>
+                                    <p style="margin: 0; font-size: 0.8rem; color: #999;">c/${community.name}</p>
                                 </div>
                             </div>
-                            <span style="background: ${community.type === 'private' ? '#ef4444' : '#10b981'}; color: white; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold;">
-                                ${community.type.toUpperCase()}
-                            </span>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                ${community.type === 'private' ? '<i class="fas fa-lock" style="color: #ef4444;" title="Private community"></i>' : ''}
+                                ${isCreator ? '<i class="fas fa-crown" style="color: #ffd700;" title="You created this community"></i>' : ''}
+                                ${isMember && !isCreator ? '<i class="fas fa-check-circle" style="color: #10b981;" title="You are a member"></i>' : ''}
+                            </div>
                         </div>
                         
-                        <p style="font-size: 0.85rem; color: #ccc; margin-bottom: 0.75rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                        <p style="color: #ccc; font-size: 0.9rem; line-height: 1.4; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                             ${community.description || 'No description available'}
                         </p>
                         
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #999;">
+                            <span><i class="fas fa-users" style="margin-right: 0.25rem;"></i> ${utils.formatNumber(community.memberCount)} members</span>
+                            <span>Created ${new Date(community.createdAt).toLocaleDateString()}</span>
+                        </div>
+                        
                         ${community.topics && community.topics.length > 0 ? `
-                            <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; margin-bottom: 0.75rem;">
-                                ${community.topics.slice(0, 3).map(topic => `
-                                    <span style="background: #404040; color: #ccc; padding: 2px 6px; border-radius: 4px; font-size: 10px;">
-                                        ${topic}
-                                    </span>
-                                `).join('')}
-                                ${community.topics.length > 3 ? `<span style="font-size: 10px; color: #666;">+${community.topics.length - 3} more</span>` : ''}
+                            <div style="margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.25rem;">
+                                ${community.topics.slice(0, 3).map(topic => 
+                                    `<span style="background: #404040; color: #ccc; padding: 2px 6px; border-radius: 8px; font-size: 10px;">#${topic}</span>`
+                                ).join('')}
+                                ${community.topics.length > 3 ? `<span style="color: #666; font-size: 10px;">+${community.topics.length - 3} more</span>` : ''}
                             </div>
                         ` : ''}
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <button onclick="viewCommunityDetails('${community.id}')" 
-                                    class="btn btn-secondary" 
-                                    style="font-size: 0.8rem; padding: 0.5rem 1rem;">
-                                View Details
-                            </button>
-                            <div style="display: flex; gap: 0.5rem;">
-                                ${isCreator ? `
-                                    <button onclick="communityManager.deleteCommunity('${community.id}')" 
-                                            class="btn" 
-                                            style="background: #ef4444; color: white; font-size: 0.8rem; padding: 0.5rem 1rem;">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                ` : ''}
-                                <button onclick="communityManager.${isMember ? 'leaveCommunity' : 'joinCommunity'}('${community.id}')" 
-                                        class="btn ${isMember ? 'btn-secondary' : 'btn-primary'}" 
-                                        style="font-size: 0.8rem; padding: 0.5rem 1rem;">
-                                    ${isMember ? 'Leave' : 'Join'}
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 `;
             }).join('');
         }
 
-        function showCommunityDetailModal(community) {
-            const modal = document.getElementById('community-detail-modal');
+        // Initialize Application
+        function initializeApp() {
+            // Check if user is already registered
             const state = stateManager.getState();
             
-            // Update modal content
-            const header = document.getElementById('communityDetailHeader');
-            const description = document.getElementById('communityDetailDescription');
-            const posts = document.getElementById('communityPosts');
-            const creator = document.getElementById('communityCreator');
-            const creationDate = document.getElementById('communityCreationDate');
-            const memberCount = document.getElementById('communityMemberCount');
-            const communityType = document.getElementById('communityType');
-            const topics = document.getElementById('communityTopics');
-            const joinLeaveButton = document.getElementById('joinLeaveButton');
-            const deleteButton = document.getElementById('deleteCommunityButton');
-
-            // Header
-            header.innerHTML = `
-                <div style="display: flex; align-items: center;">
-                    <span class="community-icon ${utils.getCommunityColor(community.name)}" style="width: 64px; height: 64px; font-size: 32px; margin-right: 1rem;">
-                        ${community.name.charAt(0)}
-                    </span>
-                    <div>
-                        <h3 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
-                            ${community.displayName}
-                            ${state.userCreatedCommunities.includes(community.id) ? '<i class="fas fa-crown" style="color: #ffd700;" title="You created this community"></i>' : ''}
-                        </h3>
-                        <p style="color: #999; margin: 0;">c/${community.name}</p>
-                        <div style="display: flex; align-items: center; margin-top: 0.5rem; gap: 0.5rem;">
-                            <span style="background: ${community.type === 'private' ? '#ef4444' : '#10b981'}; color: white; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: bold;">
-                                ${community.type.toUpperCase()}
-                            </span>
-                            <span style="font-size: 0.9rem; color: #ccc;">
-                                ${utils.formatNumber(community.memberCount)} members
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <button id="closeCommunityDetailModal" class="modal-close" aria-label="Close community details">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
-
-            // Description
-            description.textContent = community.description || 'No description available.';
-
-            // Community info
-            creator.textContent = community.createdBy;
-            creationDate.textContent = new Date(community.createdAt).toLocaleDateString();
-            memberCount.textContent = utils.formatNumber(community.memberCount);
-            communityType.innerHTML = `
-                <span style="background: ${community.type === 'private' ? '#ef4444' : '#10b981'}; color: white; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: bold;">
-                    ${community.type.toUpperCase()}
-                </span>
-            `;
-
-            // Topics
-            if (community.topics && community.topics.length > 0) {
-                topics.innerHTML = community.topics.map(topic => `
-                    <span style="background: #404040; color: #ccc; padding: 4px 8px; border-radius: 6px; font-size: 12px; margin-right: 0.5rem; margin-bottom: 0.5rem; display: inline-block;">
-                        ${topic}
-                    </span>
-                `).join('');
+            if (!state.currentUser) {
+                // Show onboarding modal
+                document.getElementById('onboardingOverlay').classList.add('active');
             } else {
-                topics.innerHTML = '<span style="color: #666; font-size: 0.9rem;">No topics specified</span>';
+                // User is already registered, initialize the app
+                updateUserInterface(state.currentUser);
+                initializeSampleData();
+                postManager.renderPosts();
+                communityManager.updateCommunityLists();
+                liveUpdatesSystem.start();
             }
 
-            // Recent posts
-            const communityPosts = state.posts.filter(p => p.communityId === community.id).slice(0, 3);
-            if (communityPosts.length > 0) {
-                posts.innerHTML = communityPosts.map(post => `
-                    <div style="background: #2a2a2a; padding: 0.75rem; border-radius: 8px; margin-bottom: 0.5rem;">
-                        <h4 style="font-size: 0.9rem; margin: 0 0 0.25rem 0;">${post.title}</h4>
-                        <p style="font-size: 0.8rem; color: #999; margin: 0;">
-                            by ${post.author} • ${utils.getTimeAgo(post.timestamp)}
-                        </p>
-                        <div style="display: flex; align-items: center; margin-top: 0.5rem; font-size: 0.75rem; color: #666;">
-                            <span>${utils.formatNumber(post.votes)} votes</span>
-                            <span style="margin: 0 0.5rem;">•</span>
-                            <span>${utils.formatNumber(post.comments)} comments</span>
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                posts.innerHTML = '<p style="color: #666;">No posts yet in this community.</p>';
-            }
+            // Setup all event listeners
+            setupEventListeners();
 
-            // Join/Leave button
-            const isMember = state.userMemberships.includes(community.id);
-            const isCreator = state.userCreatedCommunities.includes(community.id);
-            
-            if (isCreator) {
-                joinLeaveButton.classList.add('hidden');
-                deleteButton.classList.remove('hidden');
-                deleteButton.onclick = () => {
-                    communityManager.deleteCommunity(community.id);
-                    hideModal('community-detail-modal');
-                };
-            } else {
-                joinLeaveButton.classList.remove('hidden');
-                deleteButton.classList.add('hidden');
-                joinLeaveButton.textContent = isMember ? 'Leave' : 'Join';
-                joinLeaveButton.className = `btn ${isMember ? 'btn-secondary' : 'btn-primary'}`;
-                joinLeaveButton.onclick = () => {
-                    if (isMember) {
-                        communityManager.leaveCommunity(community.id);
-                    } else {
-                        communityManager.joinCommunity(community.id);
-                    }
-                    hideModal('community-detail-modal');
-                };
-            }
-
-            // Add close button event listener
-            document.getElementById('closeCommunityDetailModal').onclick = () => {
-                hideModal('community-detail-modal');
-            };
-
-            showModal('community-detail-modal');
+            // Subscribe to state changes
+            stateManager.subscribe((newState) => {
+                // Update community lists when state changes
+                communityManager.updateCommunityLists();
+                
+                // Update live stats
+                liveUpdatesSystem.updateLiveStats();
+            });
         }
 
-        // Close media viewer
-        document.getElementById('closeMediaViewer')?.addEventListener('click', () => {
-            hideModal('media-viewer-modal');
-        });
-
-        // State change subscription
-        stateManager.subscribe((state) => {
-            // Update UI when state changes
-            communityManager.updateCommunityLists();
-            liveUpdatesSystem.updateLiveStats();
-        });
-
-        // Initialize browse communities modal
-        document.addEventListener('DOMContentLoaded', () => {
-            const browseCommunityModal = document.getElementById('browse-communities-modal');
-            if (browseCommunityModal) {
-                // Set up community tab filters
-                const tabButtons = browseCommunityModal.querySelectorAll('[data-tab]');
-                tabButtons.forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        const tabType = e.currentTarget.dataset.tab;
-                        
-                        // Update active tab
-                        tabButtons.forEach(btn => {
-                            btn.classList.remove('active');
-                            btn.setAttribute('aria-selected', 'false');
-                        });
-                        e.currentTarget.classList.add('active');
-                        e.currentTarget.setAttribute('aria-selected', 'true');
-                        
-                        // Filter communities
-                        const state = stateManager.getState();
-                        const filteredCommunities = communityManager.filterCommunities(state.communities, tabType);
-                        displayBrowseCommunities(filteredCommunities);
-                    });
-                });
-
-                // Initialize with all communities
-                const showBrowseModal = () => {
-                    const state = stateManager.getState();
-                    displayBrowseCommunities(state.communities);
-                };
-
-                // Show communities when modal opens
-                const observer = new MutationObserver((mutations) => {
-                    mutations.forEach((mutation) => {
-                        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                            if (browseCommunityModal.classList.contains('active')) {
-                                showBrowseModal();
-                            }
-                        }
-                    });
-                });
-
-                observer.observe(browseCommunityModal, { attributes: true });
-            }
-        });
-
-        // Performance optimization: Lazy loading for images
-        document.addEventListener('DOMContentLoaded', () => {
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            img.src = img.dataset.src;
-                            img.classList.remove('lazy');
-                            imageObserver.unobserve(img);
-                        }
-                    });
-                });
-
-                // Observe all lazy images
-                document.querySelectorAll('img[data-src]').forEach(img => {
-                    imageObserver.observe(img);
-                });
-            }
-        });
+        // Start the application when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
 
         // Service Worker Registration (for PWA capabilities)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
-                    .then((registration) => {
+                    .then(registration => {
                         console.log('SW registered: ', registration);
                     })
-                    .catch((registrationError) => {
+                    .catch(registrationError => {
                         console.log('SW registration failed: ', registrationError);
                     });
             });
         }
+
+        // Handle online/offline status
+        window.addEventListener('online', () => {
+            utils.showNotification('Connection restored!', 'success');
+            liveUpdatesSystem.start();
+        });
+
+        window.addEventListener('offline', () => {
+            utils.showNotification('You are offline. Some features may be limited.', 'warning');
+            liveUpdatesSystem.stop();
+        });
+
+        // Performance monitoring
+        window.addEventListener('load', () => {
+            if ('performance' in window) {
+                const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+                console.log(`SmileX loaded in ${loadTime}ms`);
+            }
+        });
 
         // Error handling
         window.addEventListener('error', (e) => {
@@ -4715,14 +5925,49 @@
             utils.showNotification('An error occurred while processing your request.', 'error');
         });
 
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', () => {
-            liveUpdatesSystem.stop();
-            stateManager.saveToStorage();
+        // Accessibility improvements
+        document.addEventListener('keydown', (e) => {
+            // Add keyboard navigation for custom elements
+            if (e.key === 'Tab') {
+                // Ensure proper focus management
+                const focusableElements = document.querySelectorAll(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                );
+                
+                // Add visual focus indicators if needed
+                focusableElements.forEach(el => {
+                    el.addEventListener('focus', () => {
+                        el.style.outline = '2px solid var(--primary-color)';
+                        el.style.outlineOffset = '2px';
+                    });
+                    
+                    el.addEventListener('blur', () => {
+                        el.style.outline = '';
+                        el.style.outlineOffset = '';
+                    });
+                });
+            }
         });
 
-        console.log('🎉 SmileX Advanced Social Platform Loaded Successfully! 🎉');
-        console.log('Features: Real-time updates, Live polls, Media sharing, Community management, Chat system, and more!');
+        // Console welcome message
+        console.log(`
+        🎉 Welcome to SmileX! 🎉
+        
+        A fully functional social media platform with:
+        ✨ Real-time features and live updates
+        🗳️ Interactive polls and voting
+        📱 Responsive design for all devices
+        🌐 Community management system
+        💬 Live chat support
+        🔍 Advanced search capabilities
+        📸 Media sharing and camera integration
+        ♿ Full accessibility support
+        🎨 Modern UI with smooth animations
+        
+        Built with vanilla JavaScript, HTML5, and CSS3
+        Version: 2.0.0 Enhanced
+        `);
+
     </script>
 </body>
 </html>
