@@ -168,7 +168,7 @@
             {
                 backgroundImage: '',
                 title: 'Gaming Zone',
-                description: 'Explore and have fun playing all in kinds or games,more. ',
+                description: 'Explore a zone of games ',
                 redirectUrl: 'game1.html',
                 ctaText: 'Begin now'
             },
