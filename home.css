@@ -201,18 +201,20 @@
         .btn-contact {
             padding: 8px 20px;
             background: transparent;
-            color: white;
+            color: transparent;
             border-radius: 25px;
             text-decoration: none;
             font-weight: 600;
             transition: all var(--transition-speed) ease;
             border: 2px solid transparent;
+            user-select: none;
+            pointer-events: none;
         }
 
         .btn-contact:hover {
             background: transparent;
-            border-color: var(--color-accent);
-            color: var(--color-accent);
+            border-color: transparent;
+            color: transparent;
             transform: translateY(-3px);
         }
 

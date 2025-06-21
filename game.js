@@ -12,7 +12,11 @@
                 this.cacheTimeout = 10 * 60 * 1000;
                 
                 this.init();
+
+                
             }
+
+            
 
             init() {
                 this.setupEventListeners();
@@ -314,6 +318,8 @@
                                     <i class="fas fa-sticky-note me-1"></i>Notes
                                 </button>
                             </div>
+
+                            <!--
                             
                             <div class="d-flex gap-1 flex-wrap">
                                 <a href="https://store.steampowered.com/search/?term=${encodeURIComponent(game.name)}" 
@@ -334,6 +340,8 @@
                             </div>
                         </div>
                     </div>
+
+                    -->
                 `;
                 
                 return col;
@@ -437,6 +445,8 @@
                                 </div>
                             </div>
                         ` : ''}
+
+                        <!--
                         
                         <div class="mt-4">
                             <h5><i class="fas fa-shopping-cart me-2"></i>Where to Buy</h5>
@@ -463,6 +473,8 @@
                                 </a>
                             </div>
                         </div>
+
+                        -->
                     `;
                 }
                 

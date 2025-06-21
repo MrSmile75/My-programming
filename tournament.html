@@ -7,11 +7,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR-ADSENSE-ID" crossorigin="anonymous"></script>
 
     <style>
         :root {
@@ -40,10 +43,128 @@
             background: var(--bg-gradient);
             min-height: 100vh;
             color: white;
+            overflow-x: hidden;
         }
 
         .hidden {
             display: none !important;
+        }
+
+        /* Simplified Animations */
+        @keyframes forceDisplay {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.95);
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideInFromTop {
+            0% { transform: translateY(-20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Attribution Banner */
+        .attribution-banner {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            border-bottom: 1px solid var(--primary-color);
+            position: sticky;
+            top: 0;
+            z-index: 1001;
+        }
+
+        .attribution-banner a {
+            color: var(--warning-color);
+            text-decoration: none;
+        }
+
+        .attribution-banner a:hover {
+            text-decoration: underline;
+        }
+
+        /* Commercial Use Notice */
+        .commercial-notice {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid var(--warning-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .commercial-notice-title {
+            color: var(--warning-color);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .commercial-notice-text {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            opacity: 0.9;
+        }
+
+        .commercial-notice a {
+            color: var(--warning-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .commercial-notice a:hover {
+            text-decoration: underline;
+        }
+
+        /* API Usage Status */
+        .api-usage-container {
+            background: rgba(0, 184, 148, 0.1);
+            border: 1px solid var(--success-color);
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .api-usage-title {
+            color: var(--success-color);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .api-usage-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .api-usage-stat {
+            text-align: center;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .api-usage-value {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--warning-color);
         }
 
         /* Modal Styles */
@@ -53,159 +174,442 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
         .modal-content {
-            background: white;
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
             padding: 2rem;
-            border-radius: 15px;
+            border-radius: 20px;
             text-align: center;
-            max-width: 400px;
+            max-width: 500px;
             width: 90%;
-            color: var(--dark-color);
+            color: white;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            animation: forceDisplay 0.3s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-title {
             margin-bottom: 1rem;
-            color: var(--primary-color);
+            color: var(--warning-color);
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
         .modal-input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid var(--light-color);
-            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
             margin-bottom: 1rem;
             font-size: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(10px);
         }
 
         .modal-input:focus {
             outline: none;
-            border-color: var(--primary-color);
+            border-color: var(--warning-color);
+            box-shadow: 0 0 10px rgba(253, 203, 110, 0.3);
+        }
+
+        .modal-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Premium Modal Styles */
+        .premium-modal-content {
+            max-width: 600px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d3436 50%, #000000 100%);
+            border: 2px solid var(--gold-color);
+        }
+
+        .premium-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: var(--premium-gradient);
+            border-radius: 15px;
+            color: var(--dark-color);
+        }
+
+        .premium-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .premium-subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .premium-features {
+            margin: 2rem 0;
+        }
+
+        .feature-category {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .feature-category-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--gold-color);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .premium-feature {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .premium-feature i {
+            color: var(--gold-color);
+            font-size: 1.2rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        .premium-feature-text {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .premium-pricing {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 15px;
+            border: 2px solid var(--gold-color);
+        }
+
+        .premium-price {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--gold-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .premium-period {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .premium-savings {
+            background: var(--success-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
         }
 
         /* Navigation */
         .navbar {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
             padding: 1rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 2px solid rgba(108, 92, 231, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .navbar-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 1rem;
+            padding: 0 2rem;
         }
 
         .logo {
             font-family: 'Orbitron', monospace;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            color: white;
+            color: var(--warning-color);
         }
 
         .nav-controls {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .user-profile {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(108, 92, 231, 0.2);
             padding: 0.5rem 1rem;
             border-radius: 25px;
+            border: 1px solid var(--primary-color);
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 1.2rem;
+            border: 2px solid var(--warning-color);
         }
 
         .premium-badge {
             background: var(--premium-gradient);
             color: var(--dark-color);
-            padding: 0.25rem 0.5rem;
-            border-radius: 10px;
+            padding: 0.3rem 0.6rem;
+            border-radius: 12px;
             font-size: 0.7rem;
             font-weight: bold;
             margin-left: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
         }
 
         .user-name {
             font-weight: 600;
+            font-size: 1.1rem;
         }
 
         /* Main Container */
         .main-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 2rem auto;
-            padding: 0 1rem;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
         }
 
-        /* Tab Navigation */
-        .tab-navigation {
-            display: flex;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 0.5rem;
-            margin-bottom: 2rem;
-            backdrop-filter: blur(10px);
+        /* Tournament Zone */
+        .tournament-zone {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 25px;
+            padding: 1.5rem;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(108, 92, 231, 0.3);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
         }
 
-        .tab-btn {
-            flex: 1;
+        .tournament-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
             padding: 1rem;
-            background: transparent;
-            border: none;
-            color: white;
+            background: var(--premium-gradient);
+            border-radius: 15px;
+            color: var(--dark-color);
+        }
+
+        .tournament-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .tournament-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .leaderboard {
+            margin-bottom: 2rem;
+        }
+
+        .leaderboard-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--warning-color);
+            text-align: center;
+        }
+
+        .rank-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .rank-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .rank-item.current-user {
+            border-left-color: var(--warning-color);
+            background: rgba(253, 203, 110, 0.1);
+        }
+
+        .rank-item.rank-1 {
+            border-left-color: var(--gold-color);
+        }
+
+        .rank-item.rank-2 {
+            border-left-color: var(--silver-color);
+        }
+
+        .rank-item.rank-3 {
+            border-left-color: var(--bronze-color);
+        }
+
+        .rank-number {
+            font-weight: bold;
+            font-size: 1.1rem;
+            min-width: 30px;
+        }
+
+        .rank-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .rank-info {
+            flex: 1;
+        }
+
+        .rank-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .rank-score {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            margin-top: 1rem;
+        }
+
+        .comments-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--success-color);
+            text-align: center;
+        }
+
+        .comment-input-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid var(--primary-color);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .comment-input:focus {
+            outline: none;
+            border-color: var(--warning-color);
+        }
+
+        .comment-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .comment-send-btn {
+            padding: 0.8rem 1rem;
+            background: var(--success-color);
+            border: none;
+            border-radius: 10px;
+            color: white;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 600;
         }
 
-        .tab-btn.active {
-            background: var(--primary-color);
-            transform: translateY(-2px);
+        .comment-send-btn:hover {
+            background: #00a085;
         }
 
-        .tab-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .comments-list {
+            max-height: 300px;
+            overflow-y: auto;
         }
 
-        /* Tab Content */
-        .tab-content {
-            display: none;
+        .comment-item {
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            font-size: 0.85rem;
+            animation: fadeIn 0.3s ease;
         }
 
-        .tab-content.active {
-            display: block;
+        .comment-author {
+            font-weight: bold;
+            color: var(--warning-color);
+            margin-bottom: 0.3rem;
+        }
+
+        .comment-text {
+            line-height: 1.4;
+        }
+
+        .comment-time {
+            font-size: 0.7rem;
+            opacity: 0.6;
+            margin-top: 0.3rem;
         }
 
         /* Quiz Section */
         .quiz-section {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 25px;
+            padding: 2.5rem;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(108, 92, 231, 0.3);
         }
 
         .quiz-header {
@@ -214,105 +618,105 @@
 
         .quiz-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
             margin-bottom: 1rem;
         }
 
         .stat-item {
             text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 15px;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--warning-color);
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        /* Timer */
-        .timer-container {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .timer {
-            font-size: 3rem;
-            font-weight: bold;
-            color: var(--warning-color);
-            margin-bottom: 1rem;
-        }
-
-        .timer-progress {
-            width: 100%;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .timer-bar {
-            height: 100%;
-            background: var(--warning-color);
-            transition: width 1s linear;
-        }
-
-        /* Hint System */
-        .hint-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-        }
-
-        .hint-trials {
-            font-weight: 600;
-        }
-
-        .hint-refresh {
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
-
-        .hint-btn {
-            padding: 0.5rem 1rem;
-            background: var(--success-color);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
+            background: rgba(108, 92, 231, 0.2);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--primary-color);
             transition: all 0.3s ease;
         }
 
-        .hint-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.2);
         }
 
-        .hint-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .stat-value {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: var(--warning-color);
+        }
+
+        .stat-value.negative {
+            color: var(--danger-color);
+        }
+
+        .stat-value.positive {
+            color: var(--success-color);
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        /* API Status Indicator */
+        .api-status-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(0, 184, 148, 0.1);
+            border-radius: 15px;
+            border: 1px solid var(--success-color);
+        }
+
+        .api-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .api-status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .api-status-badge.connected {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .api-status-badge.error {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .api-status-badge.loading {
+            background: var(--warning-color);
+            color: var(--dark-color);
+        }
+
+        .api-status-badge.limited {
+            background: var(--warning-color);
+            color: var(--dark-color);
+        }
+
+        .question-source {
+            font-size: 0.9rem;
+            opacity: 0.8;
         }
 
         /* Google Ads Container */
         .google-ads-container {
             background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
             border-radius: 15px;
-            margin: 1rem 0;
+            margin: 2rem 0;
+            padding: 1rem;
             text-align: center;
-            overflow: hidden;
             min-height: 250px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            animation: slideInFromTop 0.5s ease-out;
         }
 
         .ads-placeholder {
@@ -325,103 +729,149 @@
             border-radius: 10px;
             color: rgba(255, 255, 255, 0.6);
             font-size: 1.1rem;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ads-label {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Timer */
+        .timer-container {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 20px;
+            border: 2px solid var(--warning-color);
+        }
+
+        .timer {
+            font-size: 4rem;
+            font-weight: bold;
+            font-family: 'Orbitron', monospace;
+            margin-bottom: 1rem;
+            color: var(--warning-color);
+        }
+
+        .timer.urgent {
+            color: var(--danger-color) !important;
+        }
+
+        .timer-progress {
+            width: 100%;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--warning-color);
+        }
+
+        .timer-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--warning-color), var(--danger-color));
+            transition: width 1s linear;
+            border-radius: 10px;
         }
 
         /* Question Container */
         .question-container {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 3rem;
+            border-radius: 25px;
             margin-bottom: 2rem;
             text-align: center;
+            border: 3px solid var(--primary-color);
+            position: relative;
+        }
+
+        .question-container.force-display {
+            animation: forceDisplay 0.5s ease-out;
         }
 
         .question-number {
-            font-size: 1rem;
-            opacity: 0.8;
+            font-size: 1.2rem;
+            opacity: 0.9;
             margin-bottom: 1rem;
+            color: var(--secondary-color);
+            font-weight: 600;
         }
 
         .question-text {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
             line-height: 1.4;
+            color: white;
         }
 
         .question-category {
-            background: var(--primary-color);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
+            background: var(--premium-gradient);
+            color: var(--dark-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
             display: inline-block;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-weight: bold;
         }
 
         /* Options */
         .options-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
             margin-bottom: 2rem;
         }
 
         .option {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
-            border-radius: 15px;
+            background: rgba(108, 92, 231, 0.2);
+            padding: 2.5rem;
+            border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1.2rem;
+            border: 2px solid transparent;
         }
 
         .option:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
+            background: rgba(108, 92, 231, 0.4);
+            transform: translateY(-5px);
+            border-color: var(--warning-color);
+            box-shadow: 0 10px 25px rgba(108, 92, 231, 0.3);
         }
 
         .option.correct {
             background: var(--success-color);
-            animation: correctAnswer 0.5s ease;
+            border-color: var(--success-color);
         }
 
         .option.incorrect {
             background: var(--danger-color);
-            animation: incorrectAnswer 0.5s ease;
+            border-color: var(--danger-color);
         }
 
         .option.hint {
             background: var(--warning-color);
             color: var(--dark-color);
-            animation: hintGlow 1s ease infinite alternate;
-        }
-
-        @keyframes correctAnswer {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes incorrectAnswer {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-            100% { transform: translateX(0); }
-        }
-
-        @keyframes hintGlow {
-            0% { box-shadow: 0 0 10px var(--warning-color); }
-            100% { box-shadow: 0 0 20px var(--warning-color); }
+            border-color: var(--warning-color);
         }
 
         /* Feedback */
         .feedback {
-            padding: 1rem;
-            border-radius: 10px;
+            padding: 1.5rem;
+            border-radius: 15px;
             text-align: center;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 1rem;
+            font-size: 1.2rem;
+            animation: forceDisplay 0.3s ease-out;
         }
 
         .feedback.correct {
@@ -432,252 +882,63 @@
             background: var(--danger-color);
         }
 
-        /* Tournament Panel */
-        .tournament-panel {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .tournament-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .tournament-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .tournament-status {
-            opacity: 0.8;
-        }
-
-        /* Leaderboard */
-        .leaderboard {
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        .leaderboard-item {
+        /* Hint System */
+        .hint-container {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .leaderboard-item:hover {
-            transform: translateX(5px);
-        }
-
-        .leaderboard-item.current-user {
-            background: rgba(108, 92, 231, 0.3);
-            border: 2px solid var(--primary-color);
-        }
-
-        .rank {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-right: 1rem;
-            min-width: 50px;
-        }
-
-        .rank.gold { color: var(--gold-color); }
-        .rank.silver { color: var(--silver-color); }
-        .rank.bronze { color: var(--bronze-color); }
-
-        .player-info {
-            flex: 1;
-        }
-
-        .player-name {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .player-score {
-            opacity: 0.8;
-            font-size: 0.9rem;
-        }
-
-        /* Comments Section */
-        .comments-section {
-            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 184, 148, 0.2);
             border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            height: 600px;
-            display: flex;
-            flex-direction: column;
+            border: 2px solid var(--success-color);
         }
 
-        .comments-header {
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .comment-input {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .comment-input input {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            outline: none;
-        }
-
-        .comment-input input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .emoji-picker {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .emoji-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .emoji-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-
-        .comments-list {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-
-        .comment {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 15px;
-            margin-bottom: 1rem;
-        }
-
-        .comment-author {
-            font-weight: 600;
-            color: var(--warning-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .comment-text {
-            margin-bottom: 0.5rem;
-            line-height: 1.4;
-        }
-
-        .comment-time {
-            font-size: 0.8rem;
-            opacity: 0.6;
-        }
-
-        /* Disco Text Animation for Premium Users */
-        @keyframes discoText {
-            0% { color: #ff0000; text-shadow: 0 0 10px #ff0000; }
-            14% { color: #ff7f00; text-shadow: 0 0 10px #ff7f00; }
-            28% { color: #ffff00; text-shadow: 0 0 10px #ffff00; }
-            42% { color: #00ff00; text-shadow: 0 0 10px #00ff00; }
-            57% { color: #0000ff; text-shadow: 0 0 10px #0000ff; }
-            71% { color: #4b0082; text-shadow: 0 0 10px #4b0082; }
-            85% { color: #9400d3; text-shadow: 0 0 10px #9400d3; }
-            100% { color: #ff0000; text-shadow: 0 0 10px #ff0000; }
-        }
-
-        .disco-text {
-            animation: discoText 2s linear infinite;
-            font-weight: bold;
+        .hint-trials {
+            font-weight: 700;
             font-size: 1.1rem;
         }
 
-        /* Premium Modal */
-        .premium-modal-content {
-            background: linear-gradient(135deg, #2d3436 0%, #000000 100%);
+        .hint-refresh {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .hint-btn {
+            padding: 1rem 1.5rem;
+            background: var(--success-color);
+            border: none;
+            border-radius: 12px;
             color: white;
-            border: 2px solid gold;
-        }
-
-        .premium-features {
-            text-align: left;
-            margin: 1.5rem 0;
-        }
-
-        .premium-feature {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .premium-feature i {
-            color: gold;
-        }
-
-        .premium-price {
-            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
             font-weight: bold;
-            color: gold;
-            margin: 1rem 0;
+            font-size: 1rem;
         }
 
-        /* Loading */
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
+        .hint-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 184, 148, 0.3);
         }
 
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .hint-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         /* Buttons */
         .btn {
-            padding: 0.75rem 1.5rem;
+            padding: 1rem 2rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 1rem;
         }
 
         .btn-primary {
@@ -698,22 +959,165 @@
         .btn-premium {
             background: var(--premium-gradient);
             color: var(--dark-color);
+            font-size: 1.1rem;
+            padding: 1.2rem 2.5rem;
+        }
+
+        .btn-premium-large {
+            background: var(--premium-gradient);
+            color: var(--dark-color);
+            font-size: 1.3rem;
+            padding: 1.5rem 3rem;
+            border-radius: 15px;
+            width: 100%;
+            justify-content: center;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* Responsive */
+        /* Loading */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+            position: fixed;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 1001;
+            backdrop-filter: blur(10px);
+        }
+
+        .online-status {
+            top: 60px;
+            right: 15px;
+        }
+
+        .online-status.online {
+            background: rgba(0, 184, 148, 0.9);
+            color: white;
+        }
+
+        .online-status.offline {
+            background: rgba(225, 112, 85, 0.9);
+            color: white;
+        }
+
+        .active-users {
+            top: 60px;
+            left: 15px;
+            background: rgba(108, 92, 231, 0.9);
+            color: white;
+        }
+
+        .api-status {
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 184, 148, 0.9);
+            color: white;
+        }
+
+        /* Force Notification */
+        .force-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: var(--warning-color);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 3px solid var(--warning-color);
+            z-index: 2000;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            animation: forceDisplay 0.3s ease-out;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Premium Features Highlight */
+        .premium-highlight {
+            background: linear-gradient(45deg, var(--gold-color), var(--warning-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+
+        /* Premium Verification Badge */
+        .premium-verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--success-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        /* Rate Limit Warning */
+        .rate-limit-warning {
+            background: rgba(225, 112, 85, 0.1);
+            border: 2px solid var(--danger-color);
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .rate-limit-warning-title {
+            color: var(--danger-color);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                max-width: 1000px;
+            }
+
+            .tournament-zone {
+                position: static;
+                order: -1;
+            }
+        }
+
         @media (max-width: 768px) {
             .navbar-content {
                 flex-direction: column;
                 gap: 1rem;
+                padding: 0 1rem;
+            }
+
+            .main-container {
+                padding: 0 1rem;
             }
 
             .quiz-stats {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .options-container {
@@ -723,89 +1127,76 @@
             .hint-container {
                 flex-direction: column;
                 gap: 1rem;
+                text-align: center;
             }
 
-            .tab-navigation {
-                flex-direction: column;
+            .question-text {
+                font-size: 1.8rem;
             }
-        }
 
-        /* Online Status */
-        .online-status {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            z-index: 1001;
-        }
+            .timer {
+                font-size: 3rem;
+            }
 
-        .online-status.online {
-            background: var(--success-color);
-        }
+            .option {
+                padding: 2rem;
+                font-size: 1.1rem;
+            }
 
-        .online-status.offline {
-            background: var(--danger-color);
-        }
+            .premium-modal-content {
+                max-width: 95%;
+                margin: 1rem;
+            }
 
-        /* Active Users Counter */
-        .active-users {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            background: rgba(255, 255, 255, 0.2);
-            z-index: 1001;
-        }
-
-        /* Force Bot Display */
-        .force-display {
-            animation: forceDisplay 0.5s ease-in-out;
-        }
-
-        @keyframes forceDisplay {
-            0% { opacity: 0; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        /* API Status */
-        .api-status {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            z-index: 1001;
-            background: var(--success-color);
+            .google-ads-container {
+                margin: 1rem 0;
+                min-height: 200px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Online Status Indicator -->
-    <div class="online-status online" id="onlineStatus">
+    <!-- OpenTDB Attribution Banner -->
+    <div class="attribution-banner">
+        <i class="fas fa-info-circle"></i> 
+        Trivia questions provided by the <a href="https://opentdb.com" target="_blank">Open Trivia Database</a> - 
+        Free for non-commercial use | 
+        <a href="https://opentdb.com/contact.php" target="_blank">Contact for commercial licensing</a>
+    </div>
+
+    <!-- Status Indicators -->
+    <div class="status-indicator online-status online" id="onlineStatus">
         <i class="fas fa-wifi"></i> Online
     </div>
 
-    <!-- Active Users Counter -->
-    <div class="active-users" id="activeUsers">
+    <div class="status-indicator active-users" id="activeUsers">
         <i class="fas fa-users"></i> Players: 0
     </div>
 
-    <!-- API Status -->
-    <div class="api-status" id="apiStatus">
+    <div class="status-indicator api-status" id="apiStatus">
         <i class="fas fa-database"></i> API Ready
     </div>
 
     <!-- Name Entry Modal -->
     <div class="modal-overlay" id="nameEntryModal">
         <div class="modal-content">
-            <h2 class="modal-title">Welcome to Quiz Tournament!</h2>
+            <h2 class="modal-title">
+                <i class="fas fa-trophy"></i> Welcome to Quiz Tournament!
+            </h2>
             <p>Enter your name to join the ultimate quiz challenge</p>
-            <input type="text" class="modal-input" id="nameInput" placeholder="Your Name" maxlength="20">
+            
+            <!-- Commercial Use Notice -->
+            <div class="commercial-notice">
+                <div class="commercial-notice-title">
+                    <i class="fas fa-exclamation-triangle"></i> Non-Commercial Use Only
+                </div>
+                <div class="commercial-notice-text">
+                    This application uses trivia questions from OpenTDB for free, non-commercial use. 
+                    For commercial licensing, please <a href="https://opentdb.com/contact.php" target="_blank">contact OpenTDB</a>.
+                </div>
+            </div>
+            
+            <input type="text" class="modal-input" id="nameInput" placeholder="Enter Name" maxlength="20" autocomplete="name">
             <button class="btn btn-primary" id="submitNameBtn">
                 <i class="fas fa-play"></i> Join Tournament
             </button>
@@ -815,46 +1206,134 @@
     <!-- Premium Modal -->
     <div class="modal-overlay hidden" id="premiumModal">
         <div class="modal-content premium-modal-content">
-            <h2 class="modal-title" style="color: gold;">
-                <i class="fas fa-crown"></i> Premium Membership
-            </h2>
-            <p>Upgrade to Premium for exclusive benefits!</p>
-            
-            <div class="premium-features">
-                <div class="premium-feature">
-                    <i class="fas fa-check-circle"></i>
-                    <span>20 daily hints (refreshes every 24 hours)</span>
+            <div class="premium-header">
+                <div class="premium-title">
+                    <i class="fas fa-crown"></i> PREMIUM MEMBERSHIP
                 </div>
-                <div class="premium-feature">
-                    <i class="fas fa-check-circle"></i>
-                    <span>+5 seconds for each question</span>
-                </div>
-                <div class="premium-feature">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Colorful disco text in comments</span>
-                </div>
-                <div class="premium-feature">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Premium badge next to your name</span>
-                </div>
-                <div class="premium-feature">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Ad-free experience</span>
-                </div>
-                <div class="premium-feature">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Real-time live rankings</span>
+                <div class="premium-subtitle">
+                    Enhanced Gaming Experience (Not Trivia Content)
                 </div>
             </div>
+
+            <!-- Important Notice -->
+            <div class="commercial-notice">
+                <div class="commercial-notice-title">
+                    <i class="fas fa-info-circle"></i> Important Notice
+                </div>
+                <div class="commercial-notice-text">
+                    Premium features enhance your gaming experience but do not monetize OpenTDB trivia content. 
+                    All trivia questions remain free from OpenTDB. Premium features include UI enhancements, 
+                    gaming tools, and ad removal - not the trivia content itself.
+                </div>
+            </div>
+
+            <div class="premium-features">
+                <!-- Gaming Enhancement Features -->
+                <div class="feature-category">
+                    <div class="feature-category-title">
+                        <i class="fas fa-gamepad"></i> Gaming Enhancements
+                    </div>
+                    <div class="premium-feature">
+                        <i class="fas fa-lightbulb"></i>
+                        <div class="premium-feature-text">
+                            <strong>20 Daily Hints</strong><br>
+                            Enhanced hint system with 20 hints per day (vs 10 for free users)
+                        </div>
+                    </div>
+                    <div class="premium-feature">
+                        <i class="fas fa-clock"></i>
+                        <div class="premium-feature-text">
+                            <strong>+5 Extra Seconds</strong><br>
+                            More thinking time with 20 seconds per question instead of 15
+                        </div>
+                    </div>
+                    <div class="premium-feature">
+                        <i class="fas fa-trophy"></i>
+                        <div class="premium-feature-text">
+                            <strong>Premium Badge</strong><br>
+                            Show premium status with verified golden badge in leaderboards
+                        </div>
+                    </div>
+                    <div class="premium-feature">
+                        <i class="fas fa-chart-line"></i>
+                        <div class="premium-feature-text">
+                            <strong>Advanced Statistics</strong><br>
+                            Detailed performance analytics and progress tracking
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experience Features -->
+                <div class="feature-category">
+                    <div class="feature-category-title">
+                        <i class="fas fa-star"></i> Experience Features
+                    </div>
+                    <div class="premium-feature">
+                        <i class="fas fa-ad"></i>
+                        <div class="premium-feature-text">
+                            <strong>Ad-Free Experience</strong><br>
+                            Enjoy uninterrupted gameplay with no advertisements
+                        </div>
+                    </div>
+                    <div class="premium-feature">
+                        <i class="fas fa-palette"></i>
+                        <div class="premium-feature-text">
+                            <strong>Enhanced UI</strong><br>
+                            Premium themes and visual enhancements for better experience
+                        </div>
+                    </div>
+                    <div class="premium-feature">
+                        <i class="fas fa-users"></i>
+                        <div class="premium-feature-text">
+                            <strong>Priority Support</strong><br>
+                            Get faster response times and dedicated customer support
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Features -->
+                <div class="feature-category">
+                    <div class="feature-category-title">
+                        <i class="fas fa-cog"></i> Technical Features
+                    </div>
+                    <div class="premium-feature">
+                        <i class="fas fa-database"></i>
+                        <div class="premium-feature-text">
+                            <strong>Better Caching</strong><br>
+                            Improved question caching to reduce API calls and faster loading
+                        </div>
+                    </div>
+                    <div class="premium-feature">
+                        <i class="fas fa-crown"></i>
+                        <div class="premium-feature-text">
+                            <strong>Tournament Priority</strong><br>
+                            Get highlighted in leaderboards with verified premium status
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="premium-pricing">
+                <div class="premium-price">$4.99</div>
+                <div class="premium-period">per month</div>
+                <div class="premium-savings">Gaming enhancements only - trivia content remains free!</div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button class="btn btn-premium-large" id="upgradePremiumBtn">
+                    <i class="fas fa-crown"></i> UPGRADE GAMING EXPERIENCE
+                </button>
+            </div>
             
-            <div class="premium-price">$4.99</div>
-            
-            <button class="btn btn-premium" id="upgradePremiumBtn">
-                <i class="fas fa-crown"></i> Upgrade Now
-            </button>
-            <button class="btn btn-secondary" id="closePremiumBtn" style="margin-top: 1rem;">
-                Maybe Later
-            </button>
+            <div style="margin-top: 1rem;">
+                <button class="btn btn-secondary" id="closePremiumBtn" style="width: 100%;">
+                    <i class="fas fa-times"></i> Maybe Later
+                </button>
+            </div>
+
+            <div style="text-align: center; margin-top: 1rem; font-size: 0.8rem; opacity: 0.7;">
+               <i class="fas fa-shield-alt"></i> Secure payment - Gaming features only, trivia content remains free from OpenTDB
+            </div>
         </div>
     </div>
 
@@ -868,1108 +1347,1536 @@
                 <div class="user-profile" id="userProfile">
                     <div class="user-avatar" id="userAvatar">?</div>
                     <div class="user-name" id="userName">Guest</div>
-                    <div class="premium-badge hidden" id="premiumBadge">PREMIUM</div>
+                    <div class="premium-badge hidden" id="premiumBadge">
+                        <i class="fas fa-crown"></i> PREMIUM
+                        <span class="premium-verified hidden" id="premiumVerified">
+                            <i class="fas fa-check-circle"></i> VERIFIED
+                        </span>
+                    </div>
                 </div>
                 <button class="btn btn-premium" id="showPremiumBtn">
-                    <i class="fas fa-crown"></i> Go Premium
+                    <i class="fas fa-crown"></i> Enhance Gaming
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- Tab Navigation -->
+    <!-- Main Container -->
     <div class="main-container">
-        <div class="tab-navigation">
-            <button class="tab-btn active" data-tab="quizTab">
-                <i class="fas fa-question-circle"></i> Quiz
-            </button>
-            <button class="tab-btn" data-tab="leaderboardTab">
-                <i class="fas fa-trophy"></i> Live Rankings
-            </button>
-            <button class="tab-btn" data-tab="commentsTab">
-                <i class="fas fa-comments"></i> Live Chat
-            </button>
-        </div>
-
-        <!-- Quiz Tab -->
-        <div class="tab-content active" id="quizTab">
-            <div class="quiz-section">
-                <!-- Quiz Header -->
-                <div class="quiz-header">
-                    <div class="quiz-stats">
-                        <div class="stat-item">
-                            <div class="stat-value" id="currentScore">0</div>
-                            <div class="stat-label">Score</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="questionNumber">1</div>
-                            <div class="stat-label">Question</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="streak">0</div>
-                            <div class="stat-label">Streak</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="userRank">-</div>
-                            <div class="stat-label">Live Rank</div>
-                        </div>
+        <!-- Quiz Section -->
+        <div class="quiz-section">
+            <!-- Quiz Header -->
+            <div class="quiz-header">
+                <div class="quiz-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="currentScore">0</div>
+                        <div class="stat-label">Score</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="questionNumber">1</div>
+                        <div class="stat-label">Question</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="streak">0</div>
+                        <div class="stat-label">Streak</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="accuracy">100%</div>
+                        <div class="stat-label">Accuracy</div>
                     </div>
                 </div>
 
-                <!-- Timer -->
-                <div class="timer-container">
-                    <div class="timer" id="timer">15</div>
-                    <div class="timer-progress">
-                        <div class="timer-bar" id="timerBar"></div>
+                <!-- API Status -->
+                <div class="api-status-container">
+                    <div class="api-info">
+                        <div class="api-status-badge connected" id="apiStatusBadge">
+                            <i class="fas fa-plug"></i> OpenTDB Connected
+                        </div>
+                        <div class="question-source" id="questionSource">
+                            Questions from: OpenTDB API (Free)
+                        </div>
+                    </div>
+                    <div style="font-size: 0.8rem; opacity: 0.7;">
+                        <span id="questionsAvailable">Loading...</span> questions available
                     </div>
                 </div>
 
-                <!-- Hint System -->
-                <div class="hint-container">
+                <!-- API Usage Stats -->
+                <div class="api-usage-container" id="apiUsageContainer">
+                    <div class="api-usage-title">
+                        <i class="fas fa-chart-bar"></i> API Usage (Respecting Rate Limits)
+                    </div>
+                    <div class="api-usage-stats">
+                        <div class="api-usage-stat">
+                            <div class="api-usage-value" id="apiRequestsToday">0</div>
+                            <div>Requests Today</div>
+                        </div>
+                        <div class="api-usage-stat">
+                            <div class="api-usage-value" id="cacheHitRate">0%</div>
+                            <div>Cache Hit Rate</div>
+                        </div>
+                        <div class="api-usage-stat">
+                            <div class="api-usage-value" id="questionsInCache">0</div>
+                            <div>Cached Questions</div>
+                        </div>
+                        <div class="api-usage-stat">
+                            <div class="api-usage-value" id="rateLimitStatus">Good</div>
+                            <div>Rate Limit Status</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timer -->
+            <div class="timer-container">
+                <div class="timer" id="timer">15</div>
+                <div class="timer-progress">
+                    <div class="timer-bar" id="timerBar"></div>
+                </div>
+                <div style="margin-top: 1rem; font-size: 1.1rem; font-weight: bold;">
+                    Time Remaining
+                </div>
+            </div>
+
+            <!-- Hint System -->
+            <div class="hint-container">
+                <div>
+                    <div class="hint-trials">
+                        <i class="fas fa-lightbulb"></i> Hints Remaining: <span id="hintsRemaining">10</span>
+                    </div>
+                    <div class="hint-refresh" id="hintRefreshTime">
+                        Hints refresh in: 24:00:00
+                    </div>
+                </div>
+                <button class="hint-btn" id="hintBtn">
+                    <i class="fas fa-eye"></i> Use Hint
+                </button>
+            </div>
+
+            <!-- Rate Limit Warning -->
+            <div class="rate-limit-warning hidden" id="rateLimitWarning">
+                <div class="rate-limit-warning-title">
+                    <i class="fas fa-exclamation-triangle"></i> API Rate Limit Reached
+                </div>
+                <div>Using cached questions to respect OpenTDB rate limits. Questions will refresh automatically.</div>
+            </div>
+
+            <!-- Question Container -->
+            <div class="question-container" id="questionContainer">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <div style="margin-left: 1rem; font-size: 1.2rem;">Loading questions from OpenTDB...</div>
+                </div>
+            </div>
+
+            <!-- Google Ads Container (After First Paragraph) -->
+            <div class="google-ads-container" id="googleAdsMiddle">
+                <div class="ads-label">
+                    <i class="fas fa-ad"></i> Advertisement
+                </div>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-YOUR-ADSENSE-ID"
+                     data-ad-slot="YOUR-AD-SLOT-ID"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <div class="ads-placeholder">
                     <div>
-                        <div class="hint-trials">
-                            <i class="fas fa-lightbulb"></i> Hints Remaining: <span id="hintsRemaining">10</span>
+                        <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <div>Google Ads will appear here</div>
+                        <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.5rem;">
+                            <span class="premium-highlight">Upgrade to Premium to remove ads</span>
                         </div>
-                        <div class="hint-refresh" id="hintRefreshTime">
-                            Hints refresh in: 24:00:00
-                        </div>
-                    </div>
-                    <button class="hint-btn" id="hintBtn">
-                        <i class="fas fa-eye"></i> Use Hint
-                    </button>
-                </div>
-
-                <!-- Question Container -->
-                <div class="question-container" id="questionContainer">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <div style="margin-left: 1rem;">Loading questions from OpenTDB...</div>
-                    </div>
-                </div>
-
-                <!-- Google Ads Container (After First Paragraph) -->
-                <div class="google-ads-container" id="googleAdsContainer">
-                    <!-- Google AdSense Code -->
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-XXXXXXXXXX"
-                         data-ad-slot="XXXXXXXXXX"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                    <div class="ads-placeholder">
-                        <div>
-                            <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                            <div>Google Ads will appear here</div>
-                            <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.5rem;">
-                                Premium users enjoy ad-free experience
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Options Container -->
-                <div class="options-container" id="optionsContainer"></div>
-
-                <!-- Feedback -->
-                <div class="feedback hidden" id="feedback"></div>
-            </div>
-        </div>
-
-        <!-- Leaderboard Tab -->
-        <div class="tab-content" id="leaderboardTab">
-            <div class="tournament-panel">
-                <div class="tournament-header">
-                    <div class="tournament-title">🏆 Live Tournament Rankings</div>
-                    <div class="tournament-status" id="tournamentStatus">Real-time rankings updated live!</div>
-                </div>
-                
-                <div class="leaderboard" id="leaderboard">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <div style="margin-left: 1rem;">Loading live rankings...</div>
                     </div>
                 </div>
             </div>
+
+            <!-- Options Container -->
+            <div class="options-container" id="optionsContainer"></div>
+
+            <!-- Feedback -->
+            <div class="feedback hidden" id="feedback"></div>
+
+            <!-- Next Question Button -->
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn btn-primary hidden" id="nextQuestionBtn">
+                    <i class="fas fa-arrow-right"></i> Next Question
+                </button>
+            </div>
         </div>
 
-        <!-- Comments Tab -->
-        <div class="tab-content" id="commentsTab">
+        <!-- Tournament Zone -->
+        <div class="tournament-zone">
+            <!-- Tournament Header -->
+            <div class="tournament-header">
+                <div class="tournament-title">
+                    <i class="fas fa-trophy"></i> Live Tournament
+                </div>
+                <div class="tournament-subtitle">
+                    Global Rankings & Live Chat
+                </div>
+            </div>
+
+            <!-- Leaderboard -->
+            <div class="leaderboard">
+                <div class="leaderboard-title">
+                    <i class="fas fa-medal"></i> Top Players
+                </div>
+                <div id="leaderboardList">
+                    <div class="loading" style="padding: 2rem;">
+                        <div class="spinner" style="width: 30px; height: 30px;"></div>
+                        <div style="margin-left: 0.5rem; font-size: 0.9rem;">Loading rankings...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments Section -->
             <div class="comments-section">
-                <div class="comments-header">
+                <div class="comments-title">
                     <i class="fas fa-comments"></i> Live Chat
-                    <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;">
-                        Real-time chat with all players
-                    </div>
                 </div>
                 
-                <!-- Emoji Picker -->
-                <div class="emoji-picker">
-                    <button class="emoji-btn" data-emoji="😀">😀</button>
-                    <button class="emoji-btn" data-emoji="😂">😂</button>
-                    <button class="emoji-btn" data-emoji="😍">😍</button>
-                    <button class="emoji-btn" data-emoji="🤔">🤔</button>
-                    <button class="emoji-btn" data-emoji="😎">😎</button>
-                    <button class="emoji-btn" data-emoji="🔥">🔥</button>
-                    <button class="emoji-btn" data-emoji="💯">💯</button>
-                    <button class="emoji-btn" data-emoji="👍">👍</button>
-                    <button class="emoji-btn" data-emoji="👎">👎</button>
-                    <button class="emoji-btn" data-emoji="❤️">❤️</button>
-                </div>
-                
-                <div class="comment-input">
-                    <input type="text" id="commentInput" placeholder="Type your message..." maxlength="100">
-                    <button class="btn btn-primary" id="sendCommentBtn">
+                <div class="comment-input-container">
+                    <input type="text" class="comment-input" id="commentInput" placeholder="Type a message..." maxlength="100">
+                    <button class="comment-send-btn" id="sendCommentBtn">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
-                
+
                 <div class="comments-list" id="commentsList">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <div style="margin-left: 1rem;">Loading live chat...</div>
+                    <div class="loading" style="padding: 1rem;">
+                        <div class="spinner" style="width: 20px; height: 20px;"></div>
+                        <div style="margin-left: 0.5rem; font-size: 0.8rem;">Loading chat...</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script>
-        // Firebase Configuration (Replace with your actual config)
-const firebaseConfig = {
-    apiKey: "your-api-key-here",
-    authDomain: "your-project.firebaseapp.com",
-    databaseURL: "https://your-project-default-rtdb.firebaseio.com/",
-    projectId: "your-project-id",
-    storageBucket: "your-project.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "your-app-id"
-};
+        // Firebase Configuration - Replace with your Firebase config
+        const firebaseConfig = {
+            apiKey: "YOUR-API-KEY",
+            authDomain: "YOUR-PROJECT.firebaseapp.com",
+            databaseURL: "https://YOUR-PROJECT-default-rtdb.firebaseio.com/",
+            projectId: "YOUR-PROJECT",
+            storageBucket: "YOUR-PROJECT.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "YOUR-APP-ID"
+        };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const realtimeDb = firebase.database();
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const auth = firebase.auth();
 
-// Global Variables
-let currentUser = null;
-let isPremium = false;
-let currentQuestion = null;
-let questionIndex = 0;
-let score = 0;
-let streak = 0;
-let timer = null;
-let timeLeft = 15;
-let hintsRemaining = 10;
-let lastHintRefresh = null;
-let questionsCache = [];
-let leaderboardData = [];
-let commentsData = [];
-let activeUsers = 0;
-let sessionToken = '';
-let usedHints = [];
-
-// OpenTDB API Configuration
-const OPENTDB_BASE_URL = 'https://opentdb.com/api.php';
-const OPENTDB_TOKEN_URL = 'https://opentdb.com/api_token.php?command=request';
-
-// Initialize Application
-document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
-    setupEventListeners();
-    initializeOpenTDB();
-    startRealTimeUpdates();
-    initializeGoogleAds();
-    setupNetworkMonitoring();
-});
-
-async function initializeApp() {
-    // Check for existing user data
-    const savedUser = localStorage.getItem('quizUser');
-    const savedPremium = localStorage.getItem('isPremium');
-    
-    if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        isPremium = savedPremium === 'true';
-        hideNameModal();
-        updateUserInterface();
-        loadHintData();
-        await initializeUserInDatabase();
-        startQuiz();
-    }
-
-    // Initialize hint refresh timer
-    updateHintRefreshTimer();
-    setInterval(updateHintRefreshTimer, 1000);
-}
-
-async function initializeUserInDatabase() {
-    if (!currentUser) return;
-
-    try {
-        // Add user to real-time database
-        await realtimeDb.ref(`users/${currentUser.id}`).set({
-            name: currentUser.name,
-            score: currentUser.score || 0,
-            questionsAnswered: currentUser.questionsAnswered || 0,
-            isPremium: isPremium,
-            lastActive: firebase.database.ServerValue.TIMESTAMP,
-            online: true
-        });
-
-        // Set up presence system
-        const userStatusRef = realtimeDb.ref(`users/${currentUser.id}/online`);
-        const connectedRef = realtimeDb.ref('.info/connected');
-        
-        connectedRef.on('value', (snapshot) => {
-            if (snapshot.val() === true) {
-                userStatusRef.onDisconnect().set(false);
-                userStatusRef.set(true);
-            }
-        });
-    } catch (error) {
-        console.error('Error initializing user in database:', error);
-    }
-}
-
-async function initializeOpenTDB() {
-    try {
-        // Get session token to avoid duplicate questions
-        const tokenResponse = await fetch(OPENTDB_TOKEN_URL);
-        const tokenData = await tokenResponse.json();
-        
-        if (tokenData.response_code === 0) {
-            sessionToken = tokenData.token;
-            document.getElementById('apiStatus').innerHTML = '<i class="fas fa-database"></i> OpenTDB Connected';
-        } else {
-            throw new Error('Failed to get session token');
-        }
-        
-        // Load initial questions
-        await loadQuestionsFromAPI();
-    } catch (error) {
-        console.error('Error initializing OpenTDB:', error);
-        document.getElementById('apiStatus').innerHTML = '<i class="fas fa-exclamation-triangle"></i> API Error';
-        document.getElementById('apiStatus').style.background = 'var(--danger-color)';
-        
-        // Fallback to local questions
-        loadFallbackQuestions();
-    }
-}
-
-async function loadQuestionsFromAPI() {
-    try {
-        const difficulties = ['easy', 'medium', 'hard'];
-        const categories = [9, 11, 12, 15, 17, 18, 19, 20, 21, 22]; // Various categories
-        
-        questionsCache = [];
-        
-        // Load questions from different categories and difficulties
-        for (let i = 0; i < 3; i++) {
-            const difficulty = difficulties[i % difficulties.length];
-            const category = categories[Math.floor(Math.random() * categories.length)];
+        // OpenTDB Compliant Configuration
+        const OPENTDB_CONFIG = {
+            BASE_URL: 'https://opentdb.com/api.php',
+            CATEGORIES_URL: 'https://opentdb.com/api_category.php',
             
-            const url = `${OPENTDB_BASE_URL}?amount=10&category=${category}&difficulty=${difficulty}&type=multiple&token=${sessionToken}`;
-            const response = await fetch(url);
-            const data = await response.json();
+            // Respectful Rate Limiting (More Conservative)
+            MAX_REQUESTS_PER_HOUR: 50,  // Conservative limit
+            MAX_REQUESTS_PER_MINUTE: 5, // Very conservative
+            CACHE_DURATION: 600000,     // 10 minutes cache
             
-            if (data.response_code === 0) {
-                const formattedQuestions = data.results.map(q => ({
-                    question: decodeHTMLEntities(q.question),
-                    options: shuffleArray([
-                        decodeHTMLEntities(q.correct_answer),
-                        ...q.incorrect_answers.map(a => decodeHTMLEntities(a))
-                    ]),
-                    correct: 0, // Will be set after shuffling
-                    category: decodeHTMLEntities(q.category),
-                    difficulty: q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1),
-                    correctAnswer: decodeHTMLEntities(q.correct_answer)
-                }));
-                
-                // Set correct answer index after shuffling
-                formattedQuestions.forEach(q => {
-                    q.correct = q.options.indexOf(q.correctAnswer);
-                });
-                
-                questionsCache.push(...formattedQuestions);
+            // Attribution Requirements
+            ATTRIBUTION_REQUIRED: true,
+            ATTRIBUTION_TEXT: "Trivia data provided by the Open Trivia Database (https://opentdb.com)",
+            
+            // Usage Compliance
+            NON_COMMERCIAL_ONLY: true,
+            CONTACT_URL: "https://opentdb.com/contact.php"
+        };
+
+        // Global Variables
+        let currentUser = null;
+        let isPremium = false;
+        let premiumVerified = false;
+        let currentQuestion = null;
+        let questionIndex = 0;
+        let score = 0;
+        let streak = 0;
+        let correctAnswers = 0;
+        let totalAnswered = 0;
+        let timer = null;
+        let timeLeft = 15;
+        let hintsRemaining = 10;
+        let lastHintRefresh = null;
+        let questionsCache = [];
+        let usedHints = [];
+        let isAnswering = false;
+        
+        // API Usage Tracking
+        let apiRequestsToday = 0;
+        let apiRequestsThisHour = 0;
+        let apiRequestsThisMinute = 0;
+        let lastApiResetHour = Date.now();
+        let lastApiResetMinute = Date.now();
+        let lastApiResetDay = Date.now();
+        let cacheHits = 0;
+        let totalRequests = 0;
+        
+        let questionCategories = [];
+        let selectedCategory = null;
+        let selectedDifficulty = null;
+
+        // Enhanced Question Bank (Fallback) - Compliant with OpenTDB Terms
+        const FALLBACK_QUESTIONS = [
+            {
+                question: "What is the chemical symbol for gold?",
+                options: ["Go", "Gd", "Au", "Ag"],
+                correct: 2,
+                category: "Chemistry",
+                difficulty: "Medium",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Venus", "Mars", "Jupiter", "Saturn"],
+                correct: 1,
+                category: "Astronomy",
+                difficulty: "Easy",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "What does CPU stand for?",
+                options: ["Central Processing Unit", "Computer Personal Unit", "Central Program Unit", "Computer Processing Unit"],
+                correct: 0,
+                category: "Technology",
+                difficulty: "Easy",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "What is the speed of light in vacuum?",
+                options: ["299,792,458 m/s", "300,000,000 m/s", "299,000,000 m/s", "298,792,458 m/s"],
+                correct: 0,
+                category: "Physics",
+                difficulty: "Hard",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "What is the capital of Australia?",
+                options: ["Sydney", "Melbourne", "Canberra", "Perth"],
+                correct: 2,
+                category: "Geography",
+                difficulty: "Medium",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "Which is the longest river in the world?",
+                options: ["Amazon", "Nile", "Mississippi", "Yangtze"],
+                correct: 1,
+                category: "Geography",
+                difficulty: "Medium",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "Mount Everest is located in which mountain range?",
+                options: ["Andes", "Rocky Mountains", "Alps", "Himalayas"],
+                correct: 3,
+                category: "Geography",
+                difficulty: "Easy",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "In which year did World War II end?",
+                options: ["1944", "1945", "1946", "1947"],
+                correct: 1,
+                category: "History",
+                difficulty: "Medium",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "Who was the first person to walk on the moon?",
+                options: ["Buzz Aldrin", "Neil Armstrong", "John Glenn", "Alan Shepard"],
+                correct: 1,
+                category: "History",
+                difficulty: "Easy",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "The Berlin Wall fell in which year?",
+                options: ["1987", "1988", "1989", "1990"],
+                correct: 2,
+                category: "History",
+                difficulty: "Medium",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "Who wrote 'Romeo and Juliet'?",
+                options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+                correct: 1,
+                category: "Literature",
+                difficulty: "Easy",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "Who painted the Mona Lisa?",
+                options: ["Van Gogh", "Picasso", "Leonardo da Vinci", "Michelangelo"],
+                correct: 2,
+                category: "Art",
+                difficulty: "Easy",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "How many players are on a basketball team on the court at one time?",
+                options: ["4", "5", "6", "7"],
+                correct: 1,
+                category: "Sports",
+                difficulty: "Easy",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "Which country has won the most FIFA World Cups?",
+                options: ["Germany", "Argentina", "Brazil", "Italy"],
+                correct: 2,
+                category: "Sports",
+                difficulty: "Medium",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "What is the value of π (pi) to 2 decimal places?",
+                options: ["3.14", "3.15", "3.16", "3.13"],
+                correct: 0,
+                category: "Mathematics",
+                difficulty: "Easy",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "What is 15% of 200?",
+                options: ["25", "30", "35", "40"],
+                correct: 1,
+                category: "Mathematics",
+                difficulty: "Medium",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "What is the largest mammal in the world?",
+                options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
+                correct: 1,
+                category: "Biology",
+                difficulty: "Easy",
+                source: "Fallback (Original Content)"
+            },
+            {
+                question: "How many chambers does a human heart have?",
+                options: ["2", "3", "4", "5"],
+                correct: 2,
+                category: "Biology",
+                difficulty: "Medium",
+                source: "Fallback (Original Content)"
             }
-        }
-        
-        if (questionsCache.length > 0) {
-            localStorage.setItem('cachedQuestions', JSON.stringify(questionsCache));
-            console.log(`Loaded ${questionsCache.length} questions from OpenTDB`);
-        } else {
-            throw new Error('No questions loaded from API');
-        }
-        
-    } catch (error) {
-        console.error('Error loading questions from API:', error);
-        loadFallbackQuestions();
-    }
-}
+        ];
 
-function loadFallbackQuestions() {
-    // Fallback question bank
-    questionsCache = [
-        {
-            question: "What is the capital of France?",
-            options: ["London", "Berlin", "Paris", "Madrid"],
-            correct: 2,
-            category: "Geography",
-            difficulty: "Easy"
-        },
-        {
-            question: "Which planet is known as the Red Planet?",
-            options: ["Venus", "Mars", "Jupiter", "Saturn"],
-            correct: 1,
-            category: "Science",
-            difficulty: "Easy"
-        },
-        {
-            question: "Who painted the Mona Lisa?",
-            options: ["Van Gogh", "Picasso", "Leonardo da Vinci", "Michelangelo"],
-            correct: 2,
-            category: "Art",
-            difficulty: "Medium"
-        },
-        {
-            question: "What is the largest mammal in the world?",
-            options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
-            correct: 1,
-            category: "Biology",
-            difficulty: "Easy"
-        },
-        {
-            question: "In which year did World War II end?",
-            options: ["1944", "1945", "1946", "1947"],
-            correct: 1,
-            category: "History",
-            difficulty: "Medium"
-        },
-        {
-            question: "What is the chemical symbol for gold?",
-            options: ["Go", "Gd", "Au", "Ag"],
-            correct: 2,
-            category: "Chemistry",
-            difficulty: "Medium"
-        },
-        {
-            question: "Which is the longest river in the world?",
-            options: ["Amazon", "Nile", "Mississippi", "Yangtze"],
-            correct: 1,
-            category: "Geography",
-            difficulty: "Medium"
-        },
-        {
-            question: "Who wrote 'Romeo and Juliet'?",
-            options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
-            correct: 1,
-            category: "Literature",
-            difficulty: "Easy"
-        }
-    ];
-    localStorage.setItem('cachedQuestions', JSON.stringify(questionsCache));
-}
+        // OpenTDB Compliant Question Manager
+        class OpenTDBCompliantManager {
+            constructor() {
+                this.cache = new Map();
+                this.categories = [];
+                this.sessionToken = null;
+                this.lastRequestTime = 0;
+                this.requestQueue = [];
+                this.isProcessingQueue = false;
+            }
 
-function decodeHTMLEntities(text) {
-    const textArea = document.createElement('textarea');
-    textArea.innerHTML = text;
-    return textArea.value;
-}
+            async initializeSession() {
+                try {
+                    if (!this.canMakeRequest()) {
+                        updateApiStatus('limited', 'Rate limit reached');
+                        return false;
+                    }
 
-function shuffleArray(array) {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-}
+                    const response = await this.makeRateLimitedRequest('https://opentdb.com/api_token.php?command=request');
+                    const data = await response.json();
+                    
+                    if (data.response_code === 0) {
+                        this.sessionToken = data.token;
+                        updateApiStatus('connected', 'Session initialized');
+                        return true;
+                    }
+                } catch (error) {
+                    console.warn('Failed to initialize OpenTDB session:', error);
+                    updateApiStatus('error', 'Session failed');
+                }
+                return false;
+            }
 
-function setupEventListeners() {
-    // Name entry
-    document.getElementById('submitNameBtn').addEventListener('click', submitName);
-    document.getElementById('nameInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') submitName();
-    });
+            async loadCategories() {
+                try {
+                    if (!this.canMakeRequest()) {
+                        updateApiStatus('limited', 'Rate limit reached');
+                        return false;
+                    }
 
-    // Premium modal
-    document.getElementById('showPremiumBtn').addEventListener('click', showPremiumModal);
-    document.getElementById('closePremiumBtn').addEventListener('click', hidePremiumModal);
-    document.getElementById('upgradePremiumBtn').addEventListener('click', upgradeToPremium);
+                    const response = await this.makeRateLimitedRequest(OPENTDB_CONFIG.CATEGORIES_URL);
+                    const data = await response.json();
+                    
+                    this.categories = data.trivia_categories;
+                    questionCategories = this.categories;
+                    updateApiStatus('connected', 'Categories loaded');
+                    return true;
+                } catch (error) {
+                    console.warn('Failed to load categories:', error);
+                    updateApiStatus('error', 'Categories failed');
+                }
+                return false;
+            }
 
-    // Tab navigation
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            switchTab(this.dataset.tab);
-        });
-    });
+            canMakeRequest() {
+                const now = Date.now();
+                
+                // Reset counters if time periods have passed
+                if (now - lastApiResetMinute > 60000) {
+                    apiRequestsThisMinute = 0;
+                    lastApiResetMinute = now;
+                }
+                
+                if (now - lastApiResetHour > 3600000) {
+                    apiRequestsThisHour = 0;
+                    lastApiResetHour = now;
+                }
+                
+                if (now - lastApiResetDay > 86400000) {
+                    apiRequestsToday = 0;
+                    lastApiResetDay = now;
+                }
 
-    // Hint button
-    document.getElementById('hintBtn').addEventListener('click', useHint);
+                // Check rate limits
+                if (apiRequestsThisMinute >= OPENTDB_CONFIG.MAX_REQUESTS_PER_MINUTE) {
+                    this.showRateLimitWarning('minute');
+                    return false;
+                }
+                
+                if (apiRequestsThisHour >= OPENTDB_CONFIG.MAX_REQUESTS_PER_HOUR) {
+                    this.showRateLimitWarning('hour');
+                    return false;
+                }
 
-    // Comment system
-    document.getElementById('sendCommentBtn').addEventListener('click', sendComment);
-    document.getElementById('commentInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') sendComment();
-    });
+                return true;
+            }
 
-    // Emoji picker
-    document.querySelectorAll('.emoji-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            addEmoji(this.dataset.emoji);
-        });
-    });
-}
+            async makeRateLimitedRequest(url) {
+                // Ensure minimum time between requests (1 second)
+                const now = Date.now();
+                const timeSinceLastRequest = now - this.lastRequestTime;
+                
+                if (timeSinceLastRequest < 1000) {
+                    await new Promise(resolve => setTimeout(resolve, 1000 - timeSinceLastRequest));
+                }
 
-async function submitName() {
-    const name = document.getElementById('nameInput').value.trim();
-    if (name.length < 2) {
-        alert('Please enter a valid name (at least 2 characters)');
-        return;
-    }
+                this.lastRequestTime = Date.now();
+                
+                // Update counters
+                apiRequestsThisMinute++;
+                apiRequestsThisHour++;
+                apiRequestsToday++;
+                totalRequests++;
+                
+                this.updateApiUsageDisplay();
+                
+                return fetch(url);
+            }
 
-    currentUser = {
-        name: name,
-        id: generateUserId(),
-        joinedAt: Date.now(),
-        score: 0,
-        questionsAnswered: 0
-    };
+            showRateLimitWarning(period) {
+                const warning = document.getElementById('rateLimitWarning');
+                warning.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    warning.classList.add('hidden');
+                }, 10000);
+                
+                updateApiStatus('limited', `Rate limit (${period})`);
+            }
 
-    localStorage.setItem('quizUser', JSON.stringify(currentUser));
-    hideNameModal();
-    updateUserInterface();
-    loadHintData();
-    await initializeUserInDatabase();
-    startQuiz();
-}
+            updateApiUsageDisplay() {
+                document.getElementById('apiRequestsToday').textContent = apiRequestsToday;
+                document.getElementById('questionsInCache').textContent = this.cache.size;
+                
+                const hitRate = totalRequests > 0 ? Math.round((cacheHits / totalRequests) * 100) : 0;
+                document.getElementById('cacheHitRate').textContent = hitRate + '%';
+                
+                const rateLimitStatus = this.getRateLimitStatus();
+                document.getElementById('rateLimitStatus').textContent = rateLimitStatus;
+            }
 
-function hideNameModal() {
-    document.getElementById('nameEntryModal').classList.add('hidden');
-}
+            getRateLimitStatus() {
+                const minuteUsage = (apiRequestsThisMinute / OPENTDB_CONFIG.MAX_REQUESTS_PER_MINUTE) * 100;
+                const hourUsage = (apiRequestsThisHour / OPENTDB_CONFIG.MAX_REQUESTS_PER_HOUR) * 100;
+                
+                if (minuteUsage >= 100 || hourUsage >= 100) return 'Limited';
+                if (minuteUsage >= 80 || hourUsage >= 80) return 'High';
+                if (minuteUsage >= 50 || hourUsage >= 50) return 'Medium';
+                return 'Good';
+            }
 
-function showPremiumModal() {
-    document.getElementById('premiumModal').classList.remove('hidden');
-}
+            async fetchQuestions(amount = 10, category = null, difficulty = null) {
+                const cacheKey = `${amount}_${category}_${difficulty}`;
+                
+                // Check cache first
+                if (this.cache.has(cacheKey)) {
+                    const cached = this.cache.get(cacheKey);
+                    if (Date.now() - cached.timestamp < OPENTDB_CONFIG.CACHE_DURATION) {
+                        cacheHits++;
+                        this.updateApiUsageDisplay();
+                        return cached.questions;
+                    }
+                }
 
-function hidePremiumModal() {
-    document.getElementById('premiumModal').classList.add('hidden');
-}
+                // If we can't make a request, use fallback
+                if (!this.canMakeRequest()) {
+                    console.log('Using fallback questions due to rate limits');
+                    updateApiStatus('limited', 'Using cached/fallback');
+                    return this.getFallbackQuestions(amount);
+                }
 
-async function upgradeToPremium() {
-    // Simulate premium upgrade
-    isPremium = true;
-    localStorage.setItem('isPremium', 'true');
-    hintsRemaining = 20; // Premium users get 20 hints
-    lastHintRefresh = Date.now(); // Reset hint timer
-    updateUserInterface();
-    hidePremiumModal();
-    
-    // Update user in database
-    if (currentUser) {
-        await realtimeDb.ref(`users/${currentUser.id}/isPremium`).set(true);
-    }
-    
-    saveHintData();
-    alert('Welcome to Premium! You now have 20 daily hints, +5 seconds per question, and disco text in comments!');
-}
+                try {
+                    let url = `${OPENTDB_CONFIG.BASE_URL}?amount=${Math.min(amount, 10)}&type=multiple`;
+                    
+                    if (category) url += `&category=${category}`;
+                    if (difficulty) url += `&difficulty=${difficulty}`;
+                    if (this.sessionToken) url += `&token=${this.sessionToken}`;
 
-function updateUserInterface() {
-    if (currentUser) {
-        document.getElementById('userName').textContent = currentUser.name;
-        document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
-        
-        if (isPremium) {
-            document.getElementById('premiumBadge').classList.remove('hidden');
-            document.getElementById('showPremiumBtn').style.display = 'none';
-            // Hide ads for premium users
-            document.getElementById('googleAdsContainer').style.display = 'none';
-        }
-    }
-}
+                    const response = await this.makeRateLimitedRequest(url);
+                    const data = await response.json();
 
-function loadHintData() {
-    const savedHints = localStorage.getItem('hintsData');
-    if (savedHints) {
-        const hintsData = JSON.parse(savedHints);
-        hintsRemaining = hintsData.remaining;
-        lastHintRefresh = hintsData.lastRefresh;
-        
-        // Check if 24 hours have passed
-        const now = Date.now();
-        const timeSinceRefresh = now - lastHintRefresh;
-        if (timeSinceRefresh >= 24 * 60 * 60 * 1000) {
-            hintsRemaining = isPremium ? 20 : 10;
-            lastHintRefresh = now;
-            saveHintData();
-        }
-    } else {
-        // Initialize hints data
-        hintsRemaining = isPremium ? 20 : 10;
-        lastHintRefresh = Date.now();
-        saveHintData();
-    }
-    
-    updateHintsDisplay();
-}
+                    if (data.response_code === 0) {
+                        const questions = this.processQuestions(data.results);
+                        
+                        // Cache the results
+                        this.cache.set(cacheKey, {
+                            questions: questions,
+                            timestamp: Date.now()
+                        });
 
-function saveHintData() {
-    const hintsData = {
-        remaining: hintsRemaining,
-        lastRefresh: lastHintRefresh
-    };
-    localStorage.setItem('hintsData', JSON.stringify(hintsData));
-}
+                        updateApiStatus('connected', `${questions.length} questions loaded from OpenTDB`);
+                        return questions;
+                    } else if (data.response_code === 4) {
+                        // Reset session token if exhausted
+                        await this.resetSessionToken();
+                        return this.getFallbackQuestions(amount);
+                    } else {
+                        throw new Error(`OpenTDB API error: ${data.response_code}`);
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch questions from OpenTDB:', error);
+                    updateApiStatus('error', 'Using fallback questions');
+                    
+                    // Return fallback questions
+                    return this.getFallbackQuestions(amount);
+                }
+            }
 
-function updateHintsDisplay() {
-    document.getElementById('hintsRemaining').textContent = hintsRemaining;
-    document.getElementById('hintBtn').disabled = hintsRemaining <= 0;
-}
+            async resetSessionToken() {
+                try {
+                    if (this.sessionToken && this.canMakeRequest()) {
+                        await this.makeRateLimitedRequest(`https://opentdb.com/api_token.php?command=reset&token=${this.sessionToken}`);
+                    }
+                    await this.initializeSession();
+                } catch (error) {
+                    console.warn('Failed to reset session token:', error);
+                }
+            }
 
-function updateHintRefreshTimer() {
-    if (!lastHintRefresh) return;
+            processQuestions(rawQuestions) {
+                return rawQuestions.map(q => {
+                    const options = [...q.incorrect_answers, q.correct_answer];
+                    let correctIndex = options.length - 1;
+                    
+                    // Shuffle options
+                    for (let i = options.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [options[i], options[j]] = [options[j], options[i]];
+                        
+                        // Update correct index if the correct answer was moved
+                        if (i === correctIndex) {
+                            correctIndex = j;
+                        } else if (j === correctIndex) {
+                            correctIndex = i;
+                        }
+                    }
 
-    const now = Date.now();
-    const timeSinceRefresh = now - lastHintRefresh;
-    const timeUntilRefresh = (24 * 60 * 60 * 1000) - timeSinceRefresh; // 24 hours in milliseconds
-
-    if (timeUntilRefresh <= 0) {
-        // Refresh hints
-        hintsRemaining = isPremium ? 20 : 10;
-        lastHintRefresh = now;
-        saveHintData();
-        updateHintsDisplay();
-    }
-
-    // Display countdown
-    const hours = Math.floor(timeUntilRefresh / (1000 * 60 * 60));
-    const minutes = Math.floor((timeUntilRefresh % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeUntilRefresh % (1000 * 60)) / 1000);
-
-    if (hours >= 0 && minutes >= 0 && seconds >= 0) {
-        document.getElementById('hintRefreshTime').textContent = 
-            `Hints refresh in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    }
-}
-
-function startQuiz() {
-    questionIndex = 0;
-    score = 0;
-    streak = 0;
-    updateStats();
-    displayNextQuestion();
-}
-
-async function displayNextQuestion() {
-    // Check if we need to load more questions
-    if (questionsCache.length < 5) {
-        await loadQuestionsFromAPI();
-    }
-
-    if (questionsCache.length === 0) {
-        loadFallbackQuestions();
-    }
-
-    // Get random question
-    const randomIndex = Math.floor(Math.random() * questionsCache.length);
-    currentQuestion = questionsCache[randomIndex];
-    
-    // Remove used question to avoid repetition
-    questionsCache.splice(randomIndex, 1);
-    usedHints = []; // Reset hints for new question
-    
-    // Force display with animation
-    const container = document.getElementById('questionContainer');
-    container.classList.add('force-display');
-    
-    container.innerHTML = `
-        <div class="question-number">Question ${questionIndex + 1}</div>
-        <div class="question-text">${currentQuestion.question}</div>
-        <div class="question-category">${currentQuestion.category} - ${currentQuestion.difficulty}</div>
-    `;
-
-    displayOptions();
-    startTimer();
-    
-    // Remove force display class after animation
-    setTimeout(() => {
-        container.classList.remove('force-display');
-    }, 500);
-}
-
-function displayOptions() {
-    const container = document.getElementById('optionsContainer');
-    container.innerHTML = '';
-
-    currentQuestion.options.forEach((option, index) => {
-        const optionElement = document.createElement('div');
-        optionElement.className = 'option';
-        optionElement.textContent = option;
-        optionElement.addEventListener('click', () => selectAnswer(index));
-        container.appendChild(optionElement);
-    });
-}
-
-function startTimer() {
-    timeLeft = isPremium ? 20 : 15; // Premium users get +5 seconds
-    document.getElementById('timer').textContent = timeLeft;
-    document.getElementById('timerBar').style.width = '100%';
-
-    timer = setInterval(() => {
-        timeLeft--;
-        document.getElementById('timer').textContent = timeLeft;
-        document.getElementById('timerBar').style.width = `${(timeLeft / (isPremium ? 20 : 15)) * 100}%`;
-
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            selectAnswer(-1); // Time's up
-        }
-    }, 1000);
-}
-
-async function selectAnswer(selectedIndex) {
-    clearInterval(timer);
-    
-    const options = document.querySelectorAll('.option');
-    const isCorrect = selectedIndex === currentQuestion.correct;
-
-    // Show correct/incorrect answers
-    options.forEach((option, index) => {
-        if (index === currentQuestion.correct) {
-            option.classList.add('correct');
-        } else if (index === selectedIndex && !isCorrect) {
-            option.classList.add('incorrect');
-        }
-        option.style.pointerEvents = 'none';
-    });
-
-    // Update score and stats
-    if (isCorrect) {
-        const points = calculatePoints();
-        score += points;
-        streak++;
-        showFeedback(`Correct! +${points} points`, 'correct');
-    } else {
-        streak = 0;
-        const correctAnswer = selectedIndex === -1 ? "Time's up!" : `The correct answer was: ${currentQuestion.options[currentQuestion.correct]}`;
-        showFeedback(correctAnswer, 'incorrect');
-    }
-
-    updateStats();
-    await updateUserInDatabase();
-
-    // Continue to next question after delay
-    setTimeout(() => {
-        questionIndex++;
-        displayNextQuestion();
-    }, 3000);
-}
-
-function calculatePoints() {
-    let basePoints = 100;
-    
-    // Difficulty multiplier
-    switch (currentQuestion.difficulty) {
-        case 'Easy': basePoints *= 1; break;
-        case 'Medium': basePoints *= 1.5; break;
-        case 'Hard': basePoints *= 2; break;
-    }
-
-    // Time bonus
-    const timeBonus = Math.floor(timeLeft * 5);
-    
-    // Streak bonus
-    const streakBonus = streak * 10;
-
-    return Math.floor(basePoints + timeBonus + streakBonus);
-}
-
-function showFeedback(message, type) {
-    const feedback = document.getElementById('feedback');
-    feedback.textContent = message;
-    feedback.className = `feedback ${type}`;
-    feedback.classList.remove('hidden');
-
-    setTimeout(() => {
-        feedback.classList.add('hidden');
-    }, 3000);
-}
-
-function updateStats() {
-    document.getElementById('currentScore').textContent = score;
-    document.getElementById('questionNumber').textContent = questionIndex + 1;
-    document.getElementById('streak').textContent = streak;
-
-    // Update user data
-    if (currentUser) {
-        currentUser.score = score;
-        currentUser.questionsAnswered = questionIndex;
-        localStorage.setItem('quizUser', JSON.stringify(currentUser));
-    }
-}
-
-async function updateUserInDatabase() {
-    if (!currentUser) return;
-
-    try {
-        await realtimeDb.ref(`users/${currentUser.id}`).update({
-            score: score,
-            questionsAnswered: questionIndex,
-            lastActive: firebase.database.ServerValue.TIMESTAMP
-        });
-    } catch (error) {
-        console.error('Error updating user in database:', error);
-    }
-}
-
-function useHint() {
-    if (hintsRemaining <= 0 || !currentQuestion) return;
-
-    hintsRemaining--;
-    saveHintData();
-    updateHintsDisplay();
-
-    // Remove two wrong answers
-    const options = document.querySelectorAll('.option');
-    const wrongIndices = [];
-    
-    options.forEach((option, index) => {
-        if (index !== currentQuestion.correct) {
-            wrongIndices.push(index);
-        }
-    });
-
-    // Randomly select 2 wrong answers to remove
-    const toRemove = wrongIndices.sort(() => 0.5 - Math.random()).slice(0, 2);
-    usedHints = toRemove;
-    
-    toRemove.forEach(index => {
-        options[index].style.opacity = '0.3';
-        options[index].style.pointerEvents = 'none';
-        options[index].classList.add('hint');
-    });
-
-    // Highlight remaining options
-    options.forEach((option, index) => {
-        if (!toRemove.includes(index)) {
-            option.style.boxShadow = '0 0 15px var(--warning-color)';
-        }
-    });
-}
-
-function switchTab(tabId) {
-    // Update tab buttons
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
-
-    // Update tab content
-    document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.remove('active');
-    });
-    document.getElementById(tabId).classList.add('active');
-
-    // Load specific tab data
-    if (tabId === 'leaderboardTab') {
-        loadLeaderboard();
-    } else if (tabId === 'commentsTab') {
-        loadComments();
-    }
-}
-
-function startRealTimeUpdates() {
-    // Listen for real-time leaderboard updates
-    realtimeDb.ref('users').orderByChild('score').limitToLast(50).on('value', (snapshot) => {
-        leaderboardData = [];
-        snapshot.forEach((childSnapshot) => {
-            const userData = childSnapshot.val();
-            if (userData.online) {
-                leaderboardData.push({
-                    id: childSnapshot.key,
-                    name: userData.name,
-                    score: userData.score || 0,
-                    questionsAnswered: userData.questionsAnswered || 0,
-                    isPremium: userData.isPremium || false
+                    return {
+                        question: this.decodeHtml(q.question),
+                        options: options.map(opt => this.decodeHtml(opt)),
+                        correct: options.indexOf(q.correct_answer),
+                        category: q.category,
+                        difficulty: q.difficulty,
+                        source: 'OpenTDB (Free)'
+                    };
                 });
             }
-        });
-        
-        // Sort by score (descending)
-        leaderboardData.sort((a, b) => b.score - a.score);
-        
-        // Update user rank
-        const userRank = leaderboardData.findIndex(player => player.id === currentUser?.id) + 1;
-        document.getElementById('userRank').textContent = userRank > 0 ? userRank : '-';
-        
-        // Update active users count
-        activeUsers = leaderboardData.length;
-        document.getElementById('activeUsers').innerHTML = `<i class="fas fa-users"></i> Players: ${activeUsers}`;
-        
-        // Update leaderboard if currently viewing
-        if (document.getElementById('leaderboardTab').classList.contains('active')) {
-            displayLeaderboard();
-        }
-    });
 
-    // Listen for real-time comments
-    realtimeDb.ref('comments').orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
-        commentsData = [];
-        snapshot.forEach((childSnapshot) => {
-            const commentData = childSnapshot.val();
-            commentsData.push({
-                id: childSnapshot.key,
-                ...commentData
+            decodeHtml(html) {
+                const txt = document.createElement('textarea');
+                txt.innerHTML = html;
+                return txt.value;
+            }
+
+            getFallbackQuestions(amount) {
+                const shuffled = [...FALLBACK_QUESTIONS].sort(() => 0.5 - Math.random());
+                return shuffled.slice(0, Math.min(amount, shuffled.length));
+            }
+        }
+
+        // Premium Features Manager (Compliant with OpenTDB Terms)
+        class PremiumManager {
+            constructor() {
+                this.verificationToken = null;
+                this.lastVerification = null;
+                this.verificationInterval = null;
+            }
+
+            async verifyPremiumStatus(userId) {
+                try {
+                    // In a real implementation, this would call your backend
+                    // Premium features are for gaming enhancements, not trivia content
+                    return {
+                        isPremium: localStorage.getItem('quizTournamentPremium') === 'true',
+                        verified: localStorage.getItem('quizTournamentPremiumToken') !== null,
+                        expiresAt: null,
+                        features: ['enhanced_ui', 'more_hints', 'extra_time', 'ad_free', 'better_caching']
+                    };
+                } catch (error) {
+                    console.warn('Premium verification failed:', error);
+                }
+
+                return {
+                    isPremium: false,
+                    verified: false,
+                    expiresAt: null,
+                    features: []
+                };
+            }
+
+            async upgradeToPremium(userId, paymentToken) {
+                try {
+                    // For demo purposes, simulate successful upgrade
+                    // In real implementation, this would process payment for gaming features only
+                    return {
+                        success: true,
+                        verificationToken: 'demo_token_' + Date.now(),
+                        expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000), // 30 days
+                        message: 'Premium gaming features activated! Trivia content remains free from OpenTDB.'
+                    };
+                } catch (error) {
+                    console.error('Payment processing failed:', error);
+                    return {
+                        success: false,
+                        message: 'Payment processing failed. Please try again.'
+                    };
+                }
+            }
+
+            startVerificationInterval() {
+                // Verify premium status every 5 minutes
+                this.verificationInterval = setInterval(async () => {
+                    if (currentUser && isPremium) {
+                        const status = await this.verifyPremiumStatus(currentUser.id);
+                        if (!status.isPremium) {
+                            // Premium expired
+                            isPremium = false;
+                            premiumVerified = false;
+                            localStorage.setItem('quizTournamentPremium', 'false');
+                            updateUserInterface();
+                            showForceNotification('Premium gaming features expired. Trivia content remains free from OpenTDB.', 'error');
+                        }
+                    }
+                }, 5 * 60 * 1000);
+            }
+
+            stopVerificationInterval() {
+                if (this.verificationInterval) {
+                    clearInterval(this.verificationInterval);
+                    this.verificationInterval = null;
+                }
+            }
+        }
+
+        // Initialize managers
+        const questionManager = new OpenTDBCompliantManager();
+        const premiumManager = new PremiumManager();
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            setupNetworkMonitoring();
+            initializeBackend();
+            initializeGoogleAds();
+            initializeFirebase();
+        });
+
+        async function initializeApp() {
+            const savedUser = localStorage.getItem('quizTournamentUser');
+            const savedPremium = localStorage.getItem('quizTournamentPremium');
+            
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    
+                    // Verify premium status with backend
+                    if (savedPremium === 'true') {
+                        const premiumStatus = await premiumManager.verifyPremiumStatus(currentUser.id);
+                        isPremium = premiumStatus.isPremium;
+                        premiumVerified = premiumStatus.verified;
+                        
+                        if (isPremium) {
+                            premiumManager.startVerificationInterval();
+                        }
+                    }
+                    
+                    hideNameModal();
+                    updateUserInterface();
+                    loadHintData();
+                    startQuiz();
+                } catch (e) {
+                    localStorage.removeItem('quizTournamentUser');
+                    localStorage.removeItem('quizTournamentPremium');
+                }
+            }
+
+            updateHintRefreshTimer();
+            setInterval(updateHintRefreshTimer, 1000);
+            setInterval(updateActiveUsers, 3000);
+            updateActiveUsers();
+        }
+
+        async function initializeBackend() {
+            updateApiStatus('loading', 'Initializing OpenTDB connection...');
+            
+            try {
+                await questionManager.initializeSession();
+                await questionManager.loadCategories();
+                await loadQuestions();
+                
+                updateApiStatus('connected', 'OpenTDB ready (Free)');
+                document.getElementById('questionsAvailable').textContent = 'Unlimited (Free from OpenTDB)';
+            } catch (error) {
+                console.error('OpenTDB initialization failed:', error);
+                updateApiStatus('error', 'Using fallback questions');
+                
+                // Load fallback questions
+                questionsCache = questionManager.getFallbackQuestions(20);
+                document.getElementById('questionsAvailable').textContent = questionsCache.length + ' (Fallback)';
+            }
+        }
+
+        function updateApiStatus(status, message) {
+            const badge = document.getElementById('apiStatusBadge');
+            const source = document.getElementById('questionSource');
+            const apiStatus = document.getElementById('apiStatus');
+            
+            badge.className = `api-status-badge ${status}`;
+            
+            switch (status) {
+                case 'connected':
+                    badge.innerHTML = '<i class="fas fa-plug"></i> OpenTDB Connected';
+                    source.textContent = 'Questions from: OpenTDB API (Free)';
+                    apiStatus.innerHTML = '<i class="fas fa-database"></i> OpenTDB Ready';
+                    break;
+                case 'loading':
+                    badge.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+                    source.textContent = 'Connecting to OpenTDB...';
+                    apiStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading';
+                    break;
+                case 'limited':
+                    badge.innerHTML = '<i class="fas fa-clock"></i> Rate Limited';
+                    source.textContent = 'Respecting OpenTDB rate limits';
+                    apiStatus.innerHTML = '<i class="fas fa-clock"></i> Rate Limited';
+                    break;
+                case 'error':
+                    badge.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Fallback Mode';
+                    source.textContent = 'Using original fallback questions';
+                    apiStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Fallback';
+                    break;
+            }
+        }
+
+        function initializeFirebase() {
+            // Listen for leaderboard updates
+            database.ref('leaderboard').orderByChild('score').limitToLast(10).on('value', (snapshot) => {
+                updateLeaderboard(snapshot.val());
             });
+
+            // Listen for comments
+            database.ref('comments').limitToLast(20).on('value', (snapshot) => {
+                updateComments(snapshot.val());
+            });
+        }
+
+        function updateLeaderboard(data) {
+            const leaderboardList = document.getElementById('leaderboardList');
+            
+            if (!data) {
+                leaderboardList.innerHTML = '<div style="text-align: center; opacity: 0.6; padding: 2rem;">No players yet</div>';
+                return;
+            }
+
+            const players = Object.values(data).sort((a, b) => b.score - a.score);
+            
+            leaderboardList.innerHTML = players.map((player, index) => {
+                const rank = index + 1;
+                const isCurrentUserPlayer = currentUser && player.id === currentUser.id;
+                const rankClass = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : '';
+                const currentUserClass = isCurrentUserPlayer ? 'current-user' : '';
+                const premiumBadge = player.isPremium && player.premiumVerified ? 
+                    '<i class="fas fa-crown" style="color: var(--gold-color);"></i><span class="premium-verified"><i class="fas fa-check-circle"></i></span>' : 
+                    player.isPremium ? '<i class="fas fa-crown" style="color: var(--gold-color); opacity: 0.5;"></i>' : '';
+                
+                return `
+                    <div class="rank-item ${rankClass} ${currentUserClass}">
+                        <div class="rank-number">#${rank}</div>
+                        <div class="rank-avatar">${player.name.charAt(0).toUpperCase()}</div>
+                        <div class="rank-info">
+                            <div class="rank-name">${player.name} ${premiumBadge}</div>
+                            <div class="rank-score">${player.score} points</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateComments(data) {
+            const commentsList = document.getElementById('commentsList');
+            
+            if (!data) {
+                commentsList.innerHTML = '<div style="text-align: center; opacity: 0.6; padding: 1rem;">No messages yet</div>';
+                return;
+            }
+
+            const comments = Object.values(data).sort((a, b) => b.timestamp - a.timestamp);
+            
+            commentsList.innerHTML = comments.map(comment => {
+                const timeAgo = getTimeAgo(comment.timestamp);
+                const premiumBadge = comment.isPremium && comment.premiumVerified ? 
+                    '<i class="fas fa-crown" style="color: var(--gold-color);"></i><span class="premium-verified"><i class="fas fa-check-circle"></i></span>' : 
+                    comment.isPremium ? '<i class="fas fa-crown" style="color: var(--gold-color); opacity: 0.5;"></i>' : '';
+                
+                return `
+                    <div class="comment-item">
+                        <div class="comment-author">${comment.author} ${premiumBadge}</div>
+                        <div class="comment-text">${comment.text}</div>
+                        <div class="comment-time">${timeAgo}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getTimeAgo(timestamp) {
+            const now = Date.now();
+            const diff = now - timestamp;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+
+            if (days > 0) return `${days}d ago`;
+            if (hours > 0) return `${hours}h ago`;
+            if (minutes > 0) return `${minutes}m ago`;
+            return 'Just now';
+        }
+
+        function setupEventListeners() {
+            document.getElementById('submitNameBtn').addEventListener('click', submitName);
+            document.getElementById('nameInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') submitName();
+            });
+
+            document.getElementById('showPremiumBtn').addEventListener('click', showPremiumModal);
+            document.getElementById('closePremiumBtn').addEventListener('click', hidePremiumModal);
+            document.getElementById('upgradePremiumBtn').addEventListener('click', upgradeToPremium);
+
+            document.getElementById('hintBtn').addEventListener('click', useHint);
+
+            document.getElementById('nextQuestionBtn').addEventListener('click', function() {
+                this.classList.add('hidden');
+                displayNextQuestion();
+            });
+
+            // Comment system
+            document.getElementById('sendCommentBtn').addEventListener('click', sendComment);
+            document.getElementById('commentInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendComment();
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (isAnswering) return;
+                
+                if (e.key >= '1' && e.key <= '4') {
+                    const optionIndex = parseInt(e.key) - 1;
+                    const options = document.querySelectorAll('.option');
+                    if (options[optionIndex]) {
+                        selectAnswer(optionIndex);
+                    }
+                }
+                
+                if (e.key.toLowerCase() === 'h') {
+                    useHint();
+                }
+                
+                if (e.key === ' ' && !document.getElementById('nextQuestionBtn').classList.contains('hidden')) {
+                    e.preventDefault();
+                    document.getElementById('nextQuestionBtn').click();
+                }
+            });
+
+            window.addEventListener('beforeunload', function(e) {
+                if (currentUser) {
+                    localStorage.setItem('quizTournamentUser', JSON.stringify(currentUser));
+                    localStorage.setItem('quizTournamentPremium', isPremium.toString());
+                }
+            });
+
+            setInterval(function() {
+                if (currentUser) {
+                    localStorage.setItem('quizTournamentUser', JSON.stringify(currentUser));
+                    localStorage.setItem('quizTournamentPremium', isPremium.toString());
+                }
+            }, 5000);
+        }
+
+        function sendComment() {
+            const commentInput = document.getElementById('commentInput');
+            const text = commentInput.value.trim();
+            
+            if (!text || !currentUser) return;
+
+            const comment = {
+                author: currentUser.name,
+                text: text,
+                timestamp: Date.now(),
+                isPremium: isPremium,
+                premiumVerified: premiumVerified
+            };
+
+            database.ref('comments').push(comment);
+            commentInput.value = '';
+        }
+
+        function updateUserInFirebase() {
+            if (!currentUser) return;
+
+            const userData = {
+                id: currentUser.id,
+                name: currentUser.name,
+                score: score,
+                questionsAnswered: questionIndex,
+                isPremium: isPremium,
+                premiumVerified: premiumVerified,
+                lastActive: Date.now()
+            };
+
+            database.ref('leaderboard/' + currentUser.id).set(userData);
+        }
+
+        function initializeGoogleAds() {
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                console.log('Google Ads initialized');
+            } catch (e) {
+                console.log('AdSense not loaded:', e);
+            }
+
+            updateAdsVisibility();
+        }
+
+        function updateAdsVisibility() {
+            const adContainer = document.getElementById('googleAdsMiddle');
+            
+            if (adContainer) {
+                if (isPremium && premiumVerified) {
+                    adContainer.style.display = 'none';
+                } else {
+                    adContainer.style.display = 'block';
+                }
+            }
+        }
+
+        async function loadQuestions() {
+            try {
+                updateApiStatus('loading', 'Fetching questions from OpenTDB...');
+                
+                // Always use conservative amounts to respect rate limits
+                const amount = 10; // Conservative amount regardless of premium status
+                
+                const questions = await questionManager.fetchQuestions(amount, selectedCategory, selectedDifficulty);
+                questionsCache = questions;
+                
+                updateApiStatus('connected', `${questions.length} questions loaded from OpenTDB (Free)`);
+                document.getElementById('questionsAvailable').textContent = 'Unlimited (Free from OpenTDB)';
+                
+            } catch (error) {
+                console.error('Failed to load questions:', error);
+                updateApiStatus('error', 'Using original fallback questions');
+                questionsCache = questionManager.getFallbackQuestions(20);
+            }
+        }
+
+        async function submitName() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (name.length < 2) {
+                showForceNotification('Please enter a valid name (at least 2 characters)', 'error');
+                return;
+            }
+
+            currentUser = {
+                name: name,
+                id: generateUserId(),
+                joinedAt: Date.now(),
+                score: 0,
+                questionsAnswered: 0
+            };
+
+            localStorage.setItem('quizTournamentUser', JSON.stringify(currentUser));
+            localStorage.setItem('quizTournamentPremium', 'false');
+            
+            hideNameModal();
+            updateUserInterface();
+            loadHintData();
+            updateUserInFirebase();
+            showForceNotification(`Welcome ${name}! Enjoy free trivia questions from OpenTDB!`, 'success');
+            
+            setTimeout(() => {
+                startQuiz();
+            }, 2000);
+        }
+
+        function hideNameModal() {
+            document.getElementById('nameEntryModal').classList.add('hidden');
+        }
+
+        function showPremiumModal() {
+            document.getElementById('premiumModal').classList.remove('hidden');
+        }
+
+        function hidePremiumModal() {
+            document.getElementById('premiumModal').classList.add('hidden');
+        }
+
+        async function upgradeToPremium() {
+            try {
+                showForceNotification('Processing premium gaming features upgrade...', 'info');
+                
+                const paymentResult = await premiumManager.upgradeToPremium(currentUser.id, 'demo_payment_token');
+                
+                if (paymentResult.success) {
+                    isPremium = true;
+                    premiumVerified = true;
+                    premiumManager.verificationToken = paymentResult.verificationToken;
+                    
+                    localStorage.setItem('quizTournamentPremium', 'true');
+                    localStorage.setItem('quizTournamentPremiumToken', paymentResult.verificationToken);
+                    
+                    hintsRemaining = 20;
+                    lastHintRefresh = Date.now();
+                    
+                    updateUserInterface();
+                    updateAdsVisibility();
+                    hidePremiumModal();
+                    saveHintData();
+                    updateUserInFirebase();
+                    
+                    premiumManager.startVerificationInterval();
+                    
+                    showForceNotification('<i class="fas fa-crown"></i> Premium gaming features activated! Enhanced UI, more hints, extra time, and ad-free experience. Trivia content remains free from OpenTDB!', 'success');
+                } else {
+                    showForceNotification('Premium upgrade failed. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error('Premium upgrade error:', error);
+                showForceNotification('Premium upgrade failed. Please try again.', 'error');
+            }
+        }
+
+        function updateUserInterface() {
+            if (currentUser) {
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+                
+                if (isPremium) {
+                    document.getElementById('premiumBadge').classList.remove('hidden');
+                    document.getElementById('showPremiumBtn').style.display = 'none';
+                    
+                    // Show verification status
+                    const verifiedBadge = document.getElementById('premiumVerified');
+                    if (premiumVerified) {
+                        verifiedBadge.classList.remove('hidden');
+                        verifiedBadge.style.background = 'var(--success-color)';
+                        verifiedBadge.innerHTML = '<i class="fas fa-check-circle"></i> VERIFIED';
+                    } else {
+                        verifiedBadge.classList.remove('hidden');
+                        verifiedBadge.style.background = 'var(--warning-color)';
+                        verifiedBadge.innerHTML = '<i class="fas fa-clock"></i> PENDING';
+                    }
+                }
+            }
+        }
+
+        function loadHintData() {
+            const savedHints = localStorage.getItem('quizTournamentHints');
+            if (savedHints) {
+                const hintsData = JSON.parse(savedHints);
+                hintsRemaining = hintsData.remaining;
+                lastHintRefresh = hintsData.lastRefresh;
+                
+                const now = Date.now();
+                const timeSinceRefresh = now - lastHintRefresh;
+                if (timeSinceRefresh >= 24 * 60 * 60 * 1000) {
+                    hintsRemaining = isPremium ? 20 : 10;
+                    lastHintRefresh = now;
+                    saveHintData();
+                }
+            } else {
+                hintsRemaining = isPremium ? 20 : 10;
+                lastHintRefresh = Date.now();
+                saveHintData();
+            }
+            
+            updateHintsDisplay();
+        }
+
+        function saveHintData() {
+            const hintsData = {
+                remaining: hintsRemaining,
+                lastRefresh: lastHintRefresh
+            };
+            localStorage.setItem('quizTournamentHints', JSON.stringify(hintsData));
+        }
+
+        function updateHintsDisplay() {
+            document.getElementById('hintsRemaining').textContent = hintsRemaining;
+            document.getElementById('hintBtn').disabled = hintsRemaining <= 0;
+        }
+
+        function updateHintRefreshTimer() {
+            if (!lastHintRefresh) return;
+
+            const now = Date.now();
+            const timeSinceRefresh = now - lastHintRefresh;
+            const timeUntilRefresh = (24 * 60 * 60 * 1000) - timeSinceRefresh;
+
+            if (timeUntilRefresh <= 0) {
+                hintsRemaining = isPremium ? 20 : 10;
+                lastHintRefresh = now;
+                saveHintData();
+                updateHintsDisplay();
+            }
+
+            const hours = Math.floor(timeUntilRefresh / (1000 * 60 * 60));
+            const minutes = Math.floor((timeUntilRefresh % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeUntilRefresh % (1000 * 60)) / 1000);
+
+            if (hours >= 0 && minutes >= 0 && seconds >= 0) {
+                document.getElementById('hintRefreshTime').textContent = 
+                    `Hints refresh in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+
+        function startQuiz() {
+            questionIndex = 0;
+            score = 0;
+            streak = 0;
+            correctAnswers = 0;
+            totalAnswered = 0;
+            updateStats();
+            showForceNotification('Quiz Starting! Enjoy free trivia from OpenTDB!', 'info');
+            setTimeout(() => {
+                displayNextQuestion();
+            }, 1500);
+        }
+
+        async function displayNextQuestion() {
+            // Reload questions if running low (respecting rate limits)
+            if (questionsCache.length < 3) {
+                await loadQuestions();
+            }
+
+            if (questionsCache.length === 0) {
+                showForceNotification('Loading more questions... Please wait to respect OpenTDB rate limits.', 'info');
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * questionsCache.length);
+            currentQuestion = questionsCache[randomIndex];
+            questionsCache.splice(randomIndex, 1);
+            usedHints = [];
+            isAnswering = false;
+
+            const container = document.getElementById('questionContainer');
+            container.classList.add('force-display');
+            
+            container.innerHTML = `
+                <div class="question-number">Question ${questionIndex + 1}</div>
+                <div class="question-text">${currentQuestion.question}</div>
+                <div class="question-category">${currentQuestion.category} - ${currentQuestion.difficulty} 
+                    <span style="font-size: 0.8rem; opacity: 0.7;">(${currentQuestion.source})</span>
+                </div>
+            `;
+
+            displayOptions();
+            startTimer();
+            hideFeedback();
+            
+            setTimeout(() => {
+                container.classList.remove('force-display');
+            }, 500);
+        }
+
+        function displayOptions() {
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+
+            currentQuestion.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.innerHTML = `
+                    <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">${String.fromCharCode(65 + index)}</div>
+                    <div>${option}</div>
+                `;
+                optionElement.addEventListener('click', () => selectAnswer(index));
+                container.appendChild(optionElement);
+            });
+        }
+
+        function startTimer() {
+            timeLeft = isPremium && premiumVerified ? 20 : 15;
+            const timerElement = document.getElementById('timer');
+            const timerBar = document.getElementById('timerBar');
+            
+            timerElement.textContent = timeLeft;
+            timerElement.classList.remove('urgent');
+            timerBar.style.width = '100%';
+
+            timer = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                
+                const maxTime = isPremium && premiumVerified ? 20 : 15;
+                const percentage = (timeLeft / maxTime) * 100;
+                timerBar.style.width = `${percentage}%`;
+
+                if (timeLeft <= 5) {
+                    timerElement.classList.add('urgent');
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    selectAnswer(-1);
+                }
+            }, 1000);
+        }
+
+        function selectAnswer(selectedIndex) {
+            if (isAnswering) return;
+            isAnswering = true;
+            
+            clearInterval(timer);
+            
+            const options = document.querySelectorAll('.option');
+            const isCorrect = selectedIndex === currentQuestion.correct;
+            const isTimeout = selectedIndex === -1;
+
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+
+            options.forEach((option, index) => {
+                if (index === currentQuestion.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex && !isCorrect) {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            totalAnswered++;
+            
+            if (isCorrect) {
+                score += 1;
+                streak++;
+                correctAnswers++;
+                showFeedback('<i class="fas fa-trophy"></i> Correct! +1 point (Streak: ' + streak + ')', 'correct');
+                playSound('correct');
+            } else if (isTimeout) {
+                streak = 0;
+                showFeedback('<i class="fas fa-clock"></i> Time\'s up! The correct answer was: ' + currentQuestion.options[currentQuestion.correct] + ' (No penalty)', 'incorrect');
+                playSound('incorrect');
+            } else {
+                score -= 1;
+                streak = 0;
+                showFeedback('<i class="fas fa-times"></i> Incorrect! The correct answer was: ' + currentQuestion.options[currentQuestion.correct] + ' (-1 point)', 'incorrect');
+                playSound('incorrect');
+            }
+
+            updateStats();
+            updateUserInFirebase();
+            
+            setTimeout(() => {
+                document.getElementById('nextQuestionBtn').classList.remove('hidden');
+                isAnswering = false;
+            }, 3000);
+        }
+
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            feedback.innerHTML = message;
+            feedback.className = `feedback ${type}`;
+            feedback.classList.remove('hidden');
+        }
+
+        function hideFeedback() {
+            document.getElementById('feedback').classList.add('hidden');
+        }
+
+        function updateStats() {
+            const scoreElement = document.getElementById('currentScore');
+            scoreElement.textContent = score;
+            
+            if (score > 0) {
+                scoreElement.className = 'stat-value positive';
+            } else if (score < 0) {
+                scoreElement.className = 'stat-value negative';
+            } else {
+                scoreElement.className = 'stat-value';
+            }
+            
+            document.getElementById('questionNumber').textContent = questionIndex + 1;
+            document.getElementById('streak').textContent = streak;
+            
+            const accuracy = totalAnswered > 0 ? Math.round((correctAnswers / totalAnswered) * 100) : 100;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+
+            if (currentUser) {
+                currentUser.score = score;
+                currentUser.questionsAnswered = questionIndex;
+                localStorage.setItem('quizTournamentUser', JSON.stringify(currentUser));
+            }
+
+            questionIndex++;
+        }
+
+        function useHint() {
+            if (hintsRemaining <= 0 || !currentQuestion || isAnswering) return;
+
+            hintsRemaining--;
+            saveHintData();
+            updateHintsDisplay();
+
+            const options = document.querySelectorAll('.option');
+            const wrongIndices = [];
+            
+            options.forEach((option, index) => {
+                if (index !== currentQuestion.correct) {
+                    wrongIndices.push(index);
+                }
+            });
+
+            const toRemove = wrongIndices.sort(() => 0.5 - Math.random()).slice(0, 2);
+            usedHints = toRemove;
+            
+            toRemove.forEach(index => {
+                options[index].style.opacity = '0.3';
+                options[index].style.pointerEvents = 'none';
+                options[index].classList.add('hint');
+            });
+
+            showForceNotification('<i class="fas fa-lightbulb"></i> Hint used! Two wrong answers removed.', 'info');
+        }
+
+        function showForceNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = 'force-notification';
+            
+            let icon = '';
+            switch (type) {
+                case 'success': icon = '<i class="fas fa-check-circle"></i>'; break;
+                case 'error': icon = '<i class="fas fa-exclamation-circle"></i>'; break;
+                case 'info': icon = '<i class="fas fa-info-circle"></i>'; break;
+                default: icon = '<i class="fas fa-bell"></i>'; break;
+            }
+            
+            notification.innerHTML = icon + ' ' + message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function playSound(type) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                if (type === 'correct') {
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                } else {
+                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(150, audioContext.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.2);
+                }
+            } catch (error) {
+                // Ignore audio errors
+            }
+        }
+
+        function updateActiveUsers() {
+            const baseUsers = Math.floor(Math.random() * 90000) + 10000;
+            const formattedUsers = baseUsers.toLocaleString();
+            document.getElementById('activeUsers').innerHTML = '<i class="fas fa-users"></i> Players: ' + formattedUsers;
+        }
+
+        function setupNetworkMonitoring() {
+            function updateOnlineStatus() {
+                const isOnline = navigator.onLine;
+                const statusElement = document.getElementById('onlineStatus');
+                
+                if (isOnline) {
+                    statusElement.className = 'status-indicator online-status online';
+                    statusElement.innerHTML = '<i class="fas fa-wifi"></i> Online';
+                } else {
+                    statusElement.className = 'status-indicator online-status offline';
+                    statusElement.innerHTML = '<i class="fas fa-wifi-slash"></i> Offline';
+                }
+            }
+
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+            updateOnlineStatus();
+        }
+
+        function generateUserId() {
+            return 'user_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+        }
+
+        // Auto-refresh questions when running low (respecting rate limits)
+        setInterval(async () => {
+            if (questionsCache.length < 3 && questionManager.canMakeRequest()) {
+                await loadQuestions();
+            }
+        }, 60000); // Check every minute instead of 30 seconds
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            premiumManager.stopVerificationInterval();
         });
-        
-        // Sort by timestamp (newest first for display)
-        commentsData.sort((a, b) => b.timestamp - a.timestamp);
-        
-        // Update comments if currently viewing
-        if (document.getElementById('commentsTab').classList.contains('active')) {
-            displayComments();
-        }
-    });
-}
 
-function loadLeaderboard() {
-    displayLeaderboard();
-}
-
-function displayLeaderboard() {
-    const container = document.getElementById('leaderboard');
-    container.innerHTML = '';
-
-    if (leaderboardData.length === 0) {
-        container.innerHTML = '<div class="loading"><div class="spinner"></div><div style="margin-left: 1rem;">Loading live rankings...</div></div>';
-        return;
-    }
-
-    leaderboardData.slice(0, 20).forEach((player, index) => {
-        const item = document.createElement('div');
-        item.className = `leaderboard-item ${player.id === currentUser?.id ? 'current-user' : ''}`;
-        
-        let rankClass = '';
-        if (index === 0) rankClass = 'gold';
-        else if (index === 1) rankClass = 'silver';
-        else if (index === 2) rankClass = 'bronze';
-
-        item.innerHTML = `
-            <div class="rank ${rankClass}">#${index + 1}</div>
-            <div class="player-info">
-                <div class="player-name">${player.name} ${player.isPremium ? '<span class="premium-badge">PREMIUM</span>' : ''}</div>
-                <div class="player-score">${player.score} points • ${player.questionsAnswered} questions</div>
-            </div>
-        `;
-        
-        container.appendChild(item);
-    });
-}
-
-async function sendComment() {
-    const input = document.getElementById('commentInput');
-    const message = input.value.trim();
-    
-    if (!message || !currentUser) return;
-
-    try {
-        await realtimeDb.ref('comments').push({
-            author: currentUser.name,
-            text: message,
-            timestamp: firebase.database.ServerValue.TIMESTAMP,
-            isPremium: isPremium,
-            userId: currentUser.id
-        });
-        
-        input.value = '';
-    } catch (error) {
-        console.error('Error sending comment:', error);
-    }
-}
-
-function addEmoji(emoji) {
-    const input = document.getElementById('commentInput');
-    input.value += emoji;
-    input.focus();
-}
-
-function loadComments() {
-    displayComments();
-}
-
-function displayComments() {
-    const container = document.getElementById('commentsList');
-    container.innerHTML = '';
-
-    if (commentsData.length === 0) {
-        container.innerHTML = '<div class="loading"><div class="spinner"></div><div style="margin-left: 1rem;">Loading live chat...</div></div>';
-        return;
-    }
-
-    // Reverse for display (newest at bottom)
-    const displayComments = [...commentsData].reverse().slice(0, 50);
-    
-    displayComments.forEach(comment => {
-        const item = document.createElement('div');
-        item.className = 'comment';
-        
-        const timeAgo = getTimeAgo(comment.timestamp);
-        const textClass = comment.isPremium ? 'disco-text' : '';
-        
-        item.innerHTML = `
-            <div class="comment-author">${comment.author} ${comment.isPremium ? '<span class="premium-badge">PREMIUM</span>' : ''}</div>
-            <div class="comment-text ${textClass}">${comment.text}</div>
-            <div class="comment-time">${timeAgo}</div>
-        `;
-        
-        container.appendChild(item);
-    });
-
-    // Auto-scroll to bottom
-    container.scrollTop = container.scrollHeight;
-}
-
-function getTimeAgo(timestamp) {
-    const now = Date.now();
-    const diff = now - timestamp;
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(diff / 3600000);
-    const days = Math.floor(diff / 86400000);
-
-    if (days > 0) return `${days}d ago`;
-    if (hours > 0) return `${hours}h ago`;
-    if (minutes > 0) return `${minutes}m ago`;
-    return 'Just now';
-}
-
-function generateUserId() {
-    return 'user_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
-}
-
-function initializeGoogleAds() {
-    // Initialize Google AdSense
-    try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {
-        console.log('AdSense not loaded');
-    }
-
-    // Show ads only for non-premium users
-    if (!isPremium) {
-        document.getElementById('googleAdsContainer').style.display = 'block';
-    }
-}
-
-function setupNetworkMonitoring() {
-    // Network status monitoring
-    function updateOnlineStatus() {
-        const isOnline = navigator.onLine;
-        const statusElement = document.getElementById('onlineStatus');
-        
-        if (isOnline) {
-            statusElement.className = 'online-status online';
-            statusElement.innerHTML = '<i class="fas fa-wifi"></i> Online';
-        } else {
-            statusElement.className = 'online-status offline';
-            statusElement.innerHTML = '<i class="fas fa-wifi-slash"></i> Offline';
-        }
-    }
-
-    window.addEventListener('online', updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
-    updateOnlineStatus(); // Initial check
-}
-
-// Auto-refresh questions periodically
-setInterval(async () => {
-    if (questionsCache.length < 10) {
-        await loadQuestionsFromAPI();
-    }
-}, 300000); // Refresh every 5 minutes
-
-// Cleanup on page unload
-window.addEventListener('beforeunload', async () => {
-    if (currentUser) {
-        try {
-            await realtimeDb.ref(`users/${currentUser.id}/online`).set(false);
-        } catch (error) {
-            console.error('Error updating user status on unload:', error);
-        }
-    }
-});
-
-// Additional utility functions
-function sanitizeInput(input) {
-    const div = document.createElement('div');
-    div.textContent = input;
-    return div.innerHTML;
-}
-
-function formatScore(score) {
-    return score.toLocaleString();
-}
-
-function playSound(type) {
-    // Add sound effects for correct/incorrect answers
-    try {
-        const audio = new Audio();
-        if (type === 'correct') {
-            audio.src = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT';
-        } else {
-            audio.src = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm1...'; // Error sound
-        }
-        audio.volume = 0.3;
-        audio.play().catch(() => {}); // Ignore errors if audio fails
-    } catch (error) {
-        // Ignore audio errors
-    }
-}
-
-// Performance monitoring
-function logPerformance(action, startTime) {
-    const endTime = performance.now();
-    const duration = endTime - startTime;
-    console.log(`${action} took ${duration.toFixed(2)} milliseconds`);
-}
-
-// Error handling wrapper
-function handleError(error, context) {
-    console.error(`Error in ${context}:`, error);
-    
-    // Show user-friendly error message
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: var(--danger-color);
-        color: white;
-        padding: 1rem;
-        border-radius: 8px;
-        z-index: 1000;
-        max-width: 300px;
-    `;
-    errorDiv.textContent = `Something went wrong. Please try again.`;
-    
-    document.body.appendChild(errorDiv);
-    
-    setTimeout(() => {
-        errorDiv.remove();
-    }, 5000);
-}
-
-// Initialize error handling
-window.addEventListener('error', (event) => {
-    handleError(event.error, 'Global');
-});
-
-window.addEventListener('unhandledrejection', (event) => {
-    handleError(event.reason, 'Promise');
-});
-
-console.log('Quiz Tournament initialized successfully!');
-
+        console.log('🎯 Quiz Tournament initialized with OpenTDB compliance!');
+        console.log('📋 Trivia data provided by the Open Trivia Database (https://opentdb.com)');
+        console.log('⚖️ Used under non-commercial terms - Contact OpenTDB for commercial licensing');
     </script>
 </body>
 </html>

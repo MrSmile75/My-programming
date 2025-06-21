@@ -637,8 +637,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             initPreloader();
             
-            // Prevent right-click context menu
-            document.addEventListener('contextmenu', (e) => e.preventDefault());
+          
             
             // Prevent text selection on UI elements
             document.addEventListener('selectstart', (e) => {
