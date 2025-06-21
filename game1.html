@@ -3,19 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMILEX - Advanced Gaming Experience</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+     <!-- © SMILEX. This code is protected. -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Advanced Game Preloader</title>
     <style>
         :root {
             --bg-primary: #0a0a1a;
-            --bg-secondary: #1a1a2e;
-            --accent-primary: #00d4ff;
-            --accent-secondary: #ff6b6b;
-            --accent-tertiary: #4ecdc4;
-            --text-primary: #ffffff;
-            --text-secondary: #b8b8b8;
-            --glow-color: #00d4ff;
-            --particle-color: rgba(0, 212, 255, 0.6);
+            --accent-color: #4a90e2;
+            --text-color: #ffffff;
         }
 
         * {
@@ -25,137 +20,13 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-            color: var(--text-primary);
-            font-family: 'Orbitron', monospace;
-            overflow: hidden;
-            height: 100vh;
-            position: relative;
-            cursor: none;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
         }
 
-        /* Custom Cursor */
-        .custom-cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, var(--accent-primary), transparent);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s ease;
-            mix-blend-mode: difference;
-        }
-
-        /* Parallax Background Layers */
-        .parallax-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .parallax-layer {
-            position: absolute;
-            width: 120%;
-            height: 120%;
-            background-size: cover;
-            background-repeat: no-repeat;
-            transition: transform 0.1s ease-out;
-        }
-
-        .layer-1 {
-            background: radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.15) 0%, transparent 50%);
-            z-index: 1;
-        }
-
-        .layer-2 {
-            background: radial-gradient(circle at 60% 40%, rgba(78, 205, 196, 0.1) 0%, transparent 60%);
-            z-index: 2;
-        }
-
-        .layer-3 {
-            background-image: 
-                linear-gradient(rgba(0, 212, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 212, 255, 0.05) 1px, transparent 1px);
-            background-size: 100px 100px;
-            z-index: 3;
-        }
-
-        /* Animated X Logo */
-        .x-logo {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 15rem;
-            font-weight: 900;
-            font-family: 'Orbitron', monospace;
-            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientShift 3s ease-in-out infinite;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
-            z-index: 10;
-            user-select: none;
-            filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.3));
-        }
-
-        .x-logo:hover {
-            transform: translate(-50%, -50%) scale(1.1) rotate(15deg);
-            filter: drop-shadow(0 0 50px rgba(255, 107, 107, 0.8));
-            animation: colorCycle 0.5s ease-in-out infinite, pulse 1s ease-in-out infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        @keyframes colorCycle {
-            0% { 
-                background: linear-gradient(45deg, #ff0080, #00ff80, #8000ff);
-                background-size: 300% 300%;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-            25% { 
-                background: linear-gradient(45deg, #00ff80, #8000ff, #ff8000);
-                background-size: 300% 300%;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-            50% { 
-                background: linear-gradient(45deg, #8000ff, #ff8000, #0080ff);
-                background-size: 300% 300%;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-            75% { 
-                background: linear-gradient(45deg, #ff8000, #0080ff, #ff0080);
-                background-size: 300% 300%;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-            100% { 
-                background: linear-gradient(45deg, #0080ff, #ff0080, #00ff80);
-                background-size: 300% 300%;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1.1) rotate(15deg); }
-            50% { transform: translate(-50%, -50%) scale(1.2) rotate(15deg); }
-        }
 
         .preloader-container {
             position: fixed;
@@ -166,809 +37,237 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            background: radial-gradient(circle, rgba(10,10,26,1) 0%, rgba(15,15,40,1) 100%);
         }
 
         .preloader {
             text-align: center;
-            width: 600px;
-            max-width: 90vw;
+            width: 500px;
             perspective: 1000px;
-            position: relative;
-            z-index: 5;
         }
 
-        /* Enhanced Logo */
         .loading-logo {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 40px;
-            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            background: transparent;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
+            animation: pulse 2s infinite alternate;
+            transform-style: preserve-3d;
         }
 
-        .logo-outer-ring {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 3px solid transparent;
-            border-top: 3px solid var(--accent-primary);
-            border-right: 3px solid var(--accent-secondary);
-            border-radius: 50%;
-            animation: rotateOuter 3s linear infinite;
-        }
-
-        .logo-inner-ring {
-            position: absolute;
-            width: 70%;
-            height: 70%;
-            border: 2px solid transparent;
-            border-bottom: 2px solid var(--accent-tertiary);
-            border-left: 2px solid var(--accent-primary);
-            border-radius: 50%;
-            animation: rotateInner 2s linear infinite reverse;
-        }
-
-        .logo-core {
+        .loading-logo svg {
             width: 80px;
             height: 80px;
-            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 
-                0 0 30px var(--glow-color),
-                inset 0 0 20px rgba(255, 255, 255, 0.1);
-            animation: pulse 2s ease-in-out infinite alternate;
-            position: relative;
-            overflow: hidden;
+            transform: rotateY(0deg);
+            transition: transform 0.5s;
         }
 
-        .logo-core::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shine 3s linear infinite;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            fill: white;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
-        }
-
-        @keyframes rotateOuter {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes rotateInner {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes shine {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Game Title */
-        .game-title {
-            font-size: 3rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientShift 3s ease-in-out infinite;
-            margin-bottom: 10px;
-            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
-            letter-spacing: 3px;
-        }
-
-        .game-subtitle {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 30px;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        /* Enhanced Progress Bar */
         .progress-container {
             width: 100%;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
+            background: transparent;
+            border-radius: 20px;
             overflow: hidden;
-            margin: 30px 0;
-            position: relative;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 20px;
+            box-shadow: 0 10px 15px transparent ;
         }
 
         .progress-bar {
             width: 0;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                var(--accent-primary) 0%, 
-                var(--accent-secondary) 50%, 
-                var(--accent-tertiary) 100%);
-            background-size: 200% 100%;
-            animation: progressGlow 2s ease-in-out infinite;
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            height: 15px;
+            background: linear-gradient(to right, #4a90e2, #6f42c1);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .progress-bar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            animation: progressShine 2s linear infinite;
-        }
-
-        @keyframes progressGlow {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        @keyframes progressShine {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        /* Loading Details */
         .loading-details {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin: 20px 0;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.1rem;
+            margin-top: 15px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
         }
 
-        .percentage {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent-primary);
-            text-shadow: 0 0 20px var(--accent-primary);
-        }
-
-        .loading-stats {
-            display: flex;
-            gap: 20px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .stat-value {
-            color: var(--accent-tertiary);
-            font-weight: 600;
-        }
-
-        /* Loading Stage */
         .loading-stage {
-            font-size: 1.2rem;
-            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 20px 0;
-            color: var(--text-primary);
-            opacity: 0;
-            animation: stageAppear 0.5s ease-out forwards;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-top: 15px;
+            opacity: 0.8;
         }
 
-        @keyframes stageAppear {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Enhanced Particles */
-        .particle {
-            position: absolute;
-            background: var(--particle-color);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: particleFloat 6s linear infinite;
-        }
-
-        .particle.large {
-            width: 8px;
-            height: 8px;
-            box-shadow: 0 0 20px var(--particle-color);
-        }
-
-        .particle.medium {
-            width: 4px;
-            height: 4px;
-            box-shadow: 0 0 10px var(--particle-color);
-        }
-
-        .particle.small {
-            width: 2px;
-            height: 2px;
-            box-shadow: 0 0 5px var(--particle-color);
-        }
-
-        @keyframes particleFloat {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        /* Tips Section */
         .tips {
             position: absolute;
-            bottom: 50px;
+            bottom: 30px;
             left: 0;
             width: 100%;
             text-align: center;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
-            color: var(--text-secondary);
-            animation: tipsFade 4s infinite;
-            padding: 0 20px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            animation: tipsFade 3s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
         }
 
         @keyframes tipsFade {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
         }
 
-        /* Loading Complete Animation */
-        .loading-complete {
-            animation: completeAnimation 2s ease-out forwards;
-        }
-
-        @keyframes completeAnimation {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); opacity: 0; }
-        }
-
-        /* Redirect Notice */
-        .redirect-notice {
+        .particle {
             position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid var(--accent-primary);
-            border-radius: 20px;
-            padding: 10px 20px;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.9rem;
-            color: var(--accent-primary);
-            backdrop-filter: blur(10px);
-            opacity: 0;
-            animation: fadeInUp 1s ease-out 8s forwards;
-        }
-
-        @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .x-logo {
-                font-size: 8rem;
-            }
-            
-            .game-title {
-                font-size: 2rem;
-            }
-            
-            .game-subtitle {
-                font-size: 1rem;
-            }
-            
-            .loading-logo {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .percentage {
-                font-size: 1.5rem;
-            }
-            
-            .loading-details {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .loading-stats {
-                justify-content: center;
-            }
-
-            .tips {
-                font-size: 0.9rem;
-                bottom: 80px;
-            }
-
-            .redirect-notice {
-                font-size: 0.8rem;
-                padding: 8px 16px;
-            }
-        }
-
-        /* Sound Wave Animation */
-        .sound-wave {
-            position: absolute;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 3px;
-            opacity: 0.6;
-        }
-
-        .wave-bar {
-            width: 3px;
-            background: var(--accent-primary);
-            border-radius: 2px;
-            animation: waveAnimation 1s ease-in-out infinite;
-        }
-
-        .wave-bar:nth-child(1) { height: 10px; animation-delay: 0s; }
-        .wave-bar:nth-child(2) { height: 20px; animation-delay: 0.1s; }
-        .wave-bar:nth-child(3) { height: 15px; animation-delay: 0.2s; }
-        .wave-bar:nth-child(4) { height: 25px; animation-delay: 0.3s; }
-        .wave-bar:nth-child(5) { height: 18px; animation-delay: 0.4s; }
-
-        @keyframes waveAnimation {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(2); }
-        }
-
-        /* Copyright Notice */
-        .copyright {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.3);
-            font-family: 'Rajdhani', sans-serif;
-            z-index: 1001;
-        }
-
-        /* Hide preloader content initially */
-        .preloader-content {
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-        }
-
-        .preloader-content.show {
-            opacity: 1;
+            background: rgba(74,144,226,0.5);
+            border-radius: 50%;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <div class="custom-cursor"></div>
-    
-    <div class="parallax-container">
-        <div class="parallax-layer layer-1"></div>
-        <div class="parallax-layer layer-2"></div>
-        <div class="parallax-layer layer-3"></div>
-    </div>
-    
-    <div class="x-logo" id="xLogo">X</div>
-    
-    <div class="copyright">© SMILEX - Premium Gaming Experience</div>
-    
     <div class="preloader-container">
         <div class="preloader">
-            <div class="preloader-content" id="preloaderContent">
-                <h1 class="game-title">SMILEX</h1>
-                <p class="game-subtitle">Crafting Extraordinary Gaming Experiences</p>
-                
-                <div class="loading-logo">
-                    <div class="logo-outer-ring"></div>
-                    <div class="logo-inner-ring"></div>
-                    <div class="logo-core">
-                        <svg class="logo-icon" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
-                        </svg>
-                    </div>
-                </div>
-                
-                <div class="progress-container">
-                    <div class="progress-bar"></div>
-                </div>
-                
-                <div class="loading-details">
-                    <span class="percentage">0%</span>
-                    <div class="loading-stats">
-                        <div class="stat-item">
-                            <span class="stat-label">Speed</span>
-                            <span class="stat-value speed">0 MB/s</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Time Left</span>
-                            <span class="stat-value time-remaining">Calculating...</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Assets</span>
-                            <span class="stat-value files-loaded">0/0</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="loading-stage">Welcome! Preparing your adventure...</div>
-                
-                <div class="sound-wave">
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                </div>
+            <div class="loading-logo">
+                <svg viewBox="0 0 24 24" fill="transparent">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
             </div>
+             <!-- © SMILEX. This code is protected. -->
+            
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+             <!-- © SMILEX. This code is protected. -->
+            
+            <div class="loading-details">
+                <span class="percentage">0%</span>
+                <span class="time-remaining">Estimating...</span>
+            </div>
+            
+            <div class="loading-stage">Initializing Game Environment</div>
         </div>
 
-        <div class="tips">🎮 Hey there, gamer! Hover over the X to see some magic!</div>
-        
-        <div class="redirect-notice">
-            🚀 Almost ready! You'll be automatically taken to game.html in a moment...
-        </div>
+        <div class="tips">Pro Tip: Prepare for an epic adventure!</div>
     </div>
 
     <script>
-        class SmilexParallaxPreloader {
+         /* © SMILEX - This code is licensed and protected. */
+        class AdvancedPreloader {
             constructor() {
                 this.progressBar = document.querySelector('.progress-bar');
                 this.percentageEl = document.querySelector('.percentage');
                 this.stageEl = document.querySelector('.loading-stage');
                 this.timeRemainingEl = document.querySelector('.time-remaining');
-                this.speedEl = document.querySelector('.speed');
-                this.filesLoadedEl = document.querySelector('.files-loaded');
-                this.tipsEl = document.querySelector('.tips');
-                this.preloaderContainer = document.querySelector('.preloader-container');
-                this.preloaderContent = document.getElementById('preloaderContent');
-                this.xLogo = document.getElementById('xLogo');
-                this.customCursor = document.querySelector('.custom-cursor');
-                this.parallaxLayers = document.querySelectorAll('.parallax-layer');
+                this.logo = document.querySelector('.loading-logo svg');
 
                 this.loadingStages = [
-                    { 
-                        stage: 'Welcome! Preparing your adventure...', 
-                        duration: 2000, 
-                        files: 15,
-                        humanMessage: "Hey there! We're getting everything ready for you 😊"
-                    },
-                    { 
-                        stage: 'Loading your personalized content...', 
-                        duration: 3500, 
-                        files: 42,
-                        humanMessage: "Hang tight! We're customizing your experience"
-                    },
-                    { 
-                        stage: 'Setting up multiplayer connections...', 
-                        duration: 2800, 
-                        files: 28,
-                        humanMessage: "Almost there! Connecting you with other players"
-                    },
-                    { 
-                        stage: 'Optimizing graphics for your device...', 
-                        duration: 2200, 
-                        files: 33,
-                        humanMessage: "Making sure everything looks perfect for you!"
-                    },
-                    { 
-                        stage: 'Finalizing your gaming environment...', 
-                        duration: 1800, 
-                        files: 19,
-                        humanMessage: "Just a few more seconds... You're going to love this!"
-                    },
-                    { 
-                        stage: 'Loading audio and sound effects...', 
-                        duration: 1500, 
-                        files: 12,
-                        humanMessage: "Adding the finishing touches to your experience"
-                    },
-                    { 
-                        stage: 'Everything is ready! Welcome aboard...', 
-                        duration: 1200, 
-                        files: 8,
-                        humanMessage: "Perfect! You're all set for an amazing journey!"
-                    }
+                    { stage: 'Initializing Game World', duration: 2000 },
+                    { stage: 'Loading Game Assets', duration: 3000 },
+                    { stage: 'Configuring Multiplayer', duration: 2500 },
+                    { stage: 'Optimizing Graphics', duration: 2000 },
+                    { stage: 'Final Preparations', duration: 1500 }
                 ];
-
-                this.tips = [
-                    "🎮 Hey there, gamer! Hover over the X to see some magic!",
-                    "✨ Did you know? SMILEX creates personalized gaming experiences for every player!",
-                    "🚀 Pro tip: Move your mouse around to see the parallax effect!",
-                    "🌟 Fun fact: We're loading over 150 unique assets tailored to your preferences!",
-                    "🎵 Heads up: Our 3D spatial audio will blow your mind - use headphones if you can!",
-                    "🔥 Almost ready! Thanks for your patience - great things take a moment to perfect!",
-                    "🎯 Get ready for an adventure that adapts to your playing style!",
-                    "💫 SMILEX believes every gamer deserves an extraordinary experience!"
-                ];
-
-                this.currentTipIndex = 0;
-                this.startTime = Date.now();
-                this.totalFiles = this.loadingStages.reduce((sum, stage) => sum + stage.files, 0);
-                this.loadedFiles = 0;
-                this.mouseX = 0;
-                this.mouseY = 0;
 
                 this.init();
             }
 
             init() {
-                this.setupParallax();
-                this.setupCustomCursor();
-                this.setupXLogo();
                 this.createParticles();
-                this.startTipRotation();
-                this.showPreloaderContent();
-                
-                // Start loading after X logo is displayed
-                setTimeout(() => {
-                    this.startLoading();
-                    this.updateStats();
-                }, 2000);
-            }
-
-            setupParallax() {
-                document.addEventListener('mousemove', (e) => {
-                    this.mouseX = (e.clientX / window.innerWidth) * 100;
-                    this.mouseY = (e.clientY / window.innerHeight) * 100;
-                    
-                    this.parallaxLayers.forEach((layer, index) => {
-                        const speed = (index + 1) * 0.5;
-                        const x = (this.mouseX - 50) * speed * 0.02;
-                        const y = (this.mouseY - 50) * speed * 0.02;
-                        layer.style.transform = `translate(${x}px, ${y}px)`;
-                    });
-                });
-            }
-
-            setupCustomCursor() {
-                document.addEventListener('mousemove', (e) => {
-                    this.customCursor.style.left = e.clientX + 'px';
-                    this.customCursor.style.top = e.clientY + 'px';
-                });
-
-                document.addEventListener('mousedown', () => {
-                    this.customCursor.style.transform = 'scale(0.8)';
-                });
-
-                document.addEventListener('mouseup', () => {
-                    this.customCursor.style.transform = 'scale(1)';
-                });
-            }
-
-            setupXLogo() {
-                this.xLogo.addEventListener('mouseenter', () => {
-                    this.tipsEl.textContent = "🌈 Wow! Look at those colors! Keep hovering for more magic!";
-                });
-
-                this.xLogo.addEventListener('mouseleave', () => {
-                    this.tipsEl.textContent = this.tips[this.currentTipIndex];
-                });
-
-                this.xLogo.addEventListener('click', () => {
-                    this.tipsEl.textContent = "🎉 Nice click! The X loves attention!";
-                    setTimeout(() => {
-                        this.tipsEl.textContent = this.tips[this.currentTipIndex];
-                    }, 2000);
-                });
-            }
-
-            showPreloaderContent() {
-                setTimeout(() => {
-                    this.preloaderContent.classList.add('show');
-                }, 1000);
+                this.startLoading();
             }
 
             createParticles() {
                 const container = document.querySelector('.preloader-container');
-                
-                // Create different types of particles
-                for (let i = 0; i < 30; i++) {
-                    this.createParticle(container, 'large');
-                }
                 for (let i = 0; i < 50; i++) {
-                    this.createParticle(container, 'medium');
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    particle.style.width = `${Math.random() * 5}px`;
+                    particle.style.height = particle.style.width;
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    particle.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    container.appendChild(particle);
                 }
-                for (let i = 0; i < 70; i++) {
-                    this.createParticle(container, 'small');
-                }
             }
 
-            createParticle(container, size) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle', size);
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.animationDuration = `${Math.random() * 4 + 4}s`;
-                particle.style.animationDelay = `${Math.random() * 2}s`;
-                container.appendChild(particle);
-
-                // Remove and recreate particle after animation
-                setTimeout(() => {
-                    if (particle.parentNode) {
-                        particle.remove();
-                        this.createParticle(container, size);
-                    }
-                }, (Math.random() * 4 + 4) * 1000);
-            }
-
-            startTipRotation() {
-                setInterval(() => {
-                    this.currentTipIndex = (this.currentTipIndex + 1) % this.tips.length;
-                    this.tipsEl.textContent = this.tips[this.currentTipIndex];
-                }, 4000);
-            }
+             /* © SMILEX - This code is licensed and protected. */
 
             startLoading() {
-                let totalDuration = this.loadingStages.reduce((sum, stage) => sum + stage.duration, 0);
-                let currentTime = 0;
+                let totalDuration = this.loadingStages.reduce((a, b) => a + b.duration, 0);
+                let currentProgress = 0;
+                let startTime = Date.now();
 
                 this.loadingStages.forEach((stage, index) => {
                     setTimeout(() => {
-                        const progress = ((index + 1) / this.loadingStages.length) * 100;
-                        this.loadedFiles += stage.files;
-                        this.updateProgress(progress, stage.stage);
-                        
-                        // Show human message occasionally
-                        if (index % 2 === 0) {
-                            setTimeout(() => {
-                                this.tipsEl.textContent = stage.humanMessage;
-                            }, stage.duration / 2);
-                        }
-                    }, currentTime);
-                    currentTime += stage.duration;
+                        this.updateProgress(
+                            (index + 1) / this.loadingStages.length * 100, 
+                            stage.stage,
+                            totalDuration
+                        );
+                    }, this.loadingStages.slice(0, index + 1).reduce((a, b) => a + b.duration, 0));
                 });
 
                 setTimeout(() => this.completeLoading(), totalDuration);
             }
 
-            updateProgress(percentage, stage) {
-                // Smooth progress bar animation
+             /* © SMILEX - This code is licensed and protected. */
+
+            updateProgress(percentage, stage, totalDuration) {
                 this.progressBar.style.width = `${percentage}%`;
-                
-                // Animate percentage counter
-                this.animateNumber(this.percentageEl, parseInt(this.percentageEl.textContent), Math.round(percentage), '%');
-                
-                // Update stage with animation
-                this.stageEl.style.animation = 'none';
-                this.stageEl.offsetHeight; // Trigger reflow
-                this.stageEl.style.animation = 'stageAppear 0.5s ease-out forwards';
+                this.percentageEl.textContent = `${Math.round(percentage)}%`;
                 this.stageEl.textContent = stage;
 
-                // Update files loaded
-                this.filesLoadedEl.textContent = `${this.loadedFiles}/${this.totalFiles}`;
-            }
+                // Estimate remaining time
+                let elapsedTime = Date.now() - this.startTime;
+                let remainingTime = Math.round((totalDuration - elapsedTime) / 1000);
+                this.timeRemainingEl.textContent = `${remainingTime}s remaining`;
 
-            updateStats() {
-                const updateInterval = setInterval(() => {
-                    const elapsedTime = (Date.now() - this.startTime) / 1000;
-                    const currentProgress = parseFloat(this.progressBar.style.width) || 0;
-                    
-                    // Calculate loading speed (more realistic)
-                    const speed = (this.loadedFiles / elapsedTime * 0.8 + Math.random() * 0.4).toFixed(1);
-                    this.speedEl.textContent = `${speed} MB/s`;
-                    
-                    // Calculate remaining time
-                    if (currentProgress > 0 && currentProgress < 100) {
-                        const remainingTime = Math.max(1, Math.round((100 - currentProgress) / currentProgress * elapsedTime));
-                        this.timeRemainingEl.textContent = `${remainingTime}s`;
-                    }
-                    
-                    if (currentProgress >= 100) {
-                        clearInterval(updateInterval);
-                    }
-                }, 500);
-            }
-
-            animateNumber(element, start, end, suffix = '') {
-                const duration = 800;
-                const startTime = Date.now();
-                
-                const animate = () => {
-                    const elapsed = Date.now() - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    const current = Math.round(start + (end - start) * this.easeOutCubic(progress));
-                    
-                    element.textContent = current + suffix;
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(animate);
-                    }
-                };
-                
-                animate();
-            }
-
-            easeOutCubic(t) {
-                return 1 - Math.pow(1 - t, 3);
+                // Logo rotation effect
+                this.logo.style.transform = `rotateY(${percentage * 3.6}deg)`;
             }
 
             completeLoading() {
-                this.stageEl.textContent = 'Perfect! Everything is ready for you!';
+                this.stageEl.textContent = 'Game Ready!';
                 this.percentageEl.textContent = '100%';
-                this.timeRemainingEl.textContent = 'Complete!';
-                this.speedEl.textContent = 'MAX';
-                this.tipsEl.textContent = '🎉 Awesome! You\'re about to experience something incredible!';
+                this.timeRemainingEl.textContent = 'Loading Complete';
 
-                // Add completion animation
-                this.preloaderContainer.classList.add('loading-complete');
-
-                // Show redirect message
+                // Transition to game
                 setTimeout(() => {
-                    this.tipsEl.textContent = `🚀 Taking you to game.html now... Thanks for choosing SMILEX!`;
-                }, 1000);
-
-                // Redirect to game.html
-                setTimeout(() => {
-                    this.redirectToGame();
-                }, 3000);
-            }
-
-            redirectToGame() {
-                // Create a smooth fade-out effect
-                document.body.style.transition = 'opacity 1s ease-out';
-                document.body.style.opacity = '0';
-                
-                setTimeout(() => {
-                    // Redirect to game.html
-                    window.location.href = 'game.html';
+                    // Add your game start logic here
+                    console.log('Game Loaded');
                 }, 1000);
             }
         }
 
+         /* © SMILEX - This code is licensed and protected. */
+
+        
+
         // Initialize preloader when DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
-            new SmilexParallaxPreloader();
+            new AdvancedPreloader();
         });
 
-        // Disable right-click context menu (optional)
-        document.addEventListener('contextmenu', event => event.preventDefault());
 
-        // Disable common developer shortcuts (optional)
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'F12' || 
-                (e.ctrlKey && e.shiftKey && e.key === 'I') ||
-                (e.ctrlKey && e.shiftKey && e.key === 'C') ||
-                (e.ctrlKey && e.key === 'u')) {
-                e.preventDefault();
-            }
-        });
+        
+        setTimeout(() => {
+                window.location.href = "game.html"; // Redirect after 12 seconds
+            }, 12500);
+        
+
+        // Automatically trigger preloader when page loads
+        window.onload = function () {
+            showPreloaderAndRedirect();
+        };
     </script>
+
+<script>
+    document.addEventListener('contextmenu', event => event.preventDefault());
+  </script>
+   <!-- © SMILEX. This code is protected. -->
 </body>
 </html>
