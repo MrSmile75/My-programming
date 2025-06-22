@@ -33,6 +33,7 @@ body, html {
     overflow: flex;
     background: var(--background-dark);
     cursor: none;
+    align-items: center;
   
        
            

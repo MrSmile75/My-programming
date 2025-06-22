@@ -29,6 +29,9 @@
             --warning-color: #f59e0b;
             --premium-gold: #ffd700;
             --premium-gradient: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700);
+            --online-color: #22c55e;
+            --away-color: #f59e0b;
+            --busy-color: #ef4444;
             
             /* Spacing Variables */
             --spacing-xs: 0.25rem;
@@ -226,6 +229,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes typing {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
         /* Premium Styles */
         .premium-user {
             position: relative;
@@ -253,6 +261,48 @@
             font-size: 1.2em;
             animation: float 2s ease-in-out infinite;
         }
+
+        /* Online Status Indicators */
+        .status-indicator {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--surface-color);
+        }
+
+        .status-online { background: var(--online-color); }
+        .status-away { background: var(--away-color); }
+        .status-busy { background: var(--error-color); }
+        .status-offline { background: var(--text-muted); }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-muted);
+            font-size: var(--font-size-xs);
+            font-style: italic;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 2px;
+        }
+
+        .typing-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
         /* Modal Overlay */
         .overlay {
@@ -1251,7 +1301,7 @@
             justify-content: center;
         }
 
-        /* Chat Styles */
+        /* Enhanced Chat Styles */
         .chat-toggle {
             position: fixed;
             bottom: 20px;
@@ -1406,6 +1456,194 @@
 
         .chat-send:hover {
             background: #5a0fb8;
+        }
+
+        /* Direct Messages Panel */
+        .dm-panel {
+            position: fixed;
+            top: 64px;
+            right: -400px;
+            width: 400px;
+            height: calc(100vh - 64px);
+            background: var(--surface-color);
+            border-left: 1px solid var(--border-color);
+            transition: var(--transition-normal);
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dm-panel.active {
+            right: 0;
+        }
+
+        .dm-header {
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dm-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .dm-tab {
+            flex: 1;
+            padding: var(--spacing-md);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .dm-tab.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .dm-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .dm-list {
+            padding: var(--spacing-md);
+        }
+
+        .dm-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .dm-item:hover {
+            background: var(--surface-secondary);
+        }
+
+        .dm-item.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .dm-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .dm-info {
+            flex: 1;
+        }
+
+        .dm-name {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .dm-preview {
+            font-size: var(--font-size-xs);
+            color: var(--text-muted);
+        }
+
+        .dm-time {
+            font-size: var(--font-size-xs);
+            color: var(--text-muted);
+        }
+
+        .unread-badge {
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Group Chat Styles */
+        .group-chat-item {
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .group-members {
+            display: flex;
+            margin-top: var(--spacing-xs);
+        }
+
+        .group-member-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--secondary-color);
+            margin-right: -5px;
+            border: 2px solid var(--surface-color);
+        }
+
+        /* Chat Channel Styles */
+        .channel-list {
+            padding: var(--spacing-md);
+        }
+
+        .channel-category {
+            font-size: var(--font-size-xs);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: bold;
+            margin: var(--spacing-lg) 0 var(--spacing-sm) 0;
+        }
+
+        .channel-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .channel-item:hover {
+            background: var(--surface-secondary);
+        }
+
+        .channel-item.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .channel-icon {
+            font-size: var(--font-size-sm);
+            color: var(--text-muted);
+        }
+
+        .channel-name {
+            flex: 1;
+            font-size: var(--font-size-sm);
+        }
+
+        .channel-count {
+            font-size: var(--font-size-xs);
+            color: var(--text-muted);
         }
 
         /* Mobile Navigation */
@@ -1629,6 +1867,21 @@
             animation: glow 2s ease-in-out infinite alternate;
         }
 
+        /* Real-time Activity Indicator */
+        .activity-indicator {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: var(--success-color);
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: bold;
+            z-index: 100;
+            animation: fadeIn 0.3s ease;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .main-container {
@@ -1649,6 +1902,11 @@
             .modal-content {
                 width: 95%;
                 margin: var(--spacing-md);
+            }
+
+            .dm-panel {
+                width: 100vw;
+                right: -100vw;
             }
         }
 
@@ -1706,6 +1964,12 @@
         <div class="preloader-text">SmileX</div>
         <div class="loading-spinner"></div>
         <span class="sr-only">Loading application...</span>
+    </div>
+
+    <!-- Real-time Activity Indicator -->
+    <div id="activityIndicator" class="activity-indicator hidden">
+        <i class="fas fa-circle live-dot"></i>
+        <span id="activityText">Live Activity</span>
     </div>
 
     <!-- Onboarding Modal -->
@@ -1846,6 +2110,13 @@
                     <i class="fas fa-moon" aria-hidden="true"></i>
                 </button>
                 <button class="nav-button" 
+                        id="dmToggle" 
+                        aria-label="Toggle direct messages"
+                        title="Direct Messages">
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                    <span class="notification-badge" id="dmBadge" style="display: none;">0</span>
+                </button>
+                <button class="nav-button" 
                         id="notificationBtn" 
                         aria-label="View notifications"
                         title="Notifications">
@@ -1857,10 +2128,171 @@
                      role="img" 
                      aria-label="User avatar">
                     <span id="userInitial">U</span>
+                    <div class="status-indicator status-online"></div>
                 </div>
             </div>
         </div>
     </nav>
+
+    <!-- Direct Messages Panel -->
+    <div id="dmPanel" class="dm-panel">
+        <div class="dm-header">
+            <h3><i class="fas fa-envelope"></i> Messages</h3>
+            <button id="closeDmPanel" class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="dm-tabs">
+            <button class="dm-tab active" data-tab="dms">
+                <i class="fas fa-user"></i> Direct Messages
+            </button>
+            <button class="dm-tab" data-tab="groups">
+                <i class="fas fa-users"></i> Groups
+            </button>
+            <button class="dm-tab" data-tab="channels">
+                <i class="fas fa-hashtag"></i> Channels
+            </button>
+        </div>
+
+        <div class="dm-content">
+            <!-- Direct Messages Tab -->
+            <div id="dmsTab" class="dm-list">
+                <div class="dm-item active">
+                    <div class="dm-avatar">
+                        A
+                        <div class="status-indicator status-online"></div>
+                    </div>
+                    <div class="dm-info">
+                        <div class="dm-name">Alex Johnson</div>
+                        <div class="dm-preview">Hey! How's the new feature coming along?</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="dm-time">2m</div>
+                        <div class="unread-badge">2</div>
+                    </div>
+                </div>
+
+                <div class="dm-item">
+                    <div class="dm-avatar">
+                        S
+                        <div class="status-indicator status-away"></div>
+                    </div>
+                    <div class="dm-info">
+                        <div class="dm-name">Sarah Chen</div>
+                        <div class="dm-preview">Thanks for the help with the design!</div>
+                    </div>
+                    <div class="dm-time">1h</div>
+                </div>
+
+                <div class="dm-item">
+                    <div class="dm-avatar">
+                        M
+                        <div class="status-indicator status-offline"></div>
+                    </div>
+                    <div class="dm-info">
+                        <div class="dm-name">Mike Rodriguez</div>
+                        <div class="dm-preview">Let's schedule that meeting for tomorrow</div>
+                    </div>
+                    <div class="dm-time">3h</div>
+                </div>
+            </div>
+
+            <!-- Group Chats Tab -->
+            <div id="groupsTab" class="dm-list hidden">
+                <div class="dm-item group-chat-item">
+                    <div class="dm-avatar">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="dm-info">
+                        <div class="dm-name">Design Team</div>
+                        <div class="dm-preview">Sarah: The mockups are ready for review</div>
+                        <div class="group-members">
+                            <div class="group-member-avatar"></div>
+                            <div class="group-member-avatar"></div>
+                            <div class="group-member-avatar"></div>
+                            <span style="font-size: 10px; color: var(--text-muted);">+5 more</span>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="dm-time">15m</div>
+                        <div class="unread-badge">5</div>
+                    </div>
+                </div>
+
+                <div class="dm-item group-chat-item">
+                    <div class="dm-avatar">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="dm-info">
+                        <div class="dm-name">Dev Squad</div>
+                        <div class="dm-preview">Alex: Bug fix deployed to staging</div>
+                        <div class="group-members">
+                            <div class="group-member-avatar"></div>
+                            <div class="group-member-avatar"></div>
+                            <div class="group-member-avatar"></div>
+                        </div>
+                    </div>
+                    <div class="dm-time">1h</div>
+                </div>
+            </div>
+
+            <!-- Chat Channels Tab -->
+            <div id="channelsTab" class="channel-list hidden">
+                <div class="channel-category">SmileX Official</div>
+                
+                <div class="channel-item active">
+                    <div class="channel-icon">
+                        <i class="fas fa-hashtag"></i>
+                    </div>
+                    <div class="channel-name">general</div>
+                    <div class="channel-count">1.2k</div>
+                </div>
+
+                <div class="channel-item">
+                    <div class="channel-icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <div class="channel-name">announcements</div>
+                    <div class="channel-count">847</div>
+                </div>
+
+                <div class="channel-item">
+                    <div class="channel-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="channel-name">help-support</div>
+                    <div class="channel-count">234</div>
+                </div>
+
+                <div class="channel-category">Communities</div>
+
+                <div class="channel-item">
+                    <div class="channel-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="channel-name">gaming</div>
+                    <div class="channel-count">567</div>
+                </div>
+
+                <div class="channel-item">
+                    <div class="channel-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="channel-name">design</div>
+                    <div class="channel-count">123</div>
+                </div>
+
+                <div class="channel-item">
+                    <div class="channel-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="channel-name">music</div>
+                    <div class="channel-count">89</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main id="main-content" class="main-container">
@@ -1869,8 +2301,32 @@
             <section>
                 <h3><i class="fas fa-users" aria-hidden="true"></i> My Communities</h3>
                 <ul id="communitiesList" role="list">
-                    <li style="color: var(--text-muted); font-size: var(--font-size-sm); padding: var(--spacing-sm);">
-                        No communities yet
+                    <li>
+                        <a href="#" style="display: flex; align-items: center;">
+                            <div class="community-icon bg-purple-500">S</div>
+                            <div>
+                                <div style="font-weight: 500;">SmileX Official</div>
+                                <div style="font-size: 11px; color: var(--text-muted);">127k members</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" style="display: flex; align-items: center;">
+                            <div class="community-icon bg-blue-500">G</div>
+                            <div>
+                                <div style="font-weight: 500;">General</div>
+                                <div style="font-size: 11px; color: var(--text-muted);">45k members</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" style="display: flex; align-items: center;">
+                            <div class="community-icon bg-green-500">T</div>
+                            <div>
+                                <div style="font-weight: 500;">Tech Talk</div>
+                                <div style="font-size: 11px; color: var(--text-muted);">23k members</div>
+                            </div>
+                        </a>
                     </li>
                 </ul>
                 <button id="createCommunityBtn" 
@@ -1886,6 +2342,34 @@
                     <i class="fas fa-globe" aria-hidden="true"></i> Browse Communities
                 </button>
             </section>
+
+            <!-- Online Friends -->
+            <section style="margin-top: var(--spacing-xl);">
+                <h3><i class="fas fa-user-friends" aria-hidden="true"></i> Online Friends</h3>
+                <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                    <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-xs);">
+                        <div class="user-avatar" style="width: 24px; height: 24px; font-size: 10px;">
+                            A
+                            <div class="status-indicator status-online"></div>
+                        </div>
+                        <span style="font-size: var(--font-size-sm);">Alex Johnson</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-xs);">
+                        <div class="user-avatar" style="width: 24px; height: 24px; font-size: 10px;">
+                            S
+                            <div class="status-indicator status-away"></div>
+                        </div>
+                        <span style="font-size: var(--font-size-sm);">Sarah Chen</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-xs);">
+                        <div class="user-avatar" style="width: 24px; height: 24px; font-size: 10px;">
+                            M
+                            <div class="status-indicator status-busy"></div>
+                        </div>
+                        <span style="font-size: var(--font-size-sm);">Mike Rodriguez</span>
+                    </div>
+                </div>
+            </section>
         </aside>
 
         <!-- Main Feed -->
@@ -1895,6 +2379,7 @@
                 <div class="create-post-input">
                     <div class="user-avatar" role="img" aria-label="Your avatar">
                         <span id="createPostUserInitial">U</span>
+                        <div class="status-indicator status-online"></div>
                     </div>
                     <button id="createPostInput" 
                             class="form-control" 
@@ -1906,8 +2391,6 @@
                 <div class="post-type-buttons" role="group" aria-label="Post type options">
                     <button class="post-type-button" 
                             data-post-type="image" 
-                            aria-label="Create image post">
-                        
                             aria-label="Create image post">
                         <i class="far fa-image" aria-hidden="true"></i> Image
                     </button>
@@ -1951,6 +2434,11 @@
                         aria-pressed="false">
                     <i class="fas fa-fire trending-indicator" aria-hidden="true"></i> Trending
                 </button>
+                <button class="sort-button" 
+                        data-sort="live" 
+                        aria-pressed="false">
+                    <i class="fas fa-circle live-dot" aria-hidden="true"></i> Live
+                </button>
             </section>
 
             <!-- Posts Feed -->
@@ -1976,6 +2464,7 @@
                                 <span>Posted by SmileX Team <span class="premium-badge"><i class="fas fa-crown"></i> Premium</span></span>
                                 <span>•</span>
                                 <time>2 hours ago</time>
+                                <span class="live-indicator"><div class="live-dot"></div>LIVE</span>
                             </div>
                             
                             <h2 class="post-title">🎉 Welcome to SmileX - The Future of Social Media! 🎉</h2>
@@ -1983,8 +2472,15 @@
                             <div class="post-text">
                                 Welcome to SmileX, the most advanced social media platform ever created! 
                                 Explore amazing features like live polls, stories, premium content, 
-                                real-time chat, community management, and so much more. 
-                                This is the future of social networking!
+                                real-time chat, community management, direct messages, group chats, 
+                                chat channels, and so much more. This is the future of social networking!
+                                <br><br>
+                                🔥 <strong>New Features:</strong><br>
+                                • Direct Messages with real-time delivery<br>
+                                • Group Chats for team collaboration<br>
+                                • Community Chat Channels<br>
+                                • Live activity indicators<br>
+                                • Enhanced real-time notifications
                             </div>
                             
                             <div class="post-actions">
@@ -2000,6 +2496,10 @@
                                     <button class="post-action-button" aria-label="Save post">
                                         <i class="far fa-bookmark"></i>
                                         <span>Save</span>
+                                    </button>
+                                    <button class="post-action-button" aria-label="Send direct message">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>DM</span>
                                     </button>
                                 </div>
                             </div>
@@ -2034,22 +2534,22 @@
                             <h2 class="post-title">🔥 What's your favorite SmileX feature?</h2>
                             
                             <div class="poll-container">
-                                <div class="poll-option">
+                                <div class="poll-option" onclick="votePoll(this, 0)">
                                     <div class="poll-option-bar" style="width: 35%"></div>
                                     <span class="poll-option-text">Live Polls & Real-time Updates</span>
                                     <span class="poll-option-percentage">35%</span>
                                 </div>
-                                <div class="poll-option">
+                                <div class="poll-option" onclick="votePoll(this, 1)">
                                     <div class="poll-option-bar" style="width: 28%"></div>
-                                    <span class="poll-option-text">Advanced Search System</span>
+                                    <span class="poll-option-text">Direct Messages & Group Chats</span>
                                     <span class="poll-option-percentage">28%</span>
                                 </div>
-                                <div class="poll-option">
+                                <div class="poll-option" onclick="votePoll(this, 2)">
                                     <div class="poll-option-bar" style="width: 22%"></div>
-                                    <span class="poll-option-text">Community Management</span>
+                                    <span class="poll-option-text">Community Chat Channels</span>
                                     <span class="poll-option-percentage">22%</span>
                                 </div>
-                                <div class="poll-option">
+                                <div class="poll-option" onclick="votePoll(this, 3)">
                                     <div class="poll-option-bar" style="width: 15%"></div>
                                     <span class="poll-option-text">Premium Features</span>
                                     <span class="poll-option-percentage">15%</span>
@@ -2078,11 +2578,95 @@
                         </div>
                     </div>
                 </article>
+
+                <!-- Live Chat Channel Post -->
+                <article class="post-card" role="article">
+                    <div class="post-content">
+                        <div class="vote-section" role="group" aria-label="Vote on post">
+                            <button class="vote-button" aria-label="Upvote post">
+                                <i class="fas fa-chevron-up"></i>
+                            </button>
+                            <div class="vote-count" aria-label="Vote count">234</div>
+                            <button class="vote-button" aria-label="Downvote post">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="post-main">
+                            <div class="post-meta">
+                                <span class="community-icon bg-green-500">T</span>
+                                <span>Tech Talk</span>
+                                <span>•</span>
+                                <span>Posted by TechGuru</span>
+                                <span>•</span>
+                                <time>1 hour ago</time>
+                                <span class="live-indicator"><div class="live-dot"></div>LIVE CHAT</span>
+                            </div>
+                            
+                            <h2 class="post-title">💬 Join our live discussion about AI and the future!</h2>
+                            
+                            <div class="post-text">
+                                We're having an amazing live discussion in the #tech-talk channel about 
+                                artificial intelligence and its impact on society. Join us now for 
+                                real-time conversations with experts and enthusiasts!
+                            </div>
+
+                            <!-- Live Chat Preview -->
+                            <div style="background: var(--surface-secondary); border-radius: var(--radius-md); padding: var(--spacing-md); margin: var(--spacing-md) 0;">
+                                <div style="display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-sm);">
+                                    <i class="fas fa-hashtag" style="color: var(--primary-color);"></i>
+                                    <strong>tech-talk</strong>
+                                    <span style="color: var(--success-color); font-size: var(--font-size-xs);">
+                                        <i class="fas fa-circle" style="font-size: 6px;"></i> 47 online
+                                    </span>
+                                </div>
+                                
+                                <div style="font-size: var(--font-size-sm); color: var(--text-secondary);">
+                                    <div style="margin-bottom: var(--spacing-xs);">
+                                        <strong style="color: var(--primary-color);">AIExpert:</strong> 
+                                        The latest developments in machine learning are fascinating!
+                                    </div>
+                                    <div style="margin-bottom: var(--spacing-xs);">
+                                        <strong style="color: var(--secondary-color);">CodeMaster:</strong> 
+                                        Agreed! The potential applications are endless.
+                                    </div>
+                                    <div class="typing-indicator">
+                                        <strong>TechGuru</strong> is typing
+                                        <div class="typing-dots">
+                                            <div class="typing-dot"></div>
+                                            <div class="typing-dot"></div>
+                                            <div class="typing-dot"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="post-actions">
+                                <div class="post-action-buttons">
+                                    <button class="post-action-button" onclick="joinChannel('tech-talk')" style="background: var(--primary-color); color: white;">
+                                        <i class="fas fa-comments"></i>
+                                        <span>Join Live Chat</span>
+                                    </button>
+                                    <button class="post-action-button" aria-label="Share post">
+                                        <i class="fas fa-share"></i>
+                                        <span>Share</span>
+                                    </button>
+                                    <button class="post-action-button" aria-label="Save post">
+                                        <i class="far fa-bookmark"></i>
+                                        <span>Save</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
             </section>
 
             <!-- Load More Button -->
             <div class="text-center">
-                <button id="loadMoreBtn" class="btn btn-secondary">Load more posts</button>
+                <button id="loadMoreBtn" class="btn btn-secondary">
+                    <i class="fas fa-sync-alt"></i> Load more posts
+                </button>
             </div>
         </main>
 
@@ -2093,6 +2677,7 @@
                 <h4 style="display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
                     <i class="fas fa-chart-line" aria-hidden="true"></i>
                     Live Stats
+                    <span class="live-indicator"><div class="live-dot"></div></span>
                 </h4>
                 <div style="display: flex; flex-direction: column; gap: var(--spacing-sm); font-size: var(--font-size-sm);">
                     <div style="display: flex; justify-content: space-between;">
@@ -2100,8 +2685,12 @@
                         <span id="onlineUsers" style="color: var(--success-color); font-weight: bold;">127,543</span>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
-                        <span>Active Polls:</span>
-                        <span id="activePolls" style="color: var(--primary-color); font-weight: bold;">1,247</span>
+                        <span>Active Chats:</span>
+                        <span id="activeChats" style="color: var(--primary-color); font-weight: bold;">2,847</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Live Polls:</span>
+                        <span id="activePolls" style="color: var(--accent-color); font-weight: bold;">1,247</span>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
                         <span>Posts Today:</span>
@@ -2109,7 +2698,38 @@
                     </div>
                     <div style="display: flex; justify-content: space-between;">
                         <span>Communities:</span>
-                        <span id="totalCommunities" style="color: var(--accent-color); font-weight: bold;">8,934</span>
+                        <span id="totalCommunities" style="color: var(--secondary-color); font-weight: bold;">8,934</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Trending Channels -->
+            <section style="background: var(--surface-secondary); border-radius: var(--radius-xl); padding: var(--spacing-lg); margin-top: var(--spacing-lg);">
+                <h4 style="display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
+                    <i class="fas fa-fire trending-indicator" aria-hidden="true"></i>
+                    Trending Channels
+                </h4>
+                <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-sm); background: var(--surface-color); border-radius: var(--radius-md); cursor: pointer;" onclick="joinChannel('general')">
+                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                            <i class="fas fa-hashtag" style="color: var(--primary-color);"></i>
+                            <span style="font-weight: 500;">general</span>
+                        </div>
+                        <span style="color: var(--success-color); font-size: var(--font-size-xs);">1.2k online</span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-sm); background: var(--surface-color); border-radius: var(--radius-md); cursor: pointer;" onclick="joinChannel('gaming')">
+                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                            <i class="fas fa-gamepad" style="color: var(--secondary-color);"></i>
+                            <span style="font-weight: 500;">gaming</span>
+                        </div>
+                        <span style="color: var(--success-color); font-size: var(--font-size-xs);">567 online</span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-sm); background: var(--surface-color); border-radius: var(--radius-md); cursor: pointer;" onclick="joinChannel('tech-talk')">
+                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                            <i class="fas fa-code" style="color: var(--accent-color);"></i>
+                            <span style="font-weight: 500;">tech-talk</span>
+                        </div>
+                        <span style="color: var(--success-color); font-size: var(--font-size-xs);">234 online</span>
                     </div>
                 </div>
             </section>
@@ -2127,6 +2747,7 @@
                     <p style="font-size: var(--font-size-sm); margin-bottom: var(--spacing-md);">
                         Unlock exclusive features: <span class="disco-text">Disco Text</span>, 
                         <span class="premium-emoji">🎉</span> Premium Emojis, 
+                        Priority DMs, Group Chat creation, Custom channels, 
                         Ad-free experience, and more!
                     </p>
                     <button id="premiumBtn" class="btn btn-premium" style="width: 100%;">
@@ -2152,12 +2773,24 @@
             <div class="modal-body">
                 <form id="createPostForm" novalidate>
                     <div class="form-group">
+                        <label for="postCommunity" class="form-label">Community</label>
+                        <select id="postCommunity" name="community" class="form-select" required>
+                            <option value="general">General</option>
+                            <option value="smilex-official">SmileX Official</option>
+                            <option value="tech-talk">Tech Talk</option>
+                            <option value="gaming">Gaming</option>
+                            <option value="design">Design</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <label for="postType" class="form-label">Post type</label>
                         <select id="postType" name="postType" class="form-select" required>
                             <option value="text">Text Post</option>
                             <option value="image">Image Post</option>
                             <option value="video">Video Post</option>
                             <option value="poll">Poll</option>
+                            <option value="live-chat">Live Chat Event</option>
                         </select>
                     </div>
 
@@ -2201,6 +2834,19 @@
                         </button>
                     </div>
 
+                    <!-- Live Chat Event Container -->
+                    <div class="form-group hidden" id="liveChatContainer">
+                        <label for="chatChannel" class="form-label">Chat Channel</label>
+                        <input type="text" 
+                               id="chatChannel" 
+                               name="chatChannel" 
+                               placeholder="Enter channel name (e.g., tech-discussion)" 
+                               class="form-control">
+                        <div style="margin-top: var(--spacing-sm); font-size: var(--font-size-xs); color: var(--text-muted);">
+                            This will create a live chat event that others can join in real-time.
+                        </div>
+                    </div>
+
                     <div class="form-group" id="mediaUploadContainer">
                         <label class="form-label">Media Upload</label>
                         <div class="media-upload-area" 
@@ -2229,7 +2875,9 @@
 
             <footer class="modal-footer">
                 <button type="button" id="cancelCreatePost" class="btn btn-secondary">Cancel</button>
-                <button type="submit" form="createPostForm" class="btn btn-primary">Post</button>
+                <button type="submit" form="createPostForm" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Post
+                </button>
             </footer>
         </div>
     </div>
@@ -2289,33 +2937,46 @@
                             </div>
                         </div>
                     </fieldset>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <input type="checkbox" id="enableChatChannels" name="enableChatChannels" style="margin-right: var(--spacing-sm);">
+                            Enable Chat Channels
+                        </label>
+                        <div style="font-size: var(--font-size-xs); color: var(--text-muted); margin-top: var(--spacing-xs);">
+                            Allow real-time chat channels within this community
+                        </div>
+                    </div>
                 </form>
             </div>
 
             <footer class="modal-footer">
                 <button type="button" id="cancelCreateCommunity" class="btn btn-secondary">Cancel</button>
-                <button type="submit" form="createCommunityForm" class="btn btn-primary">Create Community</button>
+                <button type="submit" form="createCommunityForm" class="btn btn-primary">
+                    <i class="fas fa-users"></i> Create Community
+                </button>
             </footer>
         </div>
     </div>
 
-    <!-- Live Chat Toggle Button -->
-    <button id="chat-toggle-btn" 
-            class="chat-toggle" 
-            aria-label="Toggle live chat" 
-            title="Live Chat Support">
-        <i class="fas fa-comment-dots" aria-hidden="true"></i>
-    </button>
-
-    <!-- Live Chat Container -->
+    <!-- Enhanced Chat Container -->
     <div id="chat-container" class="chat-container" role="dialog" aria-labelledby="chat-title">
         <header class="chat-header">
-            <h3 id="chat-title">Live Chat Support</h3>
-            <button id="chat-close-btn" 
-                    class="chat-close" 
-                    aria-label="Close chat">
-                <i class="fas fa-times" aria-hidden="true"></i>
-            </button>
+            <h3 id="chat-title">
+                <i class="fas fa-hashtag"></i> 
+                <span id="currentChannelName">general</span>
+                <span class="live-indicator"><div class="live-dot"></div></span>
+            </h3>
+            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                <span style="font-size: var(--font-size-xs); color: rgba(255,255,255,0.7);">
+                    <i class="fas fa-users"></i> <span id="channelUserCount">47</span> online
+                </span>
+                <button id="chat-close-btn" 
+                        class="chat-close" 
+                        aria-label="Close chat">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
         </header>
         <div class="chat-messages" 
              id="chat-messages" 
@@ -2323,9 +2984,21 @@
              aria-live="polite" 
              aria-label="Chat messages">
             <div class="message agent">
-                <div class="message-user">Support Agent</div>
-                <div class="message-text">Hello! How can we help you today?</div>
+                <div class="message-user">
+                    <i class="fas fa-robot"></i> SmileX Bot
+                </div>
+                <div class="message-text">Welcome to #general! This is a live chat channel where you can talk with other community members in real-time.</div>
                 <div class="message-time">Just now</div>
+            </div>
+            <div class="message">
+                <div class="message-user">TechGuru</div>
+                <div class="message-text">Hey everyone! Loving the new chat features! 🚀</div>
+                <div class="message-time">2m ago</div>
+            </div>
+            <div class="message">
+                <div class="message-user">DesignPro</div>
+                <div class="message-text">The real-time updates are so smooth!</div>
+                <div class="message-time">1m ago</div>
             </div>
         </div>
         <div class="chat-input-container">
@@ -2334,6 +3007,11 @@
                    id="chat-input" 
                    class="chat-input" 
                    placeholder="Type your message...">
+            <button id="emoji-btn" 
+                    class="emoji-picker-btn" 
+                    aria-label="Add emoji">
+                <i class="far fa-smile"></i>
+            </button>
             <button id="chat-send-btn" 
                     class="chat-send" 
                     aria-label="Send message">
@@ -2341,6 +3019,15 @@
             </button>
         </div>
     </div>
+
+    <!-- Live Chat Toggle Button -->
+    <button id="chat-toggle-btn" 
+            class="chat-toggle" 
+            aria-label="Toggle live chat" 
+            title="Live Chat Channels">
+        <i class="fas fa-comments" aria-hidden="true"></i>
+        <span class="notification-badge" id="chatBadge" style="display: none;">0</span>
+    </button>
 
     <!-- Mobile Navigation -->
     <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
@@ -2356,18 +3043,18 @@
             <i class="fas fa-plus-circle" aria-hidden="true"></i>
             <span>Create</span>
         </a>
-        <a href="#" class="mobile-nav-item">
-            <i class="fas fa-bell" aria-hidden="true"></i>
-            <span>Notifications</span>
+        <a href="#" class="mobile-nav-item" id="mobileDmToggle">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+            <span>Messages</span>
+            <span class="notification-badge" id="mobileDmBadge" style="display: none;">0</span>
         </a>
-        <a href="#" class="mobile-nav-item" id="mobileCreateCommunity">
-            <i class="fas fa-users" aria-hidden="true"></i>
-            <span>Community</span>
+        <a href="#" class="mobile-nav-item" id="mobileChatToggle">
+            <i class="fas fa-comments" aria-hidden="true"></i>
+            <span>Chat</span>
         </a>
     </nav>
-
     <script>
-        // SmileX Social Platform - Complete JavaScript Implementation
+                // SmileX Advanced Social Platform - Complete JavaScript Implementation with Real-time Features
         
         // Global Configuration
         const CONFIG = {
@@ -2376,14 +3063,193 @@
             SUPPORTED_VIDEO_TYPES: ['video/mp4', 'video/webm', 'video/ogg'],
             MAX_POLL_OPTIONS: 6,
             MAX_POST_LENGTH: 10000,
-            PREMIUM_EMOJIS: ['✨', '💎', '👑', '🌟', '🔥', '💫', '🎭', '🎪', '🎨', '🎯']
+            PREMIUM_EMOJIS: ['✨', '💎', '👑', '🌟', '🔥', '💫', '🎭', '🎪', '🎨', '🎯'],
+            CHAT_UPDATE_INTERVAL: 1000, // 1 second
+            ACTIVITY_UPDATE_INTERVAL: 5000, // 5 seconds
+            MAX_CHAT_MESSAGES: 100
         };
 
         // Global State
         let currentUser = null;
         let posts = [];
         let communities = [];
+        let directMessages = [];
+        let groupChats = [];
+        let chatChannels = [];
         let isLiveMode = true;
+        let currentChannel = 'general';
+        let onlineUsers = new Set();
+        let typingUsers = new Set();
+
+        // Real-time Database Simulation
+        class RealtimeDatabase {
+            constructor() {
+                this.data = {
+                    posts: [],
+                    users: [],
+                    messages: [],
+                    channels: [],
+                    communities: [],
+                    activities: []
+                };
+                this.subscribers = {};
+                this.isConnected = true;
+                this.startHeartbeat();
+            }
+
+            // Subscribe to real-time updates
+            subscribe(collection, callback) {
+                if (!this.subscribers[collection]) {
+                    this.subscribers[collection] = [];
+                }
+                this.subscribers[collection].push(callback);
+            }
+
+            // Unsubscribe from updates
+            unsubscribe(collection, callback) {
+                if (this.subscribers[collection]) {
+                    this.subscribers[collection] = this.subscribers[collection].filter(cb => cb !== callback);
+                }
+            }
+
+            // Add data to collection
+            add(collection, data) {
+                const item = {
+                    ...data,
+                    id: this.generateId(),
+                    timestamp: new Date().toISOString(),
+                    userId: currentUser?.userId || 'anonymous'
+                };
+                
+                this.data[collection].push(item);
+                this.notifySubscribers(collection, 'add', item);
+                return item;
+            }
+
+            // Update data in collection
+            update(collection, id, updates) {
+                const index = this.data[collection].findIndex(item => item.id === id);
+                if (index !== -1) {
+                    this.data[collection][index] = { ...this.data[collection][index], ...updates };
+                    this.notifySubscribers(collection, 'update', this.data[collection][index]);
+                    return this.data[collection][index];
+                }
+                return null;
+            }
+
+            // Get data from collection
+            get(collection, filter = null) {
+                let result = this.data[collection];
+                if (filter) {
+                    result = result.filter(filter);
+                }
+                return result;
+            }
+
+            // Delete data from collection
+            delete(collection, id) {
+                const index = this.data[collection].findIndex(item => item.id === id);
+                if (index !== -1) {
+                    const deleted = this.data[collection].splice(index, 1)[0];
+                    this.notifySubscribers(collection, 'delete', deleted);
+                    return deleted;
+                }
+                return null;
+            }
+
+            // Notify subscribers of changes
+            notifySubscribers(collection, action, data) {
+                if (this.subscribers[collection]) {
+                    this.subscribers[collection].forEach(callback => {
+                        try {
+                            callback({ action, data, collection });
+                        } catch (error) {
+                            console.error('Subscriber callback error:', error);
+                        }
+                    });
+                }
+            }
+
+            // Generate unique ID
+            generateId() {
+                return Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
+            }
+
+            // Simulate connection heartbeat
+            startHeartbeat() {
+                setInterval(() => {
+                    if (this.isConnected) {
+                        this.simulateActivity();
+                    }
+                }, CONFIG.ACTIVITY_UPDATE_INTERVAL);
+            }
+
+            // Simulate real-time activity
+            simulateActivity() {
+                // Simulate new messages
+                if (Math.random() < 0.3) {
+                    this.simulateMessage();
+                }
+
+                // Simulate user status changes
+                if (Math.random() < 0.2) {
+                    this.simulateUserStatusChange();
+                }
+
+                // Update live stats
+                this.updateLiveStats();
+            }
+
+            simulateMessage() {
+                const channels = ['general', 'tech-talk', 'gaming', 'design'];
+                const users = ['TechGuru', 'DesignPro', 'GameMaster', 'CodeNinja', 'AIExpert'];
+                const messages = [
+                    'Great discussion everyone!',
+                    'I totally agree with that point',
+                    'Has anyone tried the new feature?',
+                    'This is really interesting!',
+                    'Thanks for sharing that resource',
+                    'Looking forward to the next update',
+                    'The community is growing so fast!',
+                    'Love the real-time features'
+                ];
+
+                const message = {
+                    channel: channels[Math.floor(Math.random() * channels.length)],
+                    user: users[Math.floor(Math.random() * users.length)],
+                    text: messages[Math.floor(Math.random() * messages.length)],
+                    timestamp: new Date()
+                };
+
+                this.add('messages', message);
+            }
+
+            simulateUserStatusChange() {
+                const statuses = ['online', 'away', 'busy', 'offline'];
+                const users = Array.from(onlineUsers);
+                if (users.length > 0) {
+                    const user = users[Math.floor(Math.random() * users.length)];
+                    const status = statuses[Math.floor(Math.random() * statuses.length)];
+                    
+                    this.notifySubscribers('userStatus', 'update', { user, status });
+                }
+            }
+
+            updateLiveStats() {
+                const stats = {
+                    onlineUsers: Math.floor(Math.random() * 10000) + 120000,
+                    activeChats: Math.floor(Math.random() * 1000) + 2000,
+                    activePolls: Math.floor(Math.random() * 500) + 1000,
+                    postsToday: Math.floor(Math.random() * 10000) + 40000,
+                    totalCommunities: Math.floor(Math.random() * 1000) + 8000
+                };
+
+                this.notifySubscribers('stats', 'update', stats);
+            }
+        }
+
+        // Initialize real-time database
+        const realtimeDB = new RealtimeDatabase();
 
         // Utility Functions
         const utils = {
@@ -2404,13 +3270,13 @@
                     return 'Just now';
                 } else if (diffInSeconds < 3600) {
                     const minutes = Math.floor(diffInSeconds / 60);
-                    return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+                    return `${minutes}m ago`;
                 } else if (diffInSeconds < 86400) {
                     const hours = Math.floor(diffInSeconds / 3600);
-                    return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+                    return `${hours}h ago`;
                 } else {
                     const days = Math.floor(diffInSeconds / 86400);
-                    return `${days} day${days !== 1 ? 's' : ''} ago`;
+                    return `${days}d ago`;
                 }
             },
 
@@ -2471,8 +3337,391 @@
                         }
                     }, 300);
                 }, 3000);
+            },
+
+            showActivityIndicator(text) {
+                const indicator = document.getElementById('activityIndicator');
+                const textElement = document.getElementById('activityText');
+                
+                if (indicator && textElement) {
+                    textElement.textContent = text;
+                    indicator.classList.remove('hidden');
+                    
+                    setTimeout(() => {
+                        indicator.classList.add('hidden');
+                    }, 3000);
+                }
             }
         };
+
+        // Enhanced Chat System
+        class EnhancedChatSystem {
+            constructor() {
+                this.isOpen = false;
+                this.currentChannel = 'general';
+                this.messages = new Map();
+                this.typingTimeout = null;
+                this.lastMessageTime = new Date();
+                
+                // Initialize with some sample messages
+                this.initializeSampleMessages();
+                
+                // Subscribe to real-time message updates
+                realtimeDB.subscribe('messages', this.handleMessageUpdate.bind(this));
+            }
+
+            initializeSampleMessages() {
+                const sampleMessages = [
+                    {
+                        channel: 'general',
+                        user: 'SmileX Bot',
+                        text: 'Welcome to #general! This is a live chat channel.',
+                        timestamp: new Date(Date.now() - 300000),
+                        type: 'system'
+                    },
+                    {
+                        channel: 'general',
+                        user: 'TechGuru',
+                        text: 'Hey everyone! Loving the new chat features! 🚀',
+                        timestamp: new Date(Date.now() - 120000)
+                    },
+                    {
+                        channel: 'general',
+                        user: 'DesignPro',
+                        text: 'The real-time updates are so smooth!',
+                        timestamp: new Date(Date.now() - 60000)
+                    }
+                ];
+
+                sampleMessages.forEach(msg => {
+                    if (!this.messages.has(msg.channel)) {
+                        this.messages.set(msg.channel, []);
+                    }
+                    this.messages.get(msg.channel).push(msg);
+                });
+            }
+
+            handleMessageUpdate(update) {
+                if (update.action === 'add' && update.data.channel) {
+                    const { channel, user, text, timestamp } = update.data;
+                    
+                    if (!this.messages.has(channel)) {
+                        this.messages.set(channel, []);
+                    }
+                    
+                    const channelMessages = this.messages.get(channel);
+                    channelMessages.push({ channel, user, text, timestamp: new Date(timestamp) });
+                    
+                    // Keep only last 100 messages
+                    if (channelMessages.length > CONFIG.MAX_CHAT_MESSAGES) {
+                        channelMessages.shift();
+                    }
+                    
+                    // Update UI if this is the current channel
+                    if (channel === this.currentChannel) {
+                        this.renderMessages();
+                    }
+                    
+                    // Show notification if chat is closed or different channel
+                    if (!this.isOpen || channel !== this.currentChannel) {
+                        this.updateChatBadge();
+                        utils.showActivityIndicator(`New message in #${channel}`);
+                    }
+                }
+            }
+
+            toggle() {
+                this.isOpen = !this.isOpen;
+                const container = document.getElementById('chat-container');
+                
+                if (this.isOpen) {
+                    container.classList.add('active');
+                    this.renderMessages();
+                    this.clearChatBadge();
+                } else {
+                    container.classList.remove('active');
+                }
+            }
+
+            switchChannel(channelName) {
+                this.currentChannel = channelName;
+                const channelNameElement = document.getElementById('currentChannelName');
+                if (channelNameElement) {
+                    channelNameElement.textContent = channelName;
+                }
+                this.renderMessages();
+                this.updateChannelUserCount();
+            }
+
+            sendMessage(text) {
+                if (!text.trim()) return;
+
+                const message = {
+                    channel: this.currentChannel,
+                    user: currentUser?.fullName || 'Anonymous',
+                    text: text.trim(),
+                    timestamp: new Date()
+                };
+
+                // Add to real-time database
+                realtimeDB.add('messages', message);
+
+                // Clear input
+                const input = document.getElementById('chat-input');
+                if (input) input.value = '';
+
+                // Stop typing indicator
+                this.stopTyping();
+            }
+
+            renderMessages() {
+                const container = document.getElementById('chat-messages');
+                if (!container) return;
+
+                const channelMessages = this.messages.get(this.currentChannel) || [];
+                
+                container.innerHTML = channelMessages.map(message => `
+                    <div class="message ${message.type === 'system' ? 'agent' : ''}">
+                        <div class="message-user">
+                            ${message.type === 'system' ? '<i class="fas fa-robot"></i> ' : ''}${message.user}
+                        </div>
+                        <div class="message-text">${message.text}</div>
+                        <div class="message-time">${utils.getTimeAgo(message.timestamp)}</div>
+                    </div>
+                `).join('');
+
+                // Scroll to bottom
+                container.scrollTop = container.scrollHeight;
+            }
+
+            startTyping() {
+                if (this.typingTimeout) {
+                    clearTimeout(this.typingTimeout);
+                }
+
+                // Add user to typing set
+                typingUsers.add(currentUser?.fullName || 'Anonymous');
+                
+                // Auto-stop typing after 3 seconds
+                this.typingTimeout = setTimeout(() => {
+                    this.stopTyping();
+                }, 3000);
+            }
+
+            stopTyping() {
+                if (this.typingTimeout) {
+                    clearTimeout(this.typingTimeout);
+                    this.typingTimeout = null;
+                }
+
+                // Remove user from typing set
+                typingUsers.delete(currentUser?.fullName || 'Anonymous');
+            }
+
+            updateChatBadge() {
+                const badge = document.getElementById('chatBadge');
+                const mobileBadge = document.getElementById('mobileChatBadge');
+                
+                // Simple notification count simulation
+                const count = Math.floor(Math.random() * 5) + 1;
+                
+                [badge, mobileBadge].forEach(element => {
+                    if (element) {
+                        element.textContent = count;
+                        element.style.display = 'flex';
+                    }
+                });
+            }
+
+            clearChatBadge() {
+                const badge = document.getElementById('chatBadge');
+                const mobileBadge = document.getElementById('mobileChatBadge');
+                
+                [badge, mobileBadge].forEach(element => {
+                    if (element) {
+                        element.style.display = 'none';
+                    }
+                });
+            }
+
+            updateChannelUserCount() {
+                const countElement = document.getElementById('channelUserCount');
+                if (countElement) {
+                    const count = Math.floor(Math.random() * 100) + 20;
+                    countElement.textContent = count;
+                }
+            }
+        }
+
+        // Direct Messages System
+        class DirectMessagesSystem {
+            constructor() {
+                this.isOpen = false;
+                this.currentTab = 'dms';
+                this.conversations = new Map();
+                this.initializeSampleConversations();
+                
+                // Subscribe to real-time DM updates
+                realtimeDB.subscribe('directMessages', this.handleDMUpdate.bind(this));
+            }
+
+            initializeSampleConversations() {
+                const sampleDMs = [
+                    {
+                        id: 'dm_1',
+                        participants: ['Alex Johnson'],
+                        lastMessage: 'Hey! How\'s the new feature coming along?',
+                        timestamp: new Date(Date.now() - 120000),
+                        unread: 2,
+                        status: 'online'
+                    },
+                    {
+                        id: 'dm_2',
+                        participants: ['Sarah Chen'],
+                        lastMessage: 'Thanks for the help with the design!',
+                        timestamp: new Date(Date.now() - 3600000),
+                        unread: 0,
+                        status: 'away'
+                    },
+                    {
+                        id: 'dm_3',
+                        participants: ['Mike Rodriguez'],
+                        lastMessage: 'Let\'s schedule that meeting for tomorrow',
+                        timestamp: new Date(Date.now() - 10800000),
+                        unread: 0,
+                        status: 'offline'
+                    }
+                ];
+
+                sampleDMs.forEach(dm => {
+                    this.conversations.set(dm.id, dm);
+                });
+            }
+
+            toggle() {
+                this.isOpen = !this.isOpen;
+                const panel = document.getElementById('dmPanel');
+                
+                if (this.isOpen) {
+                    panel.classList.add('active');
+                    this.renderCurrentTab();
+                    this.clearDMBadge();
+                } else {
+                    panel.classList.remove('active');
+                }
+            }
+
+            switchTab(tabName) {
+                this.currentTab = tabName;
+                
+                // Update tab buttons
+                document.querySelectorAll('.dm-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+                
+                // Show/hide tab content
+                document.querySelectorAll('.dm-list, .channel-list').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                this.renderCurrentTab();
+            }
+
+            renderCurrentTab() {
+                switch (this.currentTab) {
+                    case 'dms':
+                        this.renderDirectMessages();
+                        break;
+                    case 'groups':
+                        this.renderGroupChats();
+                        break;
+                    case 'channels':
+                        this.renderChannels();
+                        break;
+                }
+            }
+
+            renderDirectMessages() {
+                const container = document.getElementById('dmsTab');
+                if (container) {
+                    container.classList.remove('hidden');
+                    // DM rendering is already in HTML, could be made dynamic here
+                }
+            }
+
+            renderGroupChats() {
+                const container = document.getElementById('groupsTab');
+                if (container) {
+                    container.classList.remove('hidden');
+                    // Group chat rendering is already in HTML, could be made dynamic here
+                }
+            }
+
+            renderChannels() {
+                const container = document.getElementById('channelsTab');
+                if (container) {
+                    container.classList.remove('hidden');
+                    // Channel rendering is already in HTML, could be made dynamic here
+                }
+            }
+
+            handleDMUpdate(update) {
+                if (update.action === 'add') {
+                    // Handle new direct message
+                    this.updateDMBadge();
+                    
+                    if (!this.isOpen) {
+                        utils.showActivityIndicator('New direct message');
+                    }
+                }
+            }
+
+            updateDMBadge() {
+                const badge = document.getElementById('dmBadge');
+                const mobileBadge = document.getElementById('mobileDmBadge');
+                
+                // Calculate total unread messages
+                let totalUnread = 0;
+                this.conversations.forEach(conv => {
+                    totalUnread += conv.unread || 0;
+                });
+                
+                [badge, mobileBadge].forEach(element => {
+                    if (element && totalUnread > 0) {
+                        element.textContent = totalUnread;
+                        element.style.display = 'flex';
+                    }
+                });
+            }
+
+            clearDMBadge() {
+                const badge = document.getElementById('dmBadge');
+                const mobileBadge = document.getElementById('mobileDmBadge');
+                
+                [badge, mobileBadge].forEach(element => {
+                    if (element) {
+                        element.style.display = 'none';
+                    }
+                });
+            }
+
+            sendDirectMessage(recipientId, message) {
+                const dm = {
+                    recipientId,
+                    senderId: currentUser?.userId || 'anonymous',
+                    message,
+                    timestamp: new Date()
+                };
+
+                realtimeDB.add('directMessages', dm);
+                utils.showNotification('Message sent!', 'success');
+            }
+        }
+
+        // Initialize systems
+        const chatSystem = new EnhancedChatSystem();
+        const dmSystem = new DirectMessagesSystem();
 
         // Modal Functions
         function showModal(modalId) {
@@ -2543,17 +3792,22 @@
                 gender: formData.get('gender'),
                 country: formData.get('country'),
                 userId: utils.generateId(),
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                status: 'online'
             };
 
             currentUser = userData;
             localStorage.setItem('smilex_user', JSON.stringify(userData));
+
+            // Add user to online users
+            onlineUsers.add(userData.fullName);
 
             // Update UI
             updateUserInterface(userData);
             hideModal('onboardingOverlay');
             
             utils.showNotification(`Welcome to SmileX, ${userData.fullName}!`, 'success');
+            utils.showActivityIndicator('User joined the platform');
         }
 
         // Post Creation
@@ -2569,17 +3823,27 @@
                 authorId: currentUser ? currentUser.userId : "anonymous",
                 timestamp: new Date(),
                 type: formData.get('postType'),
-                votes: 0,
-                comments: 0,
-                community: "General"
+                community: formData.get('community') || 'general',
+                votes: Math.floor(Math.random() * 100),
+                comments: Math.floor(Math.random() * 50),
+                isLive: formData.get('postType') === 'live-chat'
             };
 
+            // Add to real-time database
+            realtimeDB.add('posts', postData);
+            
             posts.unshift(postData);
             hideModal('create-post-modal');
             event.target.reset();
             
             utils.showNotification('Post created successfully!', 'success');
-            renderPosts();
+            utils.showActivityIndicator('New post published');
+            
+            // If it's a live chat event, create a channel
+            if (postData.type === 'live-chat') {
+                const channelName = formData.get('chatChannel') || 'new-discussion';
+                utils.showNotification(`Live chat "${channelName}" is now active!`, 'info');
+            }
         }
 
         // Community Creation
@@ -2592,16 +3856,21 @@
                 name: formData.get('name'),
                 description: formData.get('description'),
                 type: formData.get('type'),
+                enableChatChannels: formData.get('enableChatChannels') === 'on',
                 createdBy: currentUser ? currentUser.fullName : "Anonymous",
                 memberCount: 1,
                 createdAt: new Date()
             };
 
+            // Add to real-time database
+            realtimeDB.add('communities', communityData);
+            
             communities.push(communityData);
             hideModal('create-community-modal');
             event.target.reset();
             
             utils.showNotification(`Community "${communityData.name}" created successfully!`, 'success');
+            utils.showActivityIndicator('New community created');
             updateCommunitiesDisplay();
         }
 
@@ -2611,14 +3880,19 @@
             const contentContainer = document.getElementById('contentContainer');
             const pollContainer = document.getElementById('pollOptionsContainer');
             const mediaContainer = document.getElementById('mediaUploadContainer');
+            const liveChatContainer = document.getElementById('liveChatContainer');
 
             // Reset visibility
             contentContainer.classList.remove('hidden');
             pollContainer.classList.add('hidden');
             mediaContainer.classList.remove('hidden');
+            liveChatContainer.classList.add('hidden');
 
             if (postType === 'poll') {
                 pollContainer.classList.remove('hidden');
+                mediaContainer.classList.add('hidden');
+            } else if (postType === 'live-chat') {
+                liveChatContainer.classList.remove('hidden');
                 mediaContainer.classList.add('hidden');
             }
         }
@@ -2641,6 +3915,32 @@
             
             container.appendChild(newOption);
             newOption.focus();
+        }
+
+        // Poll Voting
+        function votePoll(element, optionIndex) {
+            if (element.classList.contains('voted')) return;
+            
+            // Mark as voted
+            element.classList.add('voted');
+            
+            // Simulate vote update
+            const percentageElement = element.querySelector('.poll-option-percentage');
+            const currentPercentage = parseInt(percentageElement.textContent);
+            const newPercentage = Math.min(currentPercentage + Math.floor(Math.random() * 5) + 1, 100);
+            
+            percentageElement.textContent = newPercentage + '%';
+            element.querySelector('.poll-option-bar').style.width = newPercentage + '%';
+            
+            utils.showNotification('Vote recorded!', 'success');
+            utils.showActivityIndicator('Poll vote submitted');
+        }
+
+        // Join Channel Function
+        function joinChannel(channelName) {
+            chatSystem.switchChannel(channelName);
+            chatSystem.toggle();
+            utils.showNotification(`Joined #${channelName}`, 'success');
         }
 
         // Media Upload Handler
@@ -2714,93 +4014,6 @@
             button.parentElement.remove();
         }
 
-        // Chat System
-        class ChatSystem {
-            constructor() {
-                this.isOpen = false;
-                this.messages = [
-                    {
-                        id: 1,
-                        user: 'Support Agent',
-                        text: 'Hello! How can we help you today?',
-                        timestamp: new Date(),
-                        type: 'agent'
-                    }
-                ];
-            }
-
-            toggle() {
-                this.isOpen = !this.isOpen;
-                const container = document.getElementById('chat-container');
-                
-                if (this.isOpen) {
-                    container.classList.add('active');
-                } else {
-                    container.classList.remove('active');
-                }
-            }
-
-            sendMessage(text) {
-                if (!text.trim()) return;
-
-                const userMessage = {
-                    id: Date.now(),
-                    user: currentUser?.fullName || 'User',
-                    text: text.trim(),
-                    timestamp: new Date(),
-                    type: 'user'
-                };
-
-                this.messages.push(userMessage);
-                this.renderMessages();
-
-                // Simulate agent response
-                setTimeout(() => {
-                    const responses = [
-                        "Thanks for your message! Our team will get back to you soon.",
-                        "I understand your concern. Let me help you with that.",
-                        "That's a great question! Here's what I can tell you...",
-                        "I'll make sure to pass this along to the right team.",
-                        "Is there anything else I can help you with today?"
-                    ];
-
-                    const agentMessage = {
-                        id: Date.now() + 1,
-                        user: 'Support Agent',
-                        text: responses[Math.floor(Math.random() * responses.length)],
-                        timestamp: new Date(),
-                        type: 'agent'
-                    };
-
-                    this.messages.push(agentMessage);
-                    this.renderMessages();
-                }, 1000 + Math.random() * 2000);
-
-                // Clear input
-                const input = document.getElementById('chat-input');
-                if (input) input.value = '';
-            }
-
-            renderMessages() {
-                const container = document.getElementById('chat-messages');
-                if (!container) return;
-
-                container.innerHTML = this.messages.map(message => `
-                    <div class="message ${message.type}">
-                        <div class="message-user">${message.user}</div>
-                        <div class="message-text">${message.text}</div>
-                        <div class="message-time">${utils.getTimeAgo(message.timestamp)}</div>
-                    </div>
-                `).join('');
-
-                // Scroll to bottom
-                container.scrollTop = container.scrollHeight;
-            }
-        }
-
-        // Initialize Chat System
-        const chatSystem = new ChatSystem();
-
         // Theme Management
         function toggleTheme() {
             const root = document.documentElement;
@@ -2845,6 +4058,13 @@
             document.querySelectorAll('#userInitial, #createPostUserInitial').forEach(element => {
                 element.textContent = userInitials;
             });
+
+            // Update user status
+            document.querySelectorAll('.status-indicator').forEach(indicator => {
+                if (indicator.closest('#userAvatar') || indicator.closest('#createPostUserInitial')) {
+                    indicator.className = 'status-indicator status-online';
+                }
+            });
         }
 
         // Update Communities Display
@@ -2871,27 +4091,55 @@
             }
         }
 
-        // Render Posts
-        function renderPosts() {
-            // Posts are already rendered in HTML for demo purposes
-            // In a real app, this would dynamically generate post HTML
-        }
-
         // Live Stats Update
         function updateLiveStats() {
-            const stats = {
-                onlineUsers: Math.floor(Math.random() * 10000) + 120000,
-                activePolls: Math.floor(Math.random() * 500) + 1000,
-                postsToday: Math.floor(Math.random() * 10000) + 40000,
-                totalCommunities: Math.floor(Math.random() * 1000) + 8000
-            };
-
-            Object.keys(stats).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = utils.formatNumber(stats[key]);
+            // Subscribe to stats updates
+            realtimeDB.subscribe('stats', (update) => {
+                if (update.action === 'update') {
+                    const stats = update.data;
+                    Object.keys(stats).forEach(key => {
+                        const element = document.getElementById(key);
+                        if (element) {
+                            element.textContent = utils.formatNumber(stats[key]);
+                        }
+                    });
                 }
             });
+        }
+
+        // Search Functionality
+        function handleSearch(query) {
+            if (!query.trim()) return;
+
+            const results = [
+                {
+                    type: 'user',
+                    title: 'Alex Johnson',
+                    description: 'Active user • Online now'
+                },
+                {
+                    type: 'community',
+                    title: 'Tech Talk',
+                    description: '23k members • Technology discussions'
+                },
+                {
+                    type: 'post',
+                    title: 'Welcome to SmileX',
+                    description: 'Posted 2 hours ago in SmileX Official'
+                }
+            ];
+
+            const searchResults = document.getElementById('searchResults');
+            if (searchResults) {
+                searchResults.innerHTML = results.map(result => `
+                    <div class="search-result-item">
+                        <div class="search-result-type">${result.type}</div>
+                        <div class="search-result-title">${result.title}</div>
+                        <div class="search-result-description">${result.description}</div>
+                    </div>
+                `).join('');
+                searchResults.classList.remove('hidden');
+            }
         }
 
         // Event Listeners
@@ -2913,6 +4161,7 @@
                 try {
                     currentUser = JSON.parse(existingUser);
                     updateUserInterface(currentUser);
+                    onlineUsers.add(currentUser.fullName);
                 } catch (error) {
                     console.error('Error loading user data:', error);
                 }
@@ -3000,8 +4249,35 @@
             // Theme toggle
             document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
 
-            // Chat system
+            // Direct Messages
+            document.getElementById('dmToggle')?.addEventListener('click', () => {
+                dmSystem.toggle();
+            });
+
+            document.getElementById('mobileDmToggle')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                dmSystem.toggle();
+            });
+
+            document.getElementById('closeDmPanel')?.addEventListener('click', () => {
+                dmSystem.toggle();
+            });
+
+            // DM Tab switching
+            document.querySelectorAll('.dm-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.dataset.tab;
+                    dmSystem.switchTab(tabName);
+                });
+            });
+
+            // Enhanced Chat system
             document.getElementById('chat-toggle-btn')?.addEventListener('click', () => {
+                chatSystem.toggle();
+            });
+
+            document.getElementById('mobileChatToggle')?.addEventListener('click', (e) => {
+                e.preventDefault();
                 chatSystem.toggle();
             });
 
@@ -3019,8 +4295,33 @@
             document.getElementById('chat-input')?.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     chatSystem.sendMessage(e.target.value);
+                } else {
+                    chatSystem.startTyping();
                 }
             });
+
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                let searchTimeout;
+                searchInput.addEventListener('input', (e) => {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        if (e.target.value.trim()) {
+                            handleSearch(e.target.value);
+                        } else {
+                            document.getElementById('searchResults')?.classList.add('hidden');
+                        }
+                    }, 300);
+                });
+
+                // Hide search results when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!searchInput.contains(e.target)) {
+                        document.getElementById('searchResults')?.classList.add('hidden');
+                    }
+                });
+            }
 
             // Modal close handlers
             document.querySelectorAll('.modal-close, .overlay').forEach(element => {
@@ -3047,7 +4348,12 @@
                     button.classList.add('active');
                     button.setAttribute('aria-pressed', 'true');
                     
+                    const sortType = button.dataset.sort;
                     utils.showNotification(`Sorted by ${button.textContent.trim()}`, 'info');
+                    
+                    if (sortType === 'live') {
+                        utils.showActivityIndicator('Showing live content');
+                    }
                 });
             });
 
@@ -3060,6 +4366,16 @@
                         activeModal.classList.remove('active');
                         document.body.style.overflow = '';
                     }
+                    
+                    // Close DM panel
+                    if (dmSystem.isOpen) {
+                        dmSystem.toggle();
+                    }
+                    
+                    // Close chat
+                    if (chatSystem.isOpen) {
+                        chatSystem.toggle();
+                    }
                 }
                 
                 // Ctrl/Cmd + K for search
@@ -3070,13 +4386,24 @@
                         searchInput.focus();
                     }
                 }
+
+                // Ctrl/Cmd + M for messages
+                if ((e.ctrlKey || e.metaKey) && e.key === 'm') {
+                    e.preventDefault();
+                    dmSystem.toggle();
+                }
+
+                // Ctrl/Cmd + Shift + C for chat
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'C') {
+                    e.preventDefault();
+                    chatSystem.toggle();
+                }
             });
 
             // Initialize media upload
             handleMediaUpload();
 
             // Start live stats updates
-            setInterval(updateLiveStats, 5000);
             updateLiveStats();
 
             // Load theme
@@ -3085,7 +4412,17 @@
                 toggleTheme();
             }
 
-            console.log('🎉 SmileX Platform Initialized Successfully!');
+            // Initialize notification badges
+            setTimeout(() => {
+                dmSystem.updateDMBadge();
+                chatSystem.updateChatBadge();
+            }, 5000);
+
+            console.log('🎉 SmileX Advanced Platform Initialized Successfully!');
+            console.log('🚀 Real-time features active');
+            console.log('💬 Chat system ready');
+            console.log('📱 Direct messages enabled');
+            console.log('🌐 Live database connected');
         });
 
         // Global error handler
@@ -3096,11 +4433,40 @@
 
         // Online/offline status
         window.addEventListener('online', () => {
+            realtimeDB.isConnected = true;
             utils.showNotification('Connection restored!', 'success');
+            utils.showActivityIndicator('Back online');
         });
 
         window.addEventListener('offline', () => {
+            realtimeDB.isConnected = false;
             utils.showNotification('You are offline. Some features may not work.', 'warning');
+        });
+
+        // Visibility change handler
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // User switched away from tab
+                if (currentUser) {
+                    currentUser.status = 'away';
+                }
+            } else {
+                // User returned to tab
+                if (currentUser) {
+                    currentUser.status = 'online';
+                }
+                // Clear notifications when user returns
+                dmSystem.clearDMBadge();
+                chatSystem.clearChatBadge();
+            }
+        });
+
+        // Beforeunload handler
+        window.addEventListener('beforeunload', () => {
+            if (currentUser) {
+                currentUser.status = 'offline';
+                onlineUsers.delete(currentUser.fullName);
+            }
         });
     </script>
 </body>
