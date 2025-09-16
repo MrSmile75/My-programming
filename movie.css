@@ -38,6 +38,35 @@
             font-family: 'Orbitron', sans-serif;
         }
 
+
+          /* Logo Design */
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            animation: pulse 2s infinite;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            background: linear-gradient(45deg, var(--primary-color), #7b68ee);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
         /* Enhanced TMDB Attribution Styles */
         .tmdb-attribution {
             position: fixed;
@@ -546,12 +575,7 @@
             box-shadow: 0 10px 20px rgba(229, 9, 20, 0.3);
         }
 
-        .watch-option-btn.disabled {
-            pointer-events: none;
-            opacity: 0.6;
-            user-select: none;
-        }
-
+  
         .watch-movie-btn {
             background: var(--accent-color);
             color: white;

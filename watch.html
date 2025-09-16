@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMILEX - Movie Player</title>
+    <title>SMILE XPLORER - Movie Player</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
    
@@ -836,14 +836,15 @@
     </div>
 
     <script>
- class MoviePlayer {
+        class MoviePlayer {
             constructor() {
                 this.API_KEY = '48ea0449a84effd8baed92d45fa6175f';
                 this.BASE_URL = 'https://api.themoviedb.org/3';
                 this.currentServer = 1;
                 this.movieData = null;
                 this.isPlaying = false;
-                this.isPremium = localStorage.getItem('isPremium') === 'true';
+                
+                this.isPremium = this.checkPremiumStatus();
                 
                 // Video player elements
                 this.videoElement = document.getElementById('movie-video');
@@ -862,6 +863,27 @@
                 this.downloadProgressText = document.getElementById('download-progress-text');
 
                 this.init();
+            }
+
+            checkPremiumStatus() {
+                const isPremium = localStorage.getItem('isPremium') === 'true';
+                const premiumExpiry = localStorage.getItem('premiumExpiry');
+
+                if (isPremium && premiumExpiry) {
+                    const expiryDate = new Date(premiumExpiry);
+                    const now = new Date();
+
+                    if (now > expiryDate) {
+                        // Premium has expired
+                        localStorage.setItem('isPremium', 'false');
+                        localStorage.removeItem('premiumExpiry');
+                        this.showNotification('error', 'Your premium subscription has expired');
+                        return false;
+                    }
+                    return true;
+                }
+
+                return isPremium;
             }
 
             async init() {
@@ -930,7 +952,7 @@
                 const movie = this.movieData;
                 
                 document.getElementById('movie-title').textContent = movie.title;
-                document.title = `${movie.title} - SMILEX Movie Player`;
+                document.title = `${movie.title} - SMILE Xplorer Movie Player`;
 
                 document.getElementById('movie-rating').textContent = movie.vote_average ? `${movie.vote_average.toFixed(1)}/10` : 'N/A';
                 document.getElementById('movie-year').textContent = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
@@ -945,23 +967,18 @@
             }
 
             setVideoSource() {
-                // In a real application, you would fetch actual movie stream URLs
-                // For this example, we'll use a placeholder or a common video source
-                // based on the selected server and premium status.
-                // This is a simplified representation.
                 const qualities = {
-                    1: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4', // Example low quality
-                    2: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_10mb.mp4', // Example medium quality
-                    3: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_10mb.mp4', // Example medium quality (for stable)
-                    4: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4' // Example low quality (backup)
+                    1: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
+                    2: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_10mb.mp4',
+                    3: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_10mb.mp4',
+                    4: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4'
                 };
 
-                // Premium might get a higher quality source if available
-                if (this.isPremium && this.currentServer === 2) { // Assuming Server 2 is for 4K quality
-                    this.videoElement.src = 'https://sample-videos.com/video123/mp4/480/big_buck_bunny_480p_10mb.mp4'; // Placeholder for 4K
-                    // this.videoElement.src = qualities[2]; // Use high quality if it exists
+                // Premium users get higher quality sources
+                if (this.isPremium && this.currentServer === 2) {
+                    this.videoElement.src = 'https://sample-videos.com/video123/mp4/480/big_buck_bunny_480p_10mb.mp4';
                 } else {
-                    this.videoElement.src = qualities[this.currentServer] || qualities[1]; // Default to server 1 if not found
+                    this.videoElement.src = qualities[this.currentServer] || qualities[1];
                 }
                 this.videoElement.load();
             }
@@ -1046,9 +1063,13 @@
             }
 
             playMovie() {
+                if (!this.isPremium) {
+                    this.showNotification('warning', 'Premium subscription required to watch full movies');
+                    return;
+                }
+
                 if (this.videoElement.paused) {
                     this.loadingOverlay.style.display = 'flex';
-                    // Simulate loading delay
                     setTimeout(() => {
                         this.videoElement.play().then(() => {
                             this.videoOverlay.classList.remove('show');
@@ -1058,9 +1079,9 @@
                             console.error('Error playing video:', error);
                             this.showNotification('error', 'Failed to play movie. Please try again.');
                             this.loadingOverlay.style.display = 'none';
-                            this.videoOverlay.classList.add('show'); // Show play button again
+                            this.videoOverlay.classList.add('show');
                         });
-                    }, 1000); // Simulate network delay
+                    }, 1000);
                 }
             }
 
@@ -1182,11 +1203,39 @@
                 notification.classList.add('notification');
                 notification.classList.add(type);
                 notification.textContent = message;
+                
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    color: white;
+                    font-weight: bold;
+                    z-index: 10000;
+                    max-width: 300px;
+                    word-wrap: break-word;
+                `;
+
+                switch(type) {
+                    case 'success':
+                        notification.style.background = '#46d369';
+                        break;
+                    case 'error':
+                        notification.style.background = '#e50914';
+                        break;
+                    case 'warning':
+                        notification.style.background = '#ffa500';
+                        break;
+                    default:
+                        notification.style.background = '#333';
+                }
+
                 document.body.appendChild(notification);
 
                 setTimeout(() => {
                     notification.remove();
-                }, 3000); // Notification disappears after 3 seconds
+                }, 3000);
             }
         }
 
@@ -1197,6 +1246,5 @@
     </script>
 </body>
 </html>
-    </script>
-</body>
-</html>
+
+
