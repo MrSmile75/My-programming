@@ -289,6 +289,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            max-width: 80%;
         }
 
         .modal-close-btn {
@@ -515,10 +516,7 @@
         }
 
         .btn-watch {
-            background: transparent;
-            color: transparent;
-            pointer-events: none;
-            user-select: none;
+            background: linear-gradient(45deg, var(--secondary-color), #27ae60);
         }
 
         .btn-watch:hover {
@@ -678,6 +676,7 @@
             padding: 10px 20px;
             color: white;
             backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
         .search-input::placeholder {
@@ -703,6 +702,8 @@
             z-index: 3000;
             min-width: 300px;
             animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
         }
 
         .notification.success { background: linear-gradient(45deg, var(--success-color), #2ecc71); }
@@ -977,6 +978,37 @@
             margin-bottom: 10px;
         }
 
+        /* Subscription Success Modal */
+        .subscription-success {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .subscription-success-icon {
+            font-size: 4rem;
+            color: var(--success-color);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .subscription-details {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .subscription-detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .subscription-detail-item:last-child {
+            border-bottom: none;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .news-headline-bar {
@@ -1024,6 +1056,11 @@
             .user-dropdown {
                 width: 200px;
                 right: -50px;
+            }
+            
+            .video-modal-title {
+                max-width: 70%;
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -1446,7 +1483,7 @@
                                         </li>
                                     </ul>
                                     <div class="text-center mt-4">
-                                        <button class="btn btn-premium w-100">Subscribe Now</button>
+                                        <button class="btn btn-premium w-100" onclick="newsHub.subscribeToPremium('monthly')">Subscribe Now</button>
                                     </div>
                                 </div>
                             </div>
@@ -1483,12 +1520,48 @@
                                         </li>
                                     </ul>
                                     <div class="text-center mt-4">
-                                        <button class="btn btn-premium w-100">Subscribe Now</button>
+                                        <button class="btn btn-premium w-100" onclick="newsHub.subscribeToPremium('annual')">Subscribe Now</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscription Success Modal -->
+    <div class="modal fade" id="subscriptionSuccessModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h3 class="modal-title">Subscription Successful!</h3>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body subscription-success">
+                    <div class="subscription-success-icon">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <h4>Welcome to Premium!</h4>
+                    <p>Your subscription has been activated successfully. All premium features are now unlocked.</p>
+                    
+                    <div class="subscription-details">
+                        <div class="subscription-detail-item">
+                            <span>Plan:</span>
+                            <span id="subscriptionPlan">Premium Monthly</span>
+                        </div>
+                        <div class="subscription-detail-item">
+                            <span>Activated:</span>
+                            <span id="subscriptionStart">Today</span>
+                        </div>
+                        <div class="subscription-detail-item">
+                            <span>Expires:</span>
+                            <span id="subscriptionEnd">In 30 days</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-success w-100" data-bs-dismiss="modal">Start Exploring Premium Features</button>
                 </div>
             </div>
         </div>
@@ -1551,6 +1624,7 @@
                 this.isPremium = false;
                 this.user = null;
                 this.checkLoginStatus();
+                this.checkSubscriptionStatus();
             }
 
             initializeProperties() {
@@ -1596,6 +1670,7 @@
                 // Premium elements
                 this.premiumModal = new bootstrap.Modal(document.getElementById('premiumModal'));
                 this.loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                this.subscriptionSuccessModal = new bootstrap.Modal(document.getElementById('subscriptionSuccessModal'));
             }
 
             // User authentication and premium features
@@ -1608,6 +1683,35 @@
                 }
             }
 
+            checkSubscriptionStatus() {
+                const subscriptionData = localStorage.getItem('newsHub_subscription');
+                if (subscriptionData) {
+                    const subscription = JSON.parse(subscriptionData);
+                    const now = new Date();
+                    const expiryDate = new Date(subscription.expiryDate);
+                    
+                    if (now < expiryDate) {
+                        // Subscription is still active
+                        this.isPremium = true;
+                        if (this.user) {
+                            this.user.isPremium = true;
+                            localStorage.setItem('newsHub_user', JSON.stringify(this.user));
+                        }
+                        this.updateUI();
+                    } else {
+                        // Subscription has expired
+                        this.isPremium = false;
+                        if (this.user) {
+                            this.user.isPremium = false;
+                            localStorage.setItem('newsHub_user', JSON.stringify(this.user));
+                        }
+                        localStorage.removeItem('newsHub_subscription');
+                        this.updateUI();
+                        this.showNotification('Your premium subscription has expired', 'warning');
+                    }
+                }
+            }
+
             login() {
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
@@ -1616,7 +1720,7 @@
                 this.user = {
                     name: 'Demo User',
                     email: email,
-                    isPremium: false // Change to true to test premium features
+                    isPremium: this.isPremium
                 };
                 
                 localStorage.setItem('newsHub_user', JSON.stringify(this.user));
@@ -1678,6 +1782,54 @@
                         el.classList.add('premium-locked');
                     });
                 }
+            }
+
+            subscribeToPremium(planType) {
+                // Calculate expiry date (30 days from now)
+                const expiryDate = new Date();
+                expiryDate.setDate(expiryDate.getDate() + 30);
+                
+                // Save subscription data
+                const subscriptionData = {
+                    plan: planType,
+                    startDate: new Date().toISOString(),
+                    expiryDate: expiryDate.toISOString()
+                };
+                
+                localStorage.setItem('newsHub_subscription', JSON.stringify(subscriptionData));
+                
+                // Update user premium status
+                this.isPremium = true;
+                if (this.user) {
+                    this.user.isPremium = true;
+                    localStorage.setItem('newsHub_user', JSON.stringify(this.user));
+                } else {
+                    // Create a guest user with premium
+                    this.user = {
+                        name: 'Premium User',
+                        email: 'premium@example.com',
+                        isPremium: true
+                    };
+                    localStorage.setItem('newsHub_user', JSON.stringify(this.user));
+                }
+                
+                // Update UI
+                this.updateUI();
+                
+                // Close premium modal and show success
+                this.premiumModal.hide();
+                
+                // Show subscription details in success modal
+                document.getElementById('subscriptionPlan').textContent = planType === 'monthly' ? 'Premium Monthly' : 'Premium Annual';
+                document.getElementById('subscriptionStart').textContent = new Date().toLocaleDateString();
+                document.getElementById('subscriptionEnd').textContent = expiryDate.toLocaleDateString();
+                
+                // Show success modal
+                setTimeout(() => {
+                    this.subscriptionSuccessModal.show();
+                }, 300);
+                
+                this.showNotification('Premium subscription activated!', 'success');
             }
 
             showPremiumModal() {
@@ -1932,6 +2084,11 @@
                         this.loadCategoryNews();
                     }
                 }, 5 * 60 * 1000);
+
+                // Check subscription status daily
+                setInterval(() => {
+                    this.checkSubscriptionStatus();
+                }, 24 * 60 * 60 * 1000);
             }
 
             // News Loading Functions
@@ -2137,7 +2294,7 @@
                                     <button class="btn-preview" onclick="newsHub.openPreviewModal(this)">
                                         <i class="bi bi-eye me-1"></i>Preview
                                     </button>
-                                         <button class="btn-read" onclick="newsHub.readFullArticle('${article.url}')">
+                                    <button class="btn-read" onclick="newsHub.readFullArticle('${article.url}')">
                                         <i class="bi bi-book me-1"></i>Read
                                     </button>
                                     <button class="btn-options" onclick="newsHub.openOptionsModal(this)">
@@ -2148,7 +2305,6 @@
                                             <i class="bi bi-play-circle me-1"></i>Video
                                         </button>
                                     ` : ''}
-                               
                                 </div>
                             </div>
                         </div>
@@ -2358,7 +2514,7 @@
                         </div>
                     ` : ''}
                     
-                    <div class="mt-4 p-3" style="background: rgba(255, 255, 255, 0.05); border-radius: 10px;">
+                    <div class="mt-4 p-3" style="background: rgba(255, 255, 255, 0.05; border-radius: 10px;">
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">
                                 <i class="bi bi-clock me-1"></i>Estimated reading time: ${readingTime}

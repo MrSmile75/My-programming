@@ -246,9 +246,10 @@ class AdsManager {
                          data-ad-format="auto"
                          data-full-width-responsive="true"
                          id="${adId}"></ins>
+                         
                     
                     <div style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">
-                        <p>Support ShortsHub by viewing ads or <button onclick="showPremiumModal()" style="background: none; border: none; color: var(--premium-color); text-decoration: underline; cursor: pointer;">upgrade to Premium</button> for ad-free experience!</p>
+                        <p>Support Smile Xplorer by viewing ads <!-- <button onclick="showPremiumModal()" style="background: none; border: none; color: transparent; text-decoration: underline; cursor: pointer;">upgrade to Premium</button> -->  for a moment <!--for ad-free experience!--></p>
                     </div>
                 </div>
             </div>
@@ -623,6 +624,8 @@ function createShortCard(short, index) {
                     </button>
                     <div class="action-count">Share</div>
                 </div>
+
+                <!--
                 
                 <div style="position: relative;">
                     <button class="action-btn ${isInWatchLater ? 'liked' : ''}" onclick="toggleWatchLater(${index})">
@@ -637,6 +640,8 @@ function createShortCard(short, index) {
                     </button>
                     <div class="action-count">Add</div>
                 </div>
+
+                -->
             </div>
         </div>
     `;
@@ -1213,6 +1218,18 @@ document.addEventListener('keydown', (e) => {
         e.preventDefault();
     }
 });
+
+
+// Function to display the modal
+function showPremiumModal() {
+  document.getElementById('premiumModal').style.display = 'flex';
+}
+
+// Function to close the modal
+function closePremiumModal() {
+  document.getElementById('premiumModal').style.display = 'none';
+}
+
 
 console.log('🎬 ShortsHub - Legal YouTube Shorts Experience Loaded');
 console.log('✅ Fully compliant with YouTube Terms of Service');

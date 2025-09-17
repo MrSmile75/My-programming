@@ -213,16 +213,33 @@
             padding-top: 80px;
         }
 
-        /* Sidebar */
-        .sidebar {
-            width: 300px;
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border-color);
-            padding: 2rem 1rem;
-            overflow-y: auto;
-            transition: var(--transition);
-        }
+       /* Sidebar */
+.sidebar {
+    margin-top: auto;
+  width: 300px;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+  padding: 2rem 1rem;
+  overflow-y: auto; /* Ensures vertical scrollbar appears when content exceeds height */
+  transition: var(--transition);
+  height: 100vh; /* Set a specific height for the sidebar, e.g., full viewport height */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
 
+/* Optional: Customize scrollbar appearance for Webkit browsers (Chrome, Safari) */
+.sidebar::-webkit-scrollbar {
+  width: 10px; /* Width of the vertical scrollbar */
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: var(--bg-secondary); /* Color of the scrollbar track */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: var(--border-color); /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded corners for the thumb */
+  border: 2px solid var(--bg-secondary); /* Border around the thumb */
+}
         .sidebar.collapsed {
             width: 80px;
         }
@@ -314,6 +331,7 @@
             scrollbar-width: none;
             -ms-overflow-style: none;
             scroll-behavior: smooth;
+            margin-top: auto;
         }
 
         .shorts-container::-webkit-scrollbar {
