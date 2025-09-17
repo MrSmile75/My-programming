@@ -352,7 +352,11 @@ class GameHubPro {
                         </button>
                     </div>
 
+                    <!--
+
                     <div class="d-flex gap-1 flex-wrap">
+
+                    
                         <a href="https://store.steampowered.com/search/?term=${encodeURIComponent(game.name)}" 
                            target="_blank" class="affiliate-btn flex-fill text-center" 
                            onclick="gameHub.trackAffiliateClick('Steam', '${game.name}')">
@@ -371,7 +375,14 @@ class GameHubPro {
                     </div>
                 </div>
             </div>
+
+            -->
+
+        
         `;
+
+        
+    
         
         return col;
     }
@@ -475,6 +486,8 @@ class GameHubPro {
                     </div>
                 ` : ''}
 
+                
+<!--
                 <div class="mt-4">
                     <h5><i class="fas fa-shopping-cart me-2"></i>Where to Buy</h5>
                     <div class="d-flex gap-2 flex-wrap">
@@ -500,7 +513,11 @@ class GameHubPro {
                         </a>
                     </div>
                 </div>
+
+                -->
             `;
+
+            
         }
         
         const favoriteBtn = document.getElementById('favoriteModalBtn');

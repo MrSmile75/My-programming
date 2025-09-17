@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <!-- © SMILEX. This code is protected. -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <title>Advanced Game Preloader</title>
+    <title> Game Preloader</title>
     <style>
         :root {
             --bg-primary: #0a0a1a;
@@ -148,7 +148,7 @@
                 <span class="time-remaining">Estimating...</span>
             </div>
             
-            <div class="loading-stage">Initializing Game Environment</div>
+            <div class="loading-stage">Initializing</div>
         </div>
 
         <div class="tips">Pro Tip: Prepare for an epic adventure!</div>
@@ -165,9 +165,9 @@
                 this.logo = document.querySelector('.loading-logo svg');
 
                 this.loadingStages = [
-                    { stage: 'Initializing Game World', duration: 2000 },
-                    { stage: 'Loading Game Assets', duration: 3000 },
-                    { stage: 'Configuring Multiplayer', duration: 2500 },
+                    { stage: 'Initializing ', duration: 2000 },
+                    { stage: 'Loading ', duration: 3000 },
+                    { stage: 'Configuring ', duration: 2500 },
                     { stage: 'Optimizing Graphics', duration: 2000 },
                     { stage: 'Final Preparations', duration: 1500 }
                 ];

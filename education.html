@@ -3,18 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Story Hub - Read Books Online</title>
+    <title>📚 Story Hub - Premium Reading Experience</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="education.css">
-</head>
-
-
-<body>
     <style>
-            :root {
+    :root {
         --primary-color: #6a11cb;
         --secondary-color: #2575fc;
         --accent-color: #ff6b6b;
@@ -28,6 +23,8 @@
         --border-radius: 15px;
         --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         --shadow: 0 10px 30px rgba(0,0,0,0.3);
+        --premium-gold: #ffd700;
+        --premium-gradient: linear-gradient(135deg, #ffd700, #ff8c00, #ff4500);
     }
 
     * {
@@ -816,6 +813,335 @@
         opacity: 0.5;
     }
 
+    /* Premium Features */
+    .premium-badge {
+        background: var(--premium-gradient);
+        color: black;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: bold;
+        margin-left: 5px;
+    }
+
+    .premium-feature {
+        position: relative;
+        border: 2px solid var(--premium-gold);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .premium-feature::before {
+        content: "PREMIUM";
+        position: absolute;
+        top: -10px;
+        right: 10px;
+        background: var(--premium-gradient);
+        color: black;
+        padding: 2px 8px;
+        border-radius: 8px;
+        font-size: 10px;
+        font-weight: bold;
+        z-index: 10;
+    }
+
+    .user-menu {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: 0 0 10px rgba(37, 117, 252, 0.5);
+    }
+
+    .user-avatar:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 15px rgba(37, 117, 252, 0.8);
+    }
+
+    .user-dropdown {
+        position: absolute;
+        top: 50px;
+        left: 0;
+        background: var(--card-bg);
+        border-radius: var(--border-radius);
+        padding: 15px;
+        min-width: 250px;
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        display: none;
+        z-index: 1000;
+    }
+
+    .user-dropdown.show {
+        display: block;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .user-info-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 15px;
+        font-size: 18px;
+    }
+
+    .user-details {
+        flex: 1;
+    }
+
+    .user-name {
+        font-weight: 600;
+        margin-bottom: 3px;
+    }
+
+    .user-status {
+        font-size: 12px;
+        color: var(--text-secondary);
+    }
+
+    .premium-status {
+        background: var(--premium-gradient);
+        color: black;
+        padding: 3px 8px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .user-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .stat-item {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 10px;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    .stat-value {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 3px;
+    }
+
+    .stat-label {
+        font-size: 11px;
+        color: var(--text-secondary);
+    }
+
+    .user-menu-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .menu-action {
+        background: rgba(255, 255, 255, 0.05);
+        border: none;
+        color: var(--text-primary);
+        padding: 10px 15px;
+        border-radius: 8px;
+        text-align: left;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .menu-action:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .menu-action i {
+        width: 20px;
+    }
+
+    .upgrade-btn {
+        background: var(--premium-gradient);
+        color: black;
+        font-weight: 600;
+    }
+
+    .upgrade-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    }
+
+    /* Premium Modal */
+    .premium-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        backdrop-filter: blur(5px);
+    }
+
+    .premium-modal.show {
+        display: flex;
+    }
+
+    .premium-modal-content {
+        background: var(--card-bg);
+        width: 90%;
+        max-width: 800px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+        border: 2px solid var(--premium-gold);
+        overflow: hidden;
+        animation: modalFadeIn 0.5s ease forwards;
+    }
+
+    .premium-modal-header {
+        background: var(--premium-gradient);
+        padding: 25px;
+        text-align: center;
+        position: relative;
+    }
+
+    .premium-modal-title {
+        color: black;
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .premium-modal-subtitle {
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    .premium-modal-body {
+        padding: 30px;
+    }
+
+    .premium-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .premium-feature-item {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .premium-feature-icon {
+        width: 50px;
+        height: 50px;
+        background: var(--premium-gradient);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        font-size: 20px;
+        color: black;
+    }
+
+    .premium-feature-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--premium-gold);
+    }
+
+    .premium-feature-desc {
+        font-size: 14px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    .premium-cta {
+        text-align: center;
+        padding: 20px;
+        background: rgba(255, 215, 0, 0.1);
+        border-radius: 12px;
+    }
+
+    .premium-price {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        background: var(--premium-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .premium-price-desc {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 20px;
+    }
+
+    .purchase-btn {
+        background: var(--premium-gradient);
+        color: black;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 30px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .purchase-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
+    }
+
+    .premium-modal-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        color: black;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
         .cosmic-header {
@@ -880,6 +1206,18 @@
             margin-right: 15px;
             font-size: 18px;
         }
+
+        .premium-features-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .user-dropdown {
+            min-width: 200px;
+        }
+
+        .user-stats {
+            grid-template-columns: 1fr;
+        }
     }
 
     /* Animation Classes */
@@ -898,6 +1236,8 @@
         }
     }
     </style>
+</head>
+<body>
     <!-- Status Indicator -->
     <div id="status-indicator" class="status-indicator">
         <i class="fas fa-check"></i> Loading books...
@@ -993,6 +1333,136 @@
         </div>
     </div>
 
+    <!-- User Menu -->
+    <div class="user-menu">
+        <div class="user-avatar" id="user-avatar">
+            <i class="fas fa-user"></i>
+        </div>
+        <div class="user-dropdown" id="user-dropdown">
+            <div class="user-info">
+                <div class="user-info-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <div class="user-name" id="user-name">Guest User</div>
+                    <div class="user-status">
+                        <span id="user-status-text">Free Account</span>
+                        <span class="premium-status" id="premium-status" style="display: none;">PREMIUM</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="user-stats" id="user-stats" style="display: none;">
+                <div class="stat-item">
+                    <div class="stat-value" id="stat-pages">0</div>
+                    <div class="stat-label">Pages Read</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="stat-streak">0</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="stat-goal">0%</div>
+                    <div class="stat-label">Goal Progress</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="stat-badges">0</div>
+                    <div class="stat-label">Badges</div>
+                </div>
+            </div>
+            
+            <div class="user-menu-actions">
+                <button class="menu-action" id="my-library-btn">
+                    <i class="fas fa-bookmark"></i> My Library
+                </button>
+                <button class="menu-action" id="my-notes-btn">
+                    <i class="fas fa-sticky-note"></i> My Notes
+                </button>
+                <button class="menu-action" id="reading-stats-btn">
+                    <i class="fas fa-chart-line"></i> Reading Stats
+                </button>
+                <button class="menu-action" id="premium-features-btn">
+                    <i class="fas fa-crown"></i> Premium Features
+                </button>
+                <button class="menu-action upgrade-btn" id="upgrade-btn">
+                    <i class="fas fa-gem"></i> Upgrade to Premium
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Modal -->
+    <div class="premium-modal" id="premium-modal">
+        <div class="premium-modal-content">
+            <div class="premium-modal-header">
+                <h2 class="premium-modal-title">Unlock Premium Reading Experience</h2>
+                <p class="premium-modal-subtitle">Get access to all premium features for 30 days</p>
+                <button class="premium-modal-close" id="premium-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="premium-modal-body">
+                <div class="premium-features-grid">
+                    <div class="premium-feature-item">
+                        <div class="premium-feature-icon">
+                            <i class="fas fa-infinity"></i>
+                        </div>
+                        <h3 class="premium-feature-title">Unlimited Access</h3>
+                        <p class="premium-feature-desc">Read unlimited books with continuous loading and no restrictions</p>
+                    </div>
+                    
+                    <div class="premium-feature-item">
+                        <div class="premium-feature-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3 class="premium-feature-title">Advanced Statistics</h3>
+                        <p class="premium-feature-desc">Track pages read, reading streaks, and get personalized reading goals</p>
+                    </div>
+                    
+                    <div class="premium-feature-item">
+                        <div class="premium-feature-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="premium-feature-title">AI Recommendations</h3>
+                        <p class="premium-feature-desc">Get personalized book recommendations based on your reading preferences</p>
+                    </div>
+                    
+                    <div class="premium-feature-item">
+                        <div class="premium-feature-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h3 class="premium-feature-title">Enhanced Library</h3>
+                        <p class="premium-feature-desc">Create unlimited collections, export lists, and get AI summaries</p>
+                    </div>
+                    
+                    <div class="premium-feature-item">
+                        <div class="premium-feature-icon">
+                            <i class="fas fa-pen-fancy"></i>
+                        </div>
+                        <h3 class="premium-feature-title">Smart Notes</h3>
+                        <p class="premium-feature-desc">AI-generated chapter summaries, discussion questions, and advanced note-taking</p>
+                    </div>
+                    
+                    <div class="premium-feature-item">
+                        <div class="premium-feature-icon">
+                            <i class="fas fa-library"></i>
+                        </div>
+                        <h3 class="premium-feature-title">Library Integration</h3>
+                        <p class="premium-feature-desc">Find books at nearby libraries and get availability alerts</p>
+                    </div>
+                </div>
+                
+                <div class="premium-cta">
+                    <div class="premium-price">$9.99</div>
+                    <div class="premium-price-desc">One-time payment for 30 days of premium access</div>
+                    <button class="purchase-btn" id="purchase-premium-btn">
+                        Get Premium
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Stories Page -->
     <div id="main-page">
         <!-- Header -->
@@ -1081,8 +1551,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="education.js">
-        
+    <script>
         class SmartStoryHub {
             constructor() {
                 // Configuration
@@ -1145,17 +1614,61 @@
                 this.autoLoadTimer = null;
                 this.isSearchMode = false;
                 
+                // User management
+                this.user = {
+                    isPremium: false,
+                    premiumExpiry: null,
+                    name: 'Guest User',
+                    stats: {
+                        pagesRead: 0,
+                        readingStreak: 0,
+                        goalProgress: 0,
+                        badges: 0
+                    },
+                    savedBooks: [],
+                    collections: []
+                };
+                
                 // Initialize
                 this.init();
             }
 
             async init() {
-                console.log('🚀 Initializing Smart Story Hub with Open Library validation...');
+                console.log('🚀 Initializing Smart Story Hub with Premium Features...');
+                this.loadUserData();
                 this.setupEventListeners();
                 this.createStarBackground();
                 this.updateAPIStatus();
+                this.updateUserInterface();
                 this.startInfiniteLoading();
                 console.log('✅ Smart Story Hub initialized successfully!');
+            }
+
+            loadUserData() {
+                const savedUserData = localStorage.getItem('storyHubUser');
+                if (savedUserData) {
+                    try {
+                        const userData = JSON.parse(savedUserData);
+                        this.user = { ...this.user, ...userData };
+                        
+                        // Check if premium is still valid
+                        if (this.user.premiumExpiry) {
+                            const expiryDate = new Date(this.user.premiumExpiry);
+                            const now = new Date();
+                            if (now > expiryDate) {
+                                this.user.isPremium = false;
+                                this.user.premiumExpiry = null;
+                                this.saveUserData();
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Error loading user data:', e);
+                    }
+                }
+            }
+
+            saveUserData() {
+                localStorage.setItem('storyHubUser', JSON.stringify(this.user));
             }
 
             setupEventListeners() {
@@ -1194,7 +1707,7 @@
                 // Infinite scroll
                 window.addEventListener('scroll', this.throttle(() => {
                     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
-                        if (!this.isSearchMode) {
+                        if (!this.isSearchMode && this.user.isPremium) {
                             this.loadMoreBooks();
                         }
                     }
@@ -1206,8 +1719,168 @@
                         this.closeReadOptions();
                         this.closeEmbedReader();
                         this.backToStories();
+                        this.hideUserDropdown();
                     }
                 });
+
+                // User menu
+                const userAvatar = document.getElementById('user-avatar');
+                const userDropdown = document.getElementById('user-dropdown');
+                
+                if (userAvatar) {
+                    userAvatar.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        userDropdown.classList.toggle('show');
+                    });
+                }
+
+                document.addEventListener('click', () => {
+                    this.hideUserDropdown();
+                });
+
+                // Premium features
+                const upgradeBtn = document.getElementById('upgrade-btn');
+                const premiumFeaturesBtn = document.getElementById('premium-features-btn');
+                const premiumModal = document.getElementById('premium-modal');
+                const premiumModalClose = document.getElementById('premium-modal-close');
+                const purchasePremiumBtn = document.getElementById('purchase-premium-btn');
+
+                if (upgradeBtn) {
+                    upgradeBtn.addEventListener('click', () => {
+                        this.showPremiumModal();
+                    });
+                }
+
+                if (premiumFeaturesBtn) {
+                    premiumFeaturesBtn.addEventListener('click', () => {
+                        this.showPremiumModal();
+                    });
+                }
+
+                if (premiumModalClose) {
+                    premiumModalClose.addEventListener('click', () => {
+                        this.hidePremiumModal();
+                    });
+                }
+
+                if (purchasePremiumBtn) {
+                    purchasePremiumBtn.addEventListener('click', () => {
+                        this.purchasePremium();
+                    });
+                }
+
+                // Other menu buttons
+                const myLibraryBtn = document.getElementById('my-library-btn');
+                const myNotesBtn = document.getElementById('my-notes-btn');
+                const readingStatsBtn = document.getElementById('reading-stats-btn');
+
+                if (myLibraryBtn) {
+                    myLibraryBtn.addEventListener('click', () => {
+                        this.showFeatureRestriction('My Library');
+                    });
+                }
+
+                if (myNotesBtn) {
+                    myNotesBtn.addEventListener('click', () => {
+                        this.showFeatureRestriction('My Notes');
+                    });
+                }
+
+                if (readingStatsBtn) {
+                    readingStatsBtn.addEventListener('click', () => {
+                        this.showFeatureRestriction('Reading Stats');
+                    });
+                }
+            }
+
+            hideUserDropdown() {
+                const userDropdown = document.getElementById('user-dropdown');
+                if (userDropdown) {
+                    userDropdown.classList.remove('show');
+                }
+            }
+
+            showPremiumModal() {
+                const premiumModal = document.getElementById('premium-modal');
+                if (premiumModal) {
+                    premiumModal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            hidePremiumModal() {
+                const premiumModal = document.getElementById('premium-modal');
+                if (premiumModal) {
+                    premiumModal.classList.remove('show');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+
+            purchasePremium() {
+                // Simulate premium purchase
+                const expiryDate = new Date();
+                expiryDate.setDate(expiryDate.getDate() + 30);
+                
+                this.user.isPremium = true;
+                this.user.premiumExpiry = expiryDate.toISOString();
+                this.saveUserData();
+                this.updateUserInterface();
+                this.hidePremiumModal();
+                
+                this.showStatus('🎉 Welcome to Premium! Enjoy unlimited reading for 30 days.', 'success');
+                
+                // Start infinite loading for premium users
+                this.startInfiniteLoading();
+            }
+
+            showFeatureRestriction(featureName) {
+                if (!this.user.isPremium) {
+                    this.showStatus(`🔒 ${featureName} is a Premium feature. Upgrade to access.`, 'warning');
+                    this.showPremiumModal();
+                } else {
+                    this.showStatus(`✨ ${featureName} will be available soon!`, 'success');
+                }
+            }
+
+            updateUserInterface() {
+                // Update user name
+                const userName = document.getElementById('user-name');
+                if (userName) {
+                    userName.textContent = this.user.name;
+                }
+                
+                // Update premium status
+                const premiumStatus = document.getElementById('premium-status');
+                const userStatusText = document.getElementById('user-status-text');
+                const upgradeBtn = document.getElementById('upgrade-btn');
+                
+                if (this.user.isPremium) {
+                    if (premiumStatus) premiumStatus.style.display = 'inline';
+                    if (userStatusText) userStatusText.textContent = 'Premium Account';
+                    if (upgradeBtn) upgradeBtn.textContent = 'Manage Premium';
+                    
+                    // Show stats for premium users
+                    const userStats = document.getElementById('user-stats');
+                    if (userStats) userStats.style.display = 'grid';
+                    
+                    // Update stats values
+                    this.updateUserStats();
+                } else {
+                    if (premiumStatus) premiumStatus.style.display = 'none';
+                    if (userStatusText) userStatusText.textContent = 'Free Account';
+                    if (upgradeBtn) upgradeBtn.textContent = 'Upgrade to Premium';
+                    
+                    // Hide stats for free users
+                    const userStats = document.getElementById('user-stats');
+                    if (userStats) userStats.style.display = 'none';
+                }
+            }
+
+            updateUserStats() {
+                document.getElementById('stat-pages').textContent = this.user.stats.pagesRead;
+                document.getElementById('stat-streak').textContent = this.user.stats.readingStreak;
+                document.getElementById('stat-goal').textContent = `${this.user.stats.goalProgress}%`;
+                document.getElementById('stat-badges').textContent = this.user.stats.badges;
             }
 
             setupModalEventListeners() {
@@ -1284,15 +1957,22 @@
                 console.log('📚 Loading books with embed validation...');
                 this.updateSearchInfo('Loading books with embed validation...');
                 
-                // Load initial batch
-                this.loadBooksFromAllAPIs();
-                
-                // Set up continuous loading
-                this.autoLoadTimer = setInterval(() => {
-                    if (!this.isSearchMode && !this.isLoading) {
-                        this.loadBooksFromAllAPIs();
-                    }
-                }, this.AUTO_LOAD_INTERVAL);
+                // Only start continuous loading for premium users
+                if (this.user.isPremium) {
+                    // Load initial batch
+                    this.loadBooksFromAllAPIs();
+                    
+                    // Set up continuous loading
+                    this.autoLoadTimer = setInterval(() => {
+                        if (!this.isSearchMode && !this.isLoading) {
+                            this.loadBooksFromAllAPIs();
+                        }
+                    }, this.AUTO_LOAD_INTERVAL);
+                } else {
+                    // For free users, just load one batch
+                    this.loadBooksFromAllAPIs();
+                    this.updateSearchInfo('Free accounts can search books. Upgrade to Premium for unlimited reading.');
+                }
             }
 
             stopInfiniteLoading() {
@@ -1548,12 +2228,18 @@
                 this.isSearchMode = false;
                 this.searchResults.clear();
                 this.clearResults();
-                this.updateSearchInfo('Resuming continuous book loading...');
-                this.startInfiniteLoading();
+                
+                if (this.user.isPremium) {
+                    this.updateSearchInfo('Resuming continuous book loading...');
+                    this.startInfiniteLoading();
+                } else {
+                    this.updateSearchInfo('Free accounts can search books. Upgrade to Premium for unlimited reading.');
+                    this.loadBooksFromAllAPIs();
+                }
             }
 
             loadMoreBooks() {
-                if (!this.isLoading && !this.isSearchMode) {
+                if (!this.isLoading && !this.isSearchMode && this.user.isPremium) {
                     this.loadBooksFromAllAPIs();
                 }
             }
@@ -1863,9 +2549,9 @@
                 if (!readBtn) return;
 
                 if (embedStatus === 'unavailable') {
-                    readBtn.disabled = true;
-                    readBtn.innerHTML = '<i class="fas fa-ban"></i> No Embed';
-                    readBtn.title = 'This book cannot be embedded. Use other reading options.';
+                    readBtn.disabled = false; // Enable button for unavailable embeds
+                    readBtn.innerHTML = '<i class="fas fa-external-link-alt"></i> Read Source';
+                    readBtn.title = 'Read from original source';
                 } else {
                     readBtn.disabled = false;
                     readBtn.innerHTML = '<i class="fas fa-book-open"></i> Read';
@@ -1878,10 +2564,10 @@
                 col.className = 'col-lg-3 col-md-4 col-sm-6 mb-4';
                 col.setAttribute('data-book-id', book.id);
                 
-                // Determine if read button should be disabled initially
-                const isReadDisabled = book.embedStatus === 'unavailable';
-                const readBtnClass = isReadDisabled ? 'action-btn read-btn' : 'action-btn read-btn';
-                const readBtnContent = isReadDisabled ? '<i class="fas fa-ban"></i> No Embed' : '<i class="fas fa-book-open"></i> Read';
+                // Determine if read button should show different text for unavailable embeds
+                const isEmbedUnavailable = book.embedStatus === 'unavailable';
+                const readBtnClass = 'action-btn read-btn';
+                const readBtnContent = isEmbedUnavailable ? '<i class="fas fa-external-link-alt"></i> Read Source' : '<i class="fas fa-book-open"></i> Read';
                 
                 col.innerHTML = `
                     <div class="story-card fade-in">
@@ -1904,7 +2590,7 @@
                                 <button class="action-btn preview-btn" onclick="storyHub.previewBook('${book.id}')">
                                     <i class="fas fa-eye"></i> Preview
                                 </button>
-                                <button class="${readBtnClass}" onclick="storyHub.showReadOptions('${book.id}')" ${isReadDisabled ? 'disabled' : ''}>
+                                <button class="${readBtnClass}" onclick="storyHub.showReadOptions('${book.id}')">
                                     ${readBtnContent}
                                 </button>
                             </div>
@@ -2067,6 +2753,12 @@
 
             readOnWeb() {
                 if (!this.currentBook) return;
+
+                // For unembeddable books, redirect to source instead of showing web view
+                if (this.currentBook.embedStatus === 'unavailable' && this.currentBook.sourceUrl) {
+                    this.readFromSource();
+                    return;
+                }
 
                 this.openBookReadingPage(this.currentBook);
                 this.closeReadOptions();
@@ -2361,7 +3053,7 @@
         // Initialize the Smart Story Hub
         const storyHub = new SmartStoryHub();
 
-        console.log("🚀 Smart Story Hub: Discover books with Open Library embed validation!");
+        console.log("🚀 Smart Story Hub: Discover books with Premium Features!");
 
         // Security measures
         document.addEventListener("keydown", function(e) {
@@ -2385,7 +3077,6 @@
         }, 1000);
 
         document.addEventListener('contextmenu', e => e.preventDefault());
-
     </script>
 </body>
 </html>

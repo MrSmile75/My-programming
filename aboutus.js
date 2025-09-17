@@ -1,4 +1,4 @@
-   // Global Variables
+       // Global Variables
         let currentSection = 0;
         const totalSections = 7;
         let isAnimating = false;
@@ -9,7 +9,7 @@
         // Typewriter Configuration
         const typewriterTexts = [
             "Hi there!",
-            "Welcome to SmileX",
+            "Welcome to Smile Xplorer",
             "Making Life Easier",
             "Keep The Smile"
         ];
@@ -605,10 +605,10 @@
         // External Links
         function openSocialLink(platform) {
             const links = {
-                facebook: 'https://facebook.com/smilex',
-                twitter: 'https://twitter.com/smilex',
-                instagram: 'https://instagram.com/smilex',
-                linkedin: 'https://linkedin.com/company/smilex'
+                facebook: 'https://facebook.com/smilexplorer',
+                twitter: 'https://twitter.com/smilexplorer',
+                instagram: 'https://instagram.com/smilexplorer',
+                linkedin: 'https://linkedin.com/company/smilexplorer'
             };
             
             if (links[platform]) {
@@ -620,10 +620,10 @@
 
         function openDownloadLink(platform) {
             const links = {
-                playstore: 'https://play.google.com/store/apps/details?id=com.smilex',
-                appstore: 'https://apps.apple.com/app/smilex',
-                windows: 'https://microsoft.com/store/apps/smilex',
-                macos: 'https://apps.apple.com/app/smilex'
+                playstore: 'https://play.google.com/store/apps/details?id=com.smilexplorer',
+                appstore: 'https://apps.apple.com/app/smilexplorer',
+                windows: 'https://microsoft.com/store/apps/smilexplorer',
+                macos: 'https://apps.apple.com/app/smilexplorer'
             };
             
             if (links[platform]) {
@@ -636,8 +636,6 @@
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             initPreloader();
-            
-          
             
             // Prevent text selection on UI elements
             document.addEventListener('selectstart', (e) => {
@@ -675,7 +673,7 @@
 
         window.addEventListener('load', () => {
             performanceMetrics.loadTime = performance.now();
-            console.log('SmileX loaded in:', performanceMetrics.loadTime.toFixed(2), 'ms');
+            console.log('Smile Xplorer loaded in:', performanceMetrics.loadTime.toFixed(2), 'ms');
         });
 
         // Track interactions for analytics
@@ -684,7 +682,7 @@
         });
 
         // Export for potential external use
-        window.SmileX = {
+        window.SmileXplorer = {
             navigateToSection,
             toggleAudio,
             toggleTheme,
