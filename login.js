@@ -8,6 +8,7 @@
         appId: "YOUR_APP_ID"
     };
 
+
     // ==================== OAUTH 2.0 CONFIGURATION ====================
     const OAUTH_CONFIG = {
         google: {
@@ -1495,3 +1496,31 @@
             window.authApp.notification.show('A network error occurred. Please check your connection.', 'error');
         }
     });
+
+    const firestoreRules = `
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users can read/write only their own user document
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Public posts collection: anyone can read, only authenticated users can write
+    match /posts/{postId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Deny all other document access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+`  ;
+
+
+

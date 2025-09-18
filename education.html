@@ -952,6 +952,7 @@
         font-size: 18px;
         font-weight: 600;
         margin-bottom: 3px;
+        color: var(--premium-gold);
     }
 
     .stat-label {
@@ -996,6 +997,17 @@
     .upgrade-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    }
+
+    .manage-premium-btn {
+        background: linear-gradient(45deg, #28a745, #20c997);
+        color: white;
+        font-weight: 600;
+    }
+
+    .manage-premium-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
     }
 
     /* Premium Modal */
@@ -1142,6 +1154,117 @@
         cursor: pointer;
     }
 
+    /* Favorites Feature */
+    .favorite-btn {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(0, 0, 0, 0.7);
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: var(--transition);
+        z-index: 5;
+    }
+
+    .favorite-btn:hover {
+        background: rgba(0, 0, 0, 0.9);
+        color: var(--accent-color);
+    }
+
+    .favorite-btn.active {
+        color: var(--accent-color);
+        background: rgba(255, 107, 107, 0.2);
+    }
+
+    .favorite-btn.active i {
+        animation: pulseHeart 0.5s ease;
+    }
+
+    @keyframes pulseHeart {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+        100% { transform: scale(1); }
+    }
+
+    /* AI Recommendations */
+    .ai-recommendations-section {
+        background: var(--card-bg);
+        border-radius: var(--border-radius);
+        padding: 25px;
+        margin: 30px 0;
+        border: 2px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .ai-section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        color: var(--premium-gold);
+    }
+
+    .ai-section-header i {
+        font-size: 24px;
+        margin-right: 10px;
+    }
+
+    .ai-recommendation-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .ai-recommendation-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: var(--border-radius);
+        padding: 15px;
+        transition: var(--transition);
+        border: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .ai-recommendation-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(255, 215, 0, 0.2);
+    }
+
+    .ai-recommendation-title {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--premium-gold);
+    }
+
+    .ai-recommendation-reason {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 10px;
+    }
+
+    .ai-suggestion-btn {
+        background: var(--premium-gradient);
+        color: black;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .ai-suggestion-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
         .cosmic-header {
@@ -1216,6 +1339,10 @@
         }
 
         .user-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .ai-recommendation-cards {
             grid-template-columns: 1fr;
         }
     }
@@ -1387,6 +1514,9 @@
                 <button class="menu-action upgrade-btn" id="upgrade-btn">
                     <i class="fas fa-gem"></i> Upgrade to Premium
                 </button>
+                <button class="menu-action manage-premium-btn" id="manage-premium-btn" style="display: none;">
+                    <i class="fas fa-crown"></i> Manage Premium
+                </button>
             </div>
         </div>
     </div>
@@ -1413,10 +1543,10 @@
                     
                     <div class="premium-feature-item">
                         <div class="premium-feature-icon">
-                            <i class="fas fa-chart-pie"></i>
+                            <i class="fas fa-heart"></i>
                         </div>
-                        <h3 class="premium-feature-title">Advanced Statistics</h3>
-                        <p class="premium-feature-desc">Track pages read, reading streaks, and get personalized reading goals</p>
+                        <h3 class="premium-feature-title">Add Stories to Favorites</h3>
+                        <p class="premium-feature-desc">Save your favorite stories for quick access and build your personal library</p>
                     </div>
                     
                     <div class="premium-feature-item">
@@ -1445,10 +1575,10 @@
                     
                     <div class="premium-feature-item">
                         <div class="premium-feature-icon">
-                            <i class="fas fa-library"></i>
+                            <i class="fas fa-sync-alt"></i>
                         </div>
-                        <h3 class="premium-feature-title">Library Integration</h3>
-                        <p class="premium-feature-desc">Find books at nearby libraries and get availability alerts</p>
+                        <h3 class="premium-feature-title">Auto Refresh</h3>
+                        <p class="premium-feature-desc">Discover new stories automatically with content refresh every 30 minutes</p>
                     </div>
                 </div>
                 
@@ -1500,6 +1630,20 @@
             <!-- Search Info -->
             <div id="search-info" class="search-info">
                 Loading books from source...
+            </div>
+
+            <!-- AI Recommendations Section (Premium Only) -->
+            <div id="ai-recommendations-section" class="ai-recommendations-section" style="display: none;">
+                <div class="ai-section-header">
+                    <i class="fas fa-robot"></i>
+                    <h3>AI Recommendations For You</h3>
+                </div>
+                <div class="ai-recommendation-cards" id="ai-recommendation-cards">
+                    <!-- AI recommendations will be loaded here -->
+                </div>
+                <button class="ai-suggestion-btn mt-3" id="get-ai-suggestion-btn">
+                    <i class="fas fa-magic"></i> Get New AI Suggestions
+                </button>
             </div>
 
             <div class="row" id="storiesContainer">
@@ -1560,6 +1704,7 @@
                 this.MAX_RETRIES = 3;
                 this.AUTO_LOAD_INTERVAL = 4000; // Load new books every 4 seconds
                 this.BOOKS_PER_LOAD = 15; // Number of books to load per batch
+                this.HOME_PAGE_REFRESH = 30 * 60 * 1000; // 30 minutes
                 
                 // API Configuration
                 this.APIs = {
@@ -1613,6 +1758,8 @@
                 this.currentTopicIndex = 0;
                 this.autoLoadTimer = null;
                 this.isSearchMode = false;
+                this.homePageRefreshTimer = null;
+                this.aiRecommendations = [];
                 
                 // User management
                 this.user = {
@@ -1626,7 +1773,13 @@
                         badges: 0
                     },
                     savedBooks: [],
-                    collections: []
+                    favorites: [],
+                    collections: [],
+                    readingPreferences: {
+                        genres: [],
+                        authors: [],
+                        topics: []
+                    }
                 };
                 
                 // Initialize
@@ -1641,6 +1794,7 @@
                 this.updateAPIStatus();
                 this.updateUserInterface();
                 this.startInfiniteLoading();
+                this.setupHomePageRefresh();
                 console.log('✅ Smart Story Hub initialized successfully!');
             }
 
@@ -1659,6 +1813,7 @@
                                 this.user.isPremium = false;
                                 this.user.premiumExpiry = null;
                                 this.saveUserData();
+                                this.showStatus('Your premium subscription has expired', 'warning');
                             }
                         }
                     } catch (e) {
@@ -1740,14 +1895,22 @@
 
                 // Premium features
                 const upgradeBtn = document.getElementById('upgrade-btn');
+                const managePremiumBtn = document.getElementById('manage-premium-btn');
                 const premiumFeaturesBtn = document.getElementById('premium-features-btn');
                 const premiumModal = document.getElementById('premium-modal');
                 const premiumModalClose = document.getElementById('premium-modal-close');
                 const purchasePremiumBtn = document.getElementById('purchase-premium-btn');
+                const getAiSuggestionBtn = document.getElementById('get-ai-suggestion-btn');
 
                 if (upgradeBtn) {
                     upgradeBtn.addEventListener('click', () => {
                         this.showPremiumModal();
+                    });
+                }
+
+                if (managePremiumBtn) {
+                    managePremiumBtn.addEventListener('click', () => {
+                        this.showPremiumInfo();
                     });
                 }
 
@@ -1766,6 +1929,12 @@
                 if (purchasePremiumBtn) {
                     purchasePremiumBtn.addEventListener('click', () => {
                         this.purchasePremium();
+                    });
+                }
+
+                if (getAiSuggestionBtn) {
+                    getAiSuggestionBtn.addEventListener('click', () => {
+                        this.generateAIRecommendations();
                     });
                 }
 
@@ -1816,6 +1985,14 @@
                 }
             }
 
+            showPremiumInfo() {
+                if (this.user.isPremium && this.user.premiumExpiry) {
+                    const expiryDate = new Date(this.user.premiumExpiry);
+                    const daysLeft = Math.ceil((expiryDate - new Date()) / (1000 * 60 * 60 * 24));
+                    this.showStatus(`Your premium subscription expires in ${daysLeft} days`, 'success');
+                }
+            }
+
             purchasePremium() {
                 // Simulate premium purchase
                 const expiryDate = new Date();
@@ -1831,6 +2008,12 @@
                 
                 // Start infinite loading for premium users
                 this.startInfiniteLoading();
+                
+                // Show AI recommendations
+                this.showAIRecommendations();
+                
+                // Generate initial AI recommendations
+                this.generateAIRecommendations();
             }
 
             showFeatureRestriction(featureName) {
@@ -1853,26 +2036,49 @@
                 const premiumStatus = document.getElementById('premium-status');
                 const userStatusText = document.getElementById('user-status-text');
                 const upgradeBtn = document.getElementById('upgrade-btn');
+                const managePremiumBtn = document.getElementById('manage-premium-btn');
                 
                 if (this.user.isPremium) {
                     if (premiumStatus) premiumStatus.style.display = 'inline';
                     if (userStatusText) userStatusText.textContent = 'Premium Account';
-                    if (upgradeBtn) upgradeBtn.textContent = 'Manage Premium';
+                    if (upgradeBtn) upgradeBtn.style.display = 'none';
+                    if (managePremiumBtn) managePremiumBtn.style.display = 'flex';
                     
                     // Show stats for premium users
                     const userStats = document.getElementById('user-stats');
                     if (userStats) userStats.style.display = 'grid';
+                    
+                    // Show AI recommendations section
+                    this.showAIRecommendations();
                     
                     // Update stats values
                     this.updateUserStats();
                 } else {
                     if (premiumStatus) premiumStatus.style.display = 'none';
                     if (userStatusText) userStatusText.textContent = 'Free Account';
-                    if (upgradeBtn) upgradeBtn.textContent = 'Upgrade to Premium';
+                    if (upgradeBtn) upgradeBtn.style.display = 'flex';
+                    if (managePremiumBtn) managePremiumBtn.style.display = 'none';
                     
                     // Hide stats for free users
                     const userStats = document.getElementById('user-stats');
                     if (userStats) userStats.style.display = 'none';
+                    
+                    // Hide AI recommendations section
+                    this.hideAIRecommendations();
+                }
+            }
+
+            showAIRecommendations() {
+                const aiSection = document.getElementById('ai-recommendations-section');
+                if (aiSection && this.user.isPremium) {
+                    aiSection.style.display = 'block';
+                }
+            }
+
+            hideAIRecommendations() {
+                const aiSection = document.getElementById('ai-recommendations-section');
+                if (aiSection) {
+                    aiSection.style.display = 'none';
                 }
             }
 
@@ -1953,6 +2159,29 @@
                 }
             }
 
+            setupHomePageRefresh() {
+                // Set up timer to refresh homepage content every 30 minutes for premium users
+                if (this.user.isPremium) {
+                    this.homePageRefreshTimer = setInterval(() => {
+                        if (!this.isSearchMode) {
+                            this.refreshHomePage();
+                        }
+                    }, this.HOME_PAGE_REFRESH);
+                }
+            }
+
+            refreshHomePage() {
+                console.log('🔄 Refreshing homepage content...');
+                this.showStatus('Refreshing stories with new recommendations', 'success');
+                
+                // Clear current books and reload
+                this.clearResults();
+                this.loadBooksFromAllAPIs();
+                
+                // Regenerate AI recommendations
+                this.generateAIRecommendations();
+            }
+
             startInfiniteLoading() {
                 console.log('📚 Loading books with embed validation...');
                 this.updateSearchInfo('Loading books with embed validation...');
@@ -1979,6 +2208,11 @@
                 if (this.autoLoadTimer) {
                     clearInterval(this.autoLoadTimer);
                     this.autoLoadTimer = null;
+                }
+                
+                if (this.homePageRefreshTimer) {
+                    clearInterval(this.homePageRefreshTimer);
+                    this.homePageRefreshTimer = null;
                 }
             }
 
@@ -2232,6 +2466,7 @@
                 if (this.user.isPremium) {
                     this.updateSearchInfo('Resuming continuous book loading...');
                     this.startInfiniteLoading();
+                    this.setupHomePageRefresh();
                 } else {
                     this.updateSearchInfo('Free accounts can search books. Upgrade to Premium for unlimited reading.');
                     this.loadBooksFromAllAPIs();
@@ -2569,8 +2804,14 @@
                 const readBtnClass = 'action-btn read-btn';
                 const readBtnContent = isEmbedUnavailable ? '<i class="fas fa-external-link-alt"></i> Read Source' : '<i class="fas fa-book-open"></i> Read';
                 
+                // Check if book is in favorites
+                const isFavorite = this.user.favorites.includes(book.id);
+                
                 col.innerHTML = `
                     <div class="story-card fade-in">
+                        <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="storyHub.toggleFavorite('${book.id}')">
+                            <i class="fas fa-heart"></i>
+                        </button>
                         <img src="${book.coverImage}" 
                              class="story-card-img" 
                              alt="${book.title} cover"
@@ -2600,6 +2841,40 @@
 
                 col.dataset.bookData = JSON.stringify(book);
                 return col;
+            }
+
+            toggleFavorite(bookId) {
+                if (!this.user.isPremium) {
+                    this.showStatus('🔒 Adding to favorites is a Premium feature', 'warning');
+                    this.showPremiumModal();
+                    return;
+                }
+                
+                const book = this.allBooks.get(bookId) || this.searchResults.get(bookId);
+                if (!book) return;
+                
+                const favoriteIndex = this.user.favorites.indexOf(bookId);
+                const favoriteBtn = document.querySelector(`[data-book-id="${bookId}"] .favorite-btn`);
+                
+                if (favoriteIndex === -1) {
+                    // Add to favorites
+                    this.user.favorites.push(bookId);
+                    if (favoriteBtn) {
+                        favoriteBtn.classList.add('active');
+                        favoriteBtn.innerHTML = '<i class="fas fa-heart"></i>';
+                    }
+                    this.showStatus(`Added "${book.title}" to favorites`, 'success');
+                } else {
+                    // Remove from favorites
+                    this.user.favorites.splice(favoriteIndex, 1);
+                    if (favoriteBtn) {
+                        favoriteBtn.classList.remove('active');
+                        favoriteBtn.innerHTML = '<i class="fas fa-heart"></i>';
+                    }
+                    this.showStatus(`Removed "${book.title}" from favorites`, 'success');
+                }
+                
+                this.saveUserData();
             }
 
             async showReadOptions(bookId) {
@@ -3028,6 +3303,70 @@
                 setTimeout(() => {
                     indicator.classList.remove('show');
                 }, 4000);
+            }
+
+            generateAIRecommendations() {
+                if (!this.user.isPremium) {
+                    this.showStatus('AI Recommendations are a Premium feature', 'warning');
+                    this.showPremiumModal();
+                    return;
+                }
+                
+                console.log('🤖 Generating AI recommendations...');
+                this.showStatus('Generating personalized AI recommendations', 'success');
+                
+                // Get some books to use as recommendations
+                const allBooksArray = Array.from(this.allBooks.values());
+                
+                if (allBooksArray.length === 0) {
+                    this.showStatus('Not enough books to generate recommendations', 'warning');
+                    return;
+                }
+                
+                // Simulate AI recommendations based on user preferences and available books
+                this.aiRecommendations = [];
+                
+                // Get 3-6 random books as "recommendations"
+                const numRecommendations = Math.min(6, Math.max(3, Math.floor(allBooksArray.length / 3)));
+                const shuffled = [...allBooksArray].sort(() => 0.5 - Math.random());
+                
+                this.aiRecommendations = shuffled.slice(0, numRecommendations).map(book => {
+                    const reasons = [
+                        "Based on your interest in similar genres",
+                        "Similar to books you've enjoyed",
+                        "Popular among readers with your preferences",
+                        "Highly rated with themes you might enjoy",
+                        "New release in categories you follow"
+                    ];
+                    
+                    return {
+                        book: book,
+                        reason: reasons[Math.floor(Math.random() * reasons.length)]
+                    };
+                });
+                
+                this.displayAIRecommendations();
+            }
+
+            displayAIRecommendations() {
+                const container = document.getElementById('ai-recommendation-cards');
+                if (!container) return;
+                
+                if (this.aiRecommendations.length === 0) {
+                    container.innerHTML = '<p>No recommendations available. Try generating new suggestions.</p>';
+                    return;
+                }
+                
+                container.innerHTML = this.aiRecommendations.map(rec => `
+                    <div class="ai-recommendation-card">
+                        <h4 class="ai-recommendation-title">${rec.book.title}</h4>
+                        <p class="ai-recommendation-author">by ${rec.book.author}</p>
+                        <p class="ai-recommendation-reason">${rec.reason}</p>
+                        <button class="action-btn read-btn" onclick="storyHub.showReadOptions('${rec.book.id}')">
+                            <i class="fas fa-book-open"></i> Read
+                        </button>
+                    </div>
+                `).join('');
             }
 
             throttle(func, delay) {

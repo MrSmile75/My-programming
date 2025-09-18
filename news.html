@@ -561,6 +561,7 @@
             cursor: pointer;
             border: none;
             min-width: 120px;
+            text-align: center;
         }
 
         .modal-btn-primary {
@@ -613,6 +614,7 @@
             align-items: center;
             z-index: 2000;
             backdrop-filter: blur(5px);
+            flex-direction: column;
         }
 
         .loading-spinner {
@@ -723,6 +725,7 @@
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 20px;
+            position: relative;
         }
 
         .cache-stats {
@@ -1063,6 +1066,109 @@
                 font-size: 1.2rem;
             }
         }
+
+        /* Premium Features UI */
+        .premium-feature-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--premium-gradient);
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .sentiment-indicator {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .sentiment-positive {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+
+        .sentiment-negative {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .sentiment-neutral {
+            background: rgba(241, 196, 15, 0.2);
+            color: #f1c40f;
+        }
+
+        .favorite-btn {
+            background: transparent;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .favorite-btn.active {
+            color: #e74c3c;
+            transform: scale(1.2);
+        }
+
+        .favorite-btn:hover {
+            color: #c0392b;
+            transform: scale(1.2);
+        }
+
+        .saved-articles-container {
+            background: rgba(155, 89, 182, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            border: 1px solid var(--cache-color);
+        }
+
+        .saved-article {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .saved-article-title {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .saved-article-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-suggestion {
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .ai-suggestion-badge {
+            background: var(--secondary-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
@@ -1098,7 +1204,7 @@
                                 Free Account
                             </div>
                         </div>
-                        <div class="user-menu-item" onclick="newsHub.showPremiumModal()">
+                        <div class="user-menu-item" id="premiumMenuItem" onclick="newsHub.showPremiumModal()">
                             <i class="bi bi-star-fill" style="color: var(--premium-color);"></i>
                             <span>Upgrade to Premium</span>
                         </div>
@@ -1187,7 +1293,28 @@
                 <input type="checkbox" id="sportsNews" disabled>
                 <label for="sportsNews">Sports News</label>
             </div>
-            <button class="btn btn-sm btn-outline-warning mt-2" onclick="newsHub.showPremiumModal()">Upgrade to customize</button>
+            <button class="btn btn-sm btn-outline-warning mt-2" id="customizeUpgradeBtn" onclick="newsHub.showPremiumModal()">Upgrade to customize</button>
+        </div>
+
+        <!-- Saved Articles Section (Premium Feature) -->
+        <div class="saved-articles-container premium-only" id="savedArticlesContainer" style="display: none;">
+            <h4><i class="bi bi-bookmark me-2"></i>Your Saved Articles</h4>
+            <p class="text-muted">Articles you've saved for later reading</p>
+            <div id="savedArticlesList">
+                <!-- Saved articles will be loaded here -->
+            </div>
+            <div class="text-center mt-3">
+                <button class="btn btn-sm btn-outline-warning" id="savedUpgradeBtn" onclick="newsHub.showPremiumModal()">Upgrade to save unlimited articles</button>
+            </div>
+        </div>
+
+        <!-- AI Suggestions Section (Premium Feature) -->
+        <div class="premium-only" id="aiSuggestionsContainer" style="display: none;">
+            <h4><i class="bi bi-lightbulb me-2"></i>AI-Powered Suggestions</h4>
+            <p class="text-muted">Personalized recommendations based on your interests</p>
+            <div id="aiSuggestionsList">
+                <!-- AI suggestions will be loaded here -->
+            </div>
         </div>
 
         <!-- Premium content section -->
@@ -1201,9 +1328,10 @@
             </div>
         </div>
 
-        <div class="row g-4 mb-4">
+        <div class="row g-4 mb-4" id="premiumContentContainer">
             <div class="col-lg-4 col-md-6">
                 <div class="card news-card premium-only">
+                    <span class="premium-feature-indicator">PREMIUM</span>
                     <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" class="card-img-top news-card-img" alt="Market Analysis">
                     <div class="card-body">
                         <span class="premium-badge mb-2"><i class="bi bi-star"></i> PREMIUM</span>
@@ -1223,6 +1351,7 @@
             
             <div class="col-lg-4 col-md-6">
                 <div class="card news-card premium-only">
+                    <span class="premium-feature-indicator">PREMIUM</span>
                     <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" class="card-img-top news-card-img" alt="Tech Innovation">
                     <div class="card-body">
                         <span class="premium-badge mb-2"><i class="bi bi-star"></i> PREMIUM</span>
@@ -1242,6 +1371,7 @@
             
             <div class="col-lg-4 col-md-6">
                 <div class="card news-card premium-only">
+                    <span class="premium-feature-indicator">PREMIUM</span>
                     <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" class="card-img-top news-card-img" alt="Executive Interview">
                     <div class="card-body">
                         <span class="premium-badge mb-2"><i class="bi bi-star"></i> PREMIUM</span>
@@ -1264,7 +1394,7 @@
         <div class="ad-container" id="adContainer">
             <div class="ad-label">ADVERTISEMENT</div>
             <p>Support our journalism by disabling ads with a Premium subscription</p>
-            <button class="btn btn-sm btn-outline-warning" onclick="newsHub.showPremiumModal()">Go Premium</button>
+            <button class="btn btn-sm btn-outline-warning" id="adUpgradeBtn" onclick="newsHub.showPremiumModal()">Go Premium</button>
         </div>
 
         <!-- Category Filters -->
@@ -1453,13 +1583,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-8 mx-auto mb-4">
                             <div class="premium-card h-100">
+                                <div class="tier-badge">Best Value</div>
                                 <div class="premium-header">
-                                    <h4>Monthly Plan</h4>
+                                    <h4>Premium Plan</h4>
                                 </div>
                                 <div class="premium-body">
                                     <h2 class="text-center">$9.99<span class="fs-6">/month</span></h2>
+                                    <p class="text-center text-muted">30-day money-back guarantee</p>
                                     <ul class="premium-feature-list">
                                         <li class="premium-feature-item">
                                             <i class="bi bi-check-circle-fill text-success"></i>
@@ -1467,7 +1599,7 @@
                                         </li>
                                         <li class="premium-feature-item">
                                             <i class="bi bi-check-circle-fill text-success"></i>
-                                            Exclusive content
+                                            Exclusive premium content
                                         </li>
                                         <li class="premium-feature-item">
                                             <i class="bi bi-check-circle-fill text-success"></i>
@@ -1481,35 +1613,6 @@
                                             <i class="bi bi-check-circle-fill text-success"></i>
                                             Premium newsletters
                                         </li>
-                                    </ul>
-                                    <div class="text-center mt-4">
-                                        <button class="btn btn-premium w-100" onclick="newsHub.subscribeToPremium('monthly')">Subscribe Now</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <div class="premium-card h-100">
-                                <div class="tier-badge">Most Popular</div>
-                                <div class="premium-header">
-                                    <h4>Annual Plan</h4>
-                                </div>
-                                <div class="premium-body">
-                                    <h2 class="text-center">$99.99<span class="fs-6">/year</span></h2>
-                                    <p class="text-center text-muted">Save 17% compared to monthly</p>
-                                    <ul class="premium-feature-list">
-                                        <li class="premium-feature-item">
-                                            <i class="bi bi-check-circle-fill text-success"></i>
-                                            Everything in Monthly
-                                        </li>
-                                        <li class="premium-feature-item">
-                                            <i class="bi bi-check-circle-fill text-success"></i>
-                                            Exclusive data visualizations
-                                        </li>
-                                        <li class="premium-feature-item">
-                                            <i class="bi bi-check-circle-fill text-success"></i>
-                                            Priority support
-                                        </li>
                                         <li class="premium-feature-item">
                                             <i class="bi bi-check-circle-fill text-success"></i>
                                             Download content for offline
@@ -1518,9 +1621,29 @@
                                             <i class="bi bi-check-circle-fill text-success"></i>
                                             Custom news alerts
                                         </li>
+                                        <li class="premium-feature-item">
+                                            <i class="bi bi-check-circle-fill text-success"></i>
+                                            Advanced Search & Filtering
+                                        </li>
+                                        <li class="premium-feature-item">
+                                            <i class="bi bi-check-circle-fill text-success"></i>
+                                            Personalized News Dashboards
+                                        </li>
+                                        <li class="premium-feature-item">
+                                            <i class="bi bi-check-circle-fill text-success"></i>
+                                            Sentiment Analysis
+                                        </li>
+                                        <li class="premium-feature-item">
+                                            <i class="bi bi-check-circle-fill text-success"></i>
+                                            Unlimited Saved Articles
+                                        </li>
+                                        <li class="premium-feature-item">
+                                            <i class="bi bi-check-circle-fill text-success"></i>
+                                            AI-Powered Recommendations
+                                        </li>
                                     </ul>
                                     <div class="text-center mt-4">
-                                        <button class="btn btn-premium w-100" onclick="newsHub.subscribeToPremium('annual')">Subscribe Now</button>
+                                        <button class="btn btn-premium w-100" onclick="newsHub.subscribeToPremium()">Subscribe Now</button>
                                     </div>
                                 </div>
                             </div>
@@ -1601,11 +1724,9 @@
 
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay" style="display: none;">
-        <div class="text-center">
-            <div class="loading-spinner mb-3"></div>
-            <h4>Loading Live News...</h4>
-            <p>Fetching latest content from News...</p>
-        </div>
+        <div class="loading-spinner mb-3"></div>
+        <h4>Loading Live News...</h4>
+        <p>Fetching latest content from News...</p>
     </div>
 
     <!-- Bootstrap JS -->
@@ -1746,6 +1867,12 @@
                 const userStatus = document.querySelector('.user-status');
                 const adContainer = document.getElementById('adContainer');
                 const personalizationPanel = document.getElementById('personalizationPanel');
+                const savedArticlesContainer = document.getElementById('savedArticlesContainer');
+                const aiSuggestionsContainer = document.getElementById('aiSuggestionsContainer');
+                const premiumMenuItem = document.getElementById('premiumMenuItem');
+                const customizeUpgradeBtn = document.getElementById('customizeUpgradeBtn');
+                const savedUpgradeBtn = document.getElementById('savedUpgradeBtn');
+                const adUpgradeBtn = document.getElementById('adUpgradeBtn');
                 
                 if (this.user) {
                     loginBtn.style.display = 'none';
@@ -1757,16 +1884,48 @@
                         userStatus.innerHTML = '<i class="bi bi-star-fill" style="color: var(--premium-color);"></i> Premium Account';
                         if (adContainer) adContainer.style.display = 'none';
                         if (personalizationPanel) personalizationPanel.classList.remove('premium-only');
+                        if (savedArticlesContainer) savedArticlesContainer.style.display = 'block';
+                        if (aiSuggestionsContainer) aiSuggestionsContainer.style.display = 'block';
+                        if (premiumMenuItem) premiumMenuItem.style.display = 'none';
+                        if (customizeUpgradeBtn) customizeUpgradeBtn.style.display = 'none';
+                        if (savedUpgradeBtn) savedUpgradeBtn.style.display = 'none';
+                        if (adUpgradeBtn) adUpgradeBtn.style.display = 'none';
                         
                         // Enable premium content
                         document.querySelectorAll('.premium-only').forEach(el => {
                             el.classList.remove('premium-only');
                             el.classList.remove('premium-locked');
                         });
+
+                        // Enable personalization options
+                        document.querySelectorAll('.personalization-option input').forEach(input => {
+                            input.disabled = false;
+                        });
+
+                        // Load premium features
+                        this.loadSavedArticles();
+                        this.generateAISuggestions();
+                        
+                        // Enable premium content buttons
+                        this.enablePremiumContentButtons();
                     } else {
                         userStatus.innerHTML = '<i class="bi bi-circle-fill text-danger"></i> Free Account';
                         if (adContainer) adContainer.style.display = 'block';
                         if (personalizationPanel) personalizationPanel.classList.add('premium-only');
+                        if (savedArticlesContainer) savedArticlesContainer.style.display = 'none';
+                        if (aiSuggestionsContainer) aiSuggestionsContainer.style.display = 'none';
+                        if (premiumMenuItem) premiumMenuItem.style.display = 'block';
+                        if (customizeUpgradeBtn) customizeUpgradeBtn.style.display = 'block';
+                        if (savedUpgradeBtn) savedUpgradeBtn.style.display = 'block';
+                        if (adUpgradeBtn) adUpgradeBtn.style.display = 'block';
+                        
+                        // Disable premium content
+                        document.querySelectorAll('.premium-feature').forEach(el => {
+                            el.classList.add('premium-locked');
+                        });
+                        
+                        // Disable premium content buttons
+                        this.disablePremiumContentButtons();
                     }
                 } else {
                     loginBtn.style.display = 'block';
@@ -1776,22 +1935,90 @@
                     userAvatar.innerHTML = '<i class="bi bi-person"></i>';
                     if (adContainer) adContainer.style.display = 'block';
                     if (personalizationPanel) personalizationPanel.classList.add('premium-only');
+                    if (savedArticlesContainer) savedArticlesContainer.style.display = 'none';
+                    if (aiSuggestionsContainer) aiSuggestionsContainer.style.display = 'none';
+                    if (premiumMenuItem) premiumMenuItem.style.display = 'block';
+                    if (customizeUpgradeBtn) customizeUpgradeBtn.style.display = 'block';
+                    if (savedUpgradeBtn) savedUpgradeBtn.style.display = 'block';
+                    if (adUpgradeBtn) adUpgradeBtn.style.display = 'block';
                     
                     // Disable premium content
                     document.querySelectorAll('.premium-feature').forEach(el => {
                         el.classList.add('premium-locked');
                     });
+                    
+                    // Disable premium content buttons
+                    this.disablePremiumContentButtons();
                 }
             }
+            
+            enablePremiumContentButtons() {
+                const premiumCards = document.querySelectorAll('#premiumContentContainer .news-card');
+                premiumCards.forEach(card => {
+                    const previewBtn = card.querySelector('.btn-preview');
+                    const readBtn = card.querySelector('.btn-read');
+                    
+                    if (previewBtn) {
+                        previewBtn.onclick = () => this.openPremiumPreview(card);
+                    }
+                    
+                    if (readBtn) {
+                        readBtn.onclick = () => this.openPremiumArticle(card);
+                    }
+                });
+            }
+            
+            disablePremiumContentButtons() {
+                const premiumCards = document.querySelectorAll('#premiumContentContainer .news-card');
+                premiumCards.forEach(card => {
+                    const previewBtn = card.querySelector('.btn-preview');
+                    const readBtn = card.querySelector('.btn-read');
+                    
+                    if (previewBtn) {
+                        previewBtn.onclick = () => this.promptPremium();
+                    }
+                    
+                    if (readBtn) {
+                        readBtn.onclick = () => this.promptPremium();
+                    }
+                });
+            }
+            
+            openPremiumPreview(card) {
+                const title = card.querySelector('.card-title').textContent;
+                const description = card.querySelector('.card-text').textContent;
+                const image = card.querySelector('.news-card-img').src;
+                
+                this.currentArticleData = {
+                    title: title,
+                    description: description,
+                    url: '#premium-content',
+                    source: 'Premium Content',
+                    publishedAt: new Date().toISOString()
+                };
+                
+                this.showPreviewModal();
+            }
+            
+            openPremiumArticle(card) {
+                const title = card.querySelector('.card-title').textContent;
+                const description = card.querySelector('.card-text').textContent;
+                
+                this.displayFullContentModal(
+                    title, 
+                    `<p>${description}</p><p>This is exclusive premium content available only to subscribers. Enjoy in-depth analysis and expert insights not available to free users.</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, eget aliquam nisl nunc eget nisl. Nullam euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, eget aliquam nisl nunc eget nisl.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>`,
+                    '#premium-content'
+                );
+            }
 
-            subscribeToPremium(planType) {
+            subscribeToPremium() {
                 // Calculate expiry date (30 days from now)
                 const expiryDate = new Date();
                 expiryDate.setDate(expiryDate.getDate() + 30);
                 
                 // Save subscription data
                 const subscriptionData = {
-                    plan: planType,
+                    plan: 'premium',
                     startDate: new Date().toISOString(),
                     expiryDate: expiryDate.toISOString()
                 };
@@ -1820,7 +2047,7 @@
                 this.premiumModal.hide();
                 
                 // Show subscription details in success modal
-                document.getElementById('subscriptionPlan').textContent = planType === 'monthly' ? 'Premium Monthly' : 'Premium Annual';
+                document.getElementById('subscriptionPlan').textContent = 'Premium Monthly';
                 document.getElementById('subscriptionStart').textContent = new Date().toLocaleDateString();
                 document.getElementById('subscriptionEnd').textContent = expiryDate.toLocaleDateString();
                 
@@ -1830,6 +2057,9 @@
                 }, 300);
                 
                 this.showNotification('Premium subscription activated!', 'success');
+                
+                // Start premium content refresh timer
+                this.setupPremiumContentRefresh();
             }
 
             showPremiumModal() {
@@ -1848,6 +2078,85 @@
             promptPremium() {
                 this.showPremiumModal();
                 this.showNotification('This content is available to Premium subscribers only', 'warning');
+            }
+            
+            setupPremiumContentRefresh() {
+                // Refresh premium content every 30 minutes
+                if (this.premiumRefreshInterval) {
+                    clearInterval(this.premiumRefreshInterval);
+                }
+                
+                this.premiumRefreshInterval = setInterval(() => {
+                    if (this.isPremium) {
+                        this.showNotification('Refreshing premium content...', 'info');
+                        this.refreshPremiumContent();
+                    } else {
+                        clearInterval(this.premiumRefreshInterval);
+                    }
+                }, 30 * 60 * 1000); // 30 minutes
+            }
+            
+            refreshPremiumContent() {
+                // Simulate premium content refresh
+                const premiumCards = document.querySelectorAll('#premiumContentContainer .news-card');
+                premiumCards.forEach(card => {
+                    // Add a subtle animation to indicate refresh
+                    card.style.opacity = '0.8';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                    }, 500);
+                });
+                
+                this.showNotification('Premium content refreshed', 'success');
+            }
+
+            // Premium Features Implementation
+            loadSavedArticles() {
+                const savedArticles = JSON.parse(localStorage.getItem('saved_articles') || '[]');
+                const savedArticlesList = document.getElementById('savedArticlesList');
+                
+                if (savedArticles.length === 0) {
+                    savedArticlesList.innerHTML = '<p class="text-center text-muted">No saved articles yet.</p>';
+                    return;
+                }
+                
+                savedArticlesList.innerHTML = savedArticles.map((article, index) => `
+                    <div class="saved-article">
+                        <div class="saved-article-title">${this.truncateText(article.title, 60)}</div>
+                        <div class="saved-article-actions">
+                            <button class="btn btn-sm btn-outline-primary" onclick="newsHub.readFullArticle('${article.url}')">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="newsHub.removeSavedArticle(${index})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            removeSavedArticle(index) {
+                const savedArticles = JSON.parse(localStorage.getItem('saved_articles') || '[]');
+                savedArticles.splice(index, 1);
+                localStorage.setItem('saved_articles', JSON.stringify(savedArticles));
+                this.loadSavedArticles();
+                this.showNotification('Article removed from saved items', 'success');
+            }
+
+            generateAISuggestions() {
+                const suggestions = [
+                    "Based on your reading history, you might enjoy these AI technology articles",
+                    "Trending in business: Latest market analysis and financial news",
+                    "Popular science stories this week that match your interests"
+                ];
+                
+                const aiSuggestionsList = document.getElementById('aiSuggestionsList');
+                aiSuggestionsList.innerHTML = suggestions.map(suggestion => `
+                    <div class="ai-suggestion">
+                        <span class="ai-suggestion-badge">AI Recommendation</span>
+                        ${suggestion}
+                    </div>
+                `).join('');
             }
 
             // YouTube API Integration
@@ -2089,6 +2398,11 @@
                 setInterval(() => {
                     this.checkSubscriptionStatus();
                 }, 24 * 60 * 60 * 1000);
+                
+                // Setup premium content refresh if user is premium
+                if (this.isPremium) {
+                    this.setupPremiumContentRefresh();
+                }
             }
 
             // News Loading Functions
@@ -2256,6 +2570,7 @@
                 const defaultImage = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=200&fit=crop";
                 const isCached = this.getCachedData(this.getCacheKey('article', { url: article.url })) !== null;
                 const videoInfo = this.detectVideoContent(article);
+                const sentiment = this.analyzeSentiment(article.title);
 
                 cardElement.innerHTML = `
                     <div class="card news-card h-100 ${isCached ? 'cached' : ''}" 
@@ -2282,6 +2597,7 @@
                                     <span class="source-name">${article.source.name}</span>
                                     ${isCached ? '<i class="bi bi-database text-muted ms-2" title="Cached"></i>' : ''}
                                     ${videoInfo.hasVideo ? '<i class="bi bi-play-circle text-danger ms-2" title="Video Available"></i>' : ''}
+                                    <span class="sentiment-indicator sentiment-${sentiment}">${sentiment}</span>
                                 </div>
                                 <span class="publish-time">${timeAgo}</span>
                             </div>
@@ -2305,6 +2621,9 @@
                                             <i class="bi bi-play-circle me-1"></i>Video
                                         </button>
                                     ` : ''}
+                                    <button class="favorite-btn" onclick="newsHub.toggleFavorite(this)" title="Save article">
+                                        <i class="bi bi-bookmark"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -2312,6 +2631,74 @@
                 `;
 
                 return cardElement;
+            }
+
+            analyzeSentiment(text) {
+                // Simple sentiment analysis based on keywords
+                const positiveWords = ['good', 'great', 'excellent', 'amazing', 'positive', 'success', 'win', 'growth', 'profit'];
+                const negativeWords = ['bad', 'terrible', 'awful', 'negative', 'failure', 'loss', 'decline', 'crisis', 'war'];
+                
+                const lowerText = text.toLowerCase();
+                let positiveCount = 0;
+                let negativeCount = 0;
+                
+                positiveWords.forEach(word => {
+                    if (lowerText.includes(word)) positiveCount++;
+                });
+                
+                negativeWords.forEach(word => {
+                    if (lowerText.includes(word)) negativeCount++;
+                });
+                
+                if (positiveCount > negativeCount) return 'positive';
+                if (negativeCount > positiveCount) return 'negative';
+                return 'neutral';
+            }
+
+            toggleFavorite(button) {
+                if (!this.isPremium) {
+                    this.promptPremium();
+                    return;
+                }
+                
+                const card = button.closest('.news-card');
+                const articleData = this.getArticleDataFromCard(card);
+                
+                // Toggle favorite state
+                button.classList.toggle('active');
+                
+                // Save to localStorage
+                const savedArticles = JSON.parse(localStorage.getItem('saved_articles') || '[]');
+                
+                if (button.classList.contains('active')) {
+                    // Add to saved articles
+                    const articleToSave = {
+                        ...articleData,
+                        savedAt: Date.now()
+                    };
+                    
+                    // Check if already saved
+                    const isAlreadySaved = savedArticles.some(article => article.url === articleToSave.url);
+                    
+                    if (!isAlreadySaved) {
+                        savedArticles.push(articleToSave);
+                        localStorage.setItem('saved_articles', JSON.stringify(savedArticles));
+                        this.showNotification('Article saved to favorites', 'success');
+                    }
+                } else {
+                    // Remove from saved articles
+                    const index = savedArticles.findIndex(article => article.url === articleData.url);
+                    if (index !== -1) {
+                        savedArticles.splice(index, 1);
+                        localStorage.setItem('saved_articles', JSON.stringify(savedArticles));
+                        this.showNotification('Article removed from favorites', 'info');
+                    }
+                }
+                
+                // Refresh saved articles list if visible
+                if (this.isPremium) {
+                    this.loadSavedArticles();
+                }
             }
 
             detectVideoContent(article) {
@@ -2330,7 +2717,7 @@
                 }
                 
                 // Check for video keywords
-                const hasVideoKeywords = videoKeywords.some(keyword => content.includes(keyword));
+                const hasVideoKeywords = videoKeywords.something(keyword => content.includes(keyword));
                 
                 // Check if image URL suggests video content
                 const hasVideoImage = article.urlToImage && (
@@ -2772,6 +3159,10 @@
                     this.currentPage = 1;
                     this.loadCategoryNews();
                     this.showNotification(`Searching live news for: ${query}`, 'info');
+                } else {
+                    this.searchTerm = '';
+                    this.currentPage = 1;
+                    this.loadCategoryNews();
                 }
             }
 
