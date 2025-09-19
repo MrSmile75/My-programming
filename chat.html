@@ -3004,14 +3004,14 @@
     </nav>
 
     <script>
-        // Firebase Configuration
+          // Firebase Configuration - REPLACE WITH YOUR ACTUAL FIREBASE CONFIG
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "your-project.firebaseapp.com",
-            projectId: "your-project",
-            storageBucket: "your-project.appspot.com",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyEXAMPLEEXAMPLEEXAMPLEEXAMPLEEXAMPLE",
+            authDomain: "your-project-id.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project-id.appspot.com",
+            messagingSenderId: "123456789000",
+            appId: "1:123456789000:web:abcdef1234567890abcdef"
         };
 
         // Initialize Firebase
@@ -3053,6 +3053,13 @@
         let postViewCount = 0;
         let adInterval;
         let unsubscribeFunctions = [];
+        let liveStats = {
+            onlineUsers: 0,
+            activeChats: 0,
+            livePosts: 0,
+            postsToday: 0,
+            communities: 0
+        };
 
         // Initialize Firebase Authentication state listener
         auth.onAuthStateChanged((user) => {
@@ -3119,7 +3126,71 @@
             // Start ad interval
             startAdInterval();
             
+            // Initialize live stats
+            initializeLiveStats();
+            
             console.log('🎉 Smile Xplore Advanced Platform Initialized Successfully!');
+        }
+
+        // Initialize live stats with real-time updates
+        function initializeLiveStats() {
+            // Online users count
+            db.collection('users')
+                .where('status', '==', 'online')
+                .onSnapshot(snapshot => {
+                    liveStats.onlineUsers = snapshot.size;
+                    updateLiveStatsDisplay();
+                });
+            
+            // Active chats count (channels with messages in last 5 minutes)
+            const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+            db.collection('messages')
+                .where('timestamp', '>', fiveMinutesAgo)
+                .onSnapshot(snapshot => {
+                    const activeChannels = new Set();
+                    snapshot.forEach(doc => {
+                        if (doc.data().channel) {
+                            activeChannels.add(doc.data().channel);
+                        }
+                    });
+                    liveStats.activeChats = activeChannels.size;
+                    updateLiveStatsDisplay();
+                });
+            
+            // Live posts count
+            db.collection('posts')
+                .where('isLive', '==', true)
+                .where('expiresAt', '>', new Date())
+                .onSnapshot(snapshot => {
+                    liveStats.livePosts = snapshot.size;
+                    updateLiveStatsDisplay();
+                });
+            
+            // Posts today count
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            db.collection('posts')
+                .where('timestamp', '>', today)
+                .onSnapshot(snapshot => {
+                    liveStats.postsToday = snapshot.size;
+                    updateLiveStatsDisplay();
+                });
+            
+            // Communities count
+            db.collection('communities')
+                .onSnapshot(snapshot => {
+                    liveStats.communities = snapshot.size;
+                    updateLiveStatsDisplay();
+                });
+        }
+
+        // Update live stats display
+        function updateLiveStatsDisplay() {
+            document.getElementById('onlineUsers').textContent = formatNumber(liveStats.onlineUsers);
+            document.getElementById('activeChats').textContent = formatNumber(liveStats.activeChats);
+            document.getElementById('activePolls').textContent = formatNumber(liveStats.livePosts);
+            document.getElementById('postsToday').textContent = formatNumber(liveStats.postsToday);
+            document.getElementById('totalCommunities').textContent = formatNumber(liveStats.communities);
         }
 
         // Enhanced Registration Handler with Firebase Auth
@@ -3145,7 +3216,7 @@
                     uid: user.uid,
                     email: email,
                     fullName: fullName,
-                    username: username,
+                    username: username.toLowerCase(),
                     gender: gender,
                     country: country,
                     birthdate: birthdate,
@@ -3214,6 +3285,15 @@
             const userAvatar = document.getElementById('userAvatar');
             if (userAvatar) {
                 userAvatar.innerHTML = `
+                    <img src="${imageUrl}" alt="Profile picture">
+                    <div class="status-indicator status-online"></div>
+                `;
+            }
+            
+            const createPostUserInitial = document.getElementById('createPostUserInitial');
+            if (createPostUserInitial) {
+                createPostUserInitial.style.display = 'none';
+                createPostUserInitial.parentElement.innerHTML = `
                     <img src="${imageUrl}" alt="Profile picture">
                     <div class="status-indicator status-online"></div>
                 `;
@@ -3347,7 +3427,7 @@
             const name = formData.get('name');
             const description = formData.get('description');
             const type = formData.get('type');
-            const enableChatChannels = formData.get('enableChatChannels') === 'on';
+            const enableChatChannels = document.getElementById('enableChatChannels').checked;
             
             // Check if community name is available
             const isAvailable = await checkCommunityNameAvailability(name);
@@ -3415,7 +3495,6 @@
             // Listen for new posts
             const postsUnsubscribe = db.collection('posts')
                 .where('expiresAt', '>', new Date())
-                .orderBy('expiresAt')
                 .orderBy('timestamp', 'desc')
                 .limit(20)
                 .onSnapshot(snapshot => {
@@ -3469,16 +3548,6 @@
                     updateTrendingChannels();
                 });
             unsubscribeFunctions.push(communitiesUnsubscribe);
-            
-            // Listen for live stats updates
-            const statsUnsubscribe = db.collection('stats')
-                .doc('platform')
-                .onSnapshot(doc => {
-                    if (doc.exists) {
-                        updateLiveStats(doc.data());
-                    }
-                });
-            unsubscribeFunctions.push(statsUnsubscribe);
             
             // Listen for friend requests
             if (currentUser) {
@@ -3942,6 +4011,30 @@
             }
         }
 
+        // Send a channel message
+        async function sendChannelMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (!message || !currentUser) return;
+            
+            try {
+                await db.collection('messages').add({
+                    channel: currentChannel,
+                    senderId: currentUser.uid,
+                    senderName: currentUser.fullName,
+                    text: message,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    expiresAt: new Date(Date.now() + (CONFIG.CHAT_LIFETIME * 24 * 60 * 60 * 1000))
+                });
+                
+                input.value = '';
+            } catch (error) {
+                console.error("Error sending channel message:", error);
+                showNotification("Failed to send message", 'error');
+            }
+        }
+
         // Enable premium features for user
         async function enablePremiumFeatures() {
             // Show live post button
@@ -4108,6 +4201,52 @@
             
             // Update direct messages
             updateDirectMessages();
+        }
+
+        // Update user interface with current user data
+        function updateUserInterface(user) {
+            // Update user avatar
+            const userAvatar = document.getElementById('userAvatar');
+            const userInitial = document.getElementById('userInitial');
+            const createPostUserInitial = document.getElementById('createPostUserInitial');
+            
+            if (user.profileImage) {
+                userAvatar.innerHTML = `
+                    <img src="${user.profileImage}" alt="Profile picture">
+                    <div class="status-indicator status-online"></div>
+                `;
+                
+                if (createPostUserInitial) {
+                    createPostUserInitial.style.display = 'none';
+                    createPostUserInitial.parentElement.innerHTML = `
+                        <img src="${user.profileImage}" alt="Profile picture">
+                        <div class="status-indicator status-online"></div>
+                    `;
+                }
+            } else {
+                userInitial.textContent = user.username.charAt(0).toUpperCase();
+                if (createPostUserInitial) {
+                    createPostUserInitial.textContent = user.username.charAt(0).toUpperCase();
+                }
+            }
+            
+            // Update profile preview if in onboarding
+            const profilePreview = document.getElementById('profilePreview');
+            const profileInitial = document.getElementById('profileInitial');
+            if (profilePreview && user.profileImage) {
+                profileInitial.style.display = 'none';
+                profilePreview.innerHTML = `
+                    <img src="${user.profileImage}" alt="Profile picture">
+                    <div class="profile-upload-overlay">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                `;
+            }
+            
+            // Enable premium features if user is premium
+            if (user.isPremium) {
+                enablePremiumFeatures();
+            }
         }
 
         // Update communities display
@@ -4333,556 +4472,551 @@
             
             notifications.forEach(notification => {
                 notificationsHtml += `
-                    <div class="notification-item ${notification.read ? '' : 'unread'}" onclick="handleNotification('${notification.id}')">
-                        <div class="notification-content">
-                            ${notification.message}
-                        </div>
-                        <div class="notification-time">${getTimeAgo(notification.timestamp.toDate())}</div>
+                    <div class
+               <div class="notification-item ${notification.read ? '' : 'unread'}" onclick="handleNotification('${notification.id}')">
+                    <div class="notification-content">
+                        ${notification.message}
                     </div>
-                `;
-            });
-            
-            notificationsTab.innerHTML = notificationsHtml || '<div class="text-center" style="padding: var(--spacing-md); color: var(--text-muted);">No notifications</div>';
-        }
-
-        // Update live stats
-        function updateLiveStats(stats) {
-            document.getElementById('onlineUsers').textContent = formatNumber(stats.onlineUsers || 0);
-            document.getElementById('activeChats').textContent = formatNumber(stats.activeChats || 0);
-            document.getElementById('activePolls').textContent = formatNumber(stats.activePolls || 0);
-            document.getElementById('postsToday').textContent = formatNumber(stats.postsToday || 0);
-            document.getElementById('totalCommunities').textContent = formatNumber(stats.totalCommunities || 0);
-        }
-
-        // Update trending channels
-        function updateTrendingChannels() {
-            const trendingChannels = document.getElementById('trendingChannels');
-            
-            if (!trendingChannels) return;
-            
-            let channelsHtml = '';
-            
-            // Get top 5 communities by member count
-            const topCommunities = [...communities]
-                .sort((a, b) => b.memberCount - a.memberCount)
-                .slice(0, 5);
-            
-            topCommunities.forEach(community => {
-                channelsHtml += `
-                    <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-sm); background: var(--surface-color); border-radius: var(--radius-md); cursor: pointer;" onclick="joinChannel('${community.name}')">
-                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
-                            <i class="fas fa-hashtag" style="color: var(--primary-color);"></i>
-                            <span style="font-weight: 500;">${community.name}</span>
-                        </div>
-                        <span style="color: var(--success-color); font-size: var(--font-size-xs);">${formatNumber(community.memberCount)} members</span>
-                    </div>
-                `;
-            });
-            
-            trendingChannels.innerHTML = channelsHtml || '<div class="text-center" style="padding: var(--spacing-md); color: var(--text-muted);">No communities yet</div>';
-        }
-
-        // Update online users
-        function updateOnlineUsers(users) {
-            onlineUsers = new Set(users.map(user => user.uid));
-            
-            // Update online friends list
-            updateFriendsList();
-        }
-
-        // Add message to chat
-        function addMessageToChat(message) {
-            const chatMessages = document.getElementById('chat-messages');
-            
-            const messageElement = document.createElement('div');
-            messageElement.className = `message ${message.senderId === currentUser.uid ? 'user' : ''}`;
-            
-            messageElement.innerHTML = `
-                <div class="message-user">
-                    ${message.senderId === currentUser.uid ? '<span class="premium-badge" style="margin-right: 5px;"><i class="fas fa-crown"></i></span>' : ''}
-                    ${message.senderName}
+                    <div class="notification-time">${getTimeAgo(notification.timestamp.toDate())}</div>
                 </div>
-                <div class="message-text">${message.text}</div>
-                <div class="message-time">${getTimeAgo(message.timestamp.toDate())}</div>
             `;
-            
-            chatMessages.appendChild(messageElement);
-            
-            // Scroll to bottom
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        // Utility functions
-        function formatNumber(num) {
-            if (num >= 1000000) {
-                return (num / 1000000).toFixed(1) + 'M';
-            } else if (num >= 1000) {
-                return (num / 1000).toFixed(1) + 'k';
-            }
-            return num.toString();
-        }
-
-        function getTimeAgo(date) {
-            const now = new Date();
-            const diffInSeconds = Math.floor((now - date) / 1000);
-            
-            if (diffInSeconds < 60) {
-                return 'Just now';
-            } else if (diffInSeconds < 3600) {
-                const minutes = Math.floor(diffInSeconds / 60);
-                return `${minutes}m ago`;
-            } else if (diffInSeconds < 86400) {
-                const hours = Math.floor(diffInSeconds / 3600);
-                return `${hours}h ago`;
-            } else {
-                const days = Math.floor(diffInSeconds / 86400);
-                return `${days}d ago`;
-            }
-        }
-
-        function showNotification(message, type = 'info') {
-            // Create notification element
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.innerHTML = message;
-            
-            // Add style based on type
-            switch (type) {
-                case 'success':
-                    notification.style.background = 'var(--success-color)';
-                    break;
-                case 'error':
-                    notification.style.background = 'var(--error-color)';
-                    break;
-                case 'warning':
-                    notification.style.background = 'var(--warning-color)';
-                    break;
-                default:
-                    notification.style.background = 'var(--primary-color)';
-            }
-            
-            document.body.appendChild(notification);
-            
-            // Show notification
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 100);
-            
-            // Hide after 3 seconds
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    notification.remove();
-                }, 300);
-            }, 3000);
-        }
-
-        function showModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        function hideModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
-
-        function toggleUserMenu() {
-            const userMenu = document.getElementById('userMenu');
-            if (userMenu.style.display === 'block') {
-                userMenu.style.display = 'none';
-            } else {
-                userMenu.style.display = 'block';
-            }
-        }
-
-        function toggleDMPanel() {
-            const dmPanel = document.getElementById('dmPanel');
-            dmPanel.classList.toggle('active');
-        }
-
-        function toggleFriendsPanel() {
-            const friendsPanel = document.getElementById('friendsPanel');
-            friendsPanel.classList.toggle('active');
-        }
-
-        function toggleNotificationsPanel() {
-            const notificationsPanel = document.getElementById('notificationsPanel');
-            notificationsPanel.classList.toggle('active');
-        }
-
-        function switchToConversation(conversationId) {
-            // Implementation for switching to a specific conversation
-            console.log("Switching to conversation:", conversationId);
-        }
-
-        function joinChannel(channelName) {
-            currentChannel = channelName;
-            document.getElementById('currentChannelName').textContent = channelName;
-            document.getElementById('chat-container').classList.add('active');
-            
-            // Reattach listener for the new channel
-            const messagesUnsubscribe = db.collection('messages')
-                .where('channel', '==', channelName)
-                .orderBy('timestamp', 'desc')
-                .limit(CONFIG.MAX_CHAT_MESSAGES)
-                .onSnapshot(snapshot => {
-                    const chatMessages = document.getElementById('chat-messages');
-                    chatMessages.innerHTML = '';
-                    
-                    snapshot.forEach(doc => {
-                        addMessageToChat(doc.data());
-                    });
-                });
-            
-            // Replace the messages unsubscribe function
-            const index = unsubscribeFunctions.findIndex(fn => fn.name === 'messagesUnsubscribe');
-            if (index !== -1) {
-                unsubscribeFunctions[index]();
-                unsubscribeFunctions[index] = messagesUnsubscribe;
-            }
-        }
-
-        function startCall(userId, isVideo) {
-            showNotification(`${isVideo ? 'Video' : 'Voice'} call started with user`, 'info');
-        }
-
-        function blockUser(userId) {
-            showNotification('User blocked', 'info');
-        }
-
-        function removeFriend(userId) {
-            showNotification('Friend removed', 'info');
-        }
-
-        function acceptFriendRequest(requestId) {
-            showNotification('Friend request accepted', 'success');
-        }
-
-        function declineFriendRequest(requestId) {
-            showNotification('Friend request declined', 'info');
-        }
-
-        function handleNotification(notificationId) {
-            showNotification('Notification handled', 'info');
-        }
-
-        function goToProfile() {
-            showNotification('Profile page would open here', 'info');
-        }
-
-        function goToSettings() {
-            showNotification('Settings page would open here', 'info');
-        }
-
-        // Initialize all functionality when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set up Firebase auth state listener
-            // Already set up at the top of the script
-            
-            // Set up event listeners for forms
-            document.getElementById('registrationForm')?.addEventListener('submit', handleRegistrationSubmit);
-            document.getElementById('createPostForm')?.addEventListener('submit', handleCreatePostSubmit);
-            document.getElementById('createCommunityForm')?.addEventListener('submit', handleCreateCommunitySubmit);
-            
-            // Set up other event listeners
-            document.getElementById('premiumBtn')?.addEventListener('click', upgradeToPremium);
-            document.getElementById('dmToggle')?.addEventListener('click', toggleDMPanel);
-            document.getElementById('friendsToggle')?.addEventListener('click', toggleFriendsPanel);
-            document.getElementById('notificationBtn')?.addEventListener('click', toggleNotificationsPanel);
-            document.getElementById('closeDmPanel')?.addEventListener('click', toggleDMPanel);
-            document.getElementById('closeFriendsPanel')?.addEventListener('click', toggleFriendsPanel);
-            document.getElementById('closeNotificationsPanel')?.addEventListener('click', toggleNotificationsPanel);
-            document.getElementById('chat-close-btn')?.addEventListener('click', () => {
-                document.getElementById('chat-container').classList.remove('active');
-            });
-            document.getElementById('chat-send-btn')?.addEventListener('click', () => {
-                const input = document.getElementById('chat-input');
-                if (input.value.trim()) {
-                    // In a real app, this would send the message to the current channel
-                    addMessageToChat({
-                        senderId: currentUser?.uid || 'unknown',
-                        senderName: currentUser?.fullName || 'You',
-                        text: input.value,
-                        timestamp: new Date()
-                    });
-                    input.value = '';
-                }
-            });
-            document.getElementById('createPostInput')?.addEventListener('click', () => {
-                showModal('create-post-modal');
-            });
-            document.getElementById('createCommunityBtn')?.addEventListener('click', () => {
-                showModal('create-community-modal');
-            });
-            document.getElementById('browseCommunityBtn')?.addEventListener('click', () => {
-                showNotification('Community browser would open here', 'info');
-            });
-            document.getElementById('loadMoreBtn')?.addEventListener('click', () => {
-                showNotification('Loading more posts...', 'info');
-            });
-            
-            // Close modals when clicking outside
-            document.querySelectorAll('.modal, .overlay').forEach(modal => {
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        hideModal(modal.id);
-                    }
-                });
-            });
-            
-            // Close modals with close buttons
-            document.querySelectorAll('.modal-close').forEach(button => {
-                button.addEventListener('click', () => {
-                    const modal = button.closest('.modal, .overlay');
-                    if (modal) {
-                        hideModal(modal.id);
-                    }
-                });
-            });
-            
-            // Tab switching
-            document.querySelectorAll('.dm-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const tabName = tab.dataset.tab;
-                    
-                    // Update active tab
-                    document.querySelectorAll('.dm-tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    
-                    // Show appropriate content
-                    document.querySelectorAll('.dm-list, .channel-list').forEach(content => {
-                        content.classList.add('hidden');
-                    });
-                    
-                    document.getElementById(`${tabName}Tab`).classList.remove('hidden');
-                });
-            });
-            
-            // Feed switching
-            document.querySelectorAll('.feed-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const feed = option.dataset.feed;
-                    
-                    // Update active feed
-                    document.querySelectorAll('.feed-option').forEach(o => o.classList.remove('active'));
-                    option.classList.add('active');
-                    
-                    // Show appropriate feed content
-                    showNotification(`Showing ${feed} feed`, 'info');
-                });
-            });
-            
-            // Post type switching
-            document.getElementById('postType')?.addEventListener('change', (e) => {
-                const postType = e.target.value;
-                const contentContainer = document.getElementById('contentContainer');
-                const pollContainer = document.getElementById('pollOptionsContainer');
-                const mediaContainer = document.getElementById('mediaUploadContainer');
-                const liveChatContainer = document.getElementById('liveChatContainer');
-                
-                // Reset visibility
-                contentContainer.classList.remove('hidden');
-                pollContainer.classList.add('hidden');
-                mediaContainer.classList.remove('hidden');
-                liveChatContainer.classList.add('hidden');
-                
-                if (postType === 'poll') {
-                    pollContainer.classList.remove('hidden');
-                    mediaContainer.classList.add('hidden');
-                } else if (postType === 'live-chat') {
-                    liveChatContainer.classList.remove('hidden');
-                    mediaContainer.classList.add('hidden');
-                }
-            });
-            
-            // Add poll option
-            document.getElementById('addPollOption')?.addEventListener('click', () => {
-                const pollOptions = document.getElementById('pollOptions');
-                const optionCount = pollOptions.querySelectorAll('.poll-option-input').length;
-                
-                if (optionCount >= CONFIG.MAX_POLL_OPTIONS) {
-                    showNotification(`Maximum ${CONFIG.MAX_POLL_OPTIONS} options allowed`, 'warning');
-                    return;
-                }
-                
-                const newOption = document.createElement('input');
-                newOption.type = 'text';
-                newOption.className = 'form-control poll-option-input';
-                newOption.placeholder = `Option ${optionCount + 1}`;
-                newOption.style.marginBottom = 'var(--spacing-sm)';
-                
-                pollOptions.appendChild(newOption);
-            });
-            
-            // Theme toggle
-            document.getElementById('themeToggle')?.addEventListener('click', () => {
-                const isDark = document.documentElement.style.getPropertyValue('--background-color') === '#000000';
-                
-                if (isDark) {
-                    // Switch to light theme
-                    document.documentElement.style.setProperty('--background-color', '#ffffff');
-                    document.documentElement.style.setProperty('--surface-color', '#f8f9fa');
-                    document.documentElement.style.setProperty('--surface-secondary', '#e9ecef');
-                    document.documentElement.style.setProperty('--text-primary', '#212529');
-                    document.documentElement.style.setProperty('--text-secondary', '#495057');
-                    document.documentElement.style.setProperty('--text-muted', '#6c757d');
-                    document.documentElement.style.setProperty('--border-color', '#dee2e6');
-                    
-                    document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun"></i>';
-                } else {
-                    // Switch to dark theme
-                    document.documentElement.style.setProperty('--background-color', '#000000');
-                    document.documentElement.style.setProperty('--surface-color', '#1a1a1a');
-                    document.documentElement.style.setProperty('--surface-secondary', '#2a2a2a');
-                    document.documentElement.style.setProperty('--text-primary', '#ffffff');
-                    document.documentElement.style.setProperty('--text-secondary', '#cccccc');
-                    document.documentElement.style.setProperty('--text-muted', '#666666');
-                    document.documentElement.style.setProperty('--border-color', '#404040');
-                    
-                    document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon"></i>';
-                }
-            });
-            
-            // Mobile navigation
-            document.getElementById('mobileCreatePost')?.addEventListener('click', (e) => {
-                e.preventDefault();
-                showModal('create-post-modal');
-            });
-            
-            document.getElementById('mobileDmToggle')?.addEventListener('click', (e) => {
-                e.preventDefault();
-                toggleDMPanel();
-            });
-            
-            document.getElementById('mobileChatToggle')?.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.getElementById('chat-container').classList.toggle('active');
-            });
-            
-            // Profile image upload
-            document.getElementById('profileImageInput')?.addEventListener('change', (e) => {
-                if (e.target.files.length > 0) {
-                    const file = e.target.files[0];
-                    const reader = new FileReader();
-                    
-                    reader.onload = (event) => {
-                        document.getElementById('profilePreview').innerHTML = `
-                            <img src="${event.target.result}" alt="Profile preview">
-                            <div class="profile-upload-overlay">
-                                <i class="fas fa-camera"></i>
-                            </div>
-                        `;
-                    };
-                    
-                    reader.readAsDataURL(file);
-                }
-            });
-            
-            // Media upload
-            document.getElementById('mediaUploadArea')?.addEventListener('click', () => {
-                document.getElementById('mediaInput').click();
-            });
-            
-            document.getElementById('mediaInput')?.addEventListener('change', (e) => {
-                const files = e.target.files;
-                const container = document.getElementById('mediaPreviewContainer');
-                container.innerHTML = '';
-                
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const reader = new FileReader();
-                    
-                    reader.onload = (event) => {
-                        const item = document.createElement('div');
-                        item.className = 'media-preview-item';
-                        
-                        if (file.type.startsWith('image/')) {
-                            item.innerHTML = `
-                                <img src="${event.target.result}" alt="Preview">
-                                <button class="media-remove-btn" onclick="this.parentElement.remove()">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            `;
-                        } else if (file.type.startsWith('video/')) {
-                            item.innerHTML = `
-                                <video src="${event.target.result}" muted></video>
-                                <button class="media-remove-btn" onclick="this.parentElement.remove()">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            `;
-                        }
-                        
-                        container.appendChild(item);
-                    };
-                    
-                    reader.readAsDataURL(file);
-                }
-            });
-            
-            // Initialize with some sample data for demonstration
-            setTimeout(() => {
-                // Simulate loading of some initial data
-                if (!currentUser) {
-                    updateLiveStats({
-                        onlineUsers: 127543,
-                        activeChats: 2847,
-                        activePolls: 1247,
-                        postsToday: 45678,
-                        totalCommunities: 8934
-                    });
-                    
-                    // Add some sample posts for demonstration
-                    const samplePosts = [
-                        {
-                            title: "Welcome to Smile Xplore!",
-                            content: "This is a sample post to demonstrate the platform. In a real application, you would see posts from other users here.",
-                            authorName: "Smile Xplore Team",
-                            authorUsername: "smilexplore",
-                            timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-                            community: "general",
-                            votes: 42,
-                            comments: 7,
-                            type: "text",
-                            isLive: false,
-                            expiresAt: new Date(Date.now() + 89 * 24 * 60 * 60 * 1000)
-                        },
-                        {
-                            title: "What's your favorite feature?",
-                            content: "Let us know what you think about the platform so far!",
-                            authorName: "Community Manager",
-                            authorUsername: "cmgr",
-                            timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000),
-                            community: "feedback",
-                            votes: 18,
-                            comments: 3,
-                            type: "text",
-                            isLive: false,
-                            expiresAt: new Date(Date.now() + 89 * 24 * 60 * 60 * 1000),
-                            options: [
-                                { text: "Real-time chat", votes: 12 },
-                                { text: "Community features", votes: 8 },
-                                { text: "User profiles", votes: 5 }
-                            ]
-                        }
-                    ];
-                    
-                    samplePosts.forEach((post, index) => {
-                        setTimeout(() => {
-                            addPostToFeed(post, `sample-${index}`);
-                        }, index * 500);
-                    });
-                }
-            }, 2000);
-            
-            console.log('Smile Xplore platform initialized');
         });
-    </script>
-</body>
-</html>
+        
+        notificationsTab.innerHTML = notificationsHtml || '<div class="text-center" style="padding: var(--spacing-md); color: var(--text-muted);">No notifications</div>';
+    }
+
+    // Update trending channels
+    function updateTrendingChannels() {
+        const trendingChannels = document.getElementById('trendingChannels');
+        
+        if (!trendingChannels) return;
+        
+        let channelsHtml = '';
+        
+        // Get top 5 communities by member count
+        const topCommunities = [...communities]
+            .sort((a, b) => b.memberCount - a.memberCount)
+            .slice(0, 5);
+        
+        topCommunities.forEach(community => {
+            channelsHtml += `
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-sm); background: var(--surface-color); border-radius: var(--radius-md); cursor: pointer;" onclick="joinChannel('${community.name}')">
+                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                        <i class="fas fa-hashtag" style="color: var(--primary-color);"></i>
+                        <span style="font-weight: 500;">${community.name}</span>
+                    </div>
+                    <span style="color: var(--success-color); font-size: var(--font-size-xs);">${formatNumber(community.memberCount)} members</span>
+                </div>
+            `;
+        });
+        
+        trendingChannels.innerHTML = channelsHtml || '<div class="text-center" style="padding: var(--spacing-md); color: var(--text-muted);">No communities yet</div>';
+    }
+
+    // Update online users
+    function updateOnlineUsers(users) {
+        onlineUsers = new Set(users.map(user => user.uid));
+        
+        // Update online friends list
+        updateFriendsList();
+    }
+
+    // Add message to chat
+    function addMessageToChat(message) {
+        const chatMessages = document.getElementById('chat-messages');
+        
+        const messageElement = document.createElement('div');
+        messageElement.className = `message ${message.senderId === currentUser.uid ? 'user' : ''}`;
+        
+        messageElement.innerHTML = `
+            <div class="message-user">
+                ${message.senderId === currentUser.uid ? '<span class="premium-badge" style="margin-right: 5px;"><i class="fas fa-crown"></i></span>' : ''}
+                ${message.senderName}
+            </div>
+            <div class="message-text">${message.text}</div>
+            <div class="message-time">${getTimeAgo(message.timestamp.toDate())}</div>
+        `;
+        
+        chatMessages.appendChild(messageElement);
+        
+        // Scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Utility functions
+    function formatNumber(num) {
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1) + 'M';
+        } else if (num >= 1000) {
+            return (num / 1000).toFixed(1) + 'k';
+        }
+        return num.toString();
+    }
+
+    function getTimeAgo(date) {
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
+        
+        if (diffInSeconds < 60) {
+            return 'Just now';
+        } else if (diffInSeconds < 3600) {
+            const minutes = Math.floor(diffInSeconds / 60);
+            return `${minutes}m ago`;
+        } else if (diffInSeconds < 86400) {
+            const hours = Math.floor(diffInSeconds / 3600);
+            return `${hours}h ago`;
+        } else {
+            const days = Math.floor(diffInSeconds / 86400);
+            return `${days}d ago`;
+        }
+    }
+
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.innerHTML = message;
+        
+        // Add style based on type
+        switch (type) {
+            case 'success':
+                notification.style.background = 'var(--success-color)';
+                break;
+            case 'error':
+                notification.style.background = 'var(--error-color)';
+                break;
+            case 'warning':
+                notification.style.background = 'var(--warning-color)';
+                break;
+            default:
+                notification.style.background = 'var(--primary-color)';
+        }
+        
+        document.body.appendChild(notification);
+        
+        // Show notification
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+        
+        // Hide after 3 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 3000);
+    }
+
+    function showModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function hideModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    function toggleUserMenu() {
+        const userMenu = document.getElementById('userMenu');
+        if (userMenu.style.display === 'block') {
+            userMenu.style.display = 'none';
+        } else {
+            userMenu.style.display = 'block';
+        }
+    }
+
+    function toggleDMPanel() {
+        const dmPanel = document.getElementById('dmPanel');
+        dmPanel.classList.toggle('active');
+    }
+
+    function toggleFriendsPanel() {
+        const friendsPanel = document.getElementById('friendsPanel');
+        friendsPanel.classList.toggle('active');
+    }
+
+    function toggleNotificationsPanel() {
+        const notificationsPanel = document.getElementById('notificationsPanel');
+        notificationsPanel.classList.toggle('active');
+    }
+
+    function switchToConversation(conversationId) {
+        // Implementation for switching to a specific conversation
+        console.log("Switching to conversation:", conversationId);
+        // This would involve fetching the conversation messages and displaying them
+        showNotification("Conversation feature would be implemented here", 'info');
+    }
+
+    function joinChannel(channelName) {
+        currentChannel = channelName;
+        document.getElementById('currentChannelName').textContent = channelName;
+        document.getElementById('chat-container').classList.add('active');
+        
+        // Clear existing messages
+        document.getElementById('chat-messages').innerHTML = '';
+        
+        // Reattach listener for the new channel
+        const messagesUnsubscribe = db.collection('messages')
+            .where('channel', '==', channelName)
+            .orderBy('timestamp', 'desc')
+            .limit(CONFIG.MAX_CHAT_MESSAGES)
+            .onSnapshot(snapshot => {
+                snapshot.forEach(doc => {
+                    addMessageToChat(doc.data());
+                });
+            });
+        
+        // Replace the messages unsubscribe function
+        const index = unsubscribeFunctions.findIndex(fn => fn.name === 'messagesUnsubscribe');
+        if (index !== -1) {
+            unsubscribeFunctions[index]();
+            unsubscribeFunctions[index] = messagesUnsubscribe;
+        } else {
+            unsubscribeFunctions.push(messagesUnsubscribe);
+        }
+    }
+
+    function startCall(userId, isVideo) {
+        showNotification(`${isVideo ? 'Video' : 'Voice'} call started with user`, 'info');
+    }
+
+    function blockUser(userId) {
+        showNotification('User blocked', 'info');
+    }
+
+    function removeFriend(userId) {
+        showNotification('Friend removed', 'info');
+    }
+
+    function acceptFriendRequest(requestId) {
+        showNotification('Friend request accepted', 'success');
+    }
+
+    function declineFriendRequest(requestId) {
+        showNotification('Friend request declined', 'info');
+    }
+
+    function handleNotification(notificationId) {
+        showNotification('Notification handled', 'info');
+    }
+
+    function goToProfile() {
+        showNotification('Profile page would open here', 'info');
+    }
+
+    function goToSettings() {
+        showNotification('Settings page would open here', 'info');
+    }
+
+    function openFileUpload() {
+        document.getElementById('profileImageInput').click();
+    }
+
+    // Initialize all functionality when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set up Firebase auth state listener
+        // Already set up at the top of the script
+        
+        // Set up event listeners for forms
+        document.getElementById('registrationForm')?.addEventListener('submit', handleRegistrationSubmit);
+        document.getElementById('createPostForm')?.addEventListener('submit', handleCreatePostSubmit);
+        document.getElementById('createCommunityForm')?.addEventListener('submit', handleCreateCommunitySubmit);
+        
+        // Set up other event listeners
+        document.getElementById('premiumBtn')?.addEventListener('click', upgradeToPremium);
+        document.getElementById('dmToggle')?.addEventListener('click', toggleDMPanel);
+        document.getElementById('friendsToggle')?.addEventListener('click', toggleFriendsPanel);
+        document.getElementById('notificationBtn')?.addEventListener('click', toggleNotificationsPanel);
+        document.getElementById('closeDmPanel')?.addEventListener('click', toggleDMPanel);
+        document.getElementById('closeFriendsPanel')?.addEventListener('click', toggleFriendsPanel);
+        document.getElementById('closeNotificationsPanel')?.addEventListener('click', toggleNotificationsPanel);
+        document.getElementById('chat-close-btn')?.addEventListener('click', () => {
+            document.getElementById('chat-container').classList.remove('active');
+        });
+        document.getElementById('chat-send-btn')?.addEventListener('click', sendChannelMessage);
+        document.getElementById('createPostInput')?.addEventListener('click', () => {
+            showModal('create-post-modal');
+        });
+        document.getElementById('createCommunityBtn')?.addEventListener('click', () => {
+            showModal('create-community-modal');
+        });
+        document.getElementById('browseCommunityBtn')?.addEventListener('click', () => {
+            showNotification('Community browser would open here', 'info');
+        });
+        document.getElementById('loadMoreBtn')?.addEventListener('click', () => {
+            showNotification('Loading more posts...', 'info');
+        });
+        
+        // Chat input enter key listener
+        document.getElementById('chat-input')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendChannelMessage();
+            }
+        });
+        
+        // Close modals when clicking outside
+        document.querySelectorAll('.modal, .overlay').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    hideModal(modal.id);
+                }
+            });
+        });
+        
+        // Close modals with close buttons
+        document.querySelectorAll('.modal-close').forEach(button => {
+            button.addEventListener('click', () => {
+                const modal = button.closest('.modal, .overlay');
+                if (modal) {
+                    hideModal(modal.id);
+                }
+            });
+        });
+        
+        // Tab switching
+        document.querySelectorAll('.dm-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                // Update active tab
+                document.querySelectorAll('.dm-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show appropriate content
+                document.querySelectorAll('.dm-list, .channel-list').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                document.getElementById(`${tabName}Tab`).classList.remove('hidden');
+            });
+        });
+        
+        // Feed switching
+        document.querySelectorAll('.feed-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const feed = option.dataset.feed;
+                
+                // Update active feed
+                document.querySelectorAll('.feed-option').forEach(o => o.classList.remove('active'));
+                option.classList.add('active');
+                
+                // Show appropriate feed content
+                showNotification(`Showing ${feed} feed`, 'info');
+            });
+        });
+        
+        // Post type switching
+        document.getElementById('postType')?.addEventListener('change', (e) => {
+            const postType = e.target.value;
+            const contentContainer = document.getElementById('contentContainer');
+            const pollContainer = document.getElementById('pollOptionsContainer');
+            const mediaContainer = document.getElementById('mediaUploadContainer');
+            const liveChatContainer = document.getElementById('liveChatContainer');
+            
+            // Reset visibility
+            contentContainer.classList.remove('hidden');
+            pollContainer.classList.add('hidden');
+            mediaContainer.classList.remove('hidden');
+            liveChatContainer.classList.add('hidden');
+            
+            if (postType === 'poll') {
+                pollContainer.classList.remove('hidden');
+                mediaContainer.classList.add('hidden');
+            } else if (postType === 'live-chat') {
+                liveChatContainer.classList.remove('hidden');
+                mediaContainer.classList.add('hidden');
+            } else if (postType === 'text') {
+                mediaContainer.classList.add('hidden');
+            }
+        });
+        
+        // Add poll option
+        document.getElementById('addPollOption')?.addEventListener('click', () => {
+            const pollOptions = document.getElementById('pollOptions');
+            const optionCount = pollOptions.querySelectorAll('.poll-option-input').length;
+            
+            if (optionCount >= CONFIG.MAX_POLL_OPTIONS) {
+                showNotification(`Maximum ${CONFIG.MAX_POLL_OPTIONS} options allowed`, 'warning');
+                return;
+            }
+            
+            const newOption = document.createElement('input');
+            newOption.type = 'text';
+            newOption.className = 'form-control poll-option-input';
+            newOption.placeholder = `Option ${optionCount + 1}`;
+            newOption.style.marginBottom = 'var(--spacing-sm)';
+            
+            pollOptions.appendChild(newOption);
+        });
+        
+        // Theme toggle
+        document.getElementById('themeToggle')?.addEventListener('click', () => {
+            const isDark = document.documentElement.style.getPropertyValue('--background-color') === '#000000';
+            
+            if (isDark) {
+                // Switch to light theme
+                document.documentElement.style.setProperty('--background-color', '#ffffff');
+                document.documentElement.style.setProperty('--surface-color', '#f8f9fa');
+                document.documentElement.style.setProperty('--surface-secondary', '#e9ecef');
+                document.documentElement.style.setProperty('--text-primary', '#212529');
+                document.documentElement.style.setProperty('--text-secondary', '#495057');
+                document.documentElement.style.setProperty('--text-muted', '#6c757d');
+                document.documentElement.style.setProperty('--border-color', '#dee2e6');
+                
+                document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                // Switch to dark theme
+                document.documentElement.style.setProperty('--background-color', '#000000');
+                document.documentElement.style.setProperty('--surface-color', '#1a1a1a');
+                document.documentElement.style.setProperty('--surface-secondary', '#2a2a2a');
+                document.documentElement.style.setProperty('--text-primary', '#ffffff');
+                document.documentElement.style.setProperty('--text-secondary', '#cccccc');
+                document.documentElement.style.setProperty('--text-muted', '#666666');
+                document.documentElement.style.setProperty('--border-color', '#404040');
+                
+                document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+        
+        // Mobile navigation
+        document.getElementById('mobileCreatePost')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            showModal('create-post-modal');
+        });
+        
+        document.getElementById('mobileDmToggle')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleDMPanel();
+        });
+        
+        document.getElementById('mobileChatToggle')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('chat-container').classList.toggle('active');
+        });
+        
+        // Profile image upload
+        document.getElementById('profileImageInput')?.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = (event) => {
+                    document.getElementById('profilePreview').innerHTML = `
+                        <img src="${event.target.result}" alt="Profile preview">
+                        <div class="profile-upload-overlay">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    `;
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Media upload
+        document.getElementById('mediaUploadArea')?.addEventListener('click', () => {
+            document.getElementById('mediaInput').click();
+        });
+        
+        document.getElementById('mediaInput')?.addEventListener('change', (e) => {
+            const files = e.target.files;
+            const container = document.getElementById('mediaPreviewContainer');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                reader.onload = (event) => {
+                    const item = document.createElement('div');
+                    item.className = 'media-preview-item';
+                    
+                    if (file.type.startsWith('image/')) {
+                        item.innerHTML = `
+                            <img src="${event.target.result}" alt="Preview">
+                            <button class="media-remove-btn" onclick="this.parentElement.remove()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    } else if (file.type.startsWith('video/')) {
+                        item.innerHTML = `
+                            <video src="${event.target.result}" muted></video>
+                            <button class="media-remove-btn" onclick="this.parentElement.remove()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    }
+                    
+                    container.appendChild(item);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Initialize with some sample data for demonstration
+        setTimeout(() => {
+            // Simulate loading of some initial data
+            if (!currentUser) {
+                updateLiveStats({
+                    onlineUsers: 127543,
+                    activeChats: 2847,
+                    activePolls: 1247,
+                    postsToday: 45678,
+                    totalCommunities: 8934
+                });
+                
+                // Add some sample posts for demonstration
+                const samplePosts = [
+                    {
+                        title: "Welcome to Smile Xplore!",
+                        content: "This is a sample post to demonstrate the platform. In a real application, you would see posts from other users here.",
+                        authorName: "Smile Xplore Team",
+                        authorUsername: "smilexplore",
+                        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+                        community: "general",
+                        votes: 42,
+                        comments: 7,
+                        type: "text",
+                        isLive: false,
+                        expiresAt: new Date(Date.now() + 89 * 24 * 60 * 60 * 1000)
+                    },
+                    {
+                        title: "What's your favorite feature?",
+                        content: "Let us know what you think about the platform so far!",
+                        authorName: "Community Manager",
+                        authorUsername: "cmgr",
+                        timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000),
+                        community: "feedback",
+                        votes: 18,
+                        comments: 3,
+                        type: "text",
+                        isLive: false,
+                        expiresAt: new Date(Date.now() + 89 * 24 * 60 * 60 * 1000),
+                        options: [
+                            { text: "Real-time chat", votes: 12 },
+                            { text: "Community features", votes: 8 },
+                            { text: "User profiles", votes: 5 }
+                        ]
+                    }
+                ];
+                
+                samplePosts.forEach((post, index) => {
+                    setTimeout(() => {
+                        addPostToFeed(post, `sample-${index}`);
+                    }, index * 500);
+                });
+            }
+        }, 2000);
+        
+        console.log('Smile Xplore platform initialized');
+    });
+</script>
