@@ -477,6 +477,55 @@ async function fetchYouTubeShorts(query = 'shorts', maxResults = 10) {
     }
 }
 
+// Fetch fresh YouTube shorts without filtering
+async function fetchFreshYouTubeShorts(query = 'shorts', maxResults = 10) {
+    try {
+        const searchQuery = encodeURIComponent(`${query} #shorts`);
+        const response = await fetch(
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchQuery}&type=video&videoDuration=short&maxResults=${maxResults}&key=${YOUTUBE_API_KEY}`
+        );
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch YouTube data');
+        }
+
+        const data = await response.json();
+
+        if (data.items && data.items.length > 0) {
+            const videoIds = data.items.map(item => item.id.videoId).join(',');
+            const detailsResponse = await fetch(
+                `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoIds}&key=${YOUTUBE_API_KEY}`
+            );
+
+            const detailsData = await detailsResponse.json();
+
+            const processedShorts = detailsData.items.map(video => ({
+                id: video.id,
+                title: video.snippet.title,
+                description: video.snippet.description,
+                channelTitle: video.snippet.channelTitle,
+                channelId: video.snippet.channelId,
+                publishedAt: video.snippet.publishedAt,
+                thumbnails: video.snippet.thumbnails,
+                viewCount: video.statistics.viewCount || '0',
+                likeCount: video.statistics.likeCount || '0',
+                commentCount: video.statistics.commentCount || '0'
+            }));
+
+            // Cache the results
+            cacheManager.cacheSearchResults(query, processedShorts);
+
+            return processedShorts;
+        }
+
+        return [];
+    } catch (error) {
+        console.error('Error fetching YouTube shorts:', error);
+        showNotification('Failed to load YouTube shorts. Using demo content.', 'warning');
+        return getDemoShorts();
+    }
+}
+
 // Demo shorts for fallback
 function getDemoShorts() {
     return [
@@ -545,6 +594,7 @@ function createYouTubePlayer(containerId, videoId, index) {
             onError: (event) => {
                 console.error(`Player ${index} error:`, event.data);
                 showNotification('Video playback error', 'error');
+                handlePlayerError(index);
             }
         }
     });
@@ -554,7 +604,7 @@ function createYouTubePlayer(containerId, videoId, index) {
 function handlePlayerStateChange(event, index) {
     const state = event.data;
 
-    if (state === YT.PlayerState.PLAYING && currentShorts[index]) {
+    if (state === YT.PlayerState.PLAYING && currentShorts[index] && !currentShorts[index].isAd) {
         addToWatchHistory(currentShorts[index]);
     }
 
@@ -562,6 +612,25 @@ function handlePlayerStateChange(event, index) {
         setTimeout(() => {
             navigateShort(1);
         }, 1000);
+    }
+}
+
+// Handle player errors
+function handlePlayerError(index) {
+    if (players[index]) {
+        try {
+            players[index].destroy();
+            delete players[index];
+        } catch (e) {
+            console.error('Error destroying player:', e);
+        }
+        
+        // Recreate the player after a delay
+        setTimeout(() => {
+            if (currentShorts[index] && !currentShorts[index].isAd) {
+                createYouTubePlayer(`player-${index}`, currentShorts[index].id, index);
+            }
+        }, 2000);
     }
 }
 
@@ -586,10 +655,10 @@ function createShortCard(short, index) {
             <div class="video-info-overlay">
                 <div class="channel-info">
                     <div class="channel-avatar">
-                        ${short.channelTitle.charAt(0).toUpperCase()}
+                        ${short.channelTitle ? short.channelTitle.charAt(0).toUpperCase() : '?'}
                     </div>
                     <div class="channel-details">
-                        <div class="channel-name">@${short.channelTitle.toLowerCase().replace(/\s+/g, '')}</div>
+                        <div class="channel-name">@${short.channelTitle ? short.channelTitle.toLowerCase().replace(/\s+/g, '') : 'unknown'}</div>
                         <div class="video-stats">
                             ${formatNumber(short.viewCount)} views • ${formatTimeAgo(short.publishedAt)}
                         </div>
@@ -599,8 +668,8 @@ function createShortCard(short, index) {
                     </button>
                 </div>
                 
-                <div class="video-title">${short.title}</div>
-                <div class="video-description">${short.description}</div>
+                <div class="video-title">${short.title || 'Untitled Video'}</div>
+                <div class="video-description">${short.description || 'No description available'}</div>
             </div>
             
             <div class="action-buttons">
@@ -624,24 +693,6 @@ function createShortCard(short, index) {
                     </button>
                     <div class="action-count">Share</div>
                 </div>
-
-                <!--
-                
-                <div style="position: relative;">
-                    <button class="action-btn ${isInWatchLater ? 'liked' : ''}" onclick="toggleWatchLater(${index})">
-                        <i class="fas fa-clock"></i>
-                    </button>
-                    <div class="action-count">Later</div>
-                </div>
-                
-                <div style="position: relative;">
-                    <button class="action-btn" onclick="showAddToPlaylistModal(${index})">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                    <div class="action-count">Add</div>
-                </div>
-
-                -->
             </div>
         </div>
     `;
@@ -707,8 +758,10 @@ function updateNavigationButtons() {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
 
-    prevBtn.disabled = currentIndex <= 0;
-    nextBtn.disabled = false;
+    if (prevBtn && nextBtn) {
+        prevBtn.disabled = currentIndex <= 0;
+        nextBtn.disabled = false;
+    }
 }
 
 // Load more shorts
@@ -743,13 +796,16 @@ async function loadMoreShorts() {
 }
 
 // Category loading
-async function loadCategory(category) {
+async function loadCategory(category, event) {
     currentCategory = category;
 
     document.querySelectorAll('.sidebar-item').forEach(item => {
         item.classList.remove('active');
     });
-    event.target.classList.add('active');
+    
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
 
     showNotification(`Loading ${category} shorts...`, 'info');
 
@@ -762,6 +818,8 @@ async function loadCategory(category) {
 // Search functionality
 function setupSearch() {
     const searchInput = document.getElementById('searchInput');
+    if (!searchInput) return;
+    
     let searchTimeout;
 
     searchInput.addEventListener('input', (e) => {
@@ -796,6 +854,8 @@ async function searchShorts(query) {
 
 // Favorites management
 function toggleFavorite(index) {
+    if (index < 0 || index >= currentShorts.length) return;
+    
     const short = currentShorts[index];
     if (short.isAd) return;
 
@@ -811,7 +871,7 @@ function toggleFavorite(index) {
 
     localStorage.setItem('favorites', JSON.stringify(favorites));
 
-    const button = document.querySelector(`[data-index="${index}"] .action-btn:first-child`);
+    const button = document.querySelector(`.short-card[data-index="${index}"] .action-btn:first-child`);
     if (button) {
         button.classList.toggle('liked', !isLiked);
     }
@@ -829,6 +889,8 @@ function loadFavorites() {
 
 // Watch Later management
 function toggleWatchLater(index) {
+    if (index < 0 || index >= currentShorts.length) return;
+    
     const short = currentShorts[index];
     if (short.isAd) return;
 
@@ -844,7 +906,7 @@ function toggleWatchLater(index) {
 
     localStorage.setItem('watchLater', JSON.stringify(watchLater));
 
-    const button = document.querySelector(`[data-index="${index}"] .action-btn:nth-child(4)`);
+    const button = document.querySelector(`.short-card[data-index="${index}"] .action-btn:nth-child(4)`);
     if (button) {
         button.classList.toggle('liked', !isInWatchLater);
     }
@@ -889,6 +951,7 @@ function loadWatchHistory() {
 // Playlist management
 function loadPlaylists() {
     const playlistsList = document.getElementById('playlistsList');
+    if (!playlistsList) return;
 
     if (userPlaylists.length === 0) {
         playlistsList.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem; padding: 1rem;">No playlists yet. Create your first playlist!</p>';
@@ -918,12 +981,22 @@ function showCreatePlaylistModal() {
         return;
     }
 
-    document.getElementById('createPlaylistModal').classList.add('active');
+    const modal = document.getElementById('createPlaylistModal');
+    if (modal) {
+        modal.classList.add('active');
+    }
 }
 
 function closeCreatePlaylistModal() {
-    document.getElementById('createPlaylistModal').classList.remove('active');
-    document.getElementById('createPlaylistForm').reset();
+    const modal = document.getElementById('createPlaylistModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+    
+    const form = document.getElementById('createPlaylistForm');
+    if (form) {
+        form.reset();
+    }
 }
 
 function createPlaylist(name, description) {
@@ -983,8 +1056,10 @@ function handleSubscribe(channelId, button) {
 
     window.open(`https://www.youtube.com/channel/${channelId}`, '_blank');
 
-    button.textContent = 'Subscribed';
-    button.classList.add('subscribed');
+    if (button) {
+        button.textContent = 'Subscribed';
+        button.classList.add('subscribed');
+    }
 }
 
 function openComments(videoId) {
@@ -1011,17 +1086,25 @@ function showPremiumModal() {
     const remainingDays = getRemainingPremiumDays();
     const premiumInfo = document.getElementById('premiumInfo');
     
-    if (remainingDays > 0) {
-        premiumInfo.innerHTML = `<p>Your premium subscription is active and will expire in ${remainingDays} days.</p>`;
-    } else {
-        premiumInfo.innerHTML = `<p>Upgrade to Premium for an ad-free experience and exclusive features!</p>`;
+    if (premiumInfo) {
+        if (remainingDays > 0) {
+            premiumInfo.innerHTML = `<p>Your premium subscription is active and will expire in ${remainingDays} days.</p>`;
+        } else {
+            premiumInfo.innerHTML = `<p>Upgrade to Premium for an ad-free experience and exclusive features!</p>`;
+        }
     }
     
-    document.getElementById('premiumModal').classList.add('active');
+    const modal = document.getElementById('premiumModal');
+    if (modal) {
+        modal.classList.add('active');
+    }
 }
 
 function closePremiumModal() {
-    document.getElementById('premiumModal').classList.remove('active');
+    const modal = document.getElementById('premiumModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
 }
 
 function subscribeToPremium() {
@@ -1034,24 +1117,31 @@ function subscribeToPremium() {
 function updatePremiumUI() {
     const premiumBtn = document.getElementById('premiumBtn');
     const premiumBtnText = document.getElementById('premiumBtnText');
-    const remainingDays = getRemainingPremiumDays();
 
-    if (isPremium) {
-        premiumBtn.classList.add('active');
-        premiumBtnText.textContent = `Premium (${remainingDays}d)`;
-        premiumBtn.innerHTML = `<i class="fas fa-crown"></i> <span>Premium (${remainingDays}d)</span>`;
-        document.body.classList.add('premium-active');
-    } else {
-        premiumBtn.classList.remove('active');
-        premiumBtnText.textContent = 'Go Premium';
-        premiumBtn.innerHTML = `<i class="fas fa-crown"></i> <span>Go Premium</span>`;
-        document.body.classList.remove('premium-active');
+    if (premiumBtn && premiumBtnText) {
+        const remainingDays = getRemainingPremiumDays();
+
+        if (isPremium) {
+            premiumBtn.classList.add('active');
+            premiumBtnText.textContent = `Premium (${remainingDays}d)`;
+            premiumBtn.innerHTML = `<i class="fas fa-crown"></i> <span>Premium (${remainingDays}d)</span>`;
+            document.body.classList.add('premium-active');
+        } else {
+            premiumBtn.classList.remove('active');
+            premiumBtnText.textContent = 'Go Premium';
+            premiumBtn.innerHTML = `<i class="fas fa-crown"></i> <span>Go Premium</span>`;
+            document.body.classList.remove('premium-active');
+        }
     }
 }
 
 // Utility functions
 function formatNumber(num) {
+    if (!num) return '0';
+    
     const number = parseInt(num);
+    if (isNaN(number)) return '0';
+    
     if (number >= 1000000) {
         return (number / 1000000).toFixed(1) + 'M';
     } else if (number >= 1000) {
@@ -1061,7 +1151,11 @@ function formatNumber(num) {
 }
 
 function formatTimeAgo(dateString) {
+    if (!dateString) return 'Unknown';
+    
     const date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'Unknown';
+    
     const now = new Date();
     const diffInSeconds = Math.floor((now - date) / 1000);
 
@@ -1075,6 +1169,8 @@ function formatTimeAgo(dateString) {
 
 function showNotification(message, type = 'info') {
     const notification = document.getElementById('notification');
+    if (!notification) return;
+    
     notification.textContent = message;
     notification.className = `notification ${type} show`;
 
@@ -1087,16 +1183,19 @@ function showNotification(message, type = 'info') {
 function setupEventListeners() {
     setupSearch();
 
-    document.getElementById('createPlaylistForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('playlistName').value.trim();
-        const description = document.getElementById('playlistDescription').value.trim();
+    const createPlaylistForm = document.getElementById('createPlaylistForm');
+    if (createPlaylistForm) {
+        createPlaylistForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('playlistName').value.trim();
+            const description = document.getElementById('playlistDescription').value.trim();
 
-        if (name) {
-            createPlaylist(name, description);
-            closeCreatePlaylistModal();
-        }
-    });
+            if (name) {
+                createPlaylist(name, description);
+                closeCreatePlaylistModal();
+            }
+        });
+    }
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowDown' || e.key === ' ') {
@@ -1109,35 +1208,36 @@ function setupEventListeners() {
     });
 
     const container = document.getElementById('shortsContainer');
-    let isScrolling = false;
+    if (!container) return;
+    
+    let scrollTimeout;
+    let lastScrollTop = container.scrollTop;
 
     container.addEventListener('scroll', () => {
-        if (!isScrolling) {
-            window.requestAnimationFrame(() => {
-                const scrollTop = container.scrollTop;
-                const cardHeight = container.clientHeight;
-                const newIndex = Math.round(scrollTop / cardHeight);
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            const scrollTop = container.scrollTop;
+            const cardHeight = container.clientHeight;
+            const newIndex = Math.round(scrollTop / cardHeight);
 
-                if (newIndex !== currentIndex && newIndex >= 0 && newIndex < currentShorts.length) {
-                    if (players[currentIndex] && !currentShorts[currentIndex].isAd) {
-                        players[currentIndex].pauseVideo();
-                    }
-
-                    currentIndex = newIndex;
-
-                    setTimeout(() => {
-                        if (players[currentIndex] && !currentShorts[currentIndex].isAd) {
-                            players[currentIndex].playVideo();
-                        }
-                    }, 500);
-
-                    updateNavigationButtons();
+            if (newIndex !== currentIndex && newIndex >= 0 && newIndex < currentShorts.length) {
+                if (players[currentIndex] && !currentShorts[currentIndex].isAd) {
+                    players[currentIndex].pauseVideo();
                 }
 
-                isScrolling = false;
-            });
-        }
-        isScrolling = true;
+                currentIndex = newIndex;
+
+                setTimeout(() => {
+                    if (players[currentIndex] && !currentShorts[currentIndex].isAd) {
+                        players[currentIndex].playVideo();
+                    }
+                }, 500);
+
+                updateNavigationButtons();
+            }
+
+            lastScrollTop = scrollTop;
+        }, 100);
     });
 }
 
@@ -1146,12 +1246,15 @@ async function loadInitialShorts() {
     const shorts = await fetchYouTubeShorts('trending shorts', 10);
     displayShorts(shorts);
 
-    setTimeout(() => {
-        document.getElementById('loadingScreen').style.opacity = '0';
+    const loadingScreen = document.getElementById('loadingScreen');
+    if (loadingScreen) {
         setTimeout(() => {
-            document.getElementById('loadingScreen').style.display = 'none';
-        }, 500);
-    }, 1000);
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 500);
+        }, 1000);
+    }
 }
 
 function init() {
@@ -1219,17 +1322,21 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-
 // Function to display the modal
 function showPremiumModal() {
-  document.getElementById('premiumModal').style.display = 'flex';
+  const modal = document.getElementById('premiumModal');
+  if (modal) {
+      modal.style.display = 'flex';
+  }
 }
 
 // Function to close the modal
 function closePremiumModal() {
-  document.getElementById('premiumModal').style.display = 'none';
+  const modal = document.getElementById('premiumModal');
+  if (modal) {
+      modal.style.display = 'none';
+  }
 }
-
 
 console.log('🎬 ShortsHub - Legal YouTube Shorts Experience Loaded');
 console.log('✅ Fully compliant with YouTube Terms of Service');

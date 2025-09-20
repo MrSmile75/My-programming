@@ -59,14 +59,22 @@
                 <li><a href="#" class="nav-link active" onclick="showSection('home')"><i class="bi bi-house-door"></i> Home</a></li>
                 <li><a href="#" class="nav-link" onclick="showSection('marketplace')"><i class="bi bi-shop"></i> Marketplace</a></li>
                 <li><a href="#" class="nav-link" onclick="showSection('sell')"><i class="bi bi-tag"></i> Sell</a></li>
+                <!---
                 <li><a href="#" class="nav-link" onclick="showSection('analytics')"><i class="bi bi-graph-up"></i> Analytics</a></li>
+
+            -->
             </ul>
+
             
             <div class="nav-actions">
+
+                <!---
                 <div class="online-indicator">
                     <div class="status-dot"></div>
                     <span id="onlineCount">Active</span> Online Moderators
                 </div>
+
+            -->
                 
                 <button class="cart-btn" onclick="openCart()">
                     <i class="bi bi-cart3"></i>
@@ -771,10 +779,12 @@
         </section>
     </main>
 
-    <!-- Floating Action Button -->
+    <!-- Floating Action Button 
     <button class="floating-action-btn" onclick="toggleQuickActions()">
         <i class="bi bi-plus" id="fabIcon"></i>
     </button>
+
+-->
 
     <!-- Quick Actions -->
     <div id="quickActions" class="quick-actions">
@@ -787,10 +797,19 @@
         <button class="quick-action-btn" onclick="scrollToTop()" title="Scroll to Top">
             <i class="bi bi-arrow-up"></i>
         </button>
-        <button class="quick-action-btn" onclick="toggleTheme()" title="Toggle Theme">
-            <i class="bi bi-moon"></i>
+        <button class="quick-action-btn" onclick="showSection('marketplace')" title="Market place">
+            <i class="bi bi-bag"></i>
         </button>
+
+        <!---
+         <button class="quick-action-btn" onclick="showSection('analytics')" title="Analytics">
+            <i class="bi bi-arrow"></i>
+        </button>
+
+    -->
     </div>
+
+-->
 
     <!-- Cart Modal -->
     <div id="cartModal" class="modal">
